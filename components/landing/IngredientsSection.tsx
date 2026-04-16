@@ -1,0 +1,71 @@
+'use client'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import Badge from '@/components/ui/Badge'
+import Button from '@/components/ui/Button'
+import { ingredientsContent, ingredients } from '@/lib/data/content'
+
+export default function IngredientsSection() {
+  return (
+    <section id="ingredients" className="w-full bg-white py-24">
+      <div className="max-w-content mx-auto px-6 md:px-10">
+
+        {/* Header */}
+        <div className="flex flex-col items-center text-center mb-12">
+          <Badge label={ingredientsContent.badge} />
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-6 text-[clamp(36px,5vw,56px)] font-bold tracking-tight leading-tight whitespace-pre-line"
+          >
+            {ingredientsContent.headline}
+          </motion.h2>
+        </div>
+
+        {/* Editorial image */}
+        <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden mb-16">
+          <Image
+            src={ingredientsContent.editorialImage}
+            alt="Natural ingredients"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        {/* Key ingredients table */}
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold">{ingredientsContent.sectionTitle}</h3>
+            <Button label={ingredientsContent.cta} href="/shop" variant="primary" />
+          </div>
+
+          <div className="flex flex-col">
+            {ingredients.map((ingredient, i) => (
+              <motion.div
+                key={ingredient.number}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex items-center justify-between py-5 gap-6">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <span className="w-8 h-8 rounded-full border border-brand-black flex items-center justify-center text-sm font-medium flex-shrink-0">
+                      {ingredient.number}
+                    </span>
+                    <span className="font-medium">{ingredient.name}</span>
+                  </div>
+                  <span className="text-brand-muted text-sm text-right max-w-xs shrink-0">{ingredient.description}</span>
+                </div>
+                {i < ingredients.length - 1 && <hr className="border-brand-border" />}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
