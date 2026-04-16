@@ -12,15 +12,15 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border">
       <div className="max-w-content mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+        {/* Logo — flex-1 so nav stays centered */}
+        <Link href="/" className="flex flex-1 items-center gap-2 font-bold text-lg">
           <span className="w-7 h-7 rounded-full bg-brand-black flex items-center justify-center">
             <span className="w-3.5 h-3.5 rounded-full bg-white" />
           </span>
           {siteConfig.brand}
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — truly centered */}
         <nav className="hidden md:flex items-center gap-8">
           {siteConfig.nav.map(link => (
             <Link
@@ -33,8 +33,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:block">
+        {/* Desktop CTA — flex-1 so nav stays centered */}
+        <div className="hidden md:flex flex-1 justify-end">
           <Button label="Buy Now" href="/shop" variant="pill" />
         </div>
 
@@ -43,10 +43,12 @@ export default function Navbar() {
           className="md:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMobileOpen(v => !v)}
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
         >
-          <span className={`block w-6 h-0.5 bg-brand-black transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 bg-brand-black transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-1' : ''}`} />
           <span className={`block w-6 h-0.5 bg-brand-black transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-6 h-0.5 bg-brand-black transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 bg-brand-black transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-1' : ''}`} />
         </button>
       </div>
 
@@ -54,6 +56,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-nav"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
