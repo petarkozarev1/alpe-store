@@ -1,14 +1,16 @@
 'use client'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import type { Transition } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { heroContent } from '@/lib/data/content'
 
-const fadeUp0  = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0,   ease: 'easeOut' } }
-const fadeUp01 = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.1, ease: 'easeOut' } }
-const fadeUp02 = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.2, ease: 'easeOut' } }
-const fadeUp03 = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.3, ease: 'easeOut' } }
+const tr = (delay: number): Transition => ({ duration: 0.6, delay, ease: 'easeOut' })
+const fadeUp0  = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: tr(0) }
+const fadeUp01 = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: tr(0.1) }
+const fadeUp02 = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: tr(0.2) }
+const fadeUp03 = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: tr(0.3) }
 
 export default function HeroSection() {
   return (
