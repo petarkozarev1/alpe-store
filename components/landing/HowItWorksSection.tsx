@@ -6,11 +6,11 @@ import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { howItWorksContent, steps } from '@/lib/data/content'
 
-const cardTransition = (i: number): Transition => ({
+const cardTransitions: Transition[] = steps.map((_, i) => ({
   duration: 0.5,
   delay: i * 0.1,
   ease: 'easeOut',
-})
+}))
 
 export default function HowItWorksSection() {
   return (
@@ -34,7 +34,7 @@ export default function HowItWorksSection() {
                 key={step.number}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={cardTransition(i)}
+                transition={cardTransitions[i]}
                 viewport={{ once: true, amount: 0.4 }}
                 className="relative rounded-2xl overflow-hidden aspect-[4/3]"
               >

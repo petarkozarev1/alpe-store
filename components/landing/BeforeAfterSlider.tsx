@@ -31,20 +31,23 @@ export default function BeforeAfterSlider({
   const onMouseMove = (e: React.MouseEvent) => {
     if (dragging.current) updatePosition(e.clientX)
   }
+  const onTouchStart = () => { dragging.current = true }
+  const onTouchEnd = () => { dragging.current = false }
   const onTouchMove = (e: React.TouchEvent) => {
-    updatePosition(e.touches[0].clientX)
+    if (dragging.current) updatePosition(e.touches[0].clientX)
   }
 
   return (
     <div
       ref={containerRef}
-      role="img"
-      aria-label={`Before and after comparison: ${beforeLabel} vs ${afterLabel}`}
       className="relative w-full aspect-[16/9] rounded-xl overflow-hidden cursor-col-resize select-none"
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
       onMouseMove={onMouseMove}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={onTouchEnd}
       onTouchMove={onTouchMove}
     >
       {/* Before image (full) */}
@@ -67,21 +70,30 @@ export default function BeforeAfterSlider({
         style={{ left: `${position}%` }}
       />
 
-      {/* Handle */}
+      {/* Handle — keyboard-accessible slider */}
       <div
-        aria-hidden="true"
-        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center gap-0.5"
+        role="slider"
+        aria-label={`Before/After comparison — ${beforeLabel} vs ${afterLabel}`}
+        aria-valuenow={Math.round(position)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        tabIndex={0}
+        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center gap-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
         style={{ left: `${position}%` }}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowLeft') setPosition(p => Math.max(0, p - 1))
+          if (e.key === 'ArrowRight') setPosition(p => Math.min(100, p + 1))
+        }}
       >
-        <span className="text-xs font-bold text-brand-black">‹</span>
-        <span className="text-xs font-bold text-brand-black">›</span>
+        <span aria-hidden="true" className="text-xs font-bold text-brand-black">‹</span>
+        <span aria-hidden="true" className="text-xs font-bold text-brand-black">›</span>
       </div>
 
       {/* Labels */}
-      <span aria-hidden="true" className="absolute top-4 left-4 bg-white/90 text-brand-black text-xs font-semibold px-3 py-1.5 rounded-lg z-10">
+      <span aria-hidden="true" className="absolute top-4 left-4 bg-white/90 text-brand-black text-xs font-semibold px-3 py-1.5 rounded-full z-10">
         {beforeLabel}
       </span>
-      <span aria-hidden="true" className="absolute top-4 right-4 bg-white/90 text-brand-black text-xs font-semibold px-3 py-1.5 rounded-lg z-10">
+      <span aria-hidden="true" className="absolute top-4 right-4 bg-white/90 text-brand-black text-xs font-semibold px-3 py-1.5 rounded-full z-10">
         {afterLabel}
       </span>
     </div>
