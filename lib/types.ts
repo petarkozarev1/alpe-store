@@ -67,6 +67,3 @@ export interface FaqItem {
   answer: string
 }
 
-export interface ComparisonItem {
-  text: string
-}

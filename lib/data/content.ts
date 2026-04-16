@@ -1,4 +1,4 @@
-import type { BenefitItem, StepItem, Ingredient, FaqItem, ComparisonItem } from '@/lib/types'
+import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
 
 export const heroContent = {
   badge: 'Chosen by 2500+ Women',
@@ -33,7 +33,7 @@ export const ingredientsContent = {
 export const ingredients: Ingredient[] = [
   { number: 1, name: 'Aloe Vera Extract', description: 'Soothes and hydrates skin naturally.' },
   { number: 2, name: 'Hyaluronic Acid', description: 'Locks in moisture for a plump, radiant look.' },
-  { number: 3, name: 'Aloe Vera Extract', description: 'Brightens skin tone and reduces dullness.' },
+  { number: 3, name: 'Vitamin C', description: 'Brightens skin tone and reduces dullness.' },
   { number: 4, name: 'Shea Butter', description: 'Nourishes deeply and improves skin texture.' },
   { number: 5, name: 'Niacinamide', description: 'Refines pores and evens skin tone.' },
 ]
@@ -72,20 +72,20 @@ export const beforeAfterContent = {
   afterImage: 'https://via.placeholder.com/900x500/F5F5F0/000000?text=After',
 }
 
-export const withoutItems: ComparisonItem[] = [
-  { text: 'Skin looks dull and tired' },
-  { text: 'Fine lines appear more visible' },
-  { text: 'Makeup feels off' },
-  { text: 'Confidence takes a dip' },
-  { text: 'Patchy, uneven skin tone' },
+export const withoutItems: string[] = [
+  'Skin looks dull and tired',
+  'Fine lines appear more visible',
+  'Makeup feels off',
+  'Confidence takes a dip',
+  'Patchy, uneven skin tone',
 ]
 
-export const withItems: ComparisonItem[] = [
-  { text: 'Skin glows naturally' },
-  { text: 'Fine lines appear smoother' },
-  { text: 'Makeup blends better' },
-  { text: 'Confidence shines through' },
-  { text: 'Smooth, balanced glow' },
+export const withItems: string[] = [
+  'Skin glows naturally',
+  'Fine lines appear smoother',
+  'Makeup blends better',
+  'Confidence shines through',
+  'Smooth, balanced glow',
 ]
 
 export const testimonialContent = {
