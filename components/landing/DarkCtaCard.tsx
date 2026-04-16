@@ -29,6 +29,7 @@ export default function DarkCtaCard() {
             src="https://via.placeholder.com/300x450/F5F5F0/000000?text=Serum+Bottle"
             alt=""
             fill
+            sizes="(min-width: 768px) 224px, 192px"
             className="object-contain"
           />
         </div>
@@ -41,11 +42,11 @@ export default function DarkCtaCard() {
                 key={i}
                 className="w-9 h-9 rounded-full overflow-hidden border-2 border-brand-dark-card relative"
               >
-                <Image src={src} alt={`Customer ${i + 1}`} fill className="object-cover" />
+                <Image src={src} alt={`Customer ${i + 1}`} fill sizes="36px" className="object-cover" />
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5" role="img" aria-label={`5-star rating — ${darkCtaContent.socialProof}`}>
             {Array.from({ length: 5 }).map((_, i) => (
               <span key={i} className="text-yellow-400 text-sm" aria-hidden="true">★</span>
             ))}

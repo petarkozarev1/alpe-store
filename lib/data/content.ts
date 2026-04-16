@@ -26,6 +26,7 @@ export const ingredientsContent = {
   badge: 'Ingredients',
   headline: 'Curated with Care.\nBacked by Nature.',
   editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=Editorial',
+  editorialImageAlt: 'Natural ingredients — Aloe Vera, Hyaluronic Acid, and botanical extracts',
   sectionTitle: 'Key Ingredients',
   cta: 'Buy Now',
 }

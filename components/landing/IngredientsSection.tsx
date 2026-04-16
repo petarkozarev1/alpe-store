@@ -28,7 +28,7 @@ export default function IngredientsSection() {
         <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden mb-16">
           <Image
             src={ingredientsContent.editorialImage}
-            alt="Natural ingredients"
+            alt={ingredientsContent.editorialImageAlt}
             fill
             className="object-cover"
           />
