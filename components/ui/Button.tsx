@@ -2,6 +2,8 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
+const MotionLink = motion(Link)
+
 type ButtonVariant = 'primary' | 'outlined-black' | 'outlined-white' | 'pill'
 
 interface ButtonProps {
@@ -10,6 +12,7 @@ interface ButtonProps {
   onClick?: () => void
   variant?: ButtonVariant
   className?: string
+  showArrow?: boolean
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -19,14 +22,20 @@ const variantClasses: Record<ButtonVariant, string> = {
   pill: 'bg-brand-black text-white hover:bg-neutral-800 rounded-full px-5 py-2',
 }
 
-export default function Button({ label, href, onClick, variant = 'primary', className = '' }: ButtonProps) {
+export default function Button({ label, href, onClick, variant = 'primary', className = '', showArrow = true }: ButtonProps) {
   const classes = `inline-flex items-center gap-2 font-medium text-sm transition-colors ${variantClasses[variant]} ${className}`
+  const content = showArrow ? `${label} →` : label
 
   if (href) {
     return (
-      <motion.div whileHover={{ scale: 0.97 }} whileTap={{ scale: 0.95 }}>
-        <Link href={href} className={classes}>{label} →</Link>
-      </motion.div>
+      <MotionLink
+        href={href}
+        whileHover={{ scale: 0.97 }}
+        whileTap={{ scale: 0.95 }}
+        className={classes}
+      >
+        {content}
+      </MotionLink>
     )
   }
 
@@ -37,7 +46,7 @@ export default function Button({ label, href, onClick, variant = 'primary', clas
       onClick={onClick}
       className={classes}
     >
-      {label} →
+      {content}
     </motion.button>
   )
 }

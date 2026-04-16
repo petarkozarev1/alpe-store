@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
+
 interface SectionWrapperProps {
-  children: React.ReactNode
+  children: ReactNode
   id?: string
   className?: string
   dark?: boolean
