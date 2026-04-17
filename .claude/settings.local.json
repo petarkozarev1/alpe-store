@@ -16,7 +16,18 @@
       "Bash(timeout 15 npm run dev)",
       "Bash(npx jest:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "WebSearch",
+      "Bash(netstat -ano)",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/tailwind.config.ts\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/tailwind.config.ts\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/globals.css\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/globals.css\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/layout.tsx\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/layout.tsx\")",
+      "Bash(cp -r \"C:/ALPE/.claude/worktrees/ecstatic-payne/components/.\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/components/\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/page.tsx\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/page.tsx\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/cart/page.tsx\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/cart/page.tsx\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/checkout/page.tsx\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/checkout/page.tsx\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/shop/page.tsx\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/shop/page.tsx\")",
+      "Bash(cp \"C:/ALPE/.claude/worktrees/ecstatic-payne/app/product/[slug]/page.tsx\" \"C:/ALPE/.claude/worktrees/funny-sinoussi-6a581f/app/product/[slug]/page.tsx\")"
     ]
   }
 }

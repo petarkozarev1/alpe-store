@@ -14,16 +14,16 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   return (
     <div className="flex flex-col gap-6">
       {product.badge && (
-        <span className="inline-block bg-brand-black text-white text-xs font-semibold px-3 py-1 rounded-full w-fit">
+        <span className="inline-block bg-onyx text-white text-xs font-semibold px-3 py-1 rounded-full w-fit">
           {product.badge}
         </span>
       )}
       <div>
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{product.name}</h1>
-        <p className="text-brand-muted mt-2">{product.subtitle}</p>
+        <p className="text-stone mt-2">{product.subtitle}</p>
       </div>
       <p className="text-2xl font-bold">${product.price}</p>
-      <p className="text-brand-muted text-sm leading-relaxed">{product.description}</p>
+      <p className="text-stone text-sm leading-relaxed">{product.description}</p>
 
       <div>
         <p className="text-sm font-semibold mb-3">Size</p>

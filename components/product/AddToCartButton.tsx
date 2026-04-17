@@ -38,10 +38,10 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
       aria-disabled={!selectedVariant.inStock}
       className={`w-full py-4 rounded-xl font-semibold text-base transition-colors ${
         added
-          ? 'bg-green-600 text-white'
+          ? 'bg-gold text-white'
           : selectedVariant.inStock
-          ? 'bg-brand-black text-white hover:bg-neutral-800'
-          : 'bg-brand-gray-light text-brand-muted cursor-not-allowed'
+          ? 'bg-onyx text-white hover:bg-iron'
+          : 'bg-iron text-stone cursor-not-allowed'
       }`}
     >
       {added ? 'Added ✓' : selectedVariant.inStock ? 'Add to Cart' : 'Sold Out'}

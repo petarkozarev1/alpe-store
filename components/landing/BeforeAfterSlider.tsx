@@ -85,15 +85,15 @@ export default function BeforeAfterSlider({
           if (e.key === 'ArrowRight') setPosition(p => Math.min(100, p + 1))
         }}
       >
-        <span aria-hidden="true" className="text-xs font-bold text-brand-black">‹</span>
-        <span aria-hidden="true" className="text-xs font-bold text-brand-black">›</span>
+        <span aria-hidden="true" className="text-xs font-bold text-onyx">‹</span>
+        <span aria-hidden="true" className="text-xs font-bold text-onyx">›</span>
       </div>
 
       {/* Labels */}
-      <span aria-hidden="true" className="absolute top-4 left-4 bg-white/90 text-brand-black text-xs font-semibold px-3 py-1.5 rounded-full z-10">
+      <span aria-hidden="true" className="absolute top-4 left-4 bg-white/90 text-onyx text-xs font-semibold px-3 py-1.5 rounded-full z-10">
         {beforeLabel}
       </span>
-      <span aria-hidden="true" className="absolute top-4 right-4 bg-white/90 text-brand-black text-xs font-semibold px-3 py-1.5 rounded-full z-10">
+      <span aria-hidden="true" className="absolute top-4 right-4 bg-white/90 text-onyx text-xs font-semibold px-3 py-1.5 rounded-full z-10">
         {afterLabel}
       </span>
     </div>

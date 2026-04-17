@@ -12,13 +12,13 @@ const AVATARS = [
 
 export default function DarkCtaCard() {
   return (
-    <section className="w-full bg-white px-6 md:px-10 py-16">
+    <section className="w-full bg-parchment px-6 md:px-10 py-16">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
         viewport={{ once: true, amount: 0.3 }}
-        className="relative max-w-content mx-auto bg-brand-dark-card rounded-2xl overflow-visible px-10 pt-24 pb-12"
+        className="relative max-w-content mx-auto bg-iron rounded-2xl overflow-visible px-10 pt-24 pb-12"
       >
         {/* Product image bleeding above card */}
         <div
@@ -29,7 +29,6 @@ export default function DarkCtaCard() {
             src="https://via.placeholder.com/300x450/F5F5F0/000000?text=Serum+Bottle"
             alt=""
             fill
-            sizes="(min-width: 768px) 224px, 192px"
             className="object-contain"
           />
         </div>
@@ -40,15 +39,15 @@ export default function DarkCtaCard() {
             {AVATARS.map((src, i) => (
               <div
                 key={i}
-                className="w-9 h-9 rounded-full overflow-hidden border-2 border-brand-dark-card relative"
+                className="w-9 h-9 rounded-full overflow-hidden border-2 border-iron relative"
               >
-                <Image src={src} alt={`Customer ${i + 1}`} fill sizes="36px" className="object-cover" />
+                <Image src={src} alt={`Customer ${i + 1}`} fill className="object-cover" />
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-1.5" role="img" aria-label={`5-star rating — ${darkCtaContent.socialProof}`}>
+          <div className="flex items-center gap-1.5">
             {Array.from({ length: 5 }).map((_, i) => (
-              <span key={i} className="text-yellow-400 text-sm" aria-hidden="true">★</span>
+              <span key={i} className="text-gold text-sm" aria-hidden="true">★</span>
             ))}
             <span className="text-white/70 text-sm ml-1">{darkCtaContent.socialProof}</span>
           </div>

@@ -6,15 +6,15 @@ import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { howItWorksContent, steps } from '@/lib/data/content'
 
-const cardTransitions: Transition[] = steps.map((_, i) => ({
+const cardTransition = (i: number): Transition => ({
   duration: 0.5,
   delay: i * 0.1,
   ease: 'easeOut',
-}))
+})
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="w-full bg-brand-black text-white py-24">
+    <section id="how-it-works" className="w-full bg-onyx text-white py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row gap-16 md:gap-24">
 
@@ -34,7 +34,7 @@ export default function HowItWorksSection() {
                 key={step.number}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={cardTransitions[i]}
+                transition={cardTransition(i)}
                 viewport={{ once: true, amount: 0.4 }}
                 className="relative rounded-2xl overflow-hidden aspect-[4/3]"
               >
@@ -46,10 +46,10 @@ export default function HowItWorksSection() {
                   className="object-cover"
                 />
                 {/* Gradient overlay */}
-                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#2D0E04]/80 via-transparent to-transparent" />
                 {/* Text overlay */}
                 <div className="absolute bottom-0 left-0 p-6">
-                  <span className="inline-block bg-white text-brand-black text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                  <span className="inline-block bg-linen text-onyx text-xs font-semibold px-3 py-1 rounded-full mb-3">
                     Step {step.number}
                   </span>
                   <h3 className="text-white text-2xl font-bold mb-1">{step.title}</h3>

@@ -3,10 +3,33 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --onyx:      #2D0E04;
+    --gold:      #C4A266;
+    --iron:      #7C3018;
+    --stone:     #9B7B68;
+    --linen:     #EDE4D6;
+    --white:     #FFFFFF;
+    --cream:     #FFFBF5;
+    --ivory:     #FFF6EC;
+    --parchment: #FFF0E0;
+    --peach:     #FFE4CC;
+    --sand:      #F5DFC5;
+  }
+
   * {
     box-sizing: border-box;
   }
+
   body {
-    @apply font-sans text-brand-black bg-brand-white antialiased;
+    background-color: var(--cream);
+    color: var(--onyx);
+    font-family: var(--font-raleway), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-cormorant), Georgia, serif;
   }
 }

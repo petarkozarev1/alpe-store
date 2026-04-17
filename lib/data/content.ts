@@ -1,129 +1,129 @@
 import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
 
 export const heroContent = {
-  badge: 'Chosen by 2500+ Women',
-  headlinePart1: 'Just One Drop.',
+  badge: 'Trusted by 10,000+ Screen Users',
+  headlinePart1: 'Just One Pair.',
   headlinePart2Before: 'Endless',
-  headlinePart2After: 'Glow.',
-  subtext: 'Raydiant keeps your skin soft, smooth, and naturally radiant. With just one drop, it hydrates and nourishes your skin so you can glow all day.',
-  cta: 'Buy Now',
+  headlinePart2After: 'Clarity.',
+  subtext: 'ALPE blue light blocking glasses protect your eyes during long screen sessions — reducing eye strain, headaches, and sleep disruption so you can perform at your best.',
+  cta: 'Shop Now',
   heroFaceImage: 'https://via.placeholder.com/100x100/F5F5F0/000000?text=Face',
 }
 
 export const benefits: BenefitItem[] = [
-  { id: 'fine-lines', headline: 'Smooth Away Fine Lines Instantly', side: 'right' },
-  { id: 'radiant', headline: 'Reveal Radiant and Youthful Skin', side: 'left' },
-  { id: 'confidence', headline: 'Boost Your Confidence', side: 'right' },
+  { id: 'eye-strain', headline: 'End Eye Strain and Screen Headaches', side: 'right' },
+  { id: 'sleep', headline: 'Sleep Deeper. Wake Up Sharper.', side: 'left' },
+  { id: 'focus', headline: 'Stay Focused All Day Long', side: 'right' },
 ]
 
 export const darkCtaContent = {
-  socialProof: '2,500+ Glowing',
-  headline: 'Bring out your youthful glow',
-  cta: 'Buy Now',
+  socialProof: '10,000+ Happy Eyes',
+  headline: 'Protect your vision. Own your day.',
+  cta: 'Shop Now',
 }
 
 export const ingredientsContent = {
-  badge: 'Ingredients',
-  headline: 'Curated with Care.\nBacked by Nature.',
-  editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=Editorial',
-  editorialImageAlt: 'Natural ingredients — Aloe Vera, Hyaluronic Acid, and botanical extracts',
-  sectionTitle: 'Key Ingredients',
-  cta: 'Buy Now',
+  badge: 'Lens Technology',
+  headline: 'Engineered for\nthe Screen Age.',
+  editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
+  editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
+  sectionTitle: 'What\'s in Every Lens',
+  cta: 'Shop Now',
 }
 
 export const ingredients: Ingredient[] = [
-  { number: 1, name: 'Aloe Vera Extract', description: 'Soothes and hydrates skin naturally.' },
-  { number: 2, name: 'Hyaluronic Acid', description: 'Locks in moisture for a plump, radiant look.' },
-  { number: 3, name: 'Vitamin C', description: 'Brightens skin tone and reduces dullness.' },
-  { number: 4, name: 'Shea Butter', description: 'Nourishes deeply and improves skin texture.' },
-  { number: 5, name: 'Niacinamide', description: 'Refines pores and evens skin tone.' },
+  { number: 1, name: 'Blue Light Filter', description: 'Blocks 99% of harmful blue light from screens.' },
+  { number: 2, name: 'Anti-Glare Coating', description: 'Eliminates screen glare and harsh reflections.' },
+  { number: 3, name: 'UV400 Protection', description: 'Full UV protection for indoor and outdoor use.' },
+  { number: 4, name: 'Scratch-Resistant Lens', description: 'Durable, long-lasting lenses built for daily wear.' },
+  { number: 5, name: 'Lightweight Frame', description: 'Barely-there comfort you can wear all day.' },
 ]
 
 export const howItWorksContent = {
   badge: 'How it Works',
-  headline: 'Simple Steps.\nLasting Results.',
-  cta: 'Buy Now',
+  headline: 'Simple to Wear.\nPowerful Protection.',
+  cta: 'Shop Now',
 }
 
 export const steps: StepItem[] = [
   {
     number: 1,
-    title: 'Cleanse',
-    description: 'Start with a fresh face to allow the serum to work its magic.',
-    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+1+Cleanse',
+    title: 'Wear',
+    description: 'Put on your ALPE glasses before any screen session — work, gaming, or scrolling.',
+    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+1+Wear',
   },
   {
     number: 2,
-    title: 'Apply',
-    description: 'Gently massage a few drops onto your face and neck.',
-    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+2+Apply',
+    title: 'Filter',
+    description: 'ALPE lenses continuously block blue light and reduce glare throughout your day.',
+    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+2+Filter',
   },
   {
     number: 3,
-    title: 'Absorb',
-    description: 'Let the lightweight formula sink in, nourishing your skin deeply.',
-    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+3+Absorb',
+    title: 'Rest',
+    description: 'Wind down with ease — your body\'s natural sleep cycle stays intact.',
+    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+3+Rest',
   },
 ]
 
 export const beforeAfterContent = {
-  badge: 'Why Choose Raydiant?',
-  headline: 'Dull Yesterday.\nRadiant Today.',
+  badge: 'Why Choose ALPE?',
+  headline: 'Strained Yesterday.\nClear Today.',
   beforeImage: 'https://via.placeholder.com/900x500/888888/FFFFFF?text=Before',
   afterImage: 'https://via.placeholder.com/900x500/F5F5F0/000000?text=After',
 }
 
 export const withoutItems: string[] = [
-  'Skin looks dull and tired',
-  'Fine lines appear more visible',
-  'Makeup feels off',
-  'Confidence takes a dip',
-  'Patchy, uneven skin tone',
+  'Eyes feel tired and strained',
+  'Headaches by mid-afternoon',
+  'Trouble falling asleep at night',
+  'Reduced focus and productivity',
+  'Squinting and dry eyes',
 ]
 
 export const withItems: string[] = [
-  'Skin glows naturally',
-  'Fine lines appear smoother',
-  'Makeup blends better',
-  'Confidence shines through',
-  'Smooth, balanced glow',
+  'Eyes stay fresh all day',
+  'No more screen headaches',
+  'Fall asleep faster, sleep deeper',
+  'Sharper focus and energy',
+  'Comfortable, natural vision',
 ]
 
 export const testimonialContent = {
   badge: 'Testimonial',
-  quote: 'My skin always looked dull and nothing seemed to work. Raydiant changed that. Now my skin feels smoother, brighter, and I finally feel confident again.',
-  author: 'Emily Carter',
+  quote: 'I work 10+ hours a day on screens. Since I started wearing ALPE, my eye strain is completely gone and I actually sleep through the night. These glasses changed everything.',
+  author: 'Alex M.',
   stars: 5,
 }
 
 export const galleryContent = {
-  headline: 'Beautiful Faces Powered by Raydiant',
+  headline: 'Real People. Real Protection. Powered by ALPE.',
   images: [
     'https://via.placeholder.com/300x400/F0EDE8/000000?text=Gallery+1',
     'https://via.placeholder.com/300x400/E8E0D8/000000?text=Gallery+2',
     'https://via.placeholder.com/300x400/D4C5B5/000000?text=Gallery+3',
     'https://via.placeholder.com/300x400/C8B5A0/000000?text=Gallery+4',
   ],
-  cta: 'Buy Now',
+  cta: 'Shop Now',
 }
 
 export const faqs: FaqItem[] = [
-  { question: 'How long before I start seeing results?', answer: 'Most users notice visible improvements within 2–4 weeks of daily use. For best results, use consistently morning and night.' },
-  { question: 'Is Raydiant safe for all skin types?', answer: 'Yes. Raydiant is formulated for all skin types including sensitive skin. It is dermatologist-tested and free from harsh chemicals.' },
-  { question: 'Can I use Raydiant with my other skincare products?', answer: 'Absolutely. Apply Raydiant after cleansing and before moisturiser. It layers well with most serums and SPF products.' },
-  { question: 'Does Raydiant help with dark spots and uneven tone?', answer: 'Yes. The Niacinamide and Aloe Vera Extract in our formula specifically target uneven skin tone and help fade dark spots over time.' },
-  { question: 'How often should I use Raydiant?', answer: 'For best results, use once in the morning and once at night after cleansing. One pump is enough for the full face and neck.' },
+  { question: 'How do I know if blue light glasses are working?', answer: 'Most users notice reduced eye strain and fewer headaches within the first few days. Better sleep quality typically follows within 1–2 weeks of consistent evening use.' },
+  { question: 'Can I wear ALPE glasses all day?', answer: 'Yes. ALPE glasses are designed for all-day comfort. The lightweight frames and precision lenses make them easy to wear from your first morning screen session to winding down at night.' },
+  { question: 'Do ALPE glasses affect how colors look on screen?', answer: 'ALPE uses a clear-tinted lens that provides strong blue light protection with minimal color distortion. Colors stay true — you won\'t notice a yellow or orange cast.' },
+  { question: 'Are ALPE glasses compatible with prescription lenses?', answer: 'Our current frames are non-prescription. Prescription-compatible versions are in development. Sign up to be notified when they launch.' },
+  { question: 'What makes ALPE different from other blue light glasses?', answer: 'ALPE combines premium lens technology with clean, minimal design — without the premium price tag. Every pair is tested for optical clarity, durability, and real blue light blocking performance.' },
 ]
 
 export const faqSectionContent = {
   badge: 'Frequently Asked Questions',
-  headline: 'What You Should Know\nAbout Raydiant',
-  cta: 'Buy Now',
+  headline: 'Everything You Need\nto Know About ALPE',
+  cta: 'Shop Now',
 }
 
 export const finalCtaContent = {
-  badge: 'Get Yours Now',
-  headline: 'Radiate With\nConfidence Today',
-  cta: 'Buy Now',
-  image: 'https://via.placeholder.com/400x500/D4C5B5/000000?text=Woman',
+  badge: 'Get Your Pair',
+  headline: 'Protect Your Eyes.\nOwn Your Day.',
+  cta: 'Shop Now',
+  image: 'https://via.placeholder.com/400x500/D4C5B5/000000?text=Person',
 }

@@ -1,8 +1,8 @@
-# Raydiant Ecommerce Implementation Plan
+# ALPE Ecommerce Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a pixel-perfect Next.js 14 replication of the Raydiant landing page extended with a full ecommerce flow (/shop, /product/[slug], cart drawer, /checkout).
+**Goal:** Build a pixel-perfect Next.js 14 replication of the ALPE landing page extended with a full ecommerce flow (/shop, /product/[slug], cart drawer, /checkout).
 
 **Architecture:** Data-layer separation — all copy, brand config, and product data lives in `lib/data/*.ts`; components are purely presentational. Zustand manages cart state globally. CMS migration path preserved: each data file maps 1:1 to a future Sanity schema.
 
@@ -268,7 +268,7 @@ Create `lib/data/site.ts`:
 import type { SiteConfig } from '@/lib/types'
 
 export const siteConfig: SiteConfig = {
-  brand: 'Raydiant',
+  brand: 'ALPE',
   tagline: 'Because Your Skin Deserves More.',
   nav: [
     { label: 'Benefits', href: '#benefits' },
@@ -298,11 +298,11 @@ import type { Product } from '@/lib/types'
 
 export const products: Product[] = [
   {
-    id: 'raydiant-serum-30ml',
-    slug: 'raydiant-serum-30ml',
-    name: 'Raydiant Glow Serum',
+    id: 'alpe-serum-30ml',
+    slug: 'alpe-serum-30ml',
+    name: 'ALPE Glow Serum',
     subtitle: 'Just One Drop. Endless Glow.',
-    description: 'Raydiant keeps your skin soft, smooth, and naturally radiant. With just one drop, it hydrates and nourishes your skin so you can glow all day.',
+    description: 'ALPE keeps your skin soft, smooth, and naturally radiant. With just one drop, it hydrates and nourishes your skin so you can glow all day.',
     price: 49,
     images: [
       '/images/product-bottle.png',
@@ -315,9 +315,9 @@ export const products: Product[] = [
     badge: 'Best Seller',
   },
   {
-    id: 'raydiant-serum-50ml',
-    slug: 'raydiant-serum-50ml',
-    name: 'Raydiant Glow Serum Pro',
+    id: 'alpe-serum-50ml',
+    slug: 'alpe-serum-50ml',
+    name: 'ALPE Glow Serum Pro',
     subtitle: 'Reveal Radiant and Youthful Skin.',
     description: 'The professional-strength formula for deeper hydration and visible results from day one.',
     price: 79,
@@ -349,7 +349,7 @@ export const heroContent = {
   headlinePart1: 'Just One Drop.',
   headlinePart2Before: 'Endless',
   headlinePart2After: 'Glow.',
-  subtext: 'Raydiant keeps your skin soft, smooth, and naturally radiant. With just one drop, it hydrates and nourishes your skin so you can glow all day.',
+  subtext: 'ALPE keeps your skin soft, smooth, and naturally radiant. With just one drop, it hydrates and nourishes your skin so you can glow all day.',
   cta: 'Buy Now',
   heroFaceImage: '/images/hero-face.png',
 }
@@ -410,7 +410,7 @@ export const steps: StepItem[] = [
 ]
 
 export const beforeAfterContent = {
-  badge: 'Why Choose Raydiant?',
+  badge: 'Why Choose ALPE?',
   headline: 'Dull Yesterday.\nRadiant Today.',
   beforeImage: '/images/before.jpg',
   afterImage: '/images/after.jpg',
@@ -434,13 +434,13 @@ export const withItems: ComparisonItem[] = [
 
 export const testimonialContent = {
   badge: 'Testimonial',
-  quote: 'My skin always looked dull and nothing seemed to work. Raydiant changed that. Now my skin feels smoother, brighter, and I finally feel confident again.',
+  quote: 'My skin always looked dull and nothing seemed to work. ALPE changed that. Now my skin feels smoother, brighter, and I finally feel confident again.',
   author: 'Emily Carter',
   stars: 5,
 }
 
 export const galleryContent = {
-  headline: 'Beautiful Faces Powered by Raydiant',
+  headline: 'Beautiful Faces Powered by ALPE',
   images: [
     '/images/gallery-1.jpg',
     '/images/gallery-2.jpg',
@@ -452,15 +452,15 @@ export const galleryContent = {
 
 export const faqs: FaqItem[] = [
   { question: 'How long before I start seeing results?', answer: 'Most users notice visible improvements within 2–4 weeks of daily use. For best results, use consistently morning and night.' },
-  { question: 'Is Raydiant safe for all skin types?', answer: 'Yes. Raydiant is formulated for all skin types including sensitive skin. It is dermatologist-tested and free from harsh chemicals.' },
-  { question: 'Can I use Raydiant with my other skincare products?', answer: 'Absolutely. Apply Raydiant after cleansing and before moisturiser. It layers well with most serums and SPF products.' },
-  { question: 'Does Raydiant help with dark spots and uneven tone?', answer: 'Yes. The Niacinamide and Aloe Vera Extract in our formula specifically target uneven skin tone and help fade dark spots over time.' },
-  { question: 'How often should I use Raydiant?', answer: 'For best results, use once in the morning and once at night after cleansing. One pump is enough for the full face and neck.' },
+  { question: 'Is ALPE safe for all skin types?', answer: 'Yes. ALPE is formulated for all skin types including sensitive skin. It is dermatologist-tested and free from harsh chemicals.' },
+  { question: 'Can I use ALPE with my other skincare products?', answer: 'Absolutely. Apply ALPE after cleansing and before moisturiser. It layers well with most serums and SPF products.' },
+  { question: 'Does ALPE help with dark spots and uneven tone?', answer: 'Yes. The Niacinamide and Aloe Vera Extract in our formula specifically target uneven skin tone and help fade dark spots over time.' },
+  { question: 'How often should I use ALPE?', answer: 'For best results, use once in the morning and once at night after cleansing. One pump is enough for the full face and neck.' },
 ]
 
 export const faqSectionContent = {
   badge: 'Frequently Asked Questions',
-  headline: 'What You Should Know\nAbout Raydiant',
+  headline: 'What You Should Know\nAbout ALPE',
   cta: 'Buy Now',
 }
 
@@ -793,8 +793,8 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Raydiant — Just One Drop. Endless Glow.',
-  description: 'Raydiant keeps your skin soft, smooth, and naturally radiant.',
+  title: 'ALPE — Just One Drop. Endless Glow.',
+  description: 'ALPE keeps your skin soft, smooth, and naturally radiant.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -1121,7 +1121,7 @@ export default function BenefitsScroll() {
                 <div className="relative w-64 h-96 md:w-80 md:h-[480px]">
                   <Image
                     src="/images/product-bottle.png"
-                    alt="Raydiant Serum"
+                    alt="ALPE Serum"
                     fill
                     className="object-contain"
                     priority
@@ -1205,7 +1205,7 @@ export default function DarkCtaCard() {
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-64 md:w-56 md:h-72 pointer-events-none">
           <Image
             src="/images/product-bottle.png"
-            alt="Raydiant Serum"
+            alt="ALPE Serum"
             fill
             className="object-contain"
           />
@@ -1582,7 +1582,7 @@ import {
 
 export default function ComparisonSection() {
   return (
-    <section id="why-raydiant" className="w-full bg-white py-24">
+    <section id="why-alpe" className="w-full bg-white py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         {/* Header */}
@@ -1609,7 +1609,7 @@ export default function ComparisonSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           {/* Without */}
           <div className="bg-brand-gray-light rounded-2xl p-8">
-            <h3 className="text-lg font-semibold text-brand-muted mb-6 text-center">Without Raydiant</h3>
+            <h3 className="text-lg font-semibold text-brand-muted mb-6 text-center">Without ALPE</h3>
             <ul className="flex flex-col gap-4">
               {withoutItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-brand-muted">
@@ -1624,7 +1624,7 @@ export default function ComparisonSection() {
 
           {/* With */}
           <div className="bg-brand-gray-light rounded-2xl p-8">
-            <h3 className="text-lg font-semibold font-bold mb-6 text-center">With Raydiant</h3>
+            <h3 className="text-lg font-semibold font-bold mb-6 text-center">With ALPE</h3>
             <ul className="flex flex-col gap-4">
               {withItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3">
@@ -2134,7 +2134,7 @@ Create `app/shop/page.tsx`:
 import ProductGrid from '@/components/shop/ProductGrid'
 import { products } from '@/lib/data/products'
 
-export const metadata = { title: 'Shop — Raydiant' }
+export const metadata = { title: 'Shop — ALPE' }
 
 export default function ShopPage() {
   return (
@@ -2323,7 +2323,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = getProductBySlug(params.slug)
-  return { title: product ? `${product.name} — Raydiant` : 'Product Not Found' }
+  return { title: product ? `${product.name} — ALPE` : 'Product Not Found' }
 }
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
@@ -2712,7 +2712,7 @@ Create `app/checkout/page.tsx`:
 import CheckoutForm from '@/components/checkout/CheckoutForm'
 import OrderSummary from '@/components/checkout/OrderSummary'
 
-export const metadata = { title: 'Checkout — Raydiant' }
+export const metadata = { title: 'Checkout — ALPE' }
 
 export default function CheckoutPage() {
   return (
@@ -2768,7 +2768,7 @@ export default nextConfig
 Update `lib/data/products.ts` images to use placeholder URLs until real images are added:
 ```typescript
 images: [
-  'https://via.placeholder.com/600x600/F5F5F0/000000?text=Raydiant+Serum',
+  'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPE+Serum',
 ],
 ```
 
@@ -2795,7 +2795,7 @@ npm run dev
 Check:
 - http://localhost:3000 — landing page all sections render
 - http://localhost:3000/shop — product grid renders with filter
-- http://localhost:3000/product/raydiant-serum-30ml — product detail renders
+- http://localhost:3000/product/alpe-serum-30ml — product detail renders
 - http://localhost:3000/checkout — checkout form renders
 - Add to cart → drawer slides in → quantity controls work → checkout link works
 
@@ -2810,7 +2810,7 @@ Expected: Build succeeds with no TypeScript errors
 
 ```bash
 git add .
-git commit -m "feat: complete Raydiant ecommerce — landing page, shop, product, cart, checkout"
+git commit -m "feat: complete ALPE ecommerce — landing page, shop, product, cart, checkout"
 ```
 
 ---

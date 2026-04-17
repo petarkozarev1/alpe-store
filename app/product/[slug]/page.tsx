@@ -9,7 +9,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = getProductBySlug(params.slug)
-  return { title: product ? `${product.name} — Raydiant` : 'Product Not Found' }
+  return { title: product ? `${product.name} — ALPE` : 'Product Not Found' }
 }
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
