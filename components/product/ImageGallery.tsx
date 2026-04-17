@@ -13,7 +13,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Main image */}
-      <div className="relative aspect-square rounded-2xl overflow-hidden bg-brand-off-white">
+      <div className="relative aspect-square rounded-2xl overflow-hidden bg-linen">
         <Image
           src={images[activeIndex]}
           alt={alt}
@@ -33,7 +33,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               aria-label={`View image ${i + 1}`}
               aria-pressed={i === activeIndex}
               className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-colors ${
-                i === activeIndex ? 'border-brand-black' : 'border-transparent'
+                i === activeIndex ? 'border-onyx' : 'border-transparent'
               }`}
             >
               <Image src={src} alt={`${alt} ${i + 1}`} fill sizes="80px" className="object-cover" />

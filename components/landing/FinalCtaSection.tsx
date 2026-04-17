@@ -7,7 +7,7 @@ import { finalCtaContent } from '@/lib/data/content'
 
 export default function FinalCtaSection() {
   return (
-    <section className="w-full bg-brand-charcoal text-white py-24 relative overflow-hidden">
+    <section className="w-full bg-iron text-white py-24 relative overflow-hidden">
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col items-center text-center relative z-10">
         <Badge label={finalCtaContent.badge} light />
         <motion.h2

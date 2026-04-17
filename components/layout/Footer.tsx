@@ -3,29 +3,30 @@ import { siteConfig } from '@/lib/data/site'
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-footer text-white">
-      {/* Main footer row */}
-      <div className="max-w-content mx-auto px-6 md:px-10 pt-16 pb-8 flex flex-col md:flex-row md:items-start justify-between gap-10">
+    <footer className="bg-onyx border-t border-iron">
+      <div className="max-w-content mx-auto px-6 md:px-10 py-16 flex flex-col md:flex-row justify-between gap-12">
 
         {/* Brand */}
         <div className="flex flex-col gap-3">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-            <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
-              <span className="w-3.5 h-3.5 rounded-full bg-brand-black" />
-            </span>
+          <Link href="/" className="font-serif text-lg text-gold tracking-widest">
             {siteConfig.brand}
           </Link>
-          <p className="text-sm text-white/60">{siteConfig.footer.tagline}</p>
+          <p className="font-sans text-xs text-stone leading-relaxed max-w-xs">
+            {siteConfig.footer.tagline}
+          </p>
         </div>
 
         {/* Links */}
         <div className="flex gap-16">
           <div>
-            <p className="text-sm font-semibold mb-4 text-white/40 uppercase tracking-wider">Pages Link</p>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone/50 mb-5">Страници</p>
             <ul className="flex flex-col gap-3">
               {siteConfig.footer.pages.map(link => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
+                  <Link
+                    href={link.href}
+                    className="font-sans text-xs text-stone hover:text-gold transition-colors underline-offset-4 hover:underline decoration-gold"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -33,11 +34,14 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <p className="text-sm font-semibold mb-4 text-white/40 uppercase tracking-wider">Social Media</p>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone/50 mb-5">Социални</p>
             <ul className="flex flex-col gap-3">
               {siteConfig.footer.social.map(link => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
+                  <Link
+                    href={link.href}
+                    className="font-sans text-xs text-stone hover:text-gold transition-colors underline-offset-4 hover:underline decoration-gold"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -47,17 +51,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Giant wordmark */}
-      <div className="overflow-hidden px-2">
-        <p className="text-[clamp(80px,12vw,160px)] font-extrabold leading-none tracking-tighter text-[#2a2a2a] select-none whitespace-nowrap">
-          {siteConfig.brand.toUpperCase()}
-        </p>
-      </div>
-
-      {/* Copyright bar */}
-      <div className="border-t border-white/10 max-w-content mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row justify-between gap-2 text-xs text-white/40">
-        <span>{siteConfig.brand} © 2026 – All Rights Reserved</span>
-        <span>Template By Charles Owoeye</span>
+      {/* Copyright */}
+      <div className="border-t border-iron max-w-content mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row justify-between gap-2">
+        <span className="font-sans text-[10px] text-stone/40">{siteConfig.brand} © 2026</span>
+        <span className="font-sans text-[10px] text-stone/40">България</span>
       </div>
     </footer>
   )

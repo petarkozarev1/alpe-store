@@ -9,14 +9,14 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section id="faqs" className="w-full bg-white py-24">
+    <section id="faqs" className="w-full bg-ivory py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row gap-16">
 
           {/* Left sticky */}
           <div className="md:sticky md:top-24 md:self-start md:w-72 flex-shrink-0 flex flex-col gap-6">
             <Badge label={faqSectionContent.badge} />
-            <h2 className="text-[clamp(28px,4vw,40px)] font-bold tracking-tight leading-tight whitespace-pre-line">
+            <h2 className="text-[clamp(28px,4vw,40px)] font-bold tracking-tight leading-tight whitespace-pre-line text-onyx">
               {faqSectionContent.headline}
             </h2>
             <Button label={faqSectionContent.cta} href="/shop" variant="primary" />
@@ -31,11 +31,11 @@ export default function FaqSection() {
                   onClick={() => setOpenIndex(openIndex === i ? null : i)}
                   aria-expanded={openIndex === i}
                 >
-                  <span className="font-medium text-base">{faq.question}</span>
+                  <span className="font-medium text-base text-onyx">{faq.question}</span>
                   <motion.span
                     animate={{ rotate: openIndex === i ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="flex-shrink-0 text-brand-muted"
+                    className="flex-shrink-0 text-gold"
                     aria-hidden="true"
                   >
                     ∨
@@ -51,12 +51,12 @@ export default function FaqSection() {
                       transition={{ duration: 0.3, ease: 'easeInOut' }}
                       className="overflow-hidden"
                     >
-                      <p className="pb-5 text-brand-muted text-sm leading-relaxed">{faq.answer}</p>
+                      <p className="pb-5 text-stone text-sm leading-relaxed">{faq.answer}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {i < faqs.length - 1 && <hr className="border-brand-border" />}
+                {i < faqs.length - 1 && <hr className="border-stone/30" />}
               </div>
             ))}
           </div>

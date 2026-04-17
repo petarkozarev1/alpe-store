@@ -9,13 +9,13 @@ interface FilterBarProps {
 
 export default function FilterBar({ sort, onSortChange }: FilterBarProps) {
   return (
-    <div className="flex items-center justify-between mb-10 pb-5 border-b border-brand-border">
-      <p className="text-sm text-brand-muted">All Products</p>
+    <div className="flex items-center justify-between mb-10 pb-5 border-b border-iron">
+      <p className="text-sm text-stone">All Products</p>
       <select
         value={sort}
         onChange={e => onSortChange(e.target.value as SortOption)}
         aria-label="Sort products"
-        className="text-sm border border-brand-border rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-1 focus:ring-brand-black"
+        className="text-sm border border-iron rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-1 focus:ring-onyx"
       >
         <option value="name-asc">Name: A–Z</option>
         <option value="name-desc">Name: Z–A</option>

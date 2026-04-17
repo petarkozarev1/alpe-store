@@ -6,7 +6,7 @@ import { galleryContent } from '@/lib/data/content'
 
 export default function GallerySection() {
   return (
-    <section className="w-full bg-white py-24">
+    <section className="w-full bg-sand py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         <motion.h2
@@ -14,7 +14,7 @@ export default function GallerySection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-[clamp(32px,4vw,48px)] font-bold tracking-tight text-center mb-12"
+          className="text-[clamp(32px,4vw,48px)] font-bold tracking-tight text-center mb-12 text-onyx"
         >
           {galleryContent.headline}
         </motion.h2>

@@ -1,4 +1,4 @@
-# Raydiant → ALPE Ecommerce — Design Spec
+# ALPE Ecommerce — Design Spec
 **Date:** 2026-04-16  
 **Status:** Approved — ready for implementation  
 **Approach:** Data-layer separation (Approach 2), CMS migration path documented
@@ -7,7 +7,7 @@
 
 ## Overview
 
-Pixel-perfect Next.js 14+ replication of the Raydiant Framer template, extended into a full ecommerce flow. Built as Raydiant first; brand switch to ALPE is a single pass through `/lib/data/`.
+Pixel-perfect Next.js 14+ implementation of the ALPE brand, extended into a full ecommerce flow. All brand config, copy, and product data lives in `/lib/data/`.
 
 **Tech stack:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Zustand
 
@@ -177,13 +177,13 @@ public/
   - Cards enter with `whileInView` scale (0.95 → 1) + fade
 
 ### 4.7 Before/After Slider
-- "Why Choose Raydiant?" Badge + H2 centered above
+- "Why Choose ALPE?" Badge + H2 centered above
 - Custom `BeforeAfterSlider` component:
   - Two images stacked, clip-path controlled by drag handle position
   - Circular `< >` drag handle at center
   - "Before" label top-left, "After" label top-right (pill style)
   - Mouse/touch drag supported
-- Below slider: "Without Raydiant" vs "With Raydiant" comparison cards (see §4.8)
+- Below slider: "Without ALPE" vs "With ALPE" comparison cards (see §4.8)
 
 ### 4.8 Comparison Cards
 - 2-col grid, `bg-[#E8E8E8]`, `rounded-2xl`
@@ -197,7 +197,7 @@ public/
 - 5 star icons + `~ Emily Carter` attribution
 
 ### 4.10 Social Proof Gallery
-- H2: "Beautiful Faces Powered by Raydiant"
+- H2: "Beautiful Faces Powered by ALPE"
 - 4-column grid of portrait photos, `rounded-xl`
 - Black CTA below → `/shop`
 
@@ -219,8 +219,8 @@ public/
 ### 4.13 Footer
 - `bg-[#1A1A1A]`
 - Row 1: Logo + tagline left; "Pages Link" (Privacy Policy, 404) + "Social Media" (X, Instagram) right
-- Row 2: Full-bleed "RAYDIANT" in ~160px, `color: #2a2a2a` (barely visible on dark bg)
-- Row 3: "Raydiant © 2026 – All Rights Reserved" left; "Template By Charles Owoeye" right
+- Row 2: Full-bleed "ALPE" in ~160px, `color: #2a2a2a` (barely visible on dark bg)
+- Row 3: "ALPE © 2026 – All Rights Reserved" left; "Template By Charles Owoeye" right
 - Mobile: stacks vertically
 
 ---

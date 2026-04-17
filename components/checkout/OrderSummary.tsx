@@ -6,7 +6,7 @@ export default function OrderSummary() {
   const subtotal = getSubtotal()
 
   return (
-    <div className="bg-brand-gray-light rounded-2xl p-6 flex flex-col gap-4">
+    <div className="bg-iron rounded-2xl p-6 flex flex-col gap-4">
       <h3 className="font-bold text-lg">Order Summary</h3>
       <div className="flex flex-col gap-3">
         {items.map(item => (
@@ -16,8 +16,8 @@ export default function OrderSummary() {
           </div>
         ))}
       </div>
-      <hr className="border-brand-border" />
-      <div className="flex justify-between text-sm text-brand-muted">
+      <hr className="border-iron" />
+      <div className="flex justify-between text-sm text-stone">
         <span>Shipping</span>
         <span>Free</span>
       </div>

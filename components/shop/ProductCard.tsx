@@ -18,7 +18,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="group"
     >
       <Link href={`/product/${product.slug}`}>
-        <div className="relative aspect-square rounded-xl overflow-hidden bg-brand-off-white mb-4">
+        <div className="relative aspect-square rounded-xl overflow-hidden bg-linen mb-4">
           <Image
             src={product.images[0]}
             alt={product.name}
@@ -27,20 +27,20 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
           {product.badge && (
-            <span className="absolute top-3 left-3 bg-brand-black text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+            <span className="absolute top-3 left-3 bg-onyx text-white text-xs font-semibold px-2.5 py-1 rounded-full">
               {product.badge}
             </span>
           )}
           {/* Hover overlay */}
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span className="bg-white text-brand-black text-sm font-semibold px-4 py-2 rounded-full">
+            <span className="bg-white text-onyx text-sm font-semibold px-4 py-2 rounded-full">
               View Product
             </span>
           </div>
         </div>
         <div>
           <h3 className="font-semibold text-base">{product.name}</h3>
-          <p className="text-brand-muted text-sm mt-0.5">{product.subtitle}</p>
+          <p className="text-stone text-sm mt-0.5">{product.subtitle}</p>
           <p className="font-bold text-base mt-2">${product.price}</p>
         </div>
       </Link>

@@ -1,24 +1,30 @@
 import type { Metadata } from 'next'
-import { DM_Sans } from 'next/font/google'
+import { Cormorant_Garamond, Raleway } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import CartDrawer from '@/components/layout/CartDrawer'
 
-const dmSans = DM_Sans({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['400', '500', '700', '800'],
-  variable: '--font-dm-sans',
+  weight: ['400', '500', '600'],
+  variable: '--font-cormorant',
+})
+
+const raleway = Raleway({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-raleway',
 })
 
 export const metadata: Metadata = {
-  title: 'Raydiant — Just One Drop. Endless Glow.',
-  description: 'Raydiant keeps your skin soft, smooth, and naturally radiant.',
+  title: 'ALPE — Screen All Day. Sleep All Night.',
+  description: 'ALPE blue light blocking glasses protect your eyes during long screen sessions — reducing eye strain and sleep disruption.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={dmSans.variable}>
+    <html lang="en" className={`${cormorant.variable} ${raleway.variable}`}>
       <body>
         <Navbar />
         <main>{children}</main>
