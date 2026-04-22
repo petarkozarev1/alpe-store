@@ -5,7 +5,7 @@ import { benefits } from '@/lib/data/content'
 
 export default function BenefitsScroll() {
   return (
-    <section id="benefits" className="relative w-full bg-ivory overflow-hidden">
+    <section id="benefits" className="relative w-full bg-parchment overflow-hidden">
       {/* Tall scroll container with sticky bottle */}
       <div className="relative">
         {/* Sticky product bottle — fixed in center as user scrolls */}

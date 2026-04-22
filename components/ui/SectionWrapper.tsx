@@ -11,7 +11,7 @@ export default function SectionWrapper({ children, id, className = '', dark = fa
   return (
     <section
       id={id}
-      className={`w-full py-24 md:py-20 ${dark ? 'bg-onyx text-white' : 'bg-white text-onyx'} ${className}`}
+      className={`w-full py-24 md:py-20 ${dark ? 'bg-onyx text-linen' : 'bg-parchment text-onyx'} ${className}`}
     >
       <div className="max-w-content mx-auto px-6 md:px-10">
         {children}

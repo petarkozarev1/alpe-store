@@ -22,8 +22,8 @@
   }
 
   body {
-    background-color: var(--cream);
-    color: var(--onyx);
+    background-color: var(--parchment);
+    color: var(--iron);
     font-family: var(--font-raleway), sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

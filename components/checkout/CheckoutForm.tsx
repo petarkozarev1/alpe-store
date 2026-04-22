@@ -31,7 +31,7 @@ export default function CheckoutForm() {
   if (placed) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
-        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center" aria-hidden="true">
+        <div className="w-16 h-16 rounded-full bg-linen flex items-center justify-center" aria-hidden="true">
           <span className="text-gold text-3xl">✓</span>
         </div>
         <h2 className="text-2xl font-bold">Order Placed!</h2>
@@ -59,7 +59,7 @@ export default function CheckoutForm() {
       ))}
       <button
         type="submit"
-        className="mt-4 w-full bg-onyx text-white py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
+        className="mt-4 w-full bg-onyx text-linen py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
       >
         Place Order →
       </button>

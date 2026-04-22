@@ -18,9 +18,9 @@ export default function VariantSelector({ variants, selected, onChange }: Varian
           aria-pressed={selected === variant.id}
           className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-all ${
             selected === variant.id
-              ? 'bg-onyx text-white border-onyx'
+              ? 'bg-onyx text-linen border-onyx'
               : variant.inStock
-              ? 'bg-white text-onyx border-iron hover:border-onyx'
+              ? 'bg-cream text-onyx border-iron hover:border-onyx'
               : 'bg-iron text-stone border-iron cursor-not-allowed line-through'
           }`}
         >

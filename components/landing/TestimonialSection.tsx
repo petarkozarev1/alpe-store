@@ -5,7 +5,7 @@ import { testimonialContent } from '@/lib/data/content'
 
 export default function TestimonialSection() {
   return (
-    <section className="w-full bg-gold py-24 text-onyx">
+    <section className="w-full bg-parchment py-24 text-onyx">
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col items-center text-center">
         <Badge label={testimonialContent.badge} />
 

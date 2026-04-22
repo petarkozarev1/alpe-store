@@ -17,7 +17,7 @@ export default function CartDrawer() {
             animate={{ opacity: 0.4 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black z-40"
+            className="fixed inset-0 bg-onyx/60 z-40"
             onClick={closeDrawer}
             aria-hidden="true"
           />
@@ -31,7 +31,7 @@ export default function CartDrawer() {
             role="dialog"
             aria-modal="true"
             aria-label="Shopping cart"
-            className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-cream z-50 flex flex-col shadow-2xl"
+            className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-parchment z-50 flex flex-col shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-iron">
@@ -106,7 +106,7 @@ export default function CartDrawer() {
                 <Link
                   href="/checkout"
                   onClick={closeDrawer}
-                  className="w-full bg-onyx text-white text-center py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
+                  className="w-full bg-onyx text-linen text-center py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
                 >
                   Checkout →
                 </Link>

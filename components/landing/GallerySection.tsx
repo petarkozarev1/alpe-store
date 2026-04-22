@@ -6,7 +6,7 @@ import { galleryContent } from '@/lib/data/content'
 
 export default function GallerySection() {
   return (
-    <section className="w-full bg-sand py-24">
+    <section className="w-full bg-parchment py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         <motion.h2

@@ -49,12 +49,12 @@ export default function DarkCtaCard() {
             {Array.from({ length: 5 }).map((_, i) => (
               <span key={i} className="text-gold text-sm" aria-hidden="true">★</span>
             ))}
-            <span className="text-white/70 text-sm ml-1">{darkCtaContent.socialProof}</span>
+            <span className="text-linen/70 text-sm ml-1">{darkCtaContent.socialProof}</span>
           </div>
         </div>
 
         {/* Headline */}
-        <h2 className="text-white text-[clamp(32px,5vw,52px)] font-bold tracking-tight leading-tight max-w-lg mb-8 whitespace-pre-line">
+        <h2 className="text-linen text-[clamp(32px,5vw,52px)] font-bold tracking-tight leading-tight max-w-lg mb-8 whitespace-pre-line">
           {darkCtaContent.headline}
         </h2>
 

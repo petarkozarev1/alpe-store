@@ -15,7 +15,7 @@ export default function FilterBar({ sort, onSortChange }: FilterBarProps) {
         value={sort}
         onChange={e => onSortChange(e.target.value as SortOption)}
         aria-label="Sort products"
-        className="text-sm border border-iron rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-1 focus:ring-onyx"
+        className="text-sm border border-iron rounded-lg px-3 py-2 bg-cream focus:outline-none focus:ring-1 focus:ring-onyx"
       >
         <option value="name-asc">Name: A–Z</option>
         <option value="name-desc">Name: Z–A</option>

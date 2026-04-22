@@ -1,9 +1,12 @@
 'use client'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { motion, type Transition } from 'framer-motion'
+import { motion, AnimatePresence, type Transition } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { heroContent } from '@/lib/data/content'
+
+const INTERVAL_MS = 1500
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -12,8 +15,20 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function HeroSection() {
+  const [index, setIndex] = useState(0)
+  const images = heroContent.heroFaceImages
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex(i => (i + 1) % images.length)
+    }, INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [images.length])
+
+  const current = images[index]
+
   return (
-    <section className="w-full bg-cream pt-20 pb-10 flex flex-col items-center text-center px-6">
+    <section className="w-full bg-parchment pt-20 pb-10 flex flex-col items-center text-center px-6">
       <motion.div {...fadeUp(0)}>
         <Badge label={heroContent.badge} />
       </motion.div>
@@ -26,13 +41,25 @@ export default function HeroSection() {
         <br />
         <span className="inline-flex items-center gap-3 flex-wrap justify-center">
           {heroContent.headlinePart2Before}
-          <span className="relative inline-block w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-stone/40 align-middle">
-            <Image
-              src={heroContent.heroFaceImage}
-              alt="Glowing skin"
-              fill
-              className="object-cover"
-            />
+          <span className="relative inline-block w-14 h-14 md:w-16 md:h-16 rounded-[30%] overflow-hidden border-2 border-white shadow-md align-middle rotate-[8deg]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={current.src}
+                  alt={current.alt}
+                  fill
+                  className="object-cover"
+                  style={{ objectPosition: current.objectPosition ?? '50% 25%' }}
+                />
+              </motion.div>
+            </AnimatePresence>
           </span>
           {heroContent.headlinePart2After}
         </span>

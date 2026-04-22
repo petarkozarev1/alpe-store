@@ -11,13 +11,15 @@ export default function Navbar() {
   const itemCount = items.reduce((s, i) => s + i.quantity, 0)
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-cream border-b border-stone/30">
+    <header className="sticky top-0 z-50 w-full bg-[#B8906A] border-b border-stone/30">
       <div className="max-w-content mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <Link href="/" className="font-serif text-xl text-gold tracking-widest flex-1">
-          {siteConfig.brand}
-        </Link>
+        <div className="flex-1">
+          <Link href="/" className="font-serif text-xl text-linen tracking-widest">
+            {siteConfig.brand}
+          </Link>
+        </div>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">
@@ -25,7 +27,7 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="font-sans text-xs uppercase tracking-widest text-stone hover:text-onyx transition-colors duration-200"
+              className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors duration-200"
             >
               {link.label}
             </Link>
@@ -37,7 +39,7 @@ export default function Navbar() {
           <button
             onClick={openDrawer}
             aria-label="Отвори количката"
-            className="relative text-stone hover:text-onyx transition-colors"
+            className="relative text-linen hover:text-parchment transition-colors"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -54,7 +56,7 @@ export default function Navbar() {
 
         {/* Mobile: cart + hamburger */}
         <div className="md:hidden flex items-center gap-5">
-          <button onClick={openDrawer} aria-label="Отвори количката" className="relative text-stone hover:text-onyx">
+          <button onClick={openDrawer} aria-label="Отвори количката" className="relative text-linen hover:text-parchment">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
@@ -87,14 +89,14 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden md:hidden border-t border-stone/30 bg-cream"
+            className="overflow-hidden md:hidden border-t border-stone/30 bg-[#B8906A]"
           >
             <div className="flex flex-col px-6 py-6 gap-5">
               {siteConfig.nav.map(link => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="font-sans text-xs uppercase tracking-widest text-stone hover:text-onyx transition-colors"
+                  className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

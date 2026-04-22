@@ -7,7 +7,7 @@ import { beforeAfterContent, withoutItems, withItems } from '@/lib/data/content'
 
 export default function ComparisonSection() {
   return (
-    <section id="why-alpe" className="w-full bg-peach py-24">
+    <section id="why-alpe" className="w-full bg-parchment py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         {/* Header */}
@@ -34,7 +34,7 @@ export default function ComparisonSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           {/* Without ALPE */}
           <div className="bg-iron rounded-2xl p-8">
-            <h3 className="text-lg font-semibold text-white mb-6 text-center">Without ALPÉ</h3>
+            <h3 className="text-lg font-semibold text-linen mb-6 text-center">Without ALPÉ</h3>
             <ul className="flex flex-col gap-4">
               {withoutItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-stone">
@@ -49,10 +49,10 @@ export default function ComparisonSection() {
 
           {/* With ALPÉ */}
           <div className="bg-onyx rounded-2xl p-8">
-            <h3 className="text-lg font-bold text-white mb-6 text-center">With ALPÉ</h3>
+            <h3 className="text-lg font-bold text-linen mb-6 text-center">With ALPÉ</h3>
             <ul className="flex flex-col gap-4">
               {withItems.map((item, i) => (
-                <li key={i} className="flex items-center gap-3 font-medium text-white">
+                <li key={i} className="flex items-center gap-3 font-medium text-linen">
                   <span className="w-6 h-6 rounded-full bg-gold flex items-center justify-center flex-shrink-0" aria-hidden="true">
                     <span className="text-onyx text-xs font-bold">✓</span>
                   </span>

@@ -1,13 +1,20 @@
 import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
 
 export const heroContent = {
-  badge: 'Trusted by 10,000+ Screen Users',
-  headlinePart1: 'Just One Pair.',
-  headlinePart2Before: 'Endless',
-  headlinePart2After: 'Clarity.',
-  subtext: 'ALPE blue light blocking glasses protect your eyes during long screen sessions — reducing eye strain, headaches, and sleep disruption so you can perform at your best.',
-  cta: 'Shop Now',
-  heroFaceImage: 'https://via.placeholder.com/100x100/F5F5F0/000000?text=Face',
+  badge: 'Доверени от 10,000+ потребители',
+  headlinePart1: 'Само едни очила.',
+  headlinePart2Before: 'Безкрайна',
+  headlinePart2After: 'яснота.',
+  subtext: 'Очилата ALPE блокират синята светлина и намаляват умората на очите, главоболието и нарушения сън — за да работиш на най-доброто си ниво.',
+  cta: 'Пазарувай сега',
+  heroFaceImages: [
+    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-1-night.png', alt: 'Man wearing ALPE Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
+    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '45% 25%' },
+    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing ALPE Day glasses — clear frame, gold lenses',       objectPosition: '55% 25%' },
+    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '35% 20%' },
+    { src: '/images/hero/person-6-night.png', alt: 'Man wearing ALPE Night glasses — clear frame, orange lenses',   objectPosition: '50% 25%' },
+  ],
 }
 
 export const benefits: BenefitItem[] = [

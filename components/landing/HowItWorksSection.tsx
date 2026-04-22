@@ -14,7 +14,7 @@ const cardTransition = (i: number): Transition => ({
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="w-full bg-onyx text-white py-24">
+    <section id="how-it-works" className="w-full bg-[#B8906A] text-linen py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row gap-16 md:gap-24">
 
@@ -52,8 +52,8 @@ export default function HowItWorksSection() {
                   <span className="inline-block bg-linen text-onyx text-xs font-semibold px-3 py-1 rounded-full mb-3">
                     Step {step.number}
                   </span>
-                  <h3 className="text-white text-2xl font-bold mb-1">{step.title}</h3>
-                  <p className="text-white/80 text-sm max-w-xs">{step.description}</p>
+                  <h3 className="text-linen text-2xl font-bold mb-1">{step.title}</h3>
+                  <p className="text-linen/80 text-sm max-w-xs">{step.description}</p>
                 </div>
               </motion.div>
             ))}

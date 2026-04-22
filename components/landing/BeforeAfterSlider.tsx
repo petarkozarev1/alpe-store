@@ -66,7 +66,7 @@ export default function BeforeAfterSlider({
       {/* Divider line */}
       <div
         aria-hidden="true"
-        className="absolute top-0 bottom-0 w-0.5 bg-white z-10"
+        className="absolute top-0 bottom-0 w-0.5 bg-linen z-10"
         style={{ left: `${position}%` }}
       />
 
@@ -78,7 +78,7 @@ export default function BeforeAfterSlider({
         aria-valuemin={0}
         aria-valuemax={100}
         tabIndex={0}
-        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center gap-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-10 h-10 rounded-full bg-linen shadow-lg flex items-center justify-center gap-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-linen"
         style={{ left: `${position}%` }}
         onKeyDown={(e) => {
           if (e.key === 'ArrowLeft') setPosition(p => Math.max(0, p - 1))
@@ -90,10 +90,10 @@ export default function BeforeAfterSlider({
       </div>
 
       {/* Labels */}
-      <span aria-hidden="true" className="absolute top-4 left-4 bg-white/90 text-onyx text-xs font-semibold px-3 py-1.5 rounded-full z-10">
+      <span aria-hidden="true" className="absolute top-4 left-4 bg-linen/90 text-onyx text-xs font-semibold px-3 py-1.5 rounded-full z-10">
         {beforeLabel}
       </span>
-      <span aria-hidden="true" className="absolute top-4 right-4 bg-white/90 text-onyx text-xs font-semibold px-3 py-1.5 rounded-full z-10">
+      <span aria-hidden="true" className="absolute top-4 right-4 bg-linen/90 text-onyx text-xs font-semibold px-3 py-1.5 rounded-full z-10">
         {afterLabel}
       </span>
     </div>
