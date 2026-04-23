@@ -4,12 +4,6 @@ import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 import { darkCtaContent } from '@/lib/data/content'
 
-const AVATARS = [
-  'https://via.placeholder.com/80x80/CCCCCC/000000?text=A1',
-  'https://via.placeholder.com/80x80/AAAAAA/000000?text=A2',
-  'https://via.placeholder.com/80x80/888888/000000?text=A3',
-]
-
 export default function DarkCtaCard() {
   return (
     <section className="w-full bg-parchment px-6 md:px-10 py-16">
@@ -18,39 +12,17 @@ export default function DarkCtaCard() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
         viewport={{ once: true, amount: 0.3 }}
-        className="relative max-w-content mx-auto bg-iron rounded-2xl overflow-visible px-10 pt-24 pb-12"
+        className="relative max-w-content mx-auto bg-iron rounded-2xl overflow-visible px-10 pt-24 pb-14 flex flex-col items-center text-center"
       >
-        {/* Product image bleeding above card */}
-        <div
-          aria-hidden="true"
-          className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-64 md:w-56 md:h-72 pointer-events-none"
-        >
+        {/* Product image overlapping top of card */}
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-full max-w-xl h-72 md:h-80 pointer-events-none">
           <Image
-            src="https://via.placeholder.com/300x450/F5F5F0/000000?text=Serum+Bottle"
-            alt=""
+            src="/images/glasses-duo.png"
+            alt="ALPE blue light blocking glasses"
             fill
+            sizes="(max-width: 768px) 100vw, 576px"
             className="object-contain"
           />
-        </div>
-
-        {/* Social proof row */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex -space-x-3">
-            {AVATARS.map((src, i) => (
-              <div
-                key={i}
-                className="w-9 h-9 rounded-full overflow-hidden border-2 border-iron relative"
-              >
-                <Image src={src} alt={`Customer ${i + 1}`} fill className="object-cover" />
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center gap-1.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <span key={i} className="text-gold text-sm" aria-hidden="true">★</span>
-            ))}
-            <span className="text-linen/70 text-sm ml-1">{darkCtaContent.socialProof}</span>
-          </div>
         </div>
 
         {/* Headline */}
@@ -59,6 +31,14 @@ export default function DarkCtaCard() {
         </h2>
 
         <Button label={darkCtaContent.cta} href="/shop" variant="outlined-white" />
+
+        {/* Social proof row */}
+        <div className="flex items-center justify-center gap-1.5 mt-6">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span key={i} className="text-gold text-sm" aria-hidden="true">★</span>
+          ))}
+          <span className="text-linen/70 text-sm ml-1">{darkCtaContent.socialProof}</span>
+        </div>
       </motion.div>
     </section>
   )

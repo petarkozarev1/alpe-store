@@ -16,9 +16,9 @@ interface ButtonProps {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary:          'bg-onyx text-linen hover:bg-iron rounded-sm px-6 py-3',
-  'outlined-black': 'border border-onyx text-onyx hover:bg-onyx hover:text-linen rounded-sm px-6 py-3',
-  'outlined-white': 'border border-linen text-linen hover:bg-linen hover:text-onyx rounded-sm px-6 py-3',
+  primary:          'bg-onyx text-linen hover:bg-iron rounded-full px-6 py-3',
+  'outlined-black': 'border border-onyx text-onyx hover:bg-onyx hover:text-linen rounded-full px-6 py-3',
+  'outlined-white': 'border border-linen text-linen hover:bg-linen hover:text-onyx rounded-full px-6 py-3',
   pill:             'bg-onyx text-linen hover:bg-iron rounded-full px-5 py-2',
 }
 

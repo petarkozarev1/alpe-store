@@ -24,13 +24,15 @@ export default function IngredientsSection() {
           </motion.h2>
         </div>
 
-        {/* Editorial image */}
+        {/* Editorial video */}
         <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden mb-16">
-          <Image
-            src={ingredientsContent.editorialImage}
-            alt="Natural ingredients"
-            fill
-            className="object-cover"
+          <video
+            src="/videos/ingredients.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
 
