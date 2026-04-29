@@ -14,7 +14,8 @@
    ```bash
    cd C:/ALPE && npm run dev
    ```
-4. **The canonical saved version is the git tag `colors`** (commit `64462af`). To restore: `git -C C:/ALPE checkout colors -- .`
+4. **The canonical saved version is the git tag `checkoutv1`** (commit `102922a`). To restore: `git -C C:/ALPE checkout checkoutv1 -- .`
+   - Previous saves (do not revert to these unless explicitly asked): `pre-checkoutpage`, `save-2`, `colors`
 5. **Do NOT run `git checkout` on the whole repo** without specifying files — it will blow away working changes.
 6. **Before ANY color or style change**, read this file's Section Background Map so you know what token each section uses.
 
