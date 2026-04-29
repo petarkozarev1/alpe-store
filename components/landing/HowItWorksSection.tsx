@@ -8,7 +8,7 @@ import { howItWorksContent, steps } from '@/lib/data/content'
 
 type Step = typeof steps[0]
 
-function StepCard({ step, index, progress }: { step: Step; index: number; progress: any }) {
+function StepCard({ step, index, progress }: { step: Step; index: number; progress: ReturnType<typeof import('framer-motion').useScroll>['scrollYProgress'] }) {
   const total = steps.length
   const scaleStart = (index + 0.4) / total
   const scaleEnd = (index + 1) / total

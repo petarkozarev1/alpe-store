@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, type Transition } from 'framer-motion'
-import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { heroContent } from '@/lib/data/content'
 

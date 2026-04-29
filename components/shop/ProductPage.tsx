@@ -346,7 +346,7 @@ export default function ProductPage() {
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Blue light in the 415–455nm range is the primary wavelength that triggers the brain's suprachiasmatic nucleus to delay melatonin release — essentially telling your body it's still daytime. ALPE lenses use a precision optical coating that targets exactly this range.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Blue light in the 415&ndash;455nm range is the primary wavelength that triggers the brain&apos;s suprachiasmatic nucleus to delay melatonin release &mdash; essentially telling your body it&apos;s still daytime. ALPE lenses use a precision optical coating that targets exactly this range.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>The Evening lens (orange) blocks 98% of this range. The Daily lens (yellow) blocks 65%, maintaining circadian benefit while preserving color accuracy for screen work.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>In a 2022 study published in the Journal of Sleep Research, blue-light-blocking glasses worn for 2 hours before bed improved sleep onset by an average of 18 minutes and increased total sleep time by 24 minutes.</p>
               </div>
@@ -446,17 +446,17 @@ export default function ProductPage() {
               </thead>
               <tbody>
                 {[
-                  { feature: 'Blue light filtration', alpe: '65–98% (lens-specific)', generic: '10–30% (unverified)' },
-                  { feature: 'CE Certified lenses', alpe: '✓', generic: 'Rarely', alpeColor: '#2d6a3a', genericMuted: true },
-                  { feature: 'Color distortion', alpe: 'Minimal (precision coat)', generic: 'Heavy tint distortion' },
-                  { feature: 'Frame weight', alpe: '22g crystal acetate', generic: '35–50g plastic' },
-                  { feature: 'Anti-scratch coating', alpe: '✓', generic: 'No', alpeColor: '#2d6a3a', genericMuted: true },
-                  { feature: 'Two purpose-built lenses', alpe: '✓', generic: 'One generic tint', alpeColor: '#2d6a3a', genericMuted: true },
+                  { feature: 'Blue light filtration', alpe: '65–98% (lens-specific)', generic: '10–30% (unverified)', alpeColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'CE Certified lenses', alpe: '✓', generic: 'Rarely', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Color distortion', alpe: 'Minimal (precision coat)', generic: 'Heavy tint distortion', alpeColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Frame weight', alpe: '22g crystal acetate', generic: '35–50g plastic', alpeColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Anti-scratch coating', alpe: '✓', generic: 'No', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Two purpose-built lenses', alpe: '✓', generic: 'One generic tint', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
                     <td style={{ padding: '16px 20px', textAlign: 'center', background: 'rgba(28,15,10,0.03)' }}>
-                      <span style={{ fontSize: (row as any).alpeColor ? 16 : 13, fontWeight: (row as any).alpeColor ? undefined : 500, color: (row as any).alpeColor || '#1C0F0A' }}>{row.alpe}</span>
+                      <span style={{ fontSize: row.alpeColor ? 16 : 13, fontWeight: row.alpeColor ? undefined : 500, color: row.alpeColor || '#1C0F0A' }}>{row.alpe}</span>
                     </td>
                     <td style={{ padding: '16px 20px', textAlign: 'center' }}>
                       <span style={{ fontSize: 13, color: 'rgba(28,15,10,0.5)' }}>{row.generic}</span>
@@ -506,7 +506,7 @@ export default function ProductPage() {
               </button>
             </form>
           ) : (
-            <p style={{ fontSize: 13, color: 'rgba(250,240,228,0.7)' }}>✓ You're in. Welcome to the ALPE community.</p>
+            <p style={{ fontSize: 13, color: 'rgba(250,240,228,0.7)' }}>✓ You&apos;re in. Welcome to the ALPE community.</p>
           )}
           <p style={{ fontSize: 11, color: 'rgba(250,240,228,0.3)', marginTop: 18, lineHeight: 1.6 }}>No spam, ever. Unsubscribe with one click.</p>
         </div>

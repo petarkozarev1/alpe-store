@@ -35,4 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/worktrees/
-Public/
+# Public/ (removed — was accidentally blocking lowercase public/ on Windows)
+
+.vercel

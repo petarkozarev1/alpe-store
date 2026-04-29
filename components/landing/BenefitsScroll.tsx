@@ -22,7 +22,7 @@ export default function BenefitsScroll() {
         </div>
 
         {/* Benefit panels — scroll over the sticky bottle */}
-        {benefits.map((benefit, i) => (
+        {benefits.map((benefit) => (
           <div
             key={benefit.id}
             className="relative h-screen flex items-center"
