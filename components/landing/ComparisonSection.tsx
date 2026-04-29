@@ -34,7 +34,7 @@ export default function ComparisonSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           {/* Without ALPE */}
           <div className="bg-iron rounded-2xl p-8">
-            <h3 className="text-lg font-semibold text-linen mb-6 text-center">Without ALPÉ</h3>
+            <h3 className="text-2xl font-semibold text-linen mb-6 text-center">Without ALPÉ</h3>
             <ul className="flex flex-col gap-4">
               {withoutItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-stone">
@@ -49,7 +49,7 @@ export default function ComparisonSection() {
 
           {/* With ALPÉ */}
           <div className="bg-onyx rounded-2xl p-8">
-            <h3 className="text-lg font-bold text-linen mb-6 text-center">With ALPÉ</h3>
+            <h3 className="text-2xl font-bold text-linen mb-6 text-center">With ALPÉ</h3>
             <ul className="flex flex-col gap-4">
               {withItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 font-medium text-linen">

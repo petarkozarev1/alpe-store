@@ -17,7 +17,7 @@ export default function DarkCtaCard() {
         {/* Product image overlapping top of card */}
         <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-full max-w-xl h-72 md:h-80 pointer-events-none">
           <Image
-            src="/images/glasses-duo.png"
+            src="/images/glasses-duo3.png"
             alt="ALPE blue light blocking glasses"
             fill
             sizes="(max-width: 768px) 100vw, 576px"

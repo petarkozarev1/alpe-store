@@ -57,27 +57,27 @@ export const steps: StepItem[] = [
     number: 1,
     title: 'Wear',
     description: 'Put on your ALPE glasses before any screen session — work, gaming, or scrolling.',
-    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+1+Wear',
+    image: '/images/step1wear.png',
   },
   {
     number: 2,
     title: 'Filter',
     description: 'ALPE lenses continuously block blue light and reduce glare throughout your day.',
-    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+2+Filter',
+    image: '/images/step2filter.png',
   },
   {
     number: 3,
     title: 'Rest',
     description: 'Wind down with ease — your body\'s natural sleep cycle stays intact.',
-    image: 'https://via.placeholder.com/600x450/D4C5B5/000000?text=Step+3+Rest',
+    image: '/images/step3restnew.png',
   },
 ]
 
 export const beforeAfterContent = {
   badge: 'Why Choose ALPE?',
   headline: 'Strained Yesterday.\nClear Today.',
-  beforeImage: 'https://via.placeholder.com/900x500/888888/FFFFFF?text=Before',
-  afterImage: 'https://via.placeholder.com/900x500/F5F5F0/000000?text=After',
+  beforeImage: '/images/before.png',
+  afterImage: '/images/after.png',
 }
 
 export const withoutItems: string[] = [
@@ -132,5 +132,5 @@ export const finalCtaContent = {
   badge: 'Get Your Pair',
   headline: 'Protect Your Eyes.\nOwn Your Day.',
   cta: 'Shop Now',
-  image: 'https://via.placeholder.com/400x500/D4C5B5/000000?text=Person',
+  image: '/images/final-cta.png',
 }

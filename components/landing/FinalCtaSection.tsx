@@ -23,16 +23,20 @@ export default function FinalCtaSection() {
           <Button label={finalCtaContent.cta} href="/shop" variant="outlined-white" />
         </div>
 
-        {/* Woman image */}
-        <div className="relative mt-12 w-72 h-96 md:w-96 md:h-[480px]">
+        <div className="relative mt-12 w-full max-w-4xl aspect-[16/9] overflow-hidden rounded-[2.5rem]">
           <Image
-            src={finalCtaContent.image}
-            alt="Radiant skin"
+            src="/images/finalcta.png"
+            alt="Couple wearing ALPE glasses"
             fill
-            sizes="(min-width: 768px) 384px, 288px"
-            className="object-cover object-top rounded-2xl"
+            sizes="(min-width: 768px) 896px, 100vw"
+            className="object-cover"
+            style={{ objectPosition: '50% 15%' }}
           />
+          <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to bottom, #7C3018 0%, transparent 20%, transparent 75%, #7C3018 100%), linear-gradient(to right, #7C3018 0%, transparent 15%, transparent 85%, #7C3018 100%)' }} />
         </div>
+
+
+
       </div>
     </section>
   )

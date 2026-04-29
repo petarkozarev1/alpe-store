@@ -16,7 +16,14 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection() {
   const [index, setIndex] = useState(0)
-  const images = heroContent.heroFaceImages
+  const images = [
+    { src: '/images/shuffle5.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle2.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle4.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle1.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle6.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle3.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+  ]
 
   useEffect(() => {
     const id = setInterval(() => {
