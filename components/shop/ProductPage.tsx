@@ -471,11 +471,11 @@ export default function ProductPage() {
 
       {/* More images */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 48px 100px' }}>
-        <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 32, fontWeight: 500, marginBottom: 32, color: '#1C0F0A' }}>Two lenses. <em style={{ fontStyle: 'italic', fontWeight: 400 }}>One frame.</em></h2>
+        <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 32, fontWeight: 500, marginBottom: 32, color: '#1C0F0A' }}>Две стъкла. <em style={{ fontStyle: 'italic', fontWeight: 400 }}>Една рамка.</em></h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           {[
-            { src: '/images/shop/shop-evening-1.png', alt: 'ALPE Evening lens', label: 'Evening · Pre-sleep' },
-            { src: '/images/shop/shop-daily-1.png', alt: 'ALPE Daily lens', label: 'Daily · Screen use' },
+            { src: '/images/shop/shop-evening-1.png', alt: 'ALPE Evening lens', label: 'Вечер · Преди лягане' },
+            { src: '/images/shop/shop-daily-1.png', alt: 'ALPE Daily lens', label: 'За всеки ден · Работа пред екран' },
           ].map(img => (
             <div key={img.label} style={{ borderRadius: 12, overflow: 'hidden', position: 'relative', aspectRatio: '4/3' }}>
               <Image src={img.src} alt={img.alt} fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
