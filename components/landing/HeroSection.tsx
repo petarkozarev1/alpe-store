@@ -37,7 +37,7 @@ export default function HeroSection() {
     <section className="w-full bg-parchment pt-10 pb-10 flex flex-col items-center text-center px-6">
       <motion.h1
         {...fadeUp(0.1)}
-        className="mt-6 text-[clamp(48px,7vw,80px)] font-extrabold leading-tight tracking-tight text-onyx max-w-3xl"
+        className="mt-6 text-[clamp(48px,7vw,80px)] font-extrabold leading-[1.1] tracking-tight text-onyx max-w-3xl"
       >
         {heroContent.headlinePart1}
         <br />
