@@ -6,7 +6,7 @@ export const heroContent = {
   headlinePart2Before: 'Дай им',
   headlinePart2After: 'я.',
   subtext: 'Блокираме до 99% от синята светлина — за по-малко умора, по-добър сън и повече енергия всеки ден.',
-  cta: 'Защити очите си →',
+  cta: 'Защити очите си',
   heroFaceImages: [
     { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
     { src: '/images/hero/person-1-night.png', alt: 'Man wearing ALPE Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },

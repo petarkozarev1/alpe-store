@@ -75,7 +75,7 @@ export default function HeroSection() {
       </motion.p>
 
       <motion.div {...fadeUp(0.3)} className="mt-8">
-        <Button label={heroContent.cta} href="/shop" variant="primary" />
+        <Button label={heroContent.cta} href="/shop" variant="primary" className="font-bold" />
       </motion.div>
     </section>
   )
