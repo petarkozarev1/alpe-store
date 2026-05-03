@@ -17,7 +17,7 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
     benefitText: 'Оптимално да се носят пред екран 2 часа преди сън.',
     benefitColor: '#7a4e1a',
-    descText: "The ALPE Evening lens was designed for one thing: sleep. Worn 2 hours before bed, its deep orange tint blocks 98% of blue light in the 415–455nm range — the wavelengths most responsible for suppressing melatonin. Within a week of consistent use, most customers report falling asleep faster and waking up feeling genuinely rested.",
+    descText: "Лещите ALPE Evening са създадени с една цел: сън. Носени 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
     images: [
       { src: '/images/shop/shop-evening-1.png', alt: 'ALPE Evening — lifestyle' },
       { src: '/images/shop/shop-evening-2.png', alt: 'ALPE Evening — glasses' },
@@ -107,7 +107,7 @@ export default function ProductPage() {
 
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.5)', letterSpacing: '0.06em' }}>
-        <Link href="/" style={{ color: 'rgba(28,15,10,0.5)', textDecoration: 'none' }}>Home</Link>
+        <Link href="/" style={{ color: 'rgba(28,15,10,0.5)', textDecoration: 'none' }}>Начало</Link>
         <span style={{ opacity: 0.4 }}>›</span>
         <span style={{ color: '#1C0F0A' }}>{d.name}</span>
       </div>
@@ -128,14 +128,14 @@ export default function ProductPage() {
                 style={{ border: 'none', background: lens === 'evening' ? '#FAF0E4' : 'transparent', color: lens === 'evening' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s' }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#ff6a00,#c0392b)', display: 'inline-block', flexShrink: 0 }} />
-                Evening
+                Вечер
               </button>
               <button
                 onClick={() => handleLens('daily')}
                 style={{ border: 'none', background: lens === 'daily' ? '#FAF0E4' : 'transparent', color: lens === 'daily' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s' }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
-                Daily
+                За всеки ден
               </button>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function ProductPage() {
           <div style={{ height: 1, background: 'rgba(28,15,10,0.09)', margin: '24px 0' }} />
 
           {/* Lens selector */}
-          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Choose your lens</div>
+          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Изберете вашата леща</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
             {(['evening', 'daily'] as Lens[]).map(l => (
               <button
@@ -189,16 +189,16 @@ export default function ProductPage() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 5 }}>
                   <span style={{ width: 12, height: 12, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', flexShrink: 0, display: 'inline-block' }} />
-                  <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Evening' : 'Daily'}</span>
+                  <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Вечер' : 'За всеки ден'}</span>
                 </div>
-                <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', lineHeight: 1.4 }}>{l === 'evening' ? 'Orange · Evenings & pre-sleep' : 'Yellow · All-day screen use'}</div>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% blue block' : '65% blue filter'}</div>
+                <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% блокиране на синята светлина' : '65% филтър на синята светлина'}</div>
               </button>
             ))}
           </div>
 
           {/* Bundle selector */}
-          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>How many pairs?</div>
+          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
           <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
             {[1, 2, 3].map(n => (
               <button
@@ -210,13 +210,13 @@ export default function ProductPage() {
                   <input type="radio" readOnly checked={bundle === n} style={{ width: 18, height: 18, accentColor: '#1C0F0A', flexShrink: 0 }} />
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
-                      <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{n} Pair{n > 1 ? 's' : ''}</span>
-                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Most Popular</span>}
-                      {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Best Value</span>}
+                      <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{n} чифт{n > 1 ? 'а' : ''}</span>
+                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
+                      {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Най-изгодно</span>}
                     </div>
-                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', marginTop: 2 }}>{n === 1 ? 'Your chosen lens' : n === 2 ? 'Mix & match lenses' : 'One for everyone at home'}</div>
-                    {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>50% off 2nd pair — save €20</div>}
-                    {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>3rd pair FREE 🎉 — save €40</div>}
+                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас лещи' : n === 2 ? 'Комбинирайте лещи' : 'По един за всеки вкъщи'}</div>
+                    {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>50% отстъпка за втория чифт — спестете 20 €</div>}
+                    {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>3-ти чифт БЕЗПЛАТНО 🎉 — спестете 40 €</div>}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -230,11 +230,11 @@ export default function ProductPage() {
           {/* Multi-pair lens slot picker */}
           {bundle > 1 && (
             <div style={{ background: 'rgba(28,15,10,0.03)', borderRadius: 10, padding: 18, marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Choose a lens for each pair</div>
+              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Изберете леща за всеки чифт</div>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
                 {slots.map((s, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
-                    <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', width: 52, flexShrink: 0 }}>Pair {i + 1}</span>
+                    <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', width: 52, flexShrink: 0 }}>Чифт {i + 1}</span>
                     {(['evening', 'daily'] as Lens[]).map(l => (
                       <button
                         key={l}
@@ -242,7 +242,7 @@ export default function ProductPage() {
                         style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: `1.5px solid ${s === l ? '#1C0F0A' : 'rgba(28,15,10,0.14)'}`, borderRadius: 100, background: s === l ? '#1C0F0A' : '#fff8f2', color: s === l ? '#FAF0E4' : '#1C0F0A', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, padding: '7px 16px', cursor: 'pointer', transition: 'all 0.2s' }}
                       >
                         <span style={{ width: 9, height: 9, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
-                        {l === 'evening' ? 'Evening' : 'Daily'}
+                        {l === 'evening' ? 'Вечер' : 'За всеки ден'}
                       </button>
                     ))}
                   </div>
@@ -254,26 +254,26 @@ export default function ProductPage() {
           {/* Delivery strip */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginBottom: 12, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
             <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
-            <span><strong>Free express delivery</strong> — arrives in 1–3 days. Order before 2pm today.</span>
+            <span><strong>Безплатна експресна доставка</strong> — пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
           </div>
 
           {/* Urgency strip */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginBottom: 12, fontSize: 13, background: '#fff5eb', border: '1px solid rgba(196,154,108,0.28)', color: '#7a4e1a' }}>
             <svg width="14" height="14" fill="none" stroke="#C49A6C" strokeWidth="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            <span><strong>Only 8 left</strong> at this price — sale ends midnight</span>
+            <span><strong>Остават само 8</strong> на тази цена — промоцията приключва в полунощ</span>
           </div>
 
           {/* Savings callout */}
           {saving > 0 && (
             <div style={{ background: '#f0f7f1', border: '1px solid rgba(45,106,58,0.2)', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: '#1a4024', marginBottom: 12 }}>
-              🎉 You save <strong>€{saving}</strong> with this bundle
+              🎉 Спестявате <strong>€{saving}</strong> с тази комбинация
             </div>
           )}
 
           {/* Viewing now */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'rgba(28,15,10,0.5)', marginBottom: 20 }}>
             <span style={{ width: 7, height: 7, background: '#4caf6a', borderRadius: '50%', flexShrink: 0, animation: 'pulse-dot 1.8s ease infinite' }} />
-            <span>{viewerCount} people viewing this right now</span>
+            <span>{viewerCount} души разглеждат това в момента</span>
           </div>
 
           {/* CTA */}
@@ -282,10 +282,10 @@ export default function ProductPage() {
               onClick={handleAddToCart}
               style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, background: '#1C0F0A', color: '#FAF0E4', border: 'none', padding: 19, fontFamily: 'var(--font-raleway)', fontSize: 15, fontWeight: 500, letterSpacing: '0.04em', cursor: 'pointer', borderRadius: 8, transition: 'opacity 0.2s, transform 0.2s' }}
             >
-              Add to Cart — €{price} →
+              Добави в количката — €{price} →
             </button>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.5)' }}>✓ 14-day free returns &nbsp;·&nbsp; ✓ CE certified &nbsp;·&nbsp; ✓ Secure checkout</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.5)' }}>✓ 14-дневен безплатен връщане &nbsp;·&nbsp; ✓ Сертифицирани по CE &nbsp;·&nbsp; ✓ Сигурна плащане</p>
 
           {/* Payment icons */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, margin: '12px 0 0', flexWrap: 'wrap' as const }}>
@@ -297,10 +297,10 @@ export default function ProductPage() {
           {/* Trust row */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, padding: '20px 0', borderTop: '1px solid rgba(28,15,10,0.09)', borderBottom: '1px solid rgba(28,15,10,0.09)', margin: '20px 0' }}>
             {[
-              { icon: '🔒', label: 'Secure\nCheckout' },
-              { icon: '🚚', label: 'Free Express\nShipping' },
-              { icon: 'CE', label: 'Certified\nLenses' },
-              { icon: '↩️', label: '14-Day\nReturns' },
+              { icon: '🔒', label: 'Сигурна\nплащане' },
+              { icon: '🚚', label: 'Безплатна експресна\nдоставка' },
+              { icon: 'CE', label: 'Сертифицирани\nпо CE\nлещи' },
+              { icon: '↩️', label: '14-дневен\nвръщане' },
             ].map(t => (
               <div key={t.label} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: t.icon === 'CE' ? 13 : 18, fontWeight: t.icon === 'CE' ? 800 : undefined, color: t.icon === 'CE' ? '#1C0F0A' : undefined, marginBottom: 4 }}>{t.icon}</div>
@@ -318,7 +318,7 @@ export default function ProductPage() {
                   onClick={() => setTab(t)}
                   style={{ padding: '16px 24px', fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: tab === t ? '#1C0F0A' : 'rgba(28,15,10,0.5)', borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: `2px solid ${tab === t ? '#1C0F0A' : 'transparent'}`, cursor: 'pointer', background: 'none', fontWeight: tab === t ? 500 : 400, fontFamily: 'var(--font-raleway)', transition: 'all 0.2s' }}
                 >
-                  {t === 'description' ? 'Description' : t === 'science' ? 'The Science' : 'Reviews'}
+                  {t === 'description' ? 'Описание' : t === 'science' ? 'Науката' : 'Отзиви'}
                 </button>
               ))}
             </div>
@@ -328,10 +328,10 @@ export default function ProductPage() {
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>{d.descText}</p>
                 <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 14, marginTop: 20 }}>
                   {[
-                    { text: <><strong>98% blue light block</strong> — clinically proven to restore natural melatonin production</> },
-                    { text: <><strong>Crystal acetate frame</strong> — lightweight at 22g, durable enough for daily use</> },
-                    { text: <><strong>Anti-scratch & anti-glare coating</strong> — lenses stay clear for years</> },
-                    { text: <><strong>Lifetime warranty</strong> — we replace your lenses for free, forever</> },
+                    { text: <><strong>98% блокиране на синята светлина</strong> — клинично доказано, че възстановява естественото производство на мелатонин</> },
+                    { text: <><strong>Рамка от кристален ацетат</strong> — лека, с тегло 22 г, достатъчно издръжлива за ежедневна употреба</> },
+                    { text: <><strong>Покритие против надраскване и отблясъци</strong> — лещите остават чисти в продължение на години</> },
+                    { text: <><strong>Доживотна гаранция</strong> — подменяме лещите ви безплатно, завинаги</> },
                   ].map((f, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                       <div style={{ width: 20, height: 20, background: '#F2E4D0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
@@ -520,7 +520,7 @@ export default function ProductPage() {
           </div>
           <div>
             <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>{d.name}</div>
-            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 1 }}>{bundle} Pair{bundle > 1 ? 's' : ''}</div>
+            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 1 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
           </div>
         </div>
         <button onClick={handleAddToCart} style={{ background: '#FAF0E4', color: '#1C0F0A', border: 'none', padding: '13px 32px', fontFamily: 'var(--font-raleway)', fontSize: 14, fontWeight: 500, borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' as const }}>
