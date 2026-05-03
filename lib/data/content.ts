@@ -144,8 +144,9 @@ export const faqSectionContent = {
 }
 
 export const finalCtaContent = {
-  badge: 'Get Your Pair',
-  headline: 'Protect Your Eyes.\nOwn Your Day.',
-  cta: 'Shop Now',
+  badge: 'Вземи своя чифт',
+  headline: 'Защити очите си.\nЖивей оптимално.',
+  cta: 'Вземи си чифт →',
   image: '/images/final-cta.png',
+  subtext: 'EU сертифицирани · Безплатна доставка над €50 · 1000+ доволни клиенти',
 }

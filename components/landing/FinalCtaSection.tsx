@@ -19,6 +19,11 @@ export default function FinalCtaSection() {
         >
           {finalCtaContent.headline}
         </motion.h2>
+        {finalCtaContent.subtext && (
+          <p className="font-sans text-sm text-stone tracking-wide mt-3">
+            {finalCtaContent.subtext}
+          </p>
+        )}
         <div className="mt-8">
           <Button label={finalCtaContent.cta} href="/shop" variant="outlined-white" />
         </div>
