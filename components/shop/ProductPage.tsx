@@ -346,9 +346,9 @@ export default function ProductPage() {
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Blue light in the 415&ndash;455nm range is the primary wavelength that triggers the brain&apos;s suprachiasmatic nucleus to delay melatonin release &mdash; essentially telling your body it&apos;s still daytime. ALPE lenses use a precision optical coating that targets exactly this range.</p>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>The Evening lens (orange) blocks 98% of this range. The Daily lens (yellow) blocks 65%, maintaining circadian benefit while preserving color accuracy for screen work.</p>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>In a 2022 study published in the Journal of Sleep Research, blue-light-blocking glasses worn for 2 hours before bed improved sleep onset by an average of 18 minutes and increased total sleep time by 24 minutes.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите ALPE използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>Лещите Evening (оранжеви) блокират 98% от този диапазон. Лещите Daily (жълти) блокират 65%, като поддържат ползите за циркадния ритъм и същевременно запазват точността на цветовете при работа пред екран.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>В проучване от 2022 г., публикувано в Journal of Sleep Research, очила, блокиращи синята светлина, носени 2 часа преди лягане, подобряват заспиването със средно 18 минути и увеличават общото време за сън с 24 минути.</p>
               </div>
             )}
 
@@ -356,10 +356,10 @@ export default function ProductPage() {
               <div style={{ padding: '28px 0' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   {[
-                    { text: '"These fixed my sleep in literally 4 days. Orange lenses before bed are non-negotiable now."', author: 'Lena K.', location: 'Berlin' },
-                    { text: '"My eyes stop hurting by 5pm now. I didn\'t realise how bad it had gotten until ALPE fixed it."', author: 'Elena M.', location: 'Munich' },
-                    { text: '"I was sceptical. Three weeks in I\'ve slept better than I have in years. Worth every cent."', author: 'James T.', location: 'London' },
-                    { text: '"Bought the 3-pair bundle — one at work, one at home, one for travel. Genius."', author: 'Sofia R.', location: 'Amsterdam' },
+                    { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'Берлин' },
+                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPE не го оправи."', author: 'Елена М.', location: 'Мюнхен' },
+                    { text: '„Бях скептичен. След три седмици спя по-добре, отколкото през последните години. Струва си всеки цент."', author: 'Джеймс Т.', location: 'Лондон' },
+                    { text: '„Купих комплекта от 3 чифта – един за работа, един за вкъщи и един за пътуване. Гениално."', author: 'София Р.', location: 'Амстердам' },
                   ].map((r, i) => (
                     <div key={i} style={{ background: '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 10, padding: '22px 20px' }}>
                       <div style={{ color: '#C49A6C', fontSize: 13, letterSpacing: 1, marginBottom: 10 }}>★★★★★</div>
