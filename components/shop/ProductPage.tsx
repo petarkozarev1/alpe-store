@@ -432,8 +432,8 @@ export default function ProductPage() {
       <section style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Why ALPE</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Not all blue-light glasses <em style={{ fontStyle: 'italic', fontWeight: 400 }}>are equal.</em></h2>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Защо ALPE</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Не всички очила със защита от синя светлина <em style={{ fontStyle: 'italic', fontWeight: 400 }}>са еднакви.</em></h2>
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' as const, fontFamily: 'var(--font-raleway)' }}>
@@ -441,17 +441,17 @@ export default function ProductPage() {
                 <tr>
                   <th style={{ textAlign: 'left', padding: '14px 20px', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, borderBottom: '2px solid rgba(28,15,10,0.1)' }}></th>
                   <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 600, color: '#FAF0E4', background: '#1C0F0A', textAlign: 'center', borderBottom: '2px solid #1C0F0A' }}>ALPE</th>
-                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 500, color: 'rgba(28,15,10,0.5)', textAlign: 'center', borderBottom: '2px solid rgba(28,15,10,0.1)' }}>Generic</th>
+                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 500, color: 'rgba(28,15,10,0.5)', textAlign: 'center', borderBottom: '2px solid rgba(28,15,10,0.1)' }}>Обикновени</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { feature: 'Blue light filtration', alpe: '65–98% (lens-specific)', generic: '10–30% (unverified)', alpeColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'CE Certified lenses', alpe: '✓', generic: 'Rarely', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Color distortion', alpe: 'Minimal (precision coat)', generic: 'Heavy tint distortion', alpeColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Frame weight', alpe: '22g crystal acetate', generic: '35–50g plastic', alpeColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Anti-scratch coating', alpe: '✓', generic: 'No', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Two purpose-built lenses', alpe: '✓', generic: 'One generic tint', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтриране на синята светлина', alpe: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', alpeColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Лещи със сертификат CE', alpe: '✓', generic: 'Рядко', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Изкривяване на цветовете', alpe: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', alpeColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Тегло на рамката', alpe: '22 г кристален ацетат', generic: '35–50 г пластмаса', alpeColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Покритие против надраскване', alpe: '✓', generic: 'Не', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Две специално създадени лещи', alpe: '✓', generic: 'Един универсален оттенък', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
