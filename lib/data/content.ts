@@ -24,108 +24,123 @@ export const benefits: BenefitItem[] = [
 ]
 
 export const darkCtaContent = {
-  socialProof: '10,000+ Happy Eyes',
-  headline: 'Protect your vision. Own your day.',
-  cta: 'Shop Now',
+  socialProof: '1000+ успокоени очи',
+  headline: 'Пази очите си. Карай докрай.',
+  cta: 'Вземи си чифт →',
 }
 
 export const ingredientsContent = {
-  badge: 'Lens Technology',
-  headline: 'Engineered for\nthe Screen Age.',
+  badge: '✓ EU сертифицирана технология',
+  headline: 'Изобретено за\n"Дигиталната Ера"',
   editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
   editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
-  sectionTitle: 'What\'s in Every Lens',
-  cta: 'Shop Now',
+  sectionTitle: 'Какво има във всяко стъкло?',
+  cta: 'Вземи си чифт →',
 }
 
 export const ingredients: Ingredient[] = [
-  { number: 1, name: 'Blue Light Filter', description: 'Blocks 99% of harmful blue light from screens.' },
-  { number: 2, name: 'Anti-Glare Coating', description: 'Eliminates screen glare and harsh reflections.' },
-  { number: 3, name: 'UV400 Protection', description: 'Full UV protection for indoor and outdoor use.' },
-  { number: 4, name: 'Scratch-Resistant Lens', description: 'Durable, long-lasting lenses built for daily wear.' },
-  { number: 5, name: 'Lightweight Frame', description: 'Barely-there comfort you can wear all day.' },
+  { number: 1, name: 'Филтър за синя светлина', description: 'Спира 99% от синята светлина. Доказано.' },
+  { number: 2, name: 'Антирефлексно покритие', description: 'Край на блясъка от екрана и лампите.' },
+  { number: 3, name: 'UV400 защита', description: 'Пълна защита, вътре и навън.' },
+  { number: 4, name: 'Устойчиви лещи', description: 'Издържат на ежедневието, без драскотини.' },
+  { number: 5, name: 'Лека рамка', description: 'Слагаш ги и забравяш, че ги носиш.' },
 ]
 
 export const howItWorksContent = {
-  badge: 'How it Works',
-  headline: 'Simple to Wear.\nPowerful Protection.',
-  cta: 'Shop Now',
+  badge: 'Как работи',
+  headline: 'Лесно.\nПросто работи.',
+  cta: 'Вземи си чифт →',
 }
 
 export const steps: StepItem[] = [
   {
     number: 1,
-    title: 'Wear',
-    description: 'Put on your ALPE glasses before any screen session — work, gaming, or scrolling.',
+    title: 'Сложи ги',
+    description: 'Преди работа, игри или безкрайно скролване — сложи ги и готово.',
     image: '/images/step1wear.png',
   },
   {
     number: 2,
-    title: 'Filter',
-    description: 'ALPE lenses continuously block blue light and reduce glare throughout your day.',
+    title: 'Филтрирай',
+    description: 'Лещите филтрират синята светлина цял ден — без пауза, без умора.',
     image: '/images/step2filter.png',
   },
   {
     number: 3,
-    title: 'Rest',
-    description: 'Wind down with ease — your body\'s natural sleep cycle stays intact.',
+    title: 'Почини си',
+    description: 'Вечерта тялото ти знае, че е край на деня. Заспиваш по-лесно, спиш по-дълбоко.',
     image: '/images/step3restnew.png',
   },
 ]
 
 export const beforeAfterContent = {
-  badge: 'Why Choose ALPE?',
-  headline: 'Strained Yesterday.\nClear Today.',
+  badge: 'Защо ALPÉ?',
+  headline: 'Умора вчера.\nЯснота днес.',
   beforeImage: '/images/before.png',
   afterImage: '/images/after.png',
 }
 
 export const withoutItems: string[] = [
-  'Eyes feel tired and strained',
-  'Headaches by mid-afternoon',
-  'Trouble falling asleep at night',
-  'Reduced focus and productivity',
-  'Squinting and dry eyes',
+  'Очите горят до обяд',
+  'Главоболие след работа',
+  'Въртиш се в леглото до полунощ',
+  'Не можеш да се съсредоточиш',
+  'Сухи, зачервени очи',
 ]
 
 export const withItems: string[] = [
-  'Eyes stay fresh all day',
-  'No more screen headaches',
-  'Fall asleep faster, sleep deeper',
-  'Sharper focus and energy',
-  'Comfortable, natural vision',
+  'Очите издържат целия ден',
+  'Без главоболие след работа',
+  'Заспиваш, когато легнеш',
+  'Фокусът се връща',
+  'Очите се отпускат',
 ]
 
 export const testimonialContent = {
-  badge: 'Testimonial',
-  quote: 'I work 10+ hours a day on screens. Since I started wearing ALPE, my eye strain is completely gone and I actually sleep through the night. These glasses changed everything.',
-  author: 'Alex M.',
+  badge: 'Какво казват клиентите',
+  quote: 'Работя по 10 часа на ден пред компютър. След като започнах да нося ALPÉ, главоболието изчезна за няколко дни. Сега заспивам веднага щом легна.',
+  author: 'Александър М., София',
   stars: 5,
 }
 
 export const galleryContent = {
-  headline: 'Real People. Real Protection. Powered by ALPE.',
+  headline: 'Истинска защита. С ALPÉ.',
   images: [
     'https://via.placeholder.com/300x400/F0EDE8/000000?text=Gallery+1',
     'https://via.placeholder.com/300x400/E8E0D8/000000?text=Gallery+2',
     'https://via.placeholder.com/300x400/D4C5B5/000000?text=Gallery+3',
     'https://via.placeholder.com/300x400/C8B5A0/000000?text=Gallery+4',
   ],
-  cta: 'Shop Now',
+  cta: 'Вземи си чифт →',
 }
 
 export const faqs: FaqItem[] = [
-  { question: 'How do I know if blue light glasses are working?', answer: 'Most users notice reduced eye strain and fewer headaches within the first few days. Better sleep quality typically follows within 1–2 weeks of consistent evening use.' },
-  { question: 'Can I wear ALPE glasses all day?', answer: 'Yes. ALPE glasses are designed for all-day comfort. The lightweight frames and precision lenses make them easy to wear from your first morning screen session to winding down at night.' },
-  { question: 'Do ALPE glasses affect how colors look on screen?', answer: 'ALPE uses a clear-tinted lens that provides strong blue light protection with minimal color distortion. Colors stay true — you won\'t notice a yellow or orange cast.' },
-  { question: 'Are ALPE glasses compatible with prescription lenses?', answer: 'Our current frames are non-prescription. Prescription-compatible versions are in development. Sign up to be notified when they launch.' },
-  { question: 'What makes ALPE different from other blue light glasses?', answer: 'ALPE combines premium lens technology with clean, minimal design — without the premium price tag. Every pair is tested for optical clarity, durability, and real blue light blocking performance.' },
+  {
+    question: 'Наистина ли работят тези очила?',
+    answer: 'Да. Лещите на ALPÉ са EU сертифицирани и блокират до 99% от синята светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на няколко дни.',
+  },
+  {
+    question: 'Как да знам, че блокиращите синя светлина очила работят?',
+    answer: 'Повечето хора усещат разлика още през първата седмица — по-малко напрежение в очите и по-лесно заспиване. Ако след 7 нощи не усетиш промяна, върни ги. Без въпроси.',
+  },
+  {
+    question: 'Може ли да ги нося цял ден?',
+    answer: 'Да — за това са направени. Рамката е лека и удобна, така че повечето клиенти забравят, че изобщо ги носят.',
+  },
+  {
+    question: 'Изкривяват ли цветовете на екрана?',
+    answer: 'Минимално. Дневните лещи имат лек жълтеникав оттенък, вечерните — оранжев. Свикваш за минути и повечето хора дори не го забелязват след малко.',
+  },
+  {
+    question: 'Работят ли с диоптрични стъкла?',
+    answer: 'Свържи се с нас и ще намерим решение заедно.',
+  },
 ]
 
 export const faqSectionContent = {
-  badge: 'Frequently Asked Questions',
-  headline: 'Everything You Need\nto Know About ALPE',
-  cta: 'Shop Now',
+  badge: 'Често задавани въпроси',
+  headline: 'Всичко, което трябва да\nзнаете за ALPÉ',
+  cta: 'Вземи си чифт →',
 }
 
 export const finalCtaContent = {
