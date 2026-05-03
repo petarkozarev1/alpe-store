@@ -408,15 +408,15 @@ export default function ProductPage() {
       <section style={{ padding: '80px 48px', background: '#FAF0E4' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>The ALPE experience</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Your first <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 nights.</em></h2>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с ALPE</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Първите ви <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 нощи.</em></h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
             {[
-              { n: '1', title: 'Tonight', body: 'Put on the Evening lens 2 hours before bed. Your eyes will feel the difference immediately — less tension, more calm.', dark: false },
-              { n: '3', title: 'Day 3', body: "Eye strain starts to ease. The headache you used to get by 4pm? You might not notice it today.", dark: false },
-              { n: '5', title: 'Day 5', body: "Your melatonin rhythm starts to reset. You fall asleep faster — and wake up before the alarm without dreading it.", dark: false },
-              { n: '7', title: 'Night 7', body: "This is the night most customers send us a message. Sleep that feels like sleep again.", dark: true },
+              { n: '1', title: 'Днес', body: 'Поставете вечерните лещи 2 часа преди лягане. Очите ви ще усетят разликата веднага — по-малко напрежение, повече спокойствие.', dark: false },
+              { n: '3', title: 'Ден 3', body: 'Напрежението в очите започва да отшумява. Главоболието, което ви се появяваше около 16:00 ч.? Днес може и да не го забележите.', dark: false },
+              { n: '5', title: 'Ден 5', body: 'Ритмът на мелатонина ви започва да се възстановява. Заспивате по-бързо — и се събуждате преди алармата, без да се страхувате от нея.', dark: false },
+              { n: '7', title: 'Нощ 7', body: 'Това е нощта, в която повечето клиенти ни изпращат съобщение. Сън, който отново се усеща като сън.', dark: true },
             ].map(item => (
               <div key={item.n} style={{ background: item.dark ? '#1C0F0A' : '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', padding: '36px 28px', position: 'relative' }}>
                 <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 52, fontWeight: 300, fontStyle: 'italic', color: item.dark ? 'rgba(250,240,228,0.15)' : 'rgba(196,154,108,0.25)', lineHeight: 1, marginBottom: 20 }}>{item.n}</div>
