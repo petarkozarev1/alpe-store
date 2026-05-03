@@ -42,6 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 className="font-semibold text-base">{product.name}</h3>
           <p className="text-stone text-sm mt-0.5">{product.subtitle}</p>
           <p className="font-bold text-base mt-2">${product.price}</p>
+          <p className="font-sans text-[10px] text-stone/50 mt-1">✓ BS EN ISO 12312-1 сертифицирани</p>
         </div>
       </Link>
     </motion.div>

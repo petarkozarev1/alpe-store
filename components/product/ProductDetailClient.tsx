@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import type { Product } from '@/lib/types'
 import VariantSelector from './VariantSelector'
 import AddToCartButton from './AddToCartButton'
@@ -23,6 +24,15 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         <p className="text-stone mt-2">{product.subtitle}</p>
       </div>
       <p className="text-2xl font-bold">${product.price}</p>
+
+      {/* Cert trust strip */}
+      <div className="flex items-center justify-between py-3 border-y border-iron/10 gap-4">
+        <span className="font-sans text-xs text-stone/70">✓ BS EN ISO 12312-1 &nbsp;·&nbsp; ✓ UV400 &nbsp;·&nbsp; ✓ до 99% синя светлина</span>
+        <Link href="/certifications" className="font-sans text-xs text-gold hover:underline underline-offset-2 decoration-gold/50 flex-shrink-0">
+          Виж сертификата →
+        </Link>
+      </div>
+
       <p className="text-stone text-sm leading-relaxed">{product.description}</p>
 
       <div>
