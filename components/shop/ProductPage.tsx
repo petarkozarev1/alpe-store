@@ -9,13 +9,13 @@ type Tab = 'description' | 'science' | 'reviews'
 
 const lensData = {
   evening: {
-    name: 'ALPE Evening',
-    nameItalic: 'Evening',
-    tagline: "The orange lens that signals your brain it's time to wind down. Blocks 98% of blue light for deep, restorative sleep — felt within the first week.",
+    name: 'ALPÉ',
+    nameItalic: '',
+    tagline: 'Оранжевият филтър, който сигнализира на мозъка ви, че е време да се отпуснете. Блокира 98% от синята светлина за дълбок, възстановяващ сън. Ефектът започва да се усеща още след първата седмица.',
     benefitBg: '#fff5eb',
     benefitBorder: 'rgba(196,154,108,0.3)',
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
-    benefitText: 'Best worn 2 hours before sleep',
+    benefitText: 'Оптимално да се носят пред екран 2 часа преди сън.',
     benefitColor: '#7a4e1a',
     descText: "The ALPE Evening lens was designed for one thing: sleep. Worn 2 hours before bed, its deep orange tint blocks 98% of blue light in the 415–455nm range — the wavelengths most responsible for suppressing melatonin. Within a week of consistent use, most customers report falling asleep faster and waking up feeling genuinely rested.",
     images: [
@@ -25,13 +25,13 @@ const lensData = {
     ],
   },
   daily: {
-    name: 'ALPE Daily',
-    nameItalic: 'Daily',
-    tagline: "The clear-yellow lens for all-day screen use. Filters the harshest wavelengths without distorting colors — so you can work comfortably from 9am to 6pm.",
+    name: 'ALPÉ',
+    nameItalic: '',
+    tagline: 'Прозрачно-жълти стъкла за целодневна работа пред екрана. Филтрират най-агресивните дължини на вълните, без да изкривяват цветовете, за да можете да работите комфортно от 9:00 до 18:00ч.',
     benefitBg: '#fffbe0',
     benefitBorder: 'rgba(200,180,0,0.25)',
     benefitDot: 'linear-gradient(135deg,#f9e94e,#e6b800)',
-    benefitText: 'Ideal for all-day screen use',
+    benefitText: 'Идеални за целодневна работа пред екран.',
     benefitColor: '#7a6200',
     descText: "The ALPE Daily lens is built for the long screen session. Its amber-yellow tint cuts 65% of blue light — enough to reduce eye strain and end-of-day headaches — while keeping colors accurate enough for design work, photo editing, and video calls. Lightweight, comfortable, and wearable for 8+ hours.",
     images: [
@@ -88,7 +88,7 @@ export default function ProductPage() {
     addToCart({
       productId: `alpe-${lens}`,
       variantId: `alpe-${lens}-bundle-${bundle}`,
-      name: `ALPE ${d.nameItalic}`,
+      name: d.name,
       variantLabel: `${bundle} Pair${bundle > 1 ? 's' : ''}`,
       price: bundlePrices[bundle],
       quantity: 1,
@@ -109,7 +109,7 @@ export default function ProductPage() {
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.5)', letterSpacing: '0.06em' }}>
         <Link href="/" style={{ color: 'rgba(28,15,10,0.5)', textDecoration: 'none' }}>Home</Link>
         <span style={{ opacity: 0.4 }}>›</span>
-        <span style={{ color: '#1C0F0A' }}>ALPE {d.nameItalic}</span>
+        <span style={{ color: '#1C0F0A' }}>{d.name}</span>
       </div>
 
       {/* Main product grid */}
@@ -166,7 +166,7 @@ export default function ProductPage() {
 
           {/* Name */}
           <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, lineHeight: 1.1, color: '#1C0F0A', marginBottom: 10 }}>
-            ALPE <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em>
+            {d.name}
           </h1>
           <p style={{ fontSize: 15, color: 'rgba(28,15,10,0.5)', lineHeight: 1.75, marginBottom: 20 }}>{d.tagline}</p>
 
@@ -519,7 +519,7 @@ export default function ProductPage() {
             <Image src={d.images[0].src} alt={`ALPE ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
           </div>
           <div>
-            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>ALPE <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
+            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>{d.name}</div>
             <div style={{ fontSize: 12, opacity: 0.6, marginTop: 1 }}>{bundle} Pair{bundle > 1 ? 's' : ''}</div>
           </div>
         </div>
