@@ -1,7 +1,7 @@
 import type { SiteConfig } from '@/lib/types'
 
 export const siteConfig: SiteConfig = {
-  brand: 'ALPE',
+  brand: 'ALPÉ',
   tagline: 'Screen All Day. Sleep All Night.',
   nav: [
     { label: 'Benefits', href: '#benefits' },
