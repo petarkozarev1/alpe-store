@@ -2,15 +2,15 @@ import type { SiteConfig } from '@/lib/types'
 
 export const siteConfig: SiteConfig = {
   brand: 'ALPÉ',
-  tagline: 'Screen All Day. Sleep All Night.',
+  tagline: 'Работи цял ден. Спи цяла нощ.',
   nav: [
-    { label: 'Benefits', href: '#benefits' },
-    { label: 'Lenses', href: '#ingredients' },
+    { label: 'Ползи', href: '#benefits' },
+    { label: 'Стъкла', href: '#ingredients' },
     { label: 'Как работи', href: '#how-it-works' },
-    { label: 'FAQs', href: '#faqs' },
+    { label: 'Въпроси', href: '#faqs' },
   ],
   footer: {
-    tagline: 'Screen All Day. Sleep All Night.',
+    tagline: 'Работи цял ден. Спи цяла нощ.',
     pages: [
       { label: 'Privacy Policy', href: '/privacy' },
       { label: '404', href: '/404' },
