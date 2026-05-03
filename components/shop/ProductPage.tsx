@@ -10,7 +10,7 @@ type Tab = 'description' | 'science' | 'reviews'
 const lensData = {
   evening: {
     name: 'ALPÉ',
-    nameItalic: '',
+    nameItalic: 'Evening',
     tagline: 'Оранжевият филтър, който сигнализира на мозъка ви, че е време да се отпуснете. Блокира 98% от синята светлина за дълбок, възстановяващ сън. Ефектът започва да се усеща още след първата седмица.',
     benefitBg: '#fff5eb',
     benefitBorder: 'rgba(196,154,108,0.3)',
@@ -26,7 +26,7 @@ const lensData = {
   },
   daily: {
     name: 'ALPÉ',
-    nameItalic: '',
+    nameItalic: 'Daily',
     tagline: 'Прозрачно-жълти стъкла за целодневна работа пред екрана. Филтрират най-агресивните дължини на вълните, без да изкривяват цветовете, за да можете да работите комфортно от 9:00 до 18:00ч.',
     benefitBg: '#fffbe0',
     benefitBorder: 'rgba(200,180,0,0.25)',
@@ -167,7 +167,7 @@ export default function ProductPage() {
 
           {/* Name */}
           <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, lineHeight: 1.1, color: '#1C0F0A', marginBottom: 10 }}>
-            {d.name}
+            {d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em>
           </h1>
           <p style={{ fontSize: 15, color: 'rgba(28,15,10,0.5)', lineHeight: 1.75, marginBottom: 20 }}>{d.tagline}</p>
 
@@ -514,7 +514,7 @@ export default function ProductPage() {
             <Image src={d.images[0].src} alt={`ALPE ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
           </div>
           <div>
-            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>{d.name}</div>
+            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
             <div style={{ fontSize: 12, opacity: 0.6, marginTop: 1 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
           </div>
         </div>
