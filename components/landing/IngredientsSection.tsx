@@ -57,6 +57,9 @@ export default function IngredientsSection() {
                       {ingredient.number}
                     </span>
                     <span className="font-medium text-onyx">{ingredient.name}</span>
+                    {ingredient.badge && (
+                      <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-gold border border-gold/50 rounded px-1.5 py-0.5 flex-shrink-0">{ingredient.badge}</span>
+                    )}
                   </div>
                   <span className="text-stone text-sm text-right max-w-xs shrink-0">{ingredient.description}</span>
                 </div>

@@ -51,6 +51,7 @@ export interface Ingredient {
   number: number
   name: string
   description: string
+  badge?: string
 }
 
 export interface BenefitItem {
