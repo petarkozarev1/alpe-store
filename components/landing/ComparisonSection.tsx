@@ -65,7 +65,7 @@ export default function ComparisonSection() {
 
         {/* CTA */}
         <div className="flex justify-center mt-10">
-          <Button label="Buy Now" href="/shop" variant="primary" />
+          <Button label="Вземи си чифт →" href="/shop" variant="primary" />
         </div>
 
       </div>

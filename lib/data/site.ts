@@ -6,7 +6,7 @@ export const siteConfig: SiteConfig = {
   nav: [
     { label: 'Benefits', href: '#benefits' },
     { label: 'Lenses', href: '#ingredients' },
-    { label: 'How it Works', href: '#how-it-works' },
+    { label: 'Как работи', href: '#how-it-works' },
     { label: 'FAQs', href: '#faqs' },
   ],
   footer: {
