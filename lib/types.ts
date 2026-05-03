@@ -37,9 +37,13 @@ export interface SiteConfig {
   tagline: string
   nav: NavLink[]
   footer: {
-    tagline: string
-    pages: NavLink[]
-    social: NavLink[]
+    description: string
+    columns: {
+      title: string
+      links: NavLink[]
+    }[]
+    legal: NavLink[]
+    copyright: string
   }
 }
 

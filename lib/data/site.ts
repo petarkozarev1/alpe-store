@@ -10,14 +10,37 @@ export const siteConfig: SiteConfig = {
     { label: 'Въпроси', href: '#faqs' },
   ],
   footer: {
-    tagline: 'Работи цял ден. Спи цяла нощ.',
-    pages: [
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: '404', href: '/404' },
+    description: 'Очила за синя светлина за ежедневна употреба пред екран. Доверени от 1000+ хора в България.',
+    columns: [
+      {
+        title: 'ПРОДУКТ',
+        links: [
+          { label: 'Стъкла', href: '/lenses' },
+          { label: 'Рамки', href: '/frames' },
+          { label: 'Цени', href: '/pricing' },
+        ],
+      },
+      {
+        title: 'КОМПАНИЯ',
+        links: [
+          { label: 'Нашата история', href: '/about' },
+          { label: 'Науката', href: '/science' },
+          { label: 'Медии', href: '/press' },
+        ],
+      },
+      {
+        title: 'ПОДДРЪЖКА',
+        links: [
+          { label: 'Въпроси', href: '/faqs' },
+          { label: 'Връщане', href: '/returns' },
+          { label: 'Контакт', href: '/contact' },
+        ],
+      },
     ],
-    social: [
-      { label: 'X', href: '#' },
-      { label: 'Instagram', href: '#' },
+    legal: [
+      { label: 'Политика за поверителност', href: '/privacy' },
+      { label: 'Общи условия', href: '/terms' },
     ],
+    copyright: '© 2026 ALPÉ. Всички права запазени.',
   },
 }
