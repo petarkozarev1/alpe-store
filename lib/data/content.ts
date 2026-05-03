@@ -25,7 +25,7 @@ export const benefits: BenefitItem[] = [
 
 export const darkCtaContent = {
   socialProof: '1000+ успокоени очи',
-  headline: 'Пази очите си. Карай докрай.',
+  headline: 'Защити очите си. Живей пълноценно.',
   cta: 'Вземи си чифт →',
 }
 
