@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
     { label: 'Въпроси', href: '#faqs' },
   ],
   footer: {
-    description: 'Очила за синя светлина за ежедневна употреба пред екран. Доверени от 1000+ хора в България.',
+    description: 'Очила за синя светлина за ежедневна употреба пред екран.',
     columns: [
       {
         title: 'ПРОДУКТ',
@@ -26,7 +26,6 @@ export const siteConfig: SiteConfig = {
           { label: 'Нашата история', href: '/about' },
           { label: 'Науката', href: '/science' },
           { label: 'Сертификати', href: '/certifications' },
-          { label: 'Медии', href: '/press' },
         ],
       },
       {

@@ -10,9 +10,9 @@
 
 1. **NEVER use the Preview tool or start a dev server from a worktree.** The only valid project root is `C:/ALPE`. Any path containing `.claude/worktrees/` is an old stale copy — do NOT serve, edit, or read from it.
 2. **NEVER touch worktree directories.** They caused the site to revert to an old broken version. Ignore them completely.
-3. **Always start the dev server from `C:/ALPE`:**
+3. **Always start the dev server from `E:/ALPE/alpe-store`:**
    ```bash
-   cd C:/ALPE && npm run dev
+   cd E:/ALPE/alpe-store && npm run dev
    ```
 4. **The canonical saved version is the git tag `checkoutv1`** (commit `102922a`). To restore: `git -C C:/ALPE checkout checkoutv1 -- .`
    - Previous saves (do not revert to these unless explicitly asked): `pre-checkoutpage`, `save-2`, `colors`
@@ -105,7 +105,8 @@
 | State | Zustand v5 — cart store at `lib/store/cartStore.ts` |
 | Fonts | Cormorant Garamond + Raleway via `next/font/google` |
 | Tests | Jest + React Testing Library |
-| Dev server | `npm run dev` from `C:/ALPE` → port 3000 |
+| Dev server | `npm run dev` from `E:/ALPE/alpe-store` → port 3000 |
+| GitHub | https://github.com/petarkozarev1/alpe-store |
 
 ---
 
@@ -154,7 +155,7 @@ Always include `sizes` prop.
 ## Dev commands
 
 ```bash
-cd C:/ALPE
+cd E:/ALPE/alpe-store
 npm run dev        # http://localhost:3000
 npm test           # Jest
 npm run build      # production build check
