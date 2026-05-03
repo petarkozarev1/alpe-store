@@ -18,9 +18,9 @@ export const heroContent = {
 }
 
 export const benefits: BenefitItem[] = [
-  { id: 'eye-strain', headline: 'End Eye Strain and Screen Headaches', side: 'right' },
-  { id: 'sleep', headline: 'Sleep Deeper. Wake Up Sharper.', side: 'left' },
-  { id: 'focus', headline: 'Stay Focused All Day Long', side: 'right' },
+  { id: 'eye-strain', headline: 'Край на умората на очите и главоболието', side: 'right' },
+  { id: 'sleep', headline: 'Спи по-дълбоко. Събуждай се по-свеж.', side: 'left' },
+  { id: 'focus', headline: 'Фокусирай се цял ден', side: 'right' },
 ]
 
 export const darkCtaContent = {
