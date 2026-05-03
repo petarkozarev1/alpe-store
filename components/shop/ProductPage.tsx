@@ -378,16 +378,16 @@ export default function ProductPage() {
       <section style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>What customers feel</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Results that speak <em style={{ fontStyle: 'italic', fontWeight: 400 }}>for themselves.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.5)', marginTop: 14 }}>Based on a customer survey of 1,200 ALPE users after 14 days of consistent use.</p>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.5)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPE след 14 дни редовно ползване.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
-              { label: 'Less eye strain', pct: 87, desc: 'noticed reduced eye tension within the first 3 days of wearing ALPE', delay: '0.2s' },
-              { label: 'Faster sleep onset', pct: 79, desc: 'fell asleep faster within the first week of using the Evening lens', delay: '0.35s' },
-              { label: 'Fewer headaches', pct: 74, desc: 'reported fewer end-of-day screen headaches after switching to ALPE Daily', delay: '0.5s' },
-              { label: 'Would recommend', pct: 93, desc: 'would recommend ALPE to a friend or family member', delay: '0.65s' },
+              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на ALPE', delay: '0.2s' },
+              { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
+              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към ALPE Daily', delay: '0.5s' },
+              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали ALPE на приятел или член на семейството', delay: '0.65s' },
             ].map(s => (
               <div key={s.label} style={{ background: '#FAF0E4', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 12, padding: '32px 36px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14 }}>
