@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import Button from '@/components/ui/Button'
 import { darkCtaContent } from '@/lib/data/content'
 
 export default function DarkCtaCard() {
@@ -29,8 +28,6 @@ export default function DarkCtaCard() {
         <h2 className="text-linen text-[clamp(32px,5vw,52px)] font-bold tracking-tight leading-tight max-w-2xl mb-3 whitespace-nowrap">
           {darkCtaContent.headline}
         </h2>
-
-        <Button label={darkCtaContent.cta} href="/shop" variant="outlined-white" className="font-bold mb-4" />
 
         {/* Social proof row */}
         <div className="flex items-center justify-center gap-1.5 mt-2">
