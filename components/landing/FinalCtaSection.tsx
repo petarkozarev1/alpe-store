@@ -25,7 +25,7 @@ export default function FinalCtaSection() {
           </p>
         )}
         <div className="mt-8">
-          <Button label={finalCtaContent.cta} href="/shop" variant="outlined-white" />
+          <Button label={finalCtaContent.cta} href="/shop" variant="outlined-white" className="font-bold" />
         </div>
 
         <div className="relative mt-12 w-full max-w-4xl aspect-[16/9] overflow-hidden rounded-[2.5rem]">

@@ -39,7 +39,7 @@ export default function IngredientsSection() {
         <div>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-onyx">{ingredientsContent.sectionTitle}</h3>
-            <Button label={ingredientsContent.cta} href="/shop" variant="primary" />
+            <Button label={ingredientsContent.cta} href="/shop" variant="primary" className="font-bold" />
           </div>
 
           <div className="flex flex-col">

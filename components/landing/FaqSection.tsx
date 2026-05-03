@@ -19,7 +19,7 @@ export default function FaqSection() {
             <h2 className="text-[clamp(28px,4vw,40px)] font-bold tracking-tight leading-tight whitespace-pre-line text-onyx">
               {faqSectionContent.headline}
             </h2>
-            <Button label={faqSectionContent.cta} href="/shop" variant="primary" />
+            <Button label={faqSectionContent.cta} href="/shop" variant="primary" className="font-bold" />
           </div>
 
           {/* Right accordion */}

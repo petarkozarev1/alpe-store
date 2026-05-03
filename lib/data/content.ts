@@ -26,7 +26,7 @@ export const benefits: BenefitItem[] = [
 export const darkCtaContent = {
   socialProof: '1000+ успокоени очи',
   headline: 'Защити очите си. Живей пълноценно.',
-  cta: 'Вземи си чифт →',
+  cta: 'Разгледай колекцията',
 }
 
 export const ingredientsContent = {
@@ -35,7 +35,7 @@ export const ingredientsContent = {
   editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
   editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
   sectionTitle: 'Какво има във всяко стъкло?',
-  cta: 'Вземи си чифт →',
+  cta: 'Виж стъклата',
 }
 
 export const ingredients: Ingredient[] = [
@@ -49,7 +49,7 @@ export const ingredients: Ingredient[] = [
 export const howItWorksContent = {
   badge: 'Как работи',
   headline: 'Лесно.\nПросто работи.',
-  cta: 'Вземи си чифт →',
+  cta: 'Изпробвай сам',
 }
 
 export const steps: StepItem[] = [
@@ -111,7 +111,7 @@ export const galleryContent = {
     'https://via.placeholder.com/300x400/D4C5B5/000000?text=Gallery+3',
     'https://via.placeholder.com/300x400/C8B5A0/000000?text=Gallery+4',
   ],
-  cta: 'Вземи си чифт →',
+  cta: 'Намери своя чифт',
 }
 
 export const faqs: FaqItem[] = [
@@ -140,13 +140,13 @@ export const faqs: FaqItem[] = [
 export const faqSectionContent = {
   badge: 'Често задавани въпроси',
   headline: 'Всичко, което трябва да\nзнаете за ALPÉ',
-  cta: 'Вземи си чифт →',
+  cta: 'Поръчай сега',
 }
 
 export const finalCtaContent = {
   badge: 'Вземи своя чифт',
   headline: 'Защити очите си.\nЖивей оптимално.',
-  cta: 'Вземи си чифт →',
+  cta: 'Вземи своя чифт',
   image: '/images/final-cta.png',
   subtext: 'BS EN ISO 12312-1 сертифицирани · Безплатна доставка над €50 · 1000+ доволни клиенти',
 }

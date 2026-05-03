@@ -60,7 +60,7 @@ export default function HowItWorksSection() {
           <h2 className="text-[clamp(36px,5vw,52px)] font-bold tracking-tight leading-tight whitespace-pre-line text-iron">
             {howItWorksContent.headline}
           </h2>
-          <Button label={howItWorksContent.cta} href="/shop" variant="primary" />
+          <Button label={howItWorksContent.cta} href="/shop" variant="primary" className="font-bold" />
         </div>
 
         {/* Right stacking cards */}

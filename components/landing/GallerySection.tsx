@@ -79,7 +79,7 @@ export default function GallerySection() {
       </div>
 
       <div className="flex justify-center mt-12">
-        <Button label={galleryContent.cta} href="/shop" variant="primary" />
+        <Button label={galleryContent.cta} href="/shop" variant="primary" className="font-bold" />
       </div>
     </section>
   )
