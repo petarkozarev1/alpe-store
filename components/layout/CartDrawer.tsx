@@ -5,6 +5,61 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 
+const FREE_SHIPPING_THRESHOLD = 50
+
+const certItems = [
+  {
+    label: 'ISO 12312- 1',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    ),
+  },
+  {
+    label: 'ANSI Z80.3',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+    ),
+  },
+  {
+    label: 'AS/NZS 1067',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    ),
+  },
+  {
+    label: 'UV400',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    ),
+  },
+  {
+    label: '7 НОЩИ\nВРЪЩАНЕ',
+    icon: (
+      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    ),
+  },
+]
+
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, getSubtotal } = useCartStore()
 
@@ -16,6 +71,10 @@ export default function CartDrawer() {
     }
     return () => { document.body.style.overflow = '' }
   }, [isDrawerOpen])
+
+  const subtotal = getSubtotal()
+  const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)
+  const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0)
 
   return (
     <AnimatePresence>
@@ -153,19 +212,55 @@ export default function CartDrawer() {
               )}
             </div>
 
+            {/* Shipping progress + cert strip */}
+            {items.length > 0 && (
+              <div className="flex-shrink-0">
+                {/* Shipping progress bar */}
+                <div className="px-5 pb-4">
+                  <div className="bg-[#E8F4EC] rounded-xl px-4 py-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-sans text-xs text-iron">
+                        {remaining > 0
+                          ? `Добави €${remaining.toFixed(0)} за безплатна доставка`
+                          : 'Получаваш безплатна доставка!'}
+                      </span>
+                      <span className="font-sans text-xs font-semibold text-iron">
+                        {Math.round(shippingProgress)}%
+                      </span>
+                    </div>
+                    <div className="h-1.5 bg-white/60 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#4CAF50] rounded-full transition-all duration-500"
+                        style={{ width: `${shippingProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cert strip */}
+                <div className="flex items-start justify-around px-4 py-3 border-t border-stone/10">
+                  {certItems.map(cert => (
+                    <div key={cert.label} className="flex flex-col items-center gap-1 text-stone/60">
+                      <span className="text-stone/50">{cert.icon}</span>
+                      <span className="font-sans text-[8px] font-semibold tracking-wide text-center uppercase leading-tight whitespace-pre-line">
+                        {cert.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Footer */}
             {items.length > 0 && (
-              <div className="px-6 pt-4 pb-6 border-t border-stone/20 flex flex-col gap-3 flex-shrink-0">
-
-                {/* Subtotal */}
+              <div className="px-6 pt-3 pb-6 border-t border-stone/20 flex flex-col gap-3 flex-shrink-0">
                 <div className="flex items-baseline justify-between">
                   <span className="font-sans text-sm text-stone">Общо</span>
                   <span className="font-serif text-2xl font-medium text-onyx">
-                    €{getSubtotal().toFixed(2)}
+                    €{subtotal.toFixed(2)}
                   </span>
                 </div>
 
-                {/* Checkout CTA */}
                 <Link
                   href="/checkout"
                   onClick={closeDrawer}
@@ -177,33 +272,12 @@ export default function CartDrawer() {
                   Към плащане
                 </Link>
 
-                {/* Continue shopping */}
                 <button
                   onClick={closeDrawer}
                   className="font-sans text-sm text-stone hover:text-onyx transition-colors text-center"
                 >
                   Продължи пазаруването
                 </button>
-
-                {/* Certification strip */}
-                <div className="flex items-center justify-center gap-4 pt-2 border-t border-stone/10 mt-1">
-                  {[
-                    { label: 'ISO 12312-1' },
-                    { label: 'ANSI Z80.3' },
-                    { label: 'AS/NZS 1067' },
-                    { label: 'UV400' },
-                  ].map((cert, i, arr) => (
-                    <div key={cert.label} className="flex items-center gap-4">
-                      <span className="font-sans text-[9px] font-semibold tracking-wider text-gold uppercase">
-                        {cert.label}
-                      </span>
-                      {i < arr.length - 1 && (
-                        <span className="w-px h-4 bg-stone/20 block" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-
               </div>
             )}
           </motion.div>
