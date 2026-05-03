@@ -30,7 +30,7 @@ export const darkCtaContent = {
 }
 
 export const ingredientsContent = {
-  badge: '✓ EU сертифицирана технология',
+  badge: '✓ BS EN ISO 12312-1 · ANSI Z80.3 · AS/NZS 1067.1',
   headline: 'Изобретено за\n"Дигиталната Ера"',
   editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
   editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
@@ -39,7 +39,7 @@ export const ingredientsContent = {
 }
 
 export const ingredients: Ingredient[] = [
-  { number: 1, name: 'Филтър за синя светлина', description: 'Спира 99% от синята светлина. Доказано.' },
+  { number: 1, name: 'Филтър за синя светлина', description: 'Блокира до 99% от синята светлина — тествано по BS EN ISO 12312-1.' },
   { number: 2, name: 'Антирефлексно покритие', description: 'Край на блясъка от екрана и лампите.' },
   { number: 3, name: 'UV400 защита', description: 'Пълна защита, вътре и навън.' },
   { number: 4, name: 'Устойчиви лещи', description: 'Издържат на ежедневието, без драскотини.' },
@@ -117,7 +117,7 @@ export const galleryContent = {
 export const faqs: FaqItem[] = [
   {
     question: 'Наистина ли работят тези очила?',
-    answer: 'Да. Лещите на ALPÉ са EU сертифицирани и блокират до 99% от синята светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на няколко дни.',
+    answer: 'Да. Лещите на ALPÉ са тествани по BS EN ISO 12312-1:2013+A1:2015 и блокират до 99% от синята светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на няколко дни.',
   },
   {
     question: 'Как да знам, че блокиращите синя светлина очила работят?',
@@ -148,5 +148,5 @@ export const finalCtaContent = {
   headline: 'Защити очите си.\nЖивей оптимално.',
   cta: 'Вземи си чифт →',
   image: '/images/final-cta.png',
-  subtext: 'EU сертифицирани · Безплатна доставка над €50 · 1000+ доволни клиенти',
+  subtext: 'BS EN ISO 12312-1 сертифицирани · Безплатна доставка над €50 · 1000+ доволни клиенти',
 }

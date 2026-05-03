@@ -25,6 +25,7 @@ export const siteConfig: SiteConfig = {
         links: [
           { label: 'Нашата история', href: '/about' },
           { label: 'Науката', href: '/science' },
+          { label: 'Сертификати', href: '/certifications' },
           { label: 'Медии', href: '/press' },
         ],
       },
