@@ -500,7 +500,7 @@ export default function ProductPage() {
       </div>
 
       {/* Sticky add to cart bar */}
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 500, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
+      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
             <Image src={d.images[0].src} alt={`ALPE ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
