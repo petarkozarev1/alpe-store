@@ -1,12 +1,12 @@
 import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
 
 export const heroContent = {
-  badge: 'Доверени от 10,000+ потребители',
-  headlinePart1: 'Само едни очила.',
-  headlinePart2Before: 'Безкрайна',
-  headlinePart2After: 'яснота.',
-  subtext: 'Очилата ALPE блокират синята светлина и намаляват умората на очите, главоболието и нарушения сън — за да работиш на най-доброто си ниво.',
-  cta: 'Пазарувай сега',
+  badge: '✓ EU сертифицирани · ★★★★★ 1000+ доволни клиенти',
+  headlinePart1: 'До 17:00 очите ти са готови.',
+  headlinePart2Before: 'Ние го',
+  headlinePart2After: 'знаем.',
+  subtext: 'Синята светлина те убива бавно. Очилата ALPÉ я спират — за да издържиш до края на деня и да спиш като хора.',
+  cta: 'Вземи си чифт →',
   heroFaceImages: [
     { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
     { src: '/images/hero/person-1-night.png', alt: 'Man wearing ALPE Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
