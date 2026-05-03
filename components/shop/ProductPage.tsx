@@ -120,7 +120,7 @@ export default function ProductPage() {
         <div style={{ position: 'sticky', top: 80 }}>
           {/* Main image */}
           <div style={{ width: '100%', aspectRatio: '4/3', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
-            <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className="object-cover" quality={100} />
+            <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className={thumbIdx[lens] === 1 ? 'object-contain' : 'object-cover'} quality={100} />
 
             {/* Lens toggle on image */}
             <div style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8, background: 'rgba(28,15,10,0.72)', backdropFilter: 'blur(12px)', borderRadius: 100, padding: 5, zIndex: 2, whiteSpace: 'nowrap' }}>
@@ -149,7 +149,7 @@ export default function ProductPage() {
                 onClick={() => setThumbIdx(prev => ({ ...prev, [lens]: i }))}
                 style={{ flex: 1, aspectRatio: '1', borderRadius: 8, overflow: 'hidden', border: `2px solid ${thumbIdx[lens] === i ? '#1C0F0A' : 'transparent'}`, cursor: 'pointer', padding: 0, background: 'none', position: 'relative', transition: 'border-color 0.2s, transform 0.2s', transform: 'none' }}
               >
-                <Image src={img.src} alt={img.alt} fill sizes="120px" className="object-cover" quality={100} />
+                <Image src={img.src} alt={img.alt} fill sizes="(min-width:960px) 200px, 33vw" className={i === 1 ? 'object-contain' : 'object-cover'} quality={100} />
               </button>
             ))}
           </div>
