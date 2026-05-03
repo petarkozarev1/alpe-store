@@ -3,6 +3,7 @@ const items = [
   { icon: '◷', title: 'ANSI Z80.3', sub: 'Американски стандарт' },
   { icon: '◉', title: 'AS/NZS 1067.1', sub: 'Австралийски стандарт' },
   { icon: '◈', title: 'UV400 ЗАЩИТА', sub: 'Пълна UV блокада' },
+  { icon: '◎', title: 'GREEN LIGHT BLOCK', sub: '500–560nm филтър' },
 ]
 
 export default function CertStrip() {
