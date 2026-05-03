@@ -54,7 +54,8 @@ export default function ProductPage() {
   const [emailSent, setEmailSent] = useState(false)
   const [email, setEmail] = useState('')
   const [stickyVisible, setStickyVisible] = useState(false)
-  const [viewerCount] = useState(() => Math.floor(Math.random() * 20) + 18)
+  const [viewerCount, setViewerCount] = useState(0)
+  useEffect(() => { setViewerCount(Math.floor(Math.random() * 20) + 18) }, [])
   const ctaRef = useRef<HTMLDivElement>(null)
   const addToCart = useCartStore(s => s.addItem)
 
