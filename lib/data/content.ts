@@ -31,7 +31,7 @@ export const darkCtaContent = {
 
 export const ingredientsContent = {
   badge: 'Технология на стъклата',
-  headline: 'Изобретено за\n"Дигиталната Ера"',
+  headline: 'Създадено за\n"Дигиталната Ера"',
   editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
   editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
   sectionTitle: 'Какво има във всяко стъкло?',
