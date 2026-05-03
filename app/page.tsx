@@ -8,7 +8,6 @@ import TestimonialSection from '@/components/landing/TestimonialSection'
 import GallerySection from '@/components/landing/GallerySection'
 import FaqSection from '@/components/landing/FaqSection'
 import FinalCtaSection from '@/components/landing/FinalCtaSection'
-import NewsletterSection from '@/components/landing/NewsletterSection'
 
 export default function Home() {
   return (
@@ -23,7 +22,6 @@ export default function Home() {
       <GallerySection />
       <FaqSection />
       <FinalCtaSection />
-      <NewsletterSection />
     </>
   )
 }
