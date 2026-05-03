@@ -1,12 +1,18 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { siteConfig } from '@/lib/data/site'
 import { useCartStore } from '@/lib/store/cartStore'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname()
+
+  function navHref(href: string) {
+    return href.startsWith('#') && pathname !== '/' ? '/' + href : href
+  }
   const { items, openDrawer } = useCartStore()
   const itemCount = items.reduce((s, i) => s + i.quantity, 0)
 
@@ -26,7 +32,7 @@ export default function Navbar() {
           {siteConfig.nav.map(link => (
             <Link
               key={link.label}
-              href={link.href}
+              href={navHref(link.href)}
               className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors duration-200"
             >
               {link.label}
@@ -95,7 +101,7 @@ export default function Navbar() {
               {siteConfig.nav.map(link => (
                 <Link
                   key={link.label}
-                  href={link.href}
+                  href={navHref(link.href)}
                   className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
