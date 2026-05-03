@@ -42,8 +42,8 @@ const lensData = {
   },
 }
 
-const bundlePrices: Record<number, number> = { 1: 40, 2: 60, 3: 80 }
-const bundleSavings: Record<number, number> = { 1: 0, 2: 20, 3: 40 }
+const bundlePrices: Record<number, number> = { 1: 44.99, 2: 66.99, 3: 89.99 }
+const bundleSavings: Record<number, number> = { 1: 0, 2: 23, 3: 45 }
 
 export default function ProductPage() {
   const [lens, setLens] = useState<Lens>('evening')
@@ -216,13 +216,13 @@ export default function ProductPage() {
                       {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Най-изгодно</span>}
                     </div>
                     <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас лещи' : n === 2 ? 'Комбинирайте лещи' : 'По един за всеки вкъщи'}</div>
-                    {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>50% отстъпка за втория чифт — спестете 20 €</div>}
-                    {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>3-ти чифт БЕЗПЛАТНО 🎉 — спестете 40 €</div>}
+                    {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>Спестете 23 € с двойния комплект</div>}
+                    {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>Спестете 45 € с тройния комплект 🎉</div>}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{bundlePrices[n]}</div>
-                  {n > 1 && <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', textDecoration: 'line-through', marginTop: 2 }}>€{n === 2 ? 80 : 120}</div>}
+                  {n > 1 && <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', textDecoration: 'line-through', marginTop: 2 }}>€{n === 2 ? '89.98' : '134.97'}</div>}
                 </div>
               </button>
             ))}
@@ -256,12 +256,6 @@ export default function ProductPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginBottom: 12, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
             <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
             <span><strong>Безплатна експресна доставка</strong> — пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
-          </div>
-
-          {/* Urgency strip */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginBottom: 12, fontSize: 13, background: '#fff5eb', border: '1px solid rgba(196,154,108,0.28)', color: '#7a4e1a' }}>
-            <svg width="14" height="14" fill="none" stroke="#C49A6C" strokeWidth="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            <span><strong>Остават само 8</strong> на тази цена — промоцията приключва в полунощ</span>
           </div>
 
           {/* Savings callout */}
