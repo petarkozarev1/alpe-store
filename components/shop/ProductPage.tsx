@@ -51,8 +51,6 @@ export default function ProductPage() {
   const [thumbIdx, setThumbIdx] = useState({ evening: 0, daily: 0 })
   const [slots, setSlots] = useState<Lens[]>(['evening'])
   const [tab, setTab] = useState<Tab>('description')
-  const [emailSent, setEmailSent] = useState(false)
-  const [email, setEmail] = useState('')
   const [stickyVisible, setStickyVisible] = useState(false)
   const [viewerCount, setViewerCount] = useState(0)
   useEffect(() => { setViewerCount(Math.floor(Math.random() * 20) + 18) }, [])
@@ -500,33 +498,6 @@ export default function ProductPage() {
           ))}
         </div>
       </div>
-
-      {/* Email capture */}
-      <section style={{ background: '#1C0F0A', padding: '72px 48px' }}>
-        <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: 'rgba(250,240,228,0.5)', fontWeight: 500, marginBottom: 14 }}>Stay in the loop</div>
-          <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 34, fontWeight: 500, color: '#FAF0E4', lineHeight: 1.15, marginBottom: 14 }}>Sleep tips, lens guides & <em style={{ fontStyle: 'italic', fontWeight: 400 }}>early access.</em></h2>
-          <p style={{ fontSize: 14, color: 'rgba(250,240,228,0.55)', lineHeight: 1.75, marginBottom: 32 }}>No noise. Just useful things — straight to your inbox, once a month.</p>
-          {!emailSent ? (
-            <form onSubmit={e => { e.preventDefault(); setEmailSent(true) }} style={{ display: 'flex', gap: 10, maxWidth: 440, margin: '0 auto', flexWrap: 'wrap' as const }}>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Your email address"
-                required
-                style={{ flex: 1, minWidth: 200, background: 'rgba(250,240,228,0.08)', border: '1px solid rgba(250,240,228,0.2)', color: '#FAF0E4', fontFamily: 'var(--font-raleway)', fontSize: 14, padding: '14px 18px', borderRadius: 6, outline: 'none' }}
-              />
-              <button type="submit" style={{ background: '#FAF0E4', color: '#1C0F0A', border: 'none', padding: '14px 28px', fontFamily: 'var(--font-raleway)', fontSize: 13, fontWeight: 500, letterSpacing: '0.06em', borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' as const }}>
-                Subscribe
-              </button>
-            </form>
-          ) : (
-            <p style={{ fontSize: 13, color: 'rgba(250,240,228,0.7)' }}>✓ You&apos;re in. Welcome to the ALPE community.</p>
-          )}
-          <p style={{ fontSize: 11, color: 'rgba(250,240,228,0.3)', marginTop: 18, lineHeight: 1.6 }}>No spam, ever. Unsubscribe with one click.</p>
-        </div>
-      </section>
 
       {/* Sticky add to cart bar */}
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 500, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
