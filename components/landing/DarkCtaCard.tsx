@@ -31,14 +31,6 @@ export default function DarkCtaCard() {
         </h2>
 
         <Button label={darkCtaContent.cta} href="/shop" variant="outlined-white" />
-
-        {/* Social proof row */}
-        <div className="flex items-center justify-center gap-1.5 mt-6">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className="text-gold text-sm" aria-hidden="true">★</span>
-          ))}
-          <span className="text-linen/70 text-sm ml-1">{darkCtaContent.socialProof}</span>
-        </div>
       </motion.div>
     </section>
   )
