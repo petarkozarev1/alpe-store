@@ -297,7 +297,7 @@ export default function ProductPage() {
                 { title: 'BS EN ISO\n12312-1', sub: 'EU оптична безопасност', icon: '☆' },
                 { title: 'ANSI\nZ80.3', sub: 'Американски стандарт', icon: '◷' },
                 { title: 'AS/NZS\n1067.1', sub: 'Австралийски стандарт', icon: '◉' },
-                { title: 'UV400\nЗащита', sub: 'Пълна UV блокада', icon: '◈' },
+                { title: 'UV400\nЗащита', sub: 'Пълна UV защита', icon: '◈' },
               ].map(c => (
                 <div key={c.title} style={{ textAlign: 'center' }}>
                   <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid rgba(196,154,108,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 6px', color: '#C49A6C', fontSize: 14 }}>{c.icon}</div>
