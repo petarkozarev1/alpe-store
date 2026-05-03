@@ -30,7 +30,7 @@ export const darkCtaContent = {
 }
 
 export const ingredientsContent = {
-  badge: '✓ BS EN ISO 12312-1 · ANSI Z80.3 · AS/NZS 1067.1',
+  badge: 'Технология на стъклата',
   headline: 'Изобретено за\n"Дигиталната Ера"',
   editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
   editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
