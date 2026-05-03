@@ -61,7 +61,7 @@ export default function IngredientsSection() {
                       <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-gold border border-gold/50 rounded px-1.5 py-0.5 flex-shrink-0">{ingredient.badge}</span>
                     )}
                   </div>
-                  <span className="text-stone text-sm text-right max-w-sm shrink-0">{ingredient.description}</span>
+                  <span className="text-stone text-sm text-right max-w-md shrink-0">{ingredient.description}</span>
                 </div>
                 {i < ingredients.length - 1 && <hr className="border-stone/30" />}
               </motion.div>
