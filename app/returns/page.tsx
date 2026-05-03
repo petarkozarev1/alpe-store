@@ -21,7 +21,7 @@ export default function ReturnsPage() {
           7 нощи проба.<br />Не ти харесва — връщаш ги.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-16">
-          Без малък шрифт. Без „само при определени условия". Ако не усетиш разлика след 7 нощи, получаваш парите си обратно.
+          Без малък шрифт. Без „само при определени условия&rdquo;. Ако не усетиш разлика след 7 нощи, получаваш парите си обратно.
         </p>
 
         <div className="flex flex-col gap-10 max-w-2xl mb-16">
