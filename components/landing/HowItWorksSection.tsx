@@ -51,16 +51,16 @@ export default function HowItWorksSection() {
     <section
       ref={sectionRef}
       id="how-it-works"
-      className="w-full bg-[#B8906A] text-linen"
+      className="w-full bg-parchment text-iron"
     >
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col md:flex-row gap-16 md:gap-24">
         {/* Left sticky column */}
         <div className="md:sticky md:top-24 md:self-start flex-shrink-0 md:w-80 flex flex-col gap-8 pt-24 pb-8">
-          <Badge label={howItWorksContent.badge} light />
-          <h2 className="text-[clamp(36px,5vw,52px)] font-bold tracking-tight leading-tight whitespace-pre-line">
+          <Badge label={howItWorksContent.badge} />
+          <h2 className="text-[clamp(36px,5vw,52px)] font-bold tracking-tight leading-tight whitespace-pre-line text-iron">
             {howItWorksContent.headline}
           </h2>
-          <Button label={howItWorksContent.cta} href="/shop" variant="outlined-white" />
+          <Button label={howItWorksContent.cta} href="/shop" variant="primary" />
         </div>
 
         {/* Right stacking cards */}
