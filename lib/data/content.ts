@@ -40,11 +40,11 @@ export const ingredientsContent = {
 
 export const ingredients: Ingredient[] = [
   { number: 1, name: 'Филтър за синя светлина', description: 'Блокира до 99% от синята светлина — тествано по BS EN ISO 12312-1.' },
-  { number: 2, name: 'Антирефлексно покритие', description: 'Край на блясъка от екрана и лампите.' },
+  { number: 2, name: 'Филтър за зелена светлина', description: 'Блокира вредната зелена светлина (500–560nm) — свързана с нарушен сън и умора на очите дори след залез.', badge: 'НОВО' },
   { number: 3, name: 'UV400 защита', description: 'Пълна защита, вътре и навън.' },
   { number: 4, name: 'Устойчиви лещи', description: 'Издържат на ежедневието, без драскотини.' },
   { number: 5, name: 'Лека рамка', description: 'Слагаш ги и забравяш, че ги носиш.' },
-  { number: 6, name: 'Филтър за зелена светлина', description: 'Блокира вредната зелена светлина (500–560nm) — свързана с нарушен сън и умора на очите дори след залез.', badge: 'НОВО' },
+  { number: 6, name: 'Антирефлексно покритие', description: 'Край на блясъка от екрана и лампите.' },
 ]
 
 export const howItWorksContent = {
