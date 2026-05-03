@@ -58,6 +58,7 @@ export default function ProductPage() {
   useEffect(() => { setViewerCount(Math.floor(Math.random() * 20) + 18) }, [])
   const ctaRef = useRef<HTMLDivElement>(null)
   const addToCart = useCartStore(s => s.addItem)
+  const openDrawer = useCartStore(s => s.openDrawer)
 
   useEffect(() => {
     if (!ctaRef.current) return
@@ -90,12 +91,13 @@ export default function ProductPage() {
       productId: `alpe-${lens}`,
       variantId: `alpe-${lens}-bundle-${bundle}`,
       name: d.name,
-      variantLabel: `${bundle} Pair${bundle > 1 ? 's' : ''}`,
+      variantLabel: `${bundle} чифт${bundle > 1 ? 'а' : ''}`,
       price: bundlePrices[bundle],
       quantity: 1,
       image: d.images[0].src,
       slug: 'alpe-glasses',
     })
+    openDrawer()
   }
 
   const d = lensData[lens]
