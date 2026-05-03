@@ -40,8 +40,14 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop right: cart */}
+        {/* Desktop right: CTA + cart */}
         <div className="hidden md:flex flex-1 justify-end items-center gap-6">
+          <Link
+            href="/shop"
+            className="font-sans text-xs font-bold uppercase tracking-widest bg-onyx text-linen px-5 py-2 rounded-full hover:bg-iron transition-colors"
+          >
+            Поръчай сега
+          </Link>
           <button
             onClick={openDrawer}
             aria-label="Отвори количката"
