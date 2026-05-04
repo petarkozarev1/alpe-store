@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
     { label: 'Въпроси', href: '#faqs' },
   ],
   footer: {
-    description: 'Очила за синя светлина за ежедневна употреба пред екран.',
+    description: 'Очила за синя и зелена светлина за ежедневна употреба пред екран.',
     columns: [
       {
         title: 'ПРОДУКТ',
