@@ -109,17 +109,17 @@ export default function ProductPage() {
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
       {/* Breadcrumb */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.5)', letterSpacing: '0.06em' }}>
+      <div className="product-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.5)', letterSpacing: '0.06em' }}>
         <Link href="/" style={{ color: 'rgba(28,15,10,0.5)', textDecoration: 'none' }}>Начало</Link>
         <span style={{ opacity: 0.4 }}>›</span>
         <span style={{ color: '#1C0F0A' }}>{d.name}</span>
       </div>
 
       {/* Main product grid */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
+      <div className="product-grid-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
 
         {/* LEFT: Gallery */}
-        <div style={{ position: 'sticky', top: 80 }}>
+        <div className="product-gallery-col" style={{ position: 'sticky', top: 80 }}>
           {/* Main image */}
           <div style={{ width: '100%', aspectRatio: '4/3', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
             <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className={thumbIdx[lens] === 1 ? 'object-contain' : 'object-cover'} quality={100} />
@@ -294,7 +294,7 @@ export default function ProductPage() {
           {/* Cert strip */}
           <div style={{ border: '1px solid rgba(28,15,10,0.1)', borderRadius: 10, padding: '14px 16px', margin: '16px 0 0', background: '#fff8f2' }}>
             <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.4)', marginBottom: 12 }}>Сертифицирани и тествани стъкла</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 8 }}>
+            <div className="product-cert-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 8 }}>
               {[
                 { title: 'BS EN ISO\n12312-1', sub: 'EU оптична безопасност', icon: '☆' },
                 { title: 'ANSI\nZ80.3', sub: 'Американски стандарт', icon: '◷' },
@@ -312,7 +312,7 @@ export default function ProductPage() {
           </div>
 
           {/* Trust row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, padding: '20px 0', borderTop: '1px solid rgba(28,15,10,0.09)', borderBottom: '1px solid rgba(28,15,10,0.09)', margin: '20px 0' }}>
+          <div className="product-trust-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, padding: '20px 0', borderTop: '1px solid rgba(28,15,10,0.09)', borderBottom: '1px solid rgba(28,15,10,0.09)', margin: '20px 0' }}>
             {[
               { icon: '🔒', label: 'Сигурна\nплащане' },
               { icon: '🚚', label: 'Безплатна експресна\nдоставка' },
@@ -328,7 +328,7 @@ export default function ProductPage() {
 
           {/* Detail tabs */}
           <div style={{ marginTop: 40, borderTop: '1px solid rgba(28,15,10,0.09)' }}>
-            <div style={{ display: 'flex', gap: 0 }}>
+            <div className="product-tab-row" style={{ display: 'flex', gap: 0 }}>
               {(['description', 'science', 'reviews'] as Tab[]).map(t => (
                 <button
                   key={t}
@@ -375,7 +375,7 @@ export default function ProductPage() {
 
             {tab === 'reviews' && (
               <div style={{ padding: '28px 0' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <div className="product-reviews-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   {[
                     { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'Берлин' },
                     { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPÉ не го оправи."', author: 'Елена М.', location: 'Мюнхен' },
@@ -396,14 +396,14 @@ export default function ProductPage() {
       </div>
 
       {/* Outcome stats */}
-      <section style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
+      <section className="product-stats-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
             <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.5)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPÉ след 14 дни редовно ползване.</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
+          <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
               { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на ALPÉ', delay: '0.2s' },
               { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
@@ -426,13 +426,13 @@ export default function ProductPage() {
       </section>
 
       {/* First 7 nights */}
-      <section style={{ padding: '80px 48px', background: '#FAF0E4' }}>
+      <section className="product-nights-section" style={{ padding: '80px 48px', background: '#FAF0E4' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с ALPÉ</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Първите ви <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 нощи.</em></h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
+          <div className="product-nights-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
             {[
               { n: '1', title: 'Днес', body: 'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Очите ви ще усетят разликата веднага.', dark: false },
               { n: '3', title: 'Ден 3', body: 'Напрежението в очите започва да отшумява. Главоболието, което ви се появяваше около 16:00 ч.? Днес може и да не го забележите.', dark: false },
@@ -450,7 +450,7 @@ export default function ProductPage() {
       </section>
 
       {/* Comparison table */}
-      <section style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
+      <section className="product-comparison-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Защо ALPÉ</div>
@@ -492,9 +492,9 @@ export default function ProductPage() {
       </section>
 
       {/* More images */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 48px 100px' }}>
+      <div className="product-more-images" style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 48px 100px' }}>
         <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 32, fontWeight: 500, marginBottom: 32, color: '#1C0F0A' }}>Две стъкла. <em style={{ fontStyle: 'italic', fontWeight: 400 }}>Една рамка.</em></h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className="product-more-images-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           {[
             { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening lens', label: 'Вечер · Преди лягане' },
             { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily lens', label: 'За всеки ден · Работа пред екран' },
@@ -508,7 +508,7 @@ export default function ProductPage() {
       </div>
 
       {/* Sticky add to cart bar */}
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
+      <div className="product-sticky-bar" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
             <Image src={d.images[0].src} alt={`ALPÉ ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
@@ -525,8 +525,32 @@ export default function ProductPage() {
 
       <style>{`
         @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(0.75);} }
+
         @media (max-width:960px) {
+          .product-breadcrumb { padding: 14px 24px 0 !important; }
           .product-grid-inner { grid-template-columns: 1fr !important; gap: 40px !important; padding: 24px 24px 80px !important; }
+          .product-stats-section { padding: 60px 24px !important; }
+          .product-nights-section { padding: 60px 24px !important; }
+          .product-comparison-section { padding: 60px 24px !important; }
+          .product-more-images { padding: 60px 24px 80px !important; }
+        }
+
+        @media (max-width:640px) {
+          .product-breadcrumb { padding: 12px 16px 0 !important; }
+          .product-gallery-col { position: static !important; }
+          .product-grid-inner { padding: 20px 16px 80px !important; gap: 28px !important; }
+          .product-cert-grid { grid-template-columns: repeat(3,1fr) !important; gap: 6px !important; }
+          .product-trust-grid { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; padding: 16px 0 !important; }
+          .product-tab-row button { padding: 12px 14px !important; font-size: 11px !important; }
+          .product-reviews-grid { grid-template-columns: 1fr !important; }
+          .product-stats-section { padding: 48px 16px !important; }
+          .product-stats-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .product-nights-section { padding: 48px 16px !important; }
+          .product-nights-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .product-comparison-section { padding: 48px 16px !important; }
+          .product-more-images { padding: 48px 16px 80px !important; }
+          .product-more-images-grid { grid-template-columns: 1fr !important; }
+          .product-sticky-bar { padding: 12px 16px !important; }
         }
       `}</style>
     </div>

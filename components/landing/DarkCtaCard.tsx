@@ -25,7 +25,7 @@ export default function DarkCtaCard() {
         </div>
 
         {/* Headline */}
-        <h2 className="text-linen text-[clamp(32px,5vw,52px)] font-bold tracking-tight leading-tight max-w-2xl mb-3 whitespace-nowrap">
+        <h2 className="text-linen text-[clamp(28px,5vw,52px)] font-bold tracking-tight leading-tight max-w-2xl mb-3">
           {darkCtaContent.headline}
         </h2>
 

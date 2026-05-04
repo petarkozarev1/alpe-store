@@ -37,9 +37,9 @@ export default function IngredientsSection() {
 
         {/* Key ingredients table */}
         <div>
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h3 className="text-xl font-bold text-onyx">{ingredientsContent.sectionTitle}</h3>
-            <Button label={ingredientsContent.cta} href="/shop" variant="primary" className="font-bold" />
+            <Button label={ingredientsContent.cta} href="/shop" variant="primary" className="font-bold self-start sm:self-auto" />
           </div>
 
           <div className="flex flex-col">
@@ -51,7 +51,7 @@ export default function IngredientsSection() {
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-center justify-between py-5 gap-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-5 gap-1.5 sm:gap-6">
                   <div className="flex items-center gap-4 min-w-0">
                     <span className="w-8 h-8 rounded-full border border-gold flex items-center justify-center text-sm font-medium flex-shrink-0 text-gold">
                       {ingredient.number}
@@ -61,7 +61,7 @@ export default function IngredientsSection() {
                       <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-gold border border-gold/50 rounded px-1.5 py-0.5 flex-shrink-0">{ingredient.badge}</span>
                     )}
                   </div>
-                  <span className="text-stone text-sm text-right max-w-md shrink-0">{ingredient.description}</span>
+                  <span className="text-stone text-sm sm:text-right sm:max-w-md pl-12 sm:pl-0">{ingredient.description}</span>
                 </div>
                 {i < ingredients.length - 1 && <hr className="border-stone/30" />}
               </motion.div>

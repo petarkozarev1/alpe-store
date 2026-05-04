@@ -57,6 +57,7 @@ export default function HeroSection() {
                   src={current.src}
                   alt={current.alt}
                   fill
+                  sizes="(min-width: 768px) 64px, 56px"
                   className="object-cover"
                   style={{ objectPosition: current.objectPosition ?? '50% 25%' }}
                 />
