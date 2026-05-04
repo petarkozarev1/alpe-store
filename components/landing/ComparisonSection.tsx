@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
@@ -7,7 +7,7 @@ import { beforeAfterContent, withoutItems, withItems } from '@/lib/data/content'
 
 export default function ComparisonSection() {
   return (
-    <section id="why-alpe" className="w-full bg-parchment py-24">
+    <section id="why-ALPÉ" className="w-full bg-parchment py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         {/* Header */}
@@ -32,7 +32,7 @@ export default function ComparisonSection() {
 
         {/* Comparison cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-          {/* Without ALPE */}
+          {/* Without ALPÉ */}
           <div className="bg-iron rounded-2xl p-8">
             <h3 className="text-2xl font-semibold text-linen mb-6 text-center">Без ALPÉ</h3>
             <ul className="flex flex-col gap-4">

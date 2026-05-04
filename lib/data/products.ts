@@ -1,16 +1,16 @@
-import type { Product } from '@/lib/types'
+﻿import type { Product } from '@/lib/types'
 
 export const products: Product[] = [
   {
-    id: 'alpe-classic',
-    slug: 'alpe-classic',
+    id: 'ALPÉ-classic',
+    slug: 'ALPÉ-classic',
     name: 'ALPÉ Classic',
     subtitle: 'Един чифт. Безкраен комфорт.',
     description: 'ALPÉ Classic пази очите ти при дълги сесии пред екрана — с премиум филтър за синя светлина, антирефлексно покритие и ултралека рамка, създадена за целодневно носене.',
     price: 49,
     images: [
-      'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPE+Classic',
-      'https://via.placeholder.com/600x600/E8E8E8/000000?text=ALPE+Classic+Side',
+      'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPÉ+Classic',
+      'https://via.placeholder.com/600x600/E8E8E8/000000?text=ALPÉ+Classic+Side',
     ],
     variants: [
       { id: 'black', label: 'Black', inStock: true },
@@ -19,15 +19,15 @@ export const products: Product[] = [
     badge: 'Най-продаван',
   },
   {
-    id: 'alpe-pro',
-    slug: 'alpe-pro',
+    id: 'ALPÉ-pro',
+    slug: 'ALPÉ-pro',
     name: 'ALPÉ Pro',
     subtitle: 'Максимална защита. Минималистичен вид.',
     description: 'ALPÉ Pro предлага най-мощния ни филтър за синя светлина и устойчиви на надраскване лещи — създадени за power users, разработчици и всички, чийто живот се върти около екрани.',
     price: 79,
     images: [
-      'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPE+Pro',
-      'https://via.placeholder.com/600x600/E8E8E8/000000?text=ALPE+Pro+Side',
+      'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPÉ+Pro',
+      'https://via.placeholder.com/600x600/E8E8E8/000000?text=ALPÉ+Pro+Side',
     ],
     variants: [
       { id: 'black', label: 'Black', inStock: true },

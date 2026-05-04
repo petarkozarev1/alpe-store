@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { benefits } from '@/lib/data/content'
@@ -12,8 +12,8 @@ export default function BenefitsScroll() {
         <div className="sticky top-0 h-screen w-full flex items-center justify-center pointer-events-none -mb-[100vh]">
           <div className="relative w-56 h-80 md:w-72 md:h-96">
             <Image
-              src="https://via.placeholder.com/300x450/F5F5F0/000000?text=ALPE+Glasses"
-              alt="ALPE Blue Light Glasses"
+              src="https://via.placeholder.com/300x450/F5F5F0/000000?text=ALPÉ+Glasses"
+              alt="ALPÉ Blue Light Glasses"
               fill
               className="object-contain"
               priority

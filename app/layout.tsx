@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { Cormorant_Garamond, Raleway } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
@@ -18,8 +18,8 @@ const raleway = Raleway({
 })
 
 export const metadata: Metadata = {
-  title: 'ALPE — Screen All Day. Sleep All Night.',
-  description: 'ALPE blue light blocking glasses protect your eyes during long screen sessions — reducing eye strain and sleep disruption.',
+  title: 'ALPÉ — Screen All Day. Sleep All Night.',
+  description: 'ALPÉ blue light blocking glasses protect your eyes during long screen sessions — reducing eye strain and sleep disruption.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

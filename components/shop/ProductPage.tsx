@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,11 +17,11 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
     benefitText: 'Оптимално да се носят след залез слънце и преди сън.',
     benefitColor: '#7a4e1a',
-    descText: "Лещите ALPE Evening са създадени с една цел: сън. Носени 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
+    descText: "Лещите ALPÉ Evening са създадени с една цел: сън. Носени 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
     images: [
-      { src: '/images/shop/shop-evening-1.png', alt: 'ALPE Evening — lifestyle' },
-      { src: '/images/shop/shop-evening-2.png', alt: 'ALPE Evening — glasses' },
-      { src: '/images/shop/shop-evening-3.png', alt: 'ALPE Evening — box' },
+      { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening — lifestyle' },
+      { src: '/images/shop/shop-evening-2.png', alt: 'ALPÉ Evening — glasses' },
+      { src: '/images/shop/shop-evening-3.png', alt: 'ALPÉ Evening — box' },
     ],
   },
   daily: {
@@ -33,11 +33,11 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#f9e94e,#e6b800)',
     benefitText: 'Идеални за целодневна работа пред екран.',
     benefitColor: '#7a6200',
-    descText: "The ALPE Daily lens is built for the long screen session. Its amber-yellow tint cuts 65% of blue light — enough to reduce eye strain and end-of-day headaches — while keeping colors accurate enough for design work, photo editing, and video calls. Lightweight, comfortable, and wearable for 8+ hours.",
+    descText: "The ALPÉ Daily lens is built for the long screen session. Its amber-yellow tint cuts 65% of blue light — enough to reduce eye strain and end-of-day headaches — while keeping colors accurate enough for design work, photo editing, and video calls. Lightweight, comfortable, and wearable for 8+ hours.",
     images: [
-      { src: '/images/shop/shop-daily-1.png', alt: 'ALPE Daily — lifestyle' },
-      { src: '/images/shop/shop-daily-2.png', alt: 'ALPE Daily — glasses' },
-      { src: '/images/shop/shop-daily-3.png', alt: 'ALPE Daily — box' },
+      { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily — lifestyle' },
+      { src: '/images/shop/shop-daily-2.png', alt: 'ALPÉ Daily — glasses' },
+      { src: '/images/shop/shop-daily-3.png', alt: 'ALPÉ Daily — box' },
     ],
   },
 }
@@ -86,14 +86,14 @@ export default function ProductPage() {
   function handleAddToCart() {
     const d = lensData[lens]
     addToCart({
-      productId: `alpe-${lens}`,
-      variantId: `alpe-${lens}-bundle-${bundle}`,
+      productId: `ALPÉ-${lens}`,
+      variantId: `ALPÉ-${lens}-bundle-${bundle}`,
       name: d.name,
       variantLabel: `${bundle} чифт${bundle > 1 ? 'а' : ''}`,
       price: bundlePrices[bundle],
       quantity: 1,
       image: d.images[0].src,
-      slug: 'alpe-glasses',
+      slug: 'ALPÉ-glasses',
     })
     openDrawer()
   }
@@ -361,11 +361,11 @@ export default function ProductPage() {
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите ALPE използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите ALPÉ използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>Лещите Evening (оранжеви) блокират 98% от този диапазон. Лещите Daily (жълти) блокират 65%, като поддържат ползите за циркадния ритъм и същевременно запазват точността на цветовете при работа пред екран.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>В проучване от 2022 г., публикувано в Journal of Sleep Research, очила, блокиращи синята светлина, носени 2 часа преди лягане, подобряват заспиването със средно 18 минути и увеличават общото време за сън с 24 минути.</p>
                 <div style={{ marginTop: 24, background: '#f5ede4', border: '1.5px solid rgba(196,154,108,0.3)', borderRadius: 12, padding: '20px 22px' }}>
-                  <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Нови изследвания: Зелената светлина също има значение.</strong> Последните проучвания сочат, че зелената светлина в диапазона 500–560 nm също потиска производството на мелатонин, макар и с по-малка сила в сравнение със синята. Лещите ALPE Evening са насочени към двата диапазона, като ви осигуряват защита в целия спектър за възстановителен сън.</p>
+                  <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Нови изследвания: Зелената светлина също има значение.</strong> Последните проучвания сочат, че зелената светлина в диапазона 500–560 nm също потиска производството на мелатонин, макар и с по-малка сила в сравнение със синята. Лещите ALPÉ Evening са насочени към двата диапазона, като ви осигуряват защита в целия спектър за възстановителен сън.</p>
                   <p style={{ fontSize: 11, color: 'rgba(196,154,108,0.9)', marginTop: 12 }}>Hattar и др., 2003 · Zhao и др., 2021</p>
                 </div>
               </div>
@@ -376,7 +376,7 @@ export default function ProductPage() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   {[
                     { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'Берлин' },
-                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPE не го оправи."', author: 'Елена М.', location: 'Мюнхен' },
+                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPÉ не го оправи."', author: 'Елена М.', location: 'Мюнхен' },
                     { text: '„Бях скептичен. След три седмици спя по-добре, отколкото през последните години. Струва си всеки цент."', author: 'Джеймс Т.', location: 'Лондон' },
                     { text: '„Купих комплекта от 3 чифта – един за работа, един за вкъщи и един за пътуване. Гениално."', author: 'София Р.', location: 'Амстердам' },
                   ].map((r, i) => (
@@ -399,14 +399,14 @@ export default function ProductPage() {
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.5)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPE след 14 дни редовно ползване.</p>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.5)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPÉ след 14 дни редовно ползване.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
-              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на ALPE', delay: '0.2s' },
+              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на ALPÉ', delay: '0.2s' },
               { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
-              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към ALPE Daily', delay: '0.5s' },
-              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали ALPE на приятел или член на семейството', delay: '0.65s' },
+              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към ALPÉ Daily', delay: '0.5s' },
+              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали ALPÉ на приятел или член на семейството', delay: '0.65s' },
             ].map(s => (
               <div key={s.label} style={{ background: '#FAF0E4', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 12, padding: '32px 36px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14 }}>
@@ -427,7 +427,7 @@ export default function ProductPage() {
       <section style={{ padding: '80px 48px', background: '#FAF0E4' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с ALPE</div>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с ALPÉ</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Първите ви <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 нощи.</em></h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
@@ -451,7 +451,7 @@ export default function ProductPage() {
       <section style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Защо ALPE</div>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Защо ALPÉ</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Не всички очила със защита от синя светлина <em style={{ fontStyle: 'italic', fontWeight: 400 }}>са еднакви.</em></h2>
           </div>
           <div style={{ overflowX: 'auto' }}>
@@ -459,24 +459,24 @@ export default function ProductPage() {
               <thead>
                 <tr>
                   <th style={{ textAlign: 'left', padding: '14px 20px', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, borderBottom: '2px solid rgba(28,15,10,0.1)' }}></th>
-                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 600, color: '#FAF0E4', background: '#1C0F0A', textAlign: 'center', borderBottom: '2px solid #1C0F0A' }}>ALPE</th>
+                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 600, color: '#FAF0E4', background: '#1C0F0A', textAlign: 'center', borderBottom: '2px solid #1C0F0A' }}>ALPÉ</th>
                   <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 500, color: 'rgba(28,15,10,0.5)', textAlign: 'center', borderBottom: '2px solid rgba(28,15,10,0.1)' }}>Обикновени</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { feature: 'Филтриране на синята светлина', alpe: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', alpeColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Лещи със сертификат CE', alpe: '✓', generic: 'Рядко', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Изкривяване на цветовете', alpe: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', alpeColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Тегло на рамката', alpe: '22 г кристален ацетат', generic: '35–50 г пластмаса', alpeColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Покритие против надраскване', alpe: '✓', generic: 'Не', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Две специално създадени лещи', alpe: '✓', generic: 'Един универсален оттенък', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Филтър за зелена светлина (500–560 nm)', alpe: '✓', generic: '✗ Не е включено', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтриране на синята светлина', ALPÉ: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', ALPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Лещи със сертификат CE', ALPÉ: '✓', generic: 'Рядко', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Изкривяване на цветовете', ALPÉ: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', ALPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Тегло на рамката', ALPÉ: '22 г кристален ацетат', generic: '35–50 г пластмаса', ALPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Покритие против надраскване', ALPÉ: '✓', generic: 'Не', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Две специално създадени лещи', ALPÉ: '✓', generic: 'Един универсален оттенък', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтър за зелена светлина (500–560 nm)', ALPÉ: '✓', generic: '✗ Не е включено', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
                     <td style={{ padding: '16px 20px', textAlign: 'center', background: 'rgba(28,15,10,0.03)' }}>
-                      <span style={{ fontSize: row.alpeColor ? 16 : 13, fontWeight: row.alpeColor ? undefined : 500, color: row.alpeColor || '#1C0F0A' }}>{row.alpe}</span>
+                      <span style={{ fontSize: row.ALPÉColor ? 16 : 13, fontWeight: row.ALPÉColor ? undefined : 500, color: row.ALPÉColor || '#1C0F0A' }}>{row.ALPÉ}</span>
                     </td>
                     <td style={{ padding: '16px 20px', textAlign: 'center' }}>
                       <span style={{ fontSize: 13, color: 'rgba(28,15,10,0.5)' }}>{row.generic}</span>
@@ -494,8 +494,8 @@ export default function ProductPage() {
         <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 32, fontWeight: 500, marginBottom: 32, color: '#1C0F0A' }}>Две стъкла. <em style={{ fontStyle: 'italic', fontWeight: 400 }}>Една рамка.</em></h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           {[
-            { src: '/images/shop/shop-evening-1.png', alt: 'ALPE Evening lens', label: 'Вечер · Преди лягане' },
-            { src: '/images/shop/shop-daily-1.png', alt: 'ALPE Daily lens', label: 'За всеки ден · Работа пред екран' },
+            { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening lens', label: 'Вечер · Преди лягане' },
+            { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily lens', label: 'За всеки ден · Работа пред екран' },
           ].map(img => (
             <div key={img.label} style={{ borderRadius: 12, overflow: 'hidden', position: 'relative', aspectRatio: '4/3' }}>
               <Image src={img.src} alt={img.alt} fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" quality={100} />
@@ -509,7 +509,7 @@ export default function ProductPage() {
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-            <Image src={d.images[0].src} alt={`ALPE ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
+            <Image src={d.images[0].src} alt={`ALPÉ ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
           </div>
           <div>
             <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>

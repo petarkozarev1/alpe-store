@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, type Transition } from 'framer-motion'
@@ -16,12 +16,12 @@ const fadeUp = (delay = 0) => ({
 export default function HeroSection() {
   const [index, setIndex] = useState(0)
   const images = [
-    { src: '/images/shuffle5.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle2.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle4.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle1.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle6.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle3.png', alt: 'ALPE customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle5.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle2.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle4.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle1.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle6.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
+    { src: '/images/shuffle3.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
   ]
 
   useEffect(() => {

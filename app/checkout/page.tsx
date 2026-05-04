@@ -1,7 +1,7 @@
-import CheckoutForm from '@/components/checkout/CheckoutForm'
+﻿import CheckoutForm from '@/components/checkout/CheckoutForm'
 import OrderSummary from '@/components/checkout/OrderSummary'
 
-export const metadata = { title: 'Checkout — ALPE' }
+export const metadata = { title: 'Checkout — ALPÉ' }
 
 export default function CheckoutPage() {
   return (

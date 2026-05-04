@@ -1,4 +1,4 @@
-import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
+﻿import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
 
 export const heroContent = {
   badge: '✓ EU сертифицирани · ★★★★★ 1000+ доволни клиенти',
@@ -8,12 +8,12 @@ export const heroContent = {
   subtext: 'Блокираме до 99% от синята и зелената светлина за по-малко умора, по-добър сън и повече енергия всеки ден.',
   cta: 'Защити очите си',
   heroFaceImages: [
-    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
-    { src: '/images/hero/person-1-night.png', alt: 'Man wearing ALPE Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
-    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '45% 25%' },
-    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing ALPE Day glasses — clear frame, gold lenses',       objectPosition: '55% 25%' },
-    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing ALPE Day glasses — clear frame, yellow lenses',   objectPosition: '35% 20%' },
-    { src: '/images/hero/person-6-night.png', alt: 'Man wearing ALPE Night glasses — clear frame, orange lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing ALPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-1-night.png', alt: 'Man wearing ALPÉ Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
+    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing ALPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '45% 25%' },
+    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing ALPÉ Day glasses — clear frame, gold lenses',       objectPosition: '55% 25%' },
+    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing ALPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '35% 20%' },
+    { src: '/images/hero/person-6-night.png', alt: 'Man wearing ALPÉ Night glasses — clear frame, orange lenses',   objectPosition: '50% 25%' },
   ],
 }
 
@@ -32,8 +32,8 @@ export const darkCtaContent = {
 export const ingredientsContent = {
   badge: 'Технология на стъклата',
   headline: 'Създадено за\n"Дигиталната Ера"',
-  editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPE+Lenses',
-  editorialImageAlt: 'ALPE precision lens technology — blue light filter, anti-glare, UV400',
+  editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPÉ+Lenses',
+  editorialImageAlt: 'ALPÉ precision lens technology — blue light filter, anti-glare, UV400',
   sectionTitle: 'Какво има във всяко стъкло?',
   cta: 'Виж стъклата',
 }

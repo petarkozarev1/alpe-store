@@ -1,16 +1,16 @@
-'use client'
+﻿'use client'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 import { galleryContent } from '@/lib/data/content'
 
 const images = [
-  { src: '/images/shuffle5.png', alt: 'ALPE customer' },
-  { src: '/images/shuffle2.png', alt: 'ALPE customer' },
-  { src: '/images/shuffle4.png', alt: 'ALPE customer' },
-  { src: '/images/shuffle1.png', alt: 'ALPE customer' },
-  { src: '/images/shuffle6.png', alt: 'ALPE customer' },
-  { src: '/images/shuffle3.png', alt: 'ALPE customer' },
+  { src: '/images/shuffle5.png', alt: 'ALPÉ customer' },
+  { src: '/images/shuffle2.png', alt: 'ALPÉ customer' },
+  { src: '/images/shuffle4.png', alt: 'ALPÉ customer' },
+  { src: '/images/shuffle1.png', alt: 'ALPÉ customer' },
+  { src: '/images/shuffle6.png', alt: 'ALPÉ customer' },
+  { src: '/images/shuffle3.png', alt: 'ALPÉ customer' },
 ]
 
 export default function GallerySection() {

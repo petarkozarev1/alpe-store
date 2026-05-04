@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
@@ -31,7 +31,7 @@ export default function FinalCtaSection() {
         <div className="relative mt-12 w-full max-w-4xl aspect-[16/9] overflow-hidden rounded-[2.5rem]">
           <Image
             src="/images/finalcta.png"
-            alt="Couple wearing ALPE glasses"
+            alt="Couple wearing ALPÉ glasses"
             fill
             sizes="(min-width: 768px) 896px, 100vw"
             className="object-cover"

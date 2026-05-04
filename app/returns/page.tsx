@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Връщане | ALPÉ',
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const steps = [
   { num: '01', title: 'Носи ги 7 нощи', body: 'Дай им истински шанс — поне 7 вечери пред екрана. Повечето хора усещат разлика до тогава.' },
-  { num: '02', title: 'Пиши ни', body: 'Ако не си доволен, изпрати имейл на returns@alpe.bg. Казваш само поръчката си — без обяснения.' },
+  { num: '02', title: 'Пиши ни', body: 'Ако не си доволен, изпрати имейл на returns@ALPÉ.bg. Казваш само поръчката си — без обяснения.' },
   { num: '03', title: 'Изпрати ги обратно', body: 'Ние покриваме разходите за обратна доставка. Поставяш ги в оригиналната кутия и ги пускаш по поща.' },
   { num: '04', title: 'Получаваш парите си', body: 'Пълно възстановяване в рамките на 5 работни дни след получаване на пратката.' },
 ]
@@ -40,10 +40,10 @@ export default function ReturnsPage() {
           <h3 className="font-serif text-xl text-iron mb-2">Имате въпрос за връщане?</h3>
           <p className="font-sans text-sm text-stone mb-4">Пишете ни директно — отговаряме в рамките на 24 часа.</p>
           <a
-            href="mailto:returns@alpe.bg"
+            href="mailto:returns@ALPÉ.bg"
             className="font-sans text-sm text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50"
           >
-            returns@alpe.bg
+            returns@ALPÉ.bg
           </a>
         </div>
       </section>

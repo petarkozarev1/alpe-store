@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Общи условия | ALPÉ',
@@ -48,7 +48,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">7. Контакт</h2>
-            <p>За въпроси: <a href="mailto:hello@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpe.bg</a></p>
+            <p>За въпроси: <a href="mailto:hello@ALPÉ.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@ALPÉ.bg</a></p>
           </section>
         </div>
       </section>

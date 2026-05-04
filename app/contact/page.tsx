@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Контакт | ALPÉ',
@@ -6,10 +6,10 @@ export const metadata: Metadata = {
 }
 
 const contacts = [
-  { label: 'Общи въпроси', email: 'hello@alpe.bg', desc: 'Въпроси за продуктите, поръчки, доставка.' },
-  { label: 'Поддръжка', email: 'support@alpe.bg', desc: 'Проблем с поръчка или доставка.' },
-  { label: 'Медии', email: 'press@alpe.bg', desc: 'Журналисти и партньорства.' },
-  { label: 'Връщане', email: 'returns@alpe.bg', desc: 'Заявка за връщане на продукт.' },
+  { label: 'Общи въпроси', email: 'hello@ALPÉ.bg', desc: 'Въпроси за продуктите, поръчки, доставка.' },
+  { label: 'Поддръжка', email: 'support@ALPÉ.bg', desc: 'Проблем с поръчка или доставка.' },
+  { label: 'Медии', email: 'press@ALPÉ.bg', desc: 'Журналисти и партньорства.' },
+  { label: 'Връщане', email: 'returns@ALPÉ.bg', desc: 'Заявка за връщане на продукт.' },
 ]
 
 export default function ContactPage() {
