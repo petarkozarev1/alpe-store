@@ -231,7 +231,7 @@ export default function ProductPage() {
           {/* Multi-pair lens slot picker */}
           {bundle > 1 && (
             <div style={{ background: 'rgba(28,15,10,0.03)', borderRadius: 10, padding: 18, marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Изберете леща за всеки чифт</div>
+              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Изберете стъкла за всеки чифт</div>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
                 {slots.map((s, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
