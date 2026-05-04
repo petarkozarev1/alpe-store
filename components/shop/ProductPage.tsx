@@ -33,7 +33,7 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#f9e94e,#e6b800)',
     benefitText: 'Идеални за целодневна работа пред екран.',
     benefitColor: '#7a6200',
-    descText: "The ALPÉ Daily lens is built for the long screen session. Its amber-yellow tint cuts 65% of blue light — enough to reduce eye strain and end-of-day headaches — while keeping colors accurate enough for design work, photo editing, and video calls. Lightweight, comfortable, and wearable for 8+ hours.",
+    descText: "Очилата ALPÉ Daily са създадени за продължителна работа пред екрана. Тяхната кехлибарено-жълта оцветка филтрира 65% от синята светлина. Достатъчно, за да намали напрежението в очите и главоболието в края на деня, като същевременно запазва цветовете достатъчно точни за работа с дизайн, редактиране на снимки и видеоразговори. Леки, удобни и подходящи за носене в продължение на 8+ часа.",
     images: [
       { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily — lifestyle' },
       { src: '/images/shop/shop-daily-2.png', alt: 'ALPÉ Daily — glasses' },
