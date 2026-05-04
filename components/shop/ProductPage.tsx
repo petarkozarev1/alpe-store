@@ -347,6 +347,7 @@ export default function ProductPage() {
                     { text: <><strong>Рамка от кристален ацетат</strong> — лека, с тегло 22 г, достатъчно издръжлива за ежедневна употреба</> },
                     { text: <><strong>Покритие против надраскване и отблясъци</strong> — лещите остават чисти в продължение на години</> },
                     { text: <><strong>Доживотна гаранция</strong> — подменяме лещите ви безплатно, завинаги</> },
+                    { text: <><strong>Блокират синя и зелена светлина (415–560 nm)</strong> — защита с пълен спектър срещу двете дължини на вълната, които нарушават съня и предизвикват напрежение в очите</> },
                   ].map((f, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                       <div style={{ width: 20, height: 20, background: '#F2E4D0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
