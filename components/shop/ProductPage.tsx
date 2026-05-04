@@ -89,7 +89,7 @@ export default function ProductPage() {
       productId: `ALPÉ-${lens}`,
       variantId: `ALPÉ-${lens}-bundle-${bundle}`,
       name: d.name,
-      variantLabel: `${bundle} чифт${bundle > 1 ? 'а' : ''}`,
+      variantLabel: `${slots.map(s => s === 'evening' ? '🟠 Вечер' : '🟡 За всеки ден').join(' · ')} · ${bundle} чифт${bundle > 1 ? 'а' : ''}`,
       price: bundlePrices[bundle],
       quantity: 1,
       image: d.images[0].src,
