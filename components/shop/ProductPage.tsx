@@ -215,7 +215,7 @@ export default function ProductPage() {
                       {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
                       {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Най-изгодно</span>}
                     </div>
-                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас лещи' : n === 2 ? 'Защита за целия ден' : 'По един за всеки вкъщи'}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : n === 2 ? 'Защита за целия ден' : 'По един за всеки вкъщи'}</div>
                     {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>Спестете 50% с двойния комплект</div>}
                     {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>Спестете 45 € с тройния комплект 🎉</div>}
                   </div>
