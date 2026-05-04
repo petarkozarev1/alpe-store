@@ -471,6 +471,7 @@ export default function ProductPage() {
                   { feature: 'Тегло на рамката', alpe: '22 г кристален ацетат', generic: '35–50 г пластмаса', alpeColor: undefined as string | undefined, genericMuted: false },
                   { feature: 'Покритие против надраскване', alpe: '✓', generic: 'Не', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
                   { feature: 'Две специално създадени лещи', alpe: '✓', generic: 'Един универсален оттенък', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтър за зелена светлина (500–560 nm)', alpe: '✓', generic: '✗ Не е включено', alpeColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
