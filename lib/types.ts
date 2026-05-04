@@ -25,6 +25,8 @@ export interface CartItem {
   quantity: number
   image: string
   slug: string
+  originalPrice?: number
+  saving?: number
 }
 
 export interface NavLink {

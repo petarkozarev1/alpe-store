@@ -94,6 +94,8 @@ export default function ProductPage() {
       quantity: 1,
       image: d.images[0].src,
       slug: 'ALPÉ-glasses',
+      originalPrice: bundle > 1 ? bundlePrices[1] * bundle : undefined,
+      saving: bundle > 1 ? bundleSavings[bundle] : undefined,
     })
     openDrawer()
   }

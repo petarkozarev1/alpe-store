@@ -193,10 +193,24 @@ export default function CartDrawer() {
                             +
                           </button>
                         </div>
-                        <p className="font-serif text-[17px] font-medium text-onyx">
-                          €{(item.price * item.quantity).toFixed(2)}
-                        </p>
+                        <div className="flex flex-col items-end gap-0.5">
+                          {item.originalPrice && (
+                            <span className="font-sans text-xs text-stone/50 line-through">
+                              €{(item.originalPrice * item.quantity).toFixed(2)}
+                            </span>
+                          )}
+                          <p className="font-serif text-[17px] font-medium text-onyx">
+                            €{(item.price * item.quantity).toFixed(2)}
+                          </p>
+                        </div>
                       </div>
+                      {item.saving && (
+                        <div className="mt-2 inline-flex items-center gap-1 bg-[#E8F4EC] rounded-full px-2.5 py-1">
+                          <span className="font-sans text-[10px] font-semibold text-[#2d6a3a]">
+                            Спестяваш €{item.saving}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Remove */}
