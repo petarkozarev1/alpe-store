@@ -193,7 +193,7 @@ export default function ProductPage() {
                   <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Вечер' : 'За всеки ден'}</span>
                 </div>
                 <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% блокиране на синята светлина' : '65% филтър на синята светлина'}</div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% блокиране на синята и зелената светлина' : '65% филтър на синята светлина и частичен зелен филтър'}</div>
               </button>
             ))}
           </div>
