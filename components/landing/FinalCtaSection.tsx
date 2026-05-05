@@ -2,7 +2,6 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
 import { finalCtaContent } from '@/lib/data/content'
 
 export default function FinalCtaSection() {
