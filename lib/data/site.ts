@@ -16,7 +16,6 @@ export const siteConfig: SiteConfig = {
         title: 'ПРОДУКТ',
         links: [
           { label: 'Стъкла', href: '/lenses' },
-          { label: 'Рамки', href: '/frames' },
           { label: 'Цени', href: '/pricing' },
         ],
       },

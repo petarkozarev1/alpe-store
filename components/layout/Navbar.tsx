@@ -17,7 +17,23 @@ export default function Navbar() {
   const itemCount = items.reduce((s, i) => s + i.quantity, 0)
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#B8906A] border-b border-stone/30">
+    <header className="sticky top-0 z-50 w-full">
+      {/* Announcement ticker */}
+      <style>{`
+        @keyframes glide {
+          0%   { transform: translateX(100vw); }
+          100% { transform: translateX(-100%); }
+        }
+        .ticker-glide {
+          animation: glide 18s linear infinite;
+        }
+      `}</style>
+      <div className="w-full bg-onyx overflow-hidden py-2 relative h-8 flex items-center">
+        <span className="ticker-glide absolute whitespace-nowrap font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
+          ✦ Безплатна доставка при поръчка над €50
+        </span>
+      </div>
+      <div className="w-full bg-[#B8906A] border-b border-stone/30">
       <div className="max-w-content mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -91,6 +107,8 @@ export default function Navbar() {
             <span className={`block w-5 h-px bg-onyx transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
           </button>
         </div>
+      </div>
+
       </div>
 
       {/* Mobile menu */}

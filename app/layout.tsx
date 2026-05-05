@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import CartDrawer from '@/components/layout/CartDrawer'
+import CookieBanner from '@/components/layout/CookieBanner'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <CartDrawer />
+        <CookieBanner />
       </body>
     </html>
   )

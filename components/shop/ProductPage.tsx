@@ -17,7 +17,7 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
     benefitText: 'Оптимално да се носят след залез слънце и преди сън.',
     benefitColor: '#7a4e1a',
-    descText: "Лещите ALPÉ Evening са създадени с една цел: сън. Носени 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
+    descText: "Лещите ALPÉ Evening са създадени с една цел: сън. Носени след залез слънце и поне 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
     images: [
       { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening — lifestyle' },
       { src: '/images/shop/shop-evening-2.png', alt: 'ALPÉ Evening — glasses' },
@@ -109,8 +109,8 @@ export default function ProductPage() {
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
       {/* Breadcrumb */}
-      <div className="product-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.5)', letterSpacing: '0.06em' }}>
-        <Link href="/" style={{ color: 'rgba(28,15,10,0.5)', textDecoration: 'none' }}>Начало</Link>
+      <div className="product-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.8)', letterSpacing: '0.06em' }}>
+        <Link href="/" style={{ color: 'rgba(28,15,10,0.8)', textDecoration: 'none' }}>Начало</Link>
         <span style={{ opacity: 0.4 }}>›</span>
         <span style={{ color: '#1C0F0A' }}>{d.name}</span>
       </div>
@@ -160,29 +160,29 @@ export default function ProductPage() {
         {/* RIGHT: Product details */}
         <div>
           {/* Stars */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, flexWrap: 'wrap' as const }}>
-            <span style={{ color: '#C49A6C', fontSize: 15, letterSpacing: 2 }}>★★★★★</span>
-            <span style={{ fontSize: 13, color: 'rgba(28,15,10,0.5)', borderBottom: '1px solid rgba(28,15,10,0.2)', paddingBottom: 1, cursor: 'pointer' }}>4.9 · 2,341 reviews</span>
-            <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)' }}>·</span>
-            <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)' }}>10,000+ customers across Europe</span>
-          </div>
 
           {/* Name */}
           <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, lineHeight: 1.1, color: '#1C0F0A', marginBottom: 10 }}>
             {d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em>
           </h1>
-          <p style={{ fontSize: 15, color: 'rgba(28,15,10,0.5)', lineHeight: 1.75, marginBottom: 20 }}>{d.tagline}</p>
+          <p style={{ fontSize: 15, color: 'rgba(28,15,10,0.8)', lineHeight: 1.75, marginBottom: 20 }}>{d.tagline}</p>
 
           {/* Benefit pill */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, borderRadius: 100, padding: '7px 16px', marginBottom: 28, background: d.benefitBg, border: `1px solid ${d.benefitBorder}`, fontSize: 13 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, borderRadius: 100, padding: '7px 16px', marginBottom: 12, background: d.benefitBg, border: `1px solid ${d.benefitBorder}`, fontSize: 13 }}>
             <span style={{ width: 9, height: 9, borderRadius: '50%', background: d.benefitDot, display: 'inline-block', flexShrink: 0 }} />
             <span style={{ color: d.benefitColor }}>{d.benefitText}</span>
+          </div>
+
+          {/* Delivery strip */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginTop: 10, marginBottom: 0, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
+            <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
+            <span><strong>Безплатна експресна доставка</strong> — пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
           </div>
 
           <div style={{ height: 1, background: 'rgba(28,15,10,0.09)', margin: '24px 0' }} />
 
           {/* Lens selector */}
-          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Изберете вашата леща</div>
+          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Изберете вашите очила</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
             {(['evening', 'daily'] as Lens[]).map(l => (
               <button
@@ -194,14 +194,14 @@ export default function ProductPage() {
                   <span style={{ width: 12, height: 12, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', flexShrink: 0, display: 'inline-block' }} />
                   <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Вечер' : 'За всеки ден'}</span>
                 </div>
-                <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
+                <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% блокиране на синята и зелената светлина' : '65% филтър на синята светлина и частичен зелен филтър'}</div>
               </button>
             ))}
           </div>
 
           {/* Bundle selector */}
-          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
+          <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
           <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
             {[1, 2, 3].map(n => (
               <button
@@ -217,14 +217,14 @@ export default function ProductPage() {
                       {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
                       {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Най-изгодно</span>}
                     </div>
-                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : n === 2 ? 'Защита за целия ден' : 'По един за всеки вкъщи'}</div>
+                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : n === 2 ? 'Защита за целия ден' : 'По един за всеки вкъщи'}</div>
                     {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>Спестете 50% с двойния комплект</div>}
                     {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>Спестете 45 € с тройния комплект 🎉</div>}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{bundlePrices[n]}</div>
-                  {n > 1 && <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', textDecoration: 'line-through', marginTop: 2 }}>€{n === 2 ? '89.98' : '134.97'}</div>}
+                  {n > 1 && <div style={{ fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 2 }}>поотделно: €{n === 2 ? '89.98' : '134.97'}</div>}
                 </div>
               </button>
             ))}
@@ -233,11 +233,11 @@ export default function ProductPage() {
           {/* Multi-pair lens slot picker */}
           {bundle > 1 && (
             <div style={{ background: 'rgba(28,15,10,0.03)', borderRadius: 10, padding: 18, marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, marginBottom: 12 }}>Изберете стъкла за всеки чифт</div>
+              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Изберете стъкла за всеки чифт</div>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
                 {slots.map((s, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
-                    <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)', width: 52, flexShrink: 0 }}>Чифт {i + 1}</span>
+                    <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', width: 52, flexShrink: 0 }}>Чифт {i + 1}</span>
                     {(['evening', 'daily'] as Lens[]).map(l => (
                       <button
                         key={l}
@@ -254,12 +254,6 @@ export default function ProductPage() {
             </div>
           )}
 
-          {/* Delivery strip */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginBottom: 12, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
-            <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
-            <span><strong>Безплатна експресна доставка</strong> — пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
-          </div>
-
           {/* Savings callout */}
           {saving > 0 && (
             <div style={{ background: '#f0f7f1', border: '1px solid rgba(45,106,58,0.2)', borderRadius: 8, padding: '10px 14px', fontSize: 13, color: '#1a4024', marginBottom: 12 }}>
@@ -268,7 +262,7 @@ export default function ProductPage() {
           )}
 
           {/* Viewing now */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'rgba(28,15,10,0.5)', marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'rgba(28,15,10,0.8)', marginBottom: 20 }}>
             <span style={{ width: 7, height: 7, background: '#4caf6a', borderRadius: '50%', flexShrink: 0, animation: 'pulse-dot 1.8s ease infinite' }} />
             <span>{viewerCount} души разглеждат това в момента</span>
           </div>
@@ -282,7 +276,8 @@ export default function ProductPage() {
               Добави в количката — €{price} →
             </button>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.5)' }}>✓ 14-дневен безплатен връщане &nbsp;·&nbsp; ✓ Сертифицирани по CE &nbsp;·&nbsp; ✓ Сигурна плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла &nbsp;·&nbsp; ✓ Безплатна доставка над €50 &nbsp;·&nbsp; ✓ Сигурно плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 6 }}>Цената включва ДДС · Не е медицинско изделие</p>
 
           {/* Payment icons */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, margin: '12px 0 0', flexWrap: 'wrap' as const }}>
@@ -314,14 +309,25 @@ export default function ProductPage() {
           {/* Trust row */}
           <div className="product-trust-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, padding: '20px 0', borderTop: '1px solid rgba(28,15,10,0.09)', borderBottom: '1px solid rgba(28,15,10,0.09)', margin: '20px 0' }}>
             {[
-              { icon: '🔒', label: 'Сигурна\nплащане' },
-              { icon: '🚚', label: 'Безплатна експресна\nдоставка' },
-              { icon: 'CE', label: 'Сертифицирани\nпо CE\nлещи' },
-              { icon: '↩️', label: '14-дневен\nвръщане' },
+              { icon: '🔒', label: 'Сигурно\nплащане' },
+              { icon: '🚚', label: 'Безплатна експресна\nдоставка над €50' },
+              { icon: 'CE', label: 'Сертифицирани\nпо CE стъкла' },
+              { icon: 'return', label: '14-дневно\nвръщане' },
             ].map(t => (
               <div key={t.label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: t.icon === 'CE' ? 13 : 18, fontWeight: t.icon === 'CE' ? 800 : undefined, color: t.icon === 'CE' ? '#1C0F0A' : undefined, marginBottom: 4 }}>{t.icon}</div>
-                <div style={{ fontSize: 10, color: 'rgba(28,15,10,0.5)', lineHeight: 1.4, whiteSpace: 'pre-line' }}>{t.label}</div>
+                <div style={{ height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+                  {t.icon === 'return' ? (
+                    <svg width="20" height="20" fill="none" stroke="rgba(28,15,10,0.55)" strokeWidth="1.6" viewBox="0 0 24 24">
+                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                      <path d="M3 3v5h5"/>
+                    </svg>
+                  ) : t.icon === 'CE' ? (
+                    <span style={{ fontSize: 13, fontWeight: 800, color: '#1C0F0A', lineHeight: 1 }}>CE</span>
+                  ) : (
+                    <span style={{ fontSize: 18, lineHeight: 1 }}>{t.icon}</span>
+                  )}
+                </div>
+                <div style={{ fontSize: 10, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4, whiteSpace: 'pre-line' }}>{t.label}</div>
               </div>
             ))}
           </div>
@@ -342,7 +348,7 @@ export default function ProductPage() {
 
             {tab === 'description' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>{d.descText}</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>{d.descText}</p>
                 <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 14, marginTop: 20 }}>
                   {[
                     { text: <><strong>98% блокиране на синята светлина</strong> — клинично доказано, че възстановява естественото производство на мелатонин</> },
@@ -363,9 +369,9 @@ export default function ProductPage() {
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите ALPÉ използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>Лещите Evening (оранжеви) блокират 98% от този диапазон. Лещите Daily (жълти) блокират 65%, като поддържат ползите за циркадния ритъм и същевременно запазват точността на цветовете при работа пред екран.</p>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.5)', marginTop: 16 }}>В проучване от 2022 г., публикувано в Journal of Sleep Research, очила, блокиращи синята светлина, носени 2 часа преди лягане, подобряват заспиването със средно 18 минути и увеличават общото време за сън с 24 минути.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите ALPÉ използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>Лещите Evening (оранжеви) блокират 98% от този диапазон. Лещите Daily (жълти) блокират 65%, като поддържат ползите за циркадния ритъм и същевременно запазват точността на цветовете при работа пред екран.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>В проучване от 2022 г., публикувано в Journal of Sleep Research, очила, блокиращи синята светлина, носени 2 часа преди лягане, подобряват заспиването със средно 18 минути и увеличават общото време за сън с 24 минути.</p>
                 <div style={{ marginTop: 24, background: '#f5ede4', border: '1.5px solid rgba(196,154,108,0.3)', borderRadius: 12, padding: '20px 22px' }}>
                   <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Нови изследвания: Зелената светлина също има значение.</strong> Последните проучвания сочат, че зелената светлина в диапазона 500–560 nm също потиска производството на мелатонин, макар и с по-малка сила в сравнение със синята. Лещите ALPÉ Evening са насочени към двата диапазона, като ви осигуряват защита в целия спектър за възстановителен сън.</p>
                   <p style={{ fontSize: 11, color: 'rgba(196,154,108,0.9)', marginTop: 12 }}>Hattar и др., 2003 · Zhao и др., 2021</p>
@@ -377,15 +383,15 @@ export default function ProductPage() {
               <div style={{ padding: '28px 0' }}>
                 <div className="product-reviews-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   {[
-                    { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'Берлин' },
-                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPÉ не го оправи."', author: 'Елена М.', location: 'Мюнхен' },
-                    { text: '„Бях скептичен. След три седмици спя по-добре, отколкото през последните години. Струва си всеки цент."', author: 'Джеймс Т.', location: 'Лондон' },
-                    { text: '„Купих комплекта от 3 чифта – един за работа, един за вкъщи и един за пътуване. Гениално."', author: 'София Р.', location: 'Амстердам' },
+                    { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'София' },
+                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPÉ не го оправи."', author: 'Елена М.', location: 'Пловдив' },
+                    { text: '„Бях скептичен. След три седмици спя по-добре, отколкото през последните години. Струва си всеки цент."', author: 'Георги Т.', location: 'Варна' },
+                    { text: '„Купих комплекта от 3 чифта – един за работа, един за вкъщи и един за пътуване. Гениално."', author: 'Мария С.', location: 'Бургас' },
                   ].map((r, i) => (
                     <div key={i} style={{ background: '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 10, padding: '22px 20px' }}>
                       <div style={{ color: '#C49A6C', fontSize: 13, letterSpacing: 1, marginBottom: 10 }}>★★★★★</div>
                       <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 15, fontStyle: 'italic', lineHeight: 1.65, color: '#1C0F0A', marginBottom: 12 }}>{r.text}</div>
-                      <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.5)' }}><strong style={{ color: '#1C0F0A', fontWeight: 500 }}>{r.author}</strong> · verified buyer · {r.location}</div>
+                      <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)' }}><strong style={{ color: '#1C0F0A', fontWeight: 500 }}>{r.author}</strong> · verified buyer · {r.location}</div>
                     </div>
                   ))}
                 </div>
@@ -401,7 +407,7 @@ export default function ProductPage() {
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.5)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPÉ след 14 дни редовно ползване.</p>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPÉ след 14 дни редовно ползване.</p>
           </div>
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
@@ -418,7 +424,7 @@ export default function ProductPage() {
                 <div style={{ height: 6, background: 'rgba(28,15,10,0.07)', borderRadius: 100, overflow: 'hidden' }}>
                   <div style={{ width: `${s.pct}%`, height: '100%', background: '#C49A6C', borderRadius: 100 }} />
                 </div>
-                <p style={{ fontSize: 13, color: 'rgba(28,15,10,0.5)', marginTop: 12, lineHeight: 1.6 }}>{s.desc}</p>
+                <p style={{ fontSize: 13, color: 'rgba(28,15,10,0.8)', marginTop: 12, lineHeight: 1.6 }}>{s.desc}</p>
               </div>
             ))}
           </div>
@@ -460,9 +466,9 @@ export default function ProductPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse' as const, fontFamily: 'var(--font-raleway)' }}>
               <thead>
                 <tr>
-                  <th style={{ textAlign: 'left', padding: '14px 20px', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.5)', fontWeight: 500, borderBottom: '2px solid rgba(28,15,10,0.1)' }}></th>
+                  <th style={{ textAlign: 'left', padding: '14px 20px', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, borderBottom: '2px solid rgba(28,15,10,0.1)' }}></th>
                   <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 600, color: '#FAF0E4', background: '#1C0F0A', textAlign: 'center', borderBottom: '2px solid #1C0F0A' }}>ALPÉ</th>
-                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 500, color: 'rgba(28,15,10,0.5)', textAlign: 'center', borderBottom: '2px solid rgba(28,15,10,0.1)' }}>Обикновени</th>
+                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 500, color: 'rgba(28,15,10,0.8)', textAlign: 'center', borderBottom: '2px solid rgba(28,15,10,0.1)' }}>Обикновени</th>
                 </tr>
               </thead>
               <tbody>
@@ -481,7 +487,7 @@ export default function ProductPage() {
                       <span style={{ fontSize: row.ALPÉColor ? 16 : 13, fontWeight: row.ALPÉColor ? undefined : 500, color: row.ALPÉColor || '#1C0F0A' }}>{row.ALPÉ}</span>
                     </td>
                     <td style={{ padding: '16px 20px', textAlign: 'center' }}>
-                      <span style={{ fontSize: 13, color: 'rgba(28,15,10,0.5)' }}>{row.generic}</span>
+                      <span style={{ fontSize: 13, color: 'rgba(28,15,10,0.8)' }}>{row.generic}</span>
                     </td>
                   </tr>
                 ))}
@@ -507,24 +513,105 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Sticky add to cart bar */}
-      <div className="product-sticky-bar" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '14px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 8, overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-            <Image src={d.images[0].src} alt={`ALPÉ ${d.nameItalic}`} fill sizes="44px" className="object-cover" />
+      {/* Sticky add to cart — desktop: full-height right sidebar; mobile: bottom bar */}
+      <>
+        {/* Desktop sidebar */}
+        <div className="product-sticky-bar-desktop" style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: 300, zIndex: 39, background: '#7C3018', color: '#FAF0E4', display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', padding: '40px 28px', gap: 24, boxShadow: '-8px 0 40px rgba(28,15,10,0.28)', transform: stickyVisible ? 'translateX(0)' : 'translateX(100%)', transition: 'transform 0.4s cubic-bezier(.22,1,.36,1)' }}>
+          {/* Product image */}
+          <div style={{ width: 140, height: 140, borderRadius: 16, overflow: 'hidden', position: 'relative', flexShrink: 0, boxShadow: '0 4px 24px rgba(28,15,10,0.3)' }}>
+            <Image src={d.images[0].src} alt={`ALPÉ ${d.nameItalic}`} fill sizes="140px" className="object-cover" />
           </div>
-          <div>
-            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
-            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 1 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
+
+          {/* Name */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, lineHeight: 1.2 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
+            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 5 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
+          </div>
+
+          {/* Lens selector / slot picker */}
+          {bundle === 1 ? (
+            <div style={{ width: '100%', display: 'flex', gap: 8 }}>
+              {(['evening', 'daily'] as const).map(l => (
+                <button
+                  key={l}
+                  onClick={() => handleLens(l)}
+                  style={{
+                    flex: 1, padding: '10px 8px', borderRadius: 10,
+                    border: lens === l ? '2px solid rgba(255,255,255,0.7)' : '2px solid rgba(255,255,255,0.2)',
+                    background: lens === l ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
+                    color: '#FAF0E4', cursor: 'pointer',
+                    display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 5,
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  <span style={{ width: 14, height: 14, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'block' }} />
+                  <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const }}>{l === 'evening' ? 'Вечер' : 'За деня'}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' as const, gap: 8 }}>
+              {slots.map((s, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 10, opacity: 0.5, width: 44, flexShrink: 0, letterSpacing: '0.04em' }}>Чифт {i + 1}</span>
+                  <div style={{ display: 'flex', gap: 6, flex: 1 }}>
+                    {(['evening', 'daily'] as Lens[]).map(l => (
+                      <button
+                        key={l}
+                        onClick={() => handleSlot(i, l)}
+                        style={{
+                          flex: 1, padding: '7px 4px', borderRadius: 8,
+                          border: s === l ? '2px solid rgba(255,255,255,0.7)' : '2px solid rgba(255,255,255,0.2)',
+                          background: s === l ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
+                          color: '#FAF0E4', cursor: 'pointer',
+                          display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4,
+                          transition: 'all 0.15s',
+                        }}
+                      >
+                        <span style={{ width: 10, height: 10, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'block' }} />
+                        <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{l === 'evening' ? 'Вечер' : 'За деня'}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Price + CTA */}
+          <div style={{ width: '100%', borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: 20, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 10 }}>
+            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 32, fontWeight: 500 }}>€{price}</div>
+            {saving > 0 && (
+              <div style={{ fontSize: 11, color: '#8BC98A' }}>Спестяваш €{saving}</div>
+            )}
+            <button onClick={handleAddToCart} style={{ background: '#FAF0E4', color: '#1C0F0A', border: 'none', padding: '14px 0', fontFamily: 'var(--font-raleway)', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', width: '100%', letterSpacing: '0.04em', marginTop: 4 }}>
+              Добави в количката →
+            </button>
+          </div>
+
+          {/* Trust lines */}
+          <div style={{ width: '100%', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 8 }}>
+            {['✓ Безплатна доставка над €50', '✓ EU сертифицирани стъкла', '✓ 14-дневно връщане'].map(t => (
+              <span key={t} style={{ fontFamily: 'var(--font-raleway)', fontSize: 11, opacity: 0.5, textAlign: 'center' as const }}>{t}</span>
+            ))}
           </div>
         </div>
-        <button onClick={handleAddToCart} style={{ background: '#FAF0E4', color: '#1C0F0A', border: 'none', padding: '13px 32px', fontFamily: 'var(--font-raleway)', fontSize: 14, fontWeight: 500, borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' as const }}>
-          Add to Cart — €{price} →
-        </button>
-      </div>
+
+        {/* Mobile bottom bar */}
+        <div className="product-sticky-bar-mobile" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
+          <div>
+            <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 15, fontWeight: 500 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
+            <div style={{ fontSize: 11, opacity: 0.55, marginTop: 1 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
+          </div>
+          <button onClick={handleAddToCart} style={{ background: '#FAF0E4', color: '#1C0F0A', border: 'none', padding: '11px 20px', fontFamily: 'var(--font-raleway)', fontSize: 13, fontWeight: 600, borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' as const }}>
+            Добави в количката →
+          </button>
+        </div>
+      </>
 
       <style>{`
         @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(0.75);} }
+        .product-sticky-bar-mobile { display: none !important; }
 
         @media (max-width:960px) {
           .product-breadcrumb { padding: 14px 24px 0 !important; }
@@ -550,7 +637,8 @@ export default function ProductPage() {
           .product-comparison-section { padding: 48px 16px !important; }
           .product-more-images { padding: 48px 16px 80px !important; }
           .product-more-images-grid { grid-template-columns: 1fr !important; }
-          .product-sticky-bar { padding: 12px 16px !important; }
+          .product-sticky-bar-desktop { display: none !important; }
+          .product-sticky-bar-mobile { display: flex !important; }
         }
       `}</style>
     </div>

@@ -38,6 +38,15 @@ const config: Config = {
       borderRadius: {
         card: '3px',
       },
+      animation: {
+        ticker: 'ticker 18s linear infinite',
+      },
+      keyframes: {
+        ticker: {
+          '0%':   { transform: 'translateX(100vw)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
     },
   },
   plugins: [],

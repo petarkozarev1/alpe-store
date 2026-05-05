@@ -28,17 +28,17 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">3. Доставка</h2>
-            <p>Доставяме в рамките на 3-5 работни дни в България. Безплатна доставка за поръчки над €50. За поръчки под €50 — такса от €4.99.</p>
+            <p>Доставяме в рамките на 1–3 работни дни в България. Безплатна доставка за поръчки над €50. За поръчки под €50 — такса от €4.99.</p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">4. Връщане и замяна</h2>
-            <p>Предлагаме 7-нощна гаранция за пробване. Ако не сте доволни, можете да върнете продукта в рамките на 7 дни от получаване. Продуктът трябва да е в оригинална опаковка и без видими повреди. Разходите за обратна доставка са за наша сметка.</p>
+            <p>Имате право да се откажете от договора в срок от <strong>14 календарни дни</strong> от получаване на продукта, без да посочвате причина — съгласно чл. 50 от Закона за защита на потребителите и Директива 2011/83/ЕС. За упражняване на правото на отказ се свържете с нас на info@alpe.bg с номера на поръчката си. Продуктът трябва да е в оригинална опаковка и без видими повреди. Разходите за обратна доставка са за наша сметка.</p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">5. Гаранция</h2>
-            <p>Всички продукти ALPÉ имат 12-месечна гаранция срещу производствени дефекти. Гаранцията не покрива нормално износване или механични повреди.</p>
+            <p>Всички продукти ALPÉ имат <strong>24-месечна законова гаранция</strong> срещу производствени дефекти — съгласно чл. 112–114 от Закона за защита на потребителите и Директива 2019/771/ЕС. Гаранцията не покрива нормално износване или механични повреди причинени от потребителя.</p>
           </section>
 
           <section>
@@ -47,8 +47,18 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl text-iron mb-3">7. Контакт</h2>
-            <p>За въпроси: <a href="mailto:hello@ALPÉ.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@ALPÉ.bg</a></p>
+            <h2 className="font-serif text-xl text-iron mb-3">7. Онлайн решаване на спорове</h2>
+            <p>Съгласно Регламент (ЕС) № 524/2013, потребителите имат право да подават жалби чрез платформата за онлайн решаване на спорове на Европейската комисия: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">ec.europa.eu/consumers/odr</a>. Нашият имейл за целите на тази процедура: <a href="mailto:info@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">info@alpe.bg</a></p>
+          </section>
+
+          <section>
+            <h2 className="font-serif text-xl text-iron mb-3">8. Приложимо право</h2>
+            <p>Тези общи условия се уреждат от българското право. Всички спорове се отнасят до компетентния български съд. Като потребител в ЕС вие запазвате всички права, предоставени от законодателството на вашата страна.</p>
+          </section>
+
+          <section>
+            <h2 className="font-serif text-xl text-iron mb-3">9. Контакт</h2>
+            <p>За въпроси: <a href="mailto:hello@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpe.bg</a></p>
           </section>
         </div>
       </section>

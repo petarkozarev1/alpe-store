@@ -33,17 +33,17 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">Вашите права (GDPR)</h2>
-            <p>Имате право да поискате достъп, коригиране или изтриване на личните си данни. Изпратете заявка на <a href="mailto:hello@ALPÉ.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@ALPÉ.bg</a> и ще отговорим в рамките на 30 дни.</p>
+            <p>Имате право да поискате достъп, коригиране или изтриване на личните си данни. Изпратете заявка на <a href="mailto:hello@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpe.bg</a> и ще отговорим в рамките на 30 дни.</p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">Съхранение на данни</h2>
-            <p>Данните за поръчки се пазят за срок от 5 години съгласно Bulgarian счетоводното законодателство. След този срок данните се изтриват.</p>
+            <p>Данните за поръчки се пазят за срок от 5 години съгласно българското счетоводно законодателство. След този срок данните се изтриват.</p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">Контакт</h2>
-            <p>За въпроси относно поверителността: <a href="mailto:hello@ALPÉ.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@ALPÉ.bg</a></p>
+            <p>За въпроси относно поверителността: <a href="mailto:hello@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpe.bg</a></p>
           </section>
         </div>
       </section>

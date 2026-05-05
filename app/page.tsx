@@ -19,9 +19,9 @@ export default function Home() {
       <IngredientsSection />
       <HowItWorksSection />
       <ComparisonSection />
-      <TestimonialSection />
-      <GallerySection />
       <FaqSection />
+      <GallerySection />
+      <TestimonialSection />
       <FinalCtaSection />
       <NewsletterSection />
     </>

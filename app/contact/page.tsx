@@ -1,16 +1,9 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Контакт | ALPÉ',
   description: 'Свържете се с ALPÉ. Отговаряме в рамките на 24 часа.',
 }
-
-const contacts = [
-  { label: 'Общи въпроси', email: 'hello@ALPÉ.bg', desc: 'Въпроси за продуктите, поръчки, доставка.' },
-  { label: 'Поддръжка', email: 'support@ALPÉ.bg', desc: 'Проблем с поръчка или доставка.' },
-  { label: 'Медии', email: 'press@ALPÉ.bg', desc: 'Журналисти и партньорства.' },
-  { label: 'Връщане', email: 'returns@ALPÉ.bg', desc: 'Заявка за връщане на продукт.' },
-]
 
 export default function ContactPage() {
   return (
@@ -21,22 +14,67 @@ export default function ContactPage() {
           Пишете ни.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-16">
-          Отговаряме на всеки имейл в рамките на 24 часа в работни дни. Не сме чатбот — пише ви реален човек.
+          Отговаряме на всеки имейл в рамките на 24 часа в работни дни.
         </p>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl">
-          {contacts.map(c => (
-            <div key={c.label} className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
-              <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">{c.label}</span>
+          {/* Общи въпроси */}
+          <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
+            <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Общи въпроси</span>
+            <a href="mailto:hello@alpe.bg" className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              hello@alpe.bg
+            </a>
+            <p className="font-sans text-xs text-stone">Въпроси за продуктите, поръчки, доставка.</p>
+          </div>
+
+          {/* Поддръжка */}
+          <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
+            <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Поддръжка</span>
+            <a href="mailto:support@alpe.bg" className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              support@alpe.bg
+            </a>
+            <p className="font-sans text-xs text-stone">Проблем с поръчка или доставка.</p>
+          </div>
+
+          {/* Социални мрежи */}
+          <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
+            <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Социални мрежи</span>
+            <div className="flex flex-col gap-2">
               <a
-                href={`mailto:${c.email}`}
-                className="font-serif text-lg text-iron hover:text-gold transition-colors"
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-serif text-lg text-iron hover:text-gold transition-colors flex items-center gap-2"
               >
-                {c.email}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <circle cx="12" cy="12" r="4"/>
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+                </svg>
+                Instagram
               </a>
-              <p className="font-sans text-xs text-stone">{c.desc}</p>
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-serif text-lg text-iron hover:text-gold transition-colors flex items-center gap-2"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                </svg>
+                Facebook
+              </a>
             </div>
-          ))}
+          </div>
+
+          {/* Връщане */}
+          <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
+            <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Връщане</span>
+            <a href="mailto:returns@alpe.bg" className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              returns@alpe.bg
+            </a>
+            <p className="font-sans text-xs text-stone">Заявка за връщане на продукт.</p>
+          </div>
         </div>
       </section>
     </main>

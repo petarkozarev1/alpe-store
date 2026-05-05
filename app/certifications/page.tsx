@@ -198,7 +198,7 @@ export default function CertificationsPage() {
           Вземи си чифт →
         </Link>
         <p className="font-sans text-xs text-stone/60 mt-4">
-          7 нощи проба · Безплатна доставка над €50
+          Безплатна доставка над €50
         </p>
         <p className="font-sans text-xs text-stone/40 mt-6 max-w-sm mx-auto">
           Лабораторен доклад: AHD TMS · Стандарти: BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015, AS/NZS 1067.1:2016

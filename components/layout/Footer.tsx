@@ -1,5 +1,7 @@
+'use client'
 import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site'
+import { resetCookieConsent } from '@/components/layout/CookieBanner'
 
 export default function Footer() {
   return (
@@ -46,7 +48,7 @@ export default function Footer() {
           <span className="font-sans text-[10px] text-stone/40">
             {siteConfig.footer.copyright}
           </span>
-          <div className="flex gap-6">
+          <div className="flex gap-6 flex-wrap justify-center">
             {siteConfig.footer.legal.map(link => (
               <Link
                 key={link.label}
@@ -56,6 +58,20 @@ export default function Footer() {
                 {link.label}
               </Link>
             ))}
+            <a
+              href="https://ec.europa.eu/consumers/odr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-sans text-[10px] text-stone/40 hover:text-stone transition-colors"
+            >
+              Онлайн решаване на спорове (ЕС)
+            </a>
+            <button
+              onClick={resetCookieConsent}
+              className="font-sans text-[10px] text-stone/40 hover:text-stone transition-colors bg-transparent border-none cursor-pointer p-0"
+            >
+              Настройки за бисквитки
+            </button>
           </div>
         </div>
       </div>

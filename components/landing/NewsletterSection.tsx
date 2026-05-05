@@ -53,7 +53,8 @@ export default function NewsletterSection() {
         )}
 
         <p className="font-sans text-[11px] text-stone/50">
-          Никакъв спам, никога. Отпиши се с едно кликване.
+          С абонамента давате съгласие за получаване на маркетингови имейли от ALPÉ. Отпишете се по всяко време с едно кликване. Вижте нашата{' '}
+          <a href="/privacy" className="underline underline-offset-2 hover:text-stone transition-colors">Политика за поверителност</a>.
         </p>
 
       </div>

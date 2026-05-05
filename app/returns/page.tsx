@@ -1,15 +1,15 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Връщане | ALPÉ',
-  description: '7 нощи проба. Не ти харесва — връщаш ги. Без въпроси. Процесът е лесен.',
+  description: '10 дена тест. Не ви харесват — връщате ги. Без въпроси.',
 }
 
 const steps = [
-  { num: '01', title: 'Носи ги 7 нощи', body: 'Дай им истински шанс — поне 7 вечери пред екрана. Повечето хора усещат разлика до тогава.' },
-  { num: '02', title: 'Пиши ни', body: 'Ако не си доволен, изпрати имейл на returns@ALPÉ.bg. Казваш само поръчката си — без обяснения.' },
-  { num: '03', title: 'Изпрати ги обратно', body: 'Ние покриваме разходите за обратна доставка. Поставяш ги в оригиналната кутия и ги пускаш по поща.' },
-  { num: '04', title: 'Получаваш парите си', body: 'Пълно възстановяване в рамките на 5 работни дни след получаване на пратката.' },
+  { num: '01', title: 'Носете ги поне 10 дена', body: 'Дайте им реален шанс. Системно, поне 10 дена пред екрана. Повечето хора усещат разлика до тогава.' },
+  { num: '02', title: 'Пишете ни', body: 'Ако не сте доволни, изпратете имейл на info@alpe.bg. Кажете само номера на поръчката си.' },
+  { num: '03', title: 'Изпратете ги обратно', body: 'Поставяте ги в оригиналната кутия и ги изпращате обратно при куриера.' },
+  { num: '04', title: 'Получавате парите си', body: 'Пълно възстановяване до 10 работни дни след получаване на пратката.' },
 ]
 
 export default function ReturnsPage() {
@@ -18,10 +18,10 @@ export default function ReturnsPage() {
       <section className="max-w-content mx-auto px-6 md:px-10 pt-32 pb-20">
         <span className="font-sans text-xs uppercase tracking-widest text-stone">Политика за връщане</span>
         <h1 className="font-serif text-4xl md:text-5xl text-iron mt-4 mb-6 leading-tight">
-          7 нощи проба.<br />Не ти харесва — връщаш ги.
+          10 дена тест.<br />Не ви харесват? Връщате ги.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-16">
-          Без малък шрифт. Без „само при определени условия&rdquo;. Ако не усетиш разлика след 7 нощи, получаваш парите си обратно.
+          Без малък шрифт. Без „само при определени условия&rdquo;. Ако не усетите разлика до 14 дена, получавате парите си обратно.
         </p>
 
         <div className="flex flex-col gap-10 max-w-2xl mb-16">
@@ -40,10 +40,10 @@ export default function ReturnsPage() {
           <h3 className="font-serif text-xl text-iron mb-2">Имате въпрос за връщане?</h3>
           <p className="font-sans text-sm text-stone mb-4">Пишете ни директно — отговаряме в рамките на 24 часа.</p>
           <a
-            href="mailto:returns@ALPÉ.bg"
+            href="mailto:info@alpe.bg"
             className="font-sans text-sm text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50"
           >
-            returns@ALPÉ.bg
+            info@alpe.bg
           </a>
         </div>
       </section>

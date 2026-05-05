@@ -3,32 +3,38 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Цени | ALPÉ',
-  description: 'Прозрачни цени без изненади. Очила за синя светлина ALPÉ от €40.',
+  description: 'Прозрачни цени без изненади. Очила за синя и зелена светлина ALPÉ от €44.99.',
 }
 
 const tiers = [
   {
-    name: 'Classic Дневни',
-    price: '€40',
-    description: 'Правоъгълна рамка, дневни лещи (65% блокиране). Идеални за офиса.',
-    features: ['Дневни лещи', 'Classic рамка', 'UV400 + антирефлекс', '7 нощи проба'],
-    cta: 'Вземи си чифт →',
+    name: '1 чифт',
+    price: '€44.99',
+    originalPrice: null,
+    saving: null,
+    badge: null,
+    description: 'Един чифт ALPÉ очила по твой избор — дневни или вечерни стъкла.',
+    features: ['Избор: дневни или вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина'],
     highlight: false,
   },
   {
-    name: 'Classic Вечерни',
-    price: '€60',
-    description: 'Правоъгълна рамка, вечерни лещи (98% блокиране). За по-добър сън.',
-    features: ['Вечерни лещи', 'Classic рамка', 'UV400 + антирефлекс', '7 нощи проба'],
-    cta: 'Вземи си чифт →',
+    name: '2 чифта',
+    price: '€66.99',
+    originalPrice: '€89.98',
+    saving: '€23',
+    badge: 'Най-популярни',
+    description: 'Дневни + вечерни стъкла. Пълна защита от сутринта до лягане.',
+    features: ['Дневни + вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Спестяваш €23'],
     highlight: true,
   },
   {
-    name: 'Pro Комбо',
-    price: '€80',
-    description: 'Pro рамка с дневни и вечерни лещи. Пълна защита 24/7.',
-    features: ['Дневни + Вечерни лещи', 'Pro рамка', 'UV400 + антирефлекс', '7 нощи проба'],
-    cta: 'Вземи си чифт →',
+    name: '3 чифта',
+    price: '€89.99',
+    originalPrice: '€134.97',
+    saving: '€45',
+    badge: 'Най-изгодно',
+    description: 'За целото семейство или офис. Максимална защита на най-добра цена.',
+    features: ['3 чифта по избор', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Спестяваш €45'],
     highlight: false,
   },
 ]
@@ -42,7 +48,7 @@ export default function PricingPage() {
           Без скрити такси.<br />Без изненади.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-12">
-          Три варианта. Ясни цени. Безплатна доставка над €50 и 7 нощи проба без риск.
+          Три варианта. Ясни цени. Безплатна доставка над €50.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -51,8 +57,20 @@ export default function PricingPage() {
               key={tier.name}
               className={`rounded-2xl p-8 flex flex-col gap-4 ${tier.highlight ? 'bg-iron text-linen' : 'border border-iron/20'}`}
             >
-              <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">{tier.name}</span>
-              <p className={`font-serif text-4xl ${tier.highlight ? 'text-linen' : 'text-iron'}`}>{tier.price}</p>
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">{tier.name}</span>
+                {tier.badge && (
+                  <span className={`font-sans text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded ${tier.highlight ? 'bg-linen/20 text-linen' : 'bg-onyx text-linen'}`}>
+                    {tier.badge}
+                  </span>
+                )}
+              </div>
+              <div>
+                <p className={`font-serif text-4xl ${tier.highlight ? 'text-linen' : 'text-iron'}`}>{tier.price}</p>
+                {tier.originalPrice && (
+                  <p className="font-sans text-xs text-stone/50 mt-1">поотделно: {tier.originalPrice}</p>
+                )}
+              </div>
               <p className="font-sans text-sm leading-relaxed text-stone">
                 {tier.description}
               </p>
@@ -64,21 +82,21 @@ export default function PricingPage() {
                 ))}
               </ul>
               <Link
-                href="/#products"
+                href="/shop"
                 className={`inline-block text-center font-sans text-sm px-6 py-3 rounded-full transition-colors mt-4 ${
                   tier.highlight
                     ? 'bg-linen text-onyx hover:bg-parchment'
                     : 'bg-onyx text-linen hover:bg-iron'
                 }`}
               >
-                {tier.cta}
+                Вземи си чифт →
               </Link>
             </div>
           ))}
         </div>
 
         <p className="font-sans text-xs text-stone/60 text-center">
-          Безплатна доставка над €50 · 7 нощи проба · EU сертифицирани лещи
+          Безплатна доставка над €50 · EU сертифицирани стъкла
         </p>
       </section>
     </main>

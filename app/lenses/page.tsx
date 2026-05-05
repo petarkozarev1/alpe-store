@@ -21,12 +21,12 @@ export default function LensesPage() {
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           <div className="bg-sand/40 rounded-2xl p-8 flex flex-col gap-4">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">За работния ден</span>
-            <h2 className="font-serif text-2xl text-iron">Дневни лещи</h2>
+            <h2 className="font-serif text-2xl text-iron">Дневни стъкла</h2>
             <p className="font-sans text-sm text-stone leading-relaxed">
-              Лек жълтеникав оттенък, почти незабележим. Блокират 65% от синята светлина — достатъчно, за да не горят очите до 17:00.
+              Лек жълтеникав оттенък, почти незабележим. Блокират 65% от синята и зелената светлина. Достатъчно, за да не болят очите до 17:00.
             </p>
             <ul className="flex flex-col gap-2 mt-2">
-              {['65% блокиране на синя светлина', 'Антирефлексно покритие', 'UV400 защита', 'Устойчиви на драскотини'].map(f => (
+              {['65% блокиране на синя светлина', 'Частичен филтър за зелена светлина', 'Антирефлексно покритие', 'UV400 защита', 'Устойчиви на драскотини'].map(f => (
                 <li key={f} className="font-sans text-xs text-stone flex items-center gap-2">
                   <span className="text-gold">✓</span> {f}
                 </li>
@@ -36,12 +36,12 @@ export default function LensesPage() {
 
           <div className="bg-iron rounded-2xl p-8 flex flex-col gap-4">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">За вечерта</span>
-            <h2 className="font-serif text-2xl text-linen">Вечерни лещи</h2>
+            <h2 className="font-serif text-2xl text-linen">Вечерни стъкла</h2>
             <p className="font-sans text-sm text-stone leading-relaxed">
-              По-силен оранжев филтър. Блокират 98% от синята светлина — тялото ти знае, че е край на деня, и заспиваш без усилие.
+              По-силен оранжев филтър. Блокират 98% от синята и зелената светлина. Тялото ти знае, че е края на деня и заспиваш без усилие.
             </p>
             <ul className="flex flex-col gap-2 mt-2">
-              {['98% блокиране на синя светлина', 'Максимален мелатонинов ефект', 'UV400 защита', 'Лека рамка'].map(f => (
+              {['98% блокиране на синя светлина', '98% блокиране на зелена светлина (500–560nm)', 'Максимален мелатонинов ефект', 'UV400 защита', 'Лека рамка'].map(f => (
                 <li key={f} className="font-sans text-xs text-stone flex items-center gap-2">
                   <span className="text-gold">✓</span> {f}
                 </li>
@@ -57,7 +57,7 @@ export default function LensesPage() {
           >
             Вземи си чифт →
           </Link>
-          <p className="font-sans text-xs text-stone/60 mt-4">7 нощи проба · Безплатна доставка над €50</p>
+          <p className="font-sans text-xs text-stone/60 mt-4">Безплатна доставка над €50</p>
         </div>
       </section>
     </main>
