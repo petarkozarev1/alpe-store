@@ -3,46 +3,64 @@ import { useState } from 'react'
 import { useCartStore } from '@/lib/store/cartStore'
 
 const FIELDS = [
-  { id: 'firstName', label: 'First Name', type: 'text', placeholder: 'Jane' },
-  { id: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Smith' },
-  { id: 'email', label: 'Email', type: 'email', placeholder: 'jane@example.com' },
-  { id: 'address', label: 'Address', type: 'text', placeholder: '123 Main Street' },
-  { id: 'city', label: 'City', type: 'text', placeholder: 'New York' },
-  { id: 'postalCode', label: 'Postal Code', type: 'text', placeholder: '10001' },
-  { id: 'country', label: 'Country', type: 'text', placeholder: 'United States' },
+  { id: 'firstName', label: 'Име', type: 'text', placeholder: 'Иван' },
+  { id: 'lastName', label: 'Фамилия', type: 'text', placeholder: 'Иванов' },
+  { id: 'email', label: 'Имейл', type: 'email', placeholder: 'ivan@example.com' },
+  { id: 'address', label: 'Адрес', type: 'text', placeholder: 'ул. Витоша 1' },
+  { id: 'city', label: 'Град', type: 'text', placeholder: 'София' },
+  { id: 'postalCode', label: 'Пощенски код', type: 'text', placeholder: '1000' },
+  { id: 'country', label: 'Държава', type: 'text', placeholder: 'България' },
 ] as const
 
 type FormData = Record<typeof FIELDS[number]['id'], string>
 
 export default function CheckoutForm() {
-  const clearCart = useCartStore(s => s.clearCart)
+  const items = useCartStore(s => s.items)
   const [form, setForm] = useState<FormData>({
     firstName: '', lastName: '', email: '', address: '', city: '', postalCode: '', country: '',
   })
-  const [placed, setPlaced] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Order placed:', form)
-    clearCart()
-    setPlaced(true)
-  }
+    setLoading(true)
+    setError(null)
 
-  if (placed) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
-        <div className="w-16 h-16 rounded-full bg-linen flex items-center justify-center" aria-hidden="true">
-          <span className="text-gold text-3xl">✓</span>
-        </div>
-        <h2 className="text-2xl font-bold">Order Placed!</h2>
-        <p className="text-stone">Thank you for your order. We&apos;ll be in touch soon.</p>
-      </div>
-    )
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map(i => ({
+            name: `${i.name} — ${i.variantLabel}`,
+            price: i.price,
+            quantity: i.quantity,
+            image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image,
+          })),
+          email: form.email,
+          shipping: {
+            name: `${form.firstName} ${form.lastName}`,
+            address: form.address,
+            city: form.city,
+            postalCode: form.postalCode,
+            country: form.country,
+          },
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok || !data.url) throw new Error(data.error ?? 'Грешка')
+      window.location.href = data.url
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Грешка при плащане')
+      setLoading(false)
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <h2 className="text-xl font-bold mb-2">Contact &amp; Shipping</h2>
+      <h2 className="text-xl font-bold mb-2">Данни за доставка</h2>
       {FIELDS.map(field => (
         <div key={field.id}>
           <label htmlFor={field.id} className="block text-sm font-medium mb-1.5">{field.label}</label>
@@ -57,11 +75,13 @@ export default function CheckoutForm() {
           />
         </div>
       ))}
+      {error && <p className="text-red-600 text-sm">{error}</p>}
       <button
         type="submit"
-        className="mt-4 w-full bg-onyx text-linen py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
+        disabled={loading}
+        className="mt-4 w-full bg-onyx text-linen py-4 rounded-xl font-semibold hover:bg-iron transition-colors disabled:opacity-60"
       >
-        Place Order →
+        {loading ? 'Пренасочване...' : 'Към плащане →'}
       </button>
     </form>
   )

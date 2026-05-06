@@ -9,8 +9,9 @@ export const products: Product[] = [
     description: 'ALPÉ Classic пази очите ти при дълги сесии пред екрана — с премиум филтър за синя светлина, антирефлексно покритие и ултралека рамка, създадена за целодневно носене.',
     price: 49,
     images: [
-      'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPÉ+Classic',
-      'https://via.placeholder.com/600x600/E8E8E8/000000?text=ALPÉ+Classic+Side',
+      '/images/shop/shop-daily-1.png',
+      '/images/shop/shop-daily-2.png',
+      '/images/shop/shop-daily-3.png',
     ],
     variants: [
       { id: 'black', label: 'Black', inStock: true },
@@ -26,8 +27,9 @@ export const products: Product[] = [
     description: 'ALPÉ Pro предлага най-мощния ни филтър за синя светлина и устойчиви на надраскване лещи — създадени за power users, разработчици и всички, чийто живот се върти около екрани.',
     price: 79,
     images: [
-      'https://via.placeholder.com/600x600/F5F5F0/000000?text=ALPÉ+Pro',
-      'https://via.placeholder.com/600x600/E8E8E8/000000?text=ALPÉ+Pro+Side',
+      '/images/shop/shop-evening-1.png',
+      '/images/shop/shop-evening-2.png',
+      '/images/shop/shop-evening-3.png',
     ],
     variants: [
       { id: 'black', label: 'Black', inStock: true },

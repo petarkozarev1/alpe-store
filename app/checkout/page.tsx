@@ -1,7 +1,10 @@
 ﻿import CheckoutForm from '@/components/checkout/CheckoutForm'
 import OrderSummary from '@/components/checkout/OrderSummary'
 
-export const metadata = { title: 'Checkout — ALPÉ' }
+export const metadata = {
+  title: 'Плащане — ALPÉ',
+  description: 'Завърши поръчката си за ALPÉ очила. Безплатна доставка над 50€.',
+}
 
 export default function CheckoutPage() {
   return (

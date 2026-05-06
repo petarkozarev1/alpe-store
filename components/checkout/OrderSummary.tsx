@@ -7,23 +7,23 @@ export default function OrderSummary() {
 
   return (
     <div className="bg-iron rounded-2xl p-6 flex flex-col gap-4">
-      <h3 className="font-bold text-lg">Order Summary</h3>
+      <h3 className="font-bold text-lg">Обобщение на поръчката</h3>
       <div className="flex flex-col gap-3">
         {items.map(item => (
           <div key={`${item.productId}-${item.variantId}`} className="flex justify-between text-sm">
             <span>{item.name} × {item.quantity}</span>
-            <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+            <span className="font-medium">€{(item.price * item.quantity).toFixed(2)}</span>
           </div>
         ))}
       </div>
       <hr className="border-iron" />
       <div className="flex justify-between text-sm text-stone">
-        <span>Shipping</span>
-        <span>Free</span>
+        <span>Доставка</span>
+        <span>Безплатна</span>
       </div>
       <div className="flex justify-between font-bold text-lg">
-        <span>Total</span>
-        <span>${subtotal.toFixed(2)}</span>
+        <span>Общо</span>
+        <span>€{subtotal.toFixed(2)}</span>
       </div>
     </div>
   )

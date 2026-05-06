@@ -8,9 +8,9 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-content mx-auto px-6 md:px-10 py-32 flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold">Your cart is empty</h1>
+        <h1 className="text-3xl font-bold">Количката е празна</h1>
         <Link href="/shop" className="text-stone underline hover:text-onyx">
-          Continue Shopping
+          Продължи пазаруването
         </Link>
       </div>
     )
@@ -18,7 +18,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-content mx-auto px-6 md:px-10 py-16">
-      <h1 className="text-3xl font-bold mb-10">Cart</h1>
+      <h1 className="text-3xl font-bold mb-10">Количка</h1>
       <div className="flex flex-col gap-5 mb-8">
         {items.map(item => (
           <div key={`${item.productId}-${item.variantId}`} className="flex items-center gap-6 py-5 border-b border-iron">
@@ -36,7 +36,7 @@ export default function CartPage() {
                 onClick={() => updateQuantity(item.productId, item.variantId, item.quantity + 1)}
               >+</button>
             </div>
-            <div className="font-semibold w-20 text-right">${(item.price * item.quantity).toFixed(2)}</div>
+            <div className="font-semibold w-20 text-right">€{(item.price * item.quantity).toFixed(2)}</div>
             <button
               onClick={() => removeItem(item.productId, item.variantId)}
               aria-label={`Remove ${item.name}`}
@@ -46,9 +46,9 @@ export default function CartPage() {
         ))}
       </div>
       <div className="flex justify-between items-center pt-4">
-        <span className="text-xl font-bold">Total: ${getSubtotal().toFixed(2)}</span>
-        <Link href="/checkout" className="bg-onyx text-white px-8 py-4 rounded-xl font-semibold hover:bg-iron transition-colors">
-          Checkout →
+        <span className="text-xl font-bold">Общо: €{getSubtotal().toFixed(2)}</span>
+        <Link href="/checkout" className="bg-onyx text-linen px-8 py-4 rounded-xl font-semibold hover:bg-iron transition-colors">
+          Към плащане →
         </Link>
       </div>
     </div>

@@ -32,7 +32,7 @@ export const darkCtaContent = {
 export const ingredientsContent = {
   badge: 'Технология на стъклата',
   headline: 'Създадено за\n"Дигиталната Ера"',
-  editorialImage: 'https://via.placeholder.com/1200x500/F0EDE8/000000?text=ALPÉ+Lenses',
+  editorialImage: '/images/glasses-duo2.png',
   editorialImageAlt: 'ALPÉ precision lens technology — blue light filter, anti-glare, UV400',
   sectionTitle: 'Какво има във всяко стъкло?',
   cta: 'Виж стъклата',
@@ -109,10 +109,10 @@ export const testimonialContent = {
 export const galleryContent = {
   headline: 'Истинска защита. С ALPÉ.',
   images: [
-    'https://via.placeholder.com/300x400/F0EDE8/000000?text=Gallery+1',
-    'https://via.placeholder.com/300x400/E8E0D8/000000?text=Gallery+2',
-    'https://via.placeholder.com/300x400/D4C5B5/000000?text=Gallery+3',
-    'https://via.placeholder.com/300x400/C8B5A0/000000?text=Gallery+4',
+    '/images/shuffle1.png',
+    '/images/shuffle2.png',
+    '/images/shuffle4.png',
+    '/images/shuffle5.png',
   ],
   cta: 'Намери своя чифт',
 }
