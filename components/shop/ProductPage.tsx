@@ -52,6 +52,7 @@ export default function ProductPage() {
   const [slots, setSlots] = useState<Lens[]>(['evening'])
   const [tab, setTab] = useState<Tab>('description')
   const [stickyVisible, setStickyVisible] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [viewerCount, setViewerCount] = useState(0)
   useEffect(() => { setViewerCount(Math.floor(Math.random() * 20) + 18) }, [])
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -176,7 +177,7 @@ export default function ProductPage() {
           {/* Delivery strip */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginTop: 10, marginBottom: 0, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
             <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
-            <span><strong>Безплатна експресна доставка</strong> — пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
+            <span><strong>Безплатна експресна доставка при поръчки над €50.</strong> Пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
           </div>
 
           <div style={{ height: 1, background: 'rgba(28,15,10,0.09)', margin: '24px 0' }} />
@@ -516,7 +517,9 @@ export default function ProductPage() {
       {/* Sticky add to cart — desktop: full-height right sidebar; mobile: bottom bar */}
       <>
         {/* Desktop sidebar */}
-        <div className="product-sticky-bar-desktop" style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: 300, zIndex: 39, background: '#7C3018', color: '#FAF0E4', display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', padding: '40px 28px', gap: 24, boxShadow: '-8px 0 40px rgba(28,15,10,0.28)', transform: stickyVisible ? 'translateX(0)' : 'translateX(100%)', transition: 'transform 0.4s cubic-bezier(.22,1,.36,1)' }}>
+        <div className="product-sticky-bar-desktop" style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: 300, zIndex: 39, background: '#7C3018', color: '#FAF0E4', display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', padding: '40px 28px', gap: 24, boxShadow: '-8px 0 40px rgba(28,15,10,0.28)', transform: stickyVisible && sidebarOpen ? 'translateX(0)' : 'translateX(100%)', transition: 'transform 0.4s cubic-bezier(.22,1,.36,1)' }}>
+          {/* Close button */}
+          <button onClick={() => setSidebarOpen(false)} style={{ position: 'absolute', top: 16, right: 16, width: 32, height: 32, borderRadius: '50%', border: '1.5px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.08)', color: '#FAF0E4', fontSize: 18, lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.15s' }} aria-label="Затвори">×</button>
           {/* Product image */}
           <div style={{ width: 140, height: 140, borderRadius: 16, overflow: 'hidden', position: 'relative', flexShrink: 0, boxShadow: '0 4px 24px rgba(28,15,10,0.3)' }}>
             <Image src={d.images[0].src} alt={`ALPÉ ${d.nameItalic}`} fill sizes="140px" className="object-cover" />
@@ -597,6 +600,38 @@ export default function ProductPage() {
           </div>
         </div>
 
+        {/* Desktop toggle tab */}
+        <button
+          className="product-sticky-tab-desktop"
+          onClick={() => setSidebarOpen(o => !o)}
+          aria-label={sidebarOpen ? 'Скрий панела' : 'Добави в количката'}
+          style={{
+            position: 'fixed',
+            right: stickyVisible && sidebarOpen ? 300 : 0,
+            top: '50%',
+            transform: `translateY(-50%) translateX(${stickyVisible ? '0%' : '100%'})`,
+            zIndex: 40,
+            background: '#7C3018',
+            color: '#FAF0E4',
+            border: 'none',
+            borderRadius: '10px 0 0 10px',
+            padding: '14px 10px',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            alignItems: 'center',
+            gap: 6,
+            boxShadow: '-4px 0 16px rgba(28,15,10,0.22)',
+            transition: 'right 0.4s cubic-bezier(.22,1,.36,1), transform 0.4s cubic-bezier(.22,1,.36,1)',
+            writingMode: 'vertical-rl' as const,
+          }}
+        >
+          <span style={{ fontSize: 16 }}>{sidebarOpen ? '›' : '‹'}</span>
+          {!sidebarOpen && (
+            <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', writingMode: 'vertical-rl', textTransform: 'uppercase' as const, opacity: 0.85 }}>€{price}</span>
+          )}
+        </button>
+
         {/* Mobile bottom bar */}
         <div className="product-sticky-bar-mobile" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
           <div>
@@ -616,10 +651,14 @@ export default function ProductPage() {
         @media (max-width:960px) {
           .product-breadcrumb { padding: 14px 24px 0 !important; }
           .product-grid-inner { grid-template-columns: 1fr !important; gap: 40px !important; padding: 24px 24px 80px !important; }
+          .product-gallery-col { position: static !important; }
           .product-stats-section { padding: 60px 24px !important; }
           .product-nights-section { padding: 60px 24px !important; }
           .product-comparison-section { padding: 60px 24px !important; }
           .product-more-images { padding: 60px 24px 80px !important; }
+          .product-sticky-bar-desktop { display: none !important; }
+          .product-sticky-tab-desktop { display: none !important; }
+          .product-sticky-bar-mobile { display: flex !important; }
         }
 
         @media (max-width:640px) {
@@ -637,8 +676,6 @@ export default function ProductPage() {
           .product-comparison-section { padding: 48px 16px !important; }
           .product-more-images { padding: 48px 16px 80px !important; }
           .product-more-images-grid { grid-template-columns: 1fr !important; }
-          .product-sticky-bar-desktop { display: none !important; }
-          .product-sticky-bar-mobile { display: flex !important; }
         }
       `}</style>
     </div>
