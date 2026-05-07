@@ -25,6 +25,7 @@ export default function CheckoutPageClient() {
 
   const [contact, setContact] = useState<Contact>({ email: '', newsletter: true })
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: 'България', note: '' })
+  const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
   const [deliveryId, setDeliveryId] = useState('speedy')
   const [officeLocation, setOfficeLocation] = useState('')
   const [codeInput, setCodeInput] = useState('')
@@ -63,14 +64,14 @@ export default function CheckoutPageClient() {
     const lineItems = [
       ...items.map(i => ({ name: `${i.name} — ${i.variantLabel}`, price: i.price, quantity: i.quantity, image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image })),
       ...(discount > 0 ? [{ name: `Отстъпка ${applied!.code}`, price: -discount, quantity: 1 }] : []),
-      ...(shipping_ > 0 ? [{ name: `Доставка — ${delivery.label}`, price: shipping_, quantity: 1 }] : []),
+      ...(shipping_ > 0 ? [{ name: `Доставка — ${deliveryType === 'address' ? 'До адрес' : delivery.label}`, price: shipping_, quantity: 1 }] : []),
     ]
 
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: lineItems, email: contact.email, shipping: { name: `${shipping.firstName} ${shipping.lastName}`, phone: shipping.phone, address: shipping.address, city: shipping.city, postalCode: shipping.postalCode, country: shipping.country, officeLocation: delivery.requiresOffice ? officeLocation : '', deliveryMethod: delivery.label } }),
+        body: JSON.stringify({ items: lineItems, email: contact.email, shipping: { name: `${shipping.firstName} ${shipping.lastName}`, phone: shipping.phone, city: shipping.city, address: deliveryType === 'address' ? shipping.address : officeLocation, postalCode: deliveryType === 'address' ? shipping.postalCode : '', country: deliveryType === 'address' ? shipping.country : 'България', deliveryMethod: deliveryType === 'address' ? 'До адрес' : delivery.label, officeLocation: deliveryType === 'office' ? officeLocation : '' } }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Грешка')
@@ -148,13 +149,14 @@ export default function CheckoutPageClient() {
               </div>
             </div>
 
-            {/* Shipping address */}
+            {/* Delivery — combined section */}
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Адрес за доставка</span>
-                <span className="font-sans text-xs text-stone/40">БЪЛГАРИЯ</span>
+                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Доставка</span>
               </div>
               <div className="flex flex-col gap-4">
+
+                {/* Names */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Име</label>
@@ -165,6 +167,8 @@ export default function CheckoutPageClient() {
                     <input required placeholder="Иванов" value={shipping.lastName} onChange={e => setShipping(p => ({ ...p, lastName: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
                   </div>
                 </div>
+
+                {/* Phone + City */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Телефон</label>
@@ -180,83 +184,99 @@ export default function CheckoutPageClient() {
                     <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
                   </div>
                 </div>
-                <div>
-                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Адрес <span className="text-stone/40 normal-case tracking-normal">улица, номер, етаж</span></label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40 text-sm">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    </span>
-                    <input required placeholder="ул. Витоша 1, ет. 3" value={shipping.address} onChange={e => setShipping(p => ({ ...p, address: e.target.value }))} className="w-full border border-stone/25 rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Пощенски код</label>
-                    <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
-                  </div>
-                  <div>
-                    <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Държава</label>
-                    <select value={shipping.country} onChange={e => setShipping(p => ({ ...p, country: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx">
-                      <option>България</option>
-                      <option>Германия</option>
-                      <option>Франция</option>
-                      <option>Италия</option>
-                      <option>Испания</option>
-                      <option>Нидерландия</option>
-                      <option>Белгия</option>
-                      <option>Австрия</option>
-                      <option>Полша</option>
-                      <option>Румъния</option>
-                      <option>Гърция</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Бележка към куриера <span className="text-stone/40 normal-case tracking-normal">по избор</span></label>
-                  <input placeholder="напр. Звъни преди доставка" value={shipping.note} onChange={e => setShipping(p => ({ ...p, note: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
-                </div>
-              </div>
-            </div>
 
-            {/* Delivery method */}
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">03.</span>Метод на доставка</span>
-                <span className="font-sans text-xs text-stone/40">ИЗБЕРИ ЕДИН</span>
-              </div>
-              <div className="flex flex-col gap-3">
-                {DELIVERY.map(d => (
-                  <div key={d.id}>
-                    <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${deliveryId === d.id ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
-                      <input type="radio" name="delivery" value={d.id} checked={deliveryId === d.id} onChange={() => { setDeliveryId(d.id); setOfficeLocation('') }} className="accent-onyx" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-sans text-sm font-semibold text-onyx">{d.label}</span>
-                          {d.badge && <span className="font-sans text-[9px] font-bold uppercase tracking-widest bg-gold/20 text-iron px-2 py-0.5 rounded-full">{d.badge}</span>}
-                        </div>
-                      </div>
-                    </label>
-                    {deliveryId === d.id && d.requiresOffice && (
-                      <div className="mt-2 ml-4 pl-4 border-l-2 border-onyx/20">
-                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Офис / локер <span className="normal-case tracking-normal text-stone/50">— въведи точното местоположение</span></label>
-                        <input
-                          required
-                          placeholder={'officePlaceholder' in d ? d.officePlaceholder : ''}
-                          value={officeLocation}
-                          onChange={e => setOfficeLocation(e.target.value)}
-                          className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
-                        />
-                        <p className="font-sans text-[10px] text-stone/50 mt-1.5">
-                          Намери най-близкия офис на{' '}
-                          <a href={d.officeLink} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone transition-colors">
-                            сайта на куриера
-                          </a>
-                          {' '}и го въведи тук.
-                        </p>
-                      </div>
-                    )}
+                {/* Delivery type toggle */}
+                <div>
+                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-2">Метод на доставка</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['address', 'office'] as const).map(type => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => { setDeliveryType(type); setOfficeLocation('') }}
+                        className={`py-3 px-4 rounded-xl border text-sm font-sans font-semibold transition-all ${deliveryType === type ? 'border-onyx bg-onyx text-linen' : 'border-stone/25 text-stone hover:border-stone/50'}`}
+                      >
+                        {type === 'address' ? 'До адрес' : 'До офис / локер'}
+                      </button>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Conditional: address fields */}
+                {deliveryType === 'address' && (
+                  <>
+                    <div>
+                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Адрес <span className="text-stone/40 normal-case tracking-normal">улица, номер, етаж</span></label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
+                        <input required placeholder="ул. Витоша 1, ет. 3" value={shipping.address} onChange={e => setShipping(p => ({ ...p, address: e.target.value }))} className="w-full border border-stone/25 rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Пощенски код</label>
+                        <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                      </div>
+                      <div>
+                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Държава</label>
+                        <select value={shipping.country} onChange={e => setShipping(p => ({ ...p, country: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx">
+                          <option>България</option>
+                          <option>Германия</option>
+                          <option>Франция</option>
+                          <option>Италия</option>
+                          <option>Испания</option>
+                          <option>Нидерландия</option>
+                          <option>Белгия</option>
+                          <option>Австрия</option>
+                          <option>Полша</option>
+                          <option>Румъния</option>
+                          <option>Гърция</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Бележка към куриера <span className="text-stone/40 normal-case tracking-normal">по избор</span></label>
+                      <input placeholder="напр. Звъни преди доставка" value={shipping.note} onChange={e => setShipping(p => ({ ...p, note: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                    </div>
+                  </>
+                )}
+
+                {/* Conditional: courier + office/locker */}
+                {deliveryType === 'office' && (
+                  <div className="flex flex-col gap-3">
+                    {DELIVERY.map(d => (
+                      <div key={d.id}>
+                        <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${deliveryId === d.id ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
+                          <input type="radio" name="delivery" value={d.id} checked={deliveryId === d.id} onChange={() => { setDeliveryId(d.id); setOfficeLocation('') }} className="accent-onyx" />
+                          <div className="flex items-center gap-2 flex-wrap flex-1">
+                            <span className="font-sans text-sm font-semibold text-onyx">{d.label}</span>
+                            {d.badge && <span className="font-sans text-[9px] font-bold uppercase tracking-widest bg-gold/20 text-iron px-2 py-0.5 rounded-full">{d.badge}</span>}
+                          </div>
+                        </label>
+                        {deliveryId === d.id && (
+                          <div className="mt-2 ml-4 pl-4 border-l-2 border-onyx/20">
+                            <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Офис / локер <span className="normal-case tracking-normal text-stone/50">— въведи точното местоположение</span></label>
+                            <input
+                              required
+                              placeholder={d.officePlaceholder}
+                              value={officeLocation}
+                              onChange={e => setOfficeLocation(e.target.value)}
+                              className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
+                            />
+                            <p className="font-sans text-[10px] text-stone/50 mt-1.5">
+                              Намери най-близкия офис на{' '}
+                              <a href={d.officeLink} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone transition-colors">сайта на куриера</a>
+                              {' '}и го въведи тук.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
               </div>
             </div>
           </div>
@@ -324,7 +344,7 @@ export default function CheckoutPageClient() {
                   </div>
                 )}
                 <div className="flex justify-between text-stone">
-                  <span>Доставка · <em className="not-italic text-stone/60">{delivery.label}</em></span>
+                  <span>Доставка · <em className="not-italic text-stone/60">{deliveryType === 'address' ? 'До адрес' : delivery.label}</em></span>
                   <span className={shipping_ === 0 ? 'text-green-600 italic' : ''}>{shipping_ === 0 ? 'Безплатна' : `€${shipping_.toFixed(2)}`}</span>
                 </div>
                 <div className="flex justify-between text-stone/60 text-xs">
