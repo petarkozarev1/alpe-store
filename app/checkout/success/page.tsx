@@ -19,13 +19,6 @@ async function saveToNotion(sessionId: string) {
 
     if (session.payment_status !== 'paid') return
 
-    // Idempotency: skip if already saved
-    const existing = await notion.databases.query({
-      database_id: DB,
-      filter: { property: 'Stripe Session', rich_text: { equals: sessionId } },
-    })
-    if (existing.results.length > 0) return
-
     const meta = (session.metadata ?? {}) as Record<string, string>
     const items = (session.line_items?.data ?? [])
       .map(i => `${i.description} ×${i.quantity}`)
