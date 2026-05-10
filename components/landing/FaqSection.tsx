@@ -19,7 +19,17 @@ export default function FaqSection() {
             <h2 className="text-[clamp(28px,4vw,40px)] font-bold tracking-tight leading-tight whitespace-pre-line text-onyx">
               {faqSectionContent.headline}
             </h2>
-            <Button label={faqSectionContent.cta} href="/shop" variant="primary" className="font-bold self-start" />
+            <Button
+              label={faqSectionContent.cta}
+              href="/shop"
+              variant="primary"
+              className="font-bold self-start"
+              onClick={() => {
+                if (typeof window !== 'undefined' && typeof window.fbq === 'function' && localStorage.getItem('alpe-cookie-consent') === 'all') {
+                  window.fbq('trackCustom', 'CTAClick', { cta_location: 'faq' })
+                }
+              }}
+            />
           </div>
 
           {/* Right accordion */}

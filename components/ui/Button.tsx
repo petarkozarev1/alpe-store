@@ -30,6 +30,7 @@ export default function Button({ label, href, onClick, variant = 'primary', clas
     return (
       <MotionLink
         href={href}
+        onClick={onClick}
         whileHover={{ scale: 0.97 }}
         whileTap={{ scale: 0.95 }}
         className={classes}

@@ -76,7 +76,17 @@ export default function HeroSection() {
       </motion.p>
 
       <motion.div {...fadeUp(0.3)} className="mt-8">
-        <Button label={heroContent.cta} href="/shop" variant="primary" className="font-bold" />
+        <Button
+          label={heroContent.cta}
+          href="/shop"
+          variant="primary"
+          className="font-bold"
+          onClick={() => {
+            if (typeof window !== 'undefined' && typeof window.fbq === 'function' && localStorage.getItem('alpe-cookie-consent') === 'all') {
+              window.fbq('trackCustom', 'CTAClick', { cta_location: 'hero' })
+            }
+          }}
+        />
       </motion.div>
     </section>
   )

@@ -60,7 +60,17 @@ export default function HowItWorksSection() {
           <h2 className="text-[clamp(36px,5vw,52px)] font-bold tracking-tight leading-tight whitespace-pre-line text-iron">
             {howItWorksContent.headline}
           </h2>
-          <Button label={howItWorksContent.cta} href="/shop" variant="primary" className="font-bold self-start" />
+          <Button
+            label={howItWorksContent.cta}
+            href="/shop"
+            variant="primary"
+            className="font-bold self-start"
+            onClick={() => {
+              if (typeof window !== 'undefined' && typeof window.fbq === 'function' && localStorage.getItem('alpe-cookie-consent') === 'all') {
+                window.fbq('trackCustom', 'CTAClick', { cta_location: 'how_it_works' })
+              }
+            }}
+          />
         </div>
 
         {/* Right stacking cards */}
