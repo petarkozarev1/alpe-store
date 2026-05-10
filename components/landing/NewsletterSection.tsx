@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { firePixelEvent } from '@/components/analytics/MetaPixel'
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState('')
@@ -9,6 +10,13 @@ export default function NewsletterSection() {
     e.preventDefault()
     if (!email) return
     setSubmitted(true)
+    try {
+      firePixelEvent('Lead', {
+        content_name: 'newsletter_signup',
+        currency: 'EUR',
+        value: 0,
+      })
+    } catch { /* never break UI */ }
   }
 
   return (
