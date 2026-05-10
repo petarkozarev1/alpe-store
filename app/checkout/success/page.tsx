@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import Stripe from 'stripe'
 import { Client } from '@notionhq/client'
+import PurchasePixelFire from '@/components/analytics/PurchasePixelFire'
 
 export const metadata: Metadata = {
   title: 'Поръчката е приета — ALPÉ',
@@ -54,12 +55,24 @@ export default async function CheckoutSuccessPage({
 }) {
   const { session_id } = await searchParams
 
+  let pixelValue = 0
+  let pixelOrderId = session_id ?? ''
+
   if (session_id) {
     await saveToNotion(session_id)
+
+    try {
+      const session = await stripe.checkout.sessions.retrieve(session_id)
+      pixelValue = (session.amount_total ?? 0) / 100
+      pixelOrderId = session.id ?? session_id
+    } catch {
+      // pixel data fetch failure must never break the success page
+    }
   }
 
   return (
     <main className="bg-parchment min-h-screen flex items-center justify-center px-6">
+      <PurchasePixelFire value={pixelValue} currency="EUR" orderId={pixelOrderId} />
       <div className="flex flex-col items-center text-center gap-6 max-w-md">
         <div className="w-20 h-20 rounded-full bg-linen flex items-center justify-center">
           <span className="text-gold text-4xl">✓</span>
