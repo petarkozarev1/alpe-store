@@ -38,21 +38,21 @@ export default function MetaPixel() {
             'https://connect.facebook.net/en_US/fbevents.js');
             var _consent = localStorage.getItem('alpe-cookie-consent');
             if (_consent === 'all') {
-              fbq('init', '1435898268342097');
+              fbq('init', '${PIXEL_ID}');
               fbq('track', 'PageView');
             }
           `,
         }}
       />
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=1435898268342097&ev=PageView&noscript=1"
-          alt=""
-        />
-      </noscript>
+      {/* Pixel noscript fallback — standard 1×1 tracking pixel, next/image not applicable */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        height="1"
+        width="1"
+        style={{ display: 'none' }}
+        src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
+        alt=""
+      />
     </>
   )
 }
