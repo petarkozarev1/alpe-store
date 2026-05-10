@@ -51,7 +51,7 @@ export default function SciencePage() {
 
         <div className="mt-16">
           <Link
-            href="/#products"
+            href="/shop"
             className="inline-block font-sans text-sm bg-onyx text-linen px-8 py-3 rounded-full hover:bg-iron transition-colors"
           >
             Вземи си чифт →

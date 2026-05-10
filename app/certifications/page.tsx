@@ -192,7 +192,7 @@ export default function CertificationsPage() {
         <p className="font-sans text-sm text-stone mb-2">Достатъчно доказателства?</p>
         <h2 className="font-serif text-3xl text-iron mb-8">Вземи си чифт.</h2>
         <Link
-          href="/#products"
+          href="/shop"
           className="inline-block font-sans text-sm bg-onyx text-linen px-8 py-3 rounded-full hover:bg-iron transition-colors"
         >
           Вземи си чифт →

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const steps = [
   { num: '01', title: 'Носете ги поне 10 дена', body: 'Дайте им реален шанс. Системно, поне 10 дена пред екрана. Повечето хора усещат разлика до тогава.' },
-  { num: '02', title: 'Пишете ни', body: 'Ако не сте доволни, изпратете имейл на hello@alpe.bg. Кажете само номера на поръчката си.' },
+  { num: '02', title: 'Пишете ни', body: 'Ако не сте доволни, изпратете имейл на hello@alpewear.com. Кажете само номера на поръчката си.' },
   { num: '03', title: 'Изпратете ги обратно', body: 'Поставяте ги в оригиналната кутия и ги изпращате обратно при куриера.' },
   { num: '04', title: 'Получавате парите си', body: 'Пълно възстановяване до 10 работни дни след получаване на пратката.' },
 ]
@@ -40,10 +40,10 @@ export default function ReturnsPage() {
           <h3 className="font-serif text-xl text-iron mb-2">Имате въпрос за връщане?</h3>
           <p className="font-sans text-sm text-stone mb-4">Пишете ни директно — отговаряме в рамките на 24 часа.</p>
           <a
-            href="mailto:hello@alpe.bg"
+            href="mailto:hello@alpewear.com"
             className="font-sans text-sm text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50"
           >
-            hello@alpe.bg
+            hello@alpewear.com
           </a>
         </div>
       </section>

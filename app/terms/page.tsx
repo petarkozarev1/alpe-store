@@ -33,7 +33,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">4. Връщане и замяна</h2>
-            <p>Имате право да се откажете от договора в срок от <strong>14 календарни дни</strong> от получаване на продукта, без да посочвате причина — съгласно чл. 50 от Закона за защита на потребителите и Директива 2011/83/ЕС. За упражняване на правото на отказ се свържете с нас на info@alpe.bg с номера на поръчката си. Продуктът трябва да е в оригинална опаковка и без видими повреди. Разходите за обратна доставка са за наша сметка.</p>
+            <p>Имате право да се откажете от договора в срок от <strong>14 календарни дни</strong> от получаване на продукта, без да посочвате причина — съгласно чл. 50 от Закона за защита на потребителите и Директива 2011/83/ЕС. За упражняване на правото на отказ се свържете с нас на hello@alpewear.com с номера на поръчката си. Продуктът трябва да е в оригинална опаковка и без видими повреди. Разходите за обратна доставка са за наша сметка.</p>
           </section>
 
           <section>
@@ -48,7 +48,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">7. Онлайн решаване на спорове</h2>
-            <p>Съгласно Регламент (ЕС) № 524/2013, потребителите имат право да подават жалби чрез платформата за онлайн решаване на спорове на Европейската комисия: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">ec.europa.eu/consumers/odr</a>. Нашият имейл за целите на тази процедура: <a href="mailto:info@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">info@alpe.bg</a></p>
+            <p>Съгласно Регламент (ЕС) № 524/2013, потребителите имат право да подават жалби чрез платформата за онлайн решаване на спорове на Европейската комисия: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">ec.europa.eu/consumers/odr</a>. Нашият имейл за целите на тази процедура: <a href="mailto:hello@alpewear.com" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpewear.com</a></p>
           </section>
 
           <section>
@@ -58,7 +58,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">9. Контакт</h2>
-            <p>За въпроси: <a href="mailto:hello@alpe.bg" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpe.bg</a></p>
+            <p>За въпроси: <a href="mailto:hello@alpewear.com" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpewear.com</a></p>
           </section>
         </div>
       </section>

@@ -21,8 +21,8 @@ export default function ContactPage() {
           {/* Общи въпроси */}
           <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Общи въпроси</span>
-            <a href="mailto:hello@alpe.bg" className="font-serif text-lg text-iron hover:text-gold transition-colors">
-              hello@alpe.bg
+            <a href="mailto:hello@alpewear.com" className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              hello@alpewear.com
             </a>
             <p className="font-sans text-xs text-stone">Въпроси за продуктите, поръчки, доставка.</p>
           </div>
@@ -30,8 +30,8 @@ export default function ContactPage() {
           {/* Поддръжка */}
           <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Поддръжка</span>
-            <a href="mailto:support@alpe.bg" className="font-serif text-lg text-iron hover:text-gold transition-colors">
-              support@alpe.bg
+            <a href="mailto:support@alpewear.com" className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              support@alpewear.com
             </a>
             <p className="font-sans text-xs text-stone">Проблем с поръчка или доставка.</p>
           </div>
@@ -41,7 +41,7 @@ export default function ContactPage() {
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Социални мрежи</span>
             <div className="flex flex-col gap-2">
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/alpe.wear/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-serif text-lg text-iron hover:text-gold transition-colors flex items-center gap-2"
@@ -54,7 +54,7 @@ export default function ContactPage() {
                 Instagram
               </a>
               <a
-                href="https://www.facebook.com"
+                href="https://www.facebook.com/profile.php?id=61576538370701"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-serif text-lg text-iron hover:text-gold transition-colors flex items-center gap-2"
@@ -70,8 +70,8 @@ export default function ContactPage() {
           {/* Връщане */}
           <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Връщане</span>
-            <a href="mailto:returns@alpe.bg" className="font-serif text-lg text-iron hover:text-gold transition-colors">
-              returns@alpe.bg
+            <a href="mailto:returns@alpewear.com" className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              returns@alpewear.com
             </a>
             <p className="font-sans text-xs text-stone">Заявка за връщане на продукт.</p>
           </div>
