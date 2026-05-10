@@ -14,7 +14,7 @@ const DELIVERY = [
   { id: 'sameday', label: 'SameDay',  badge: null,          requiresOffice: true,  officePlaceholder: 'напр. SameDay локер НДК, пл. България 1, София',        officeLink: 'https://www.sameday.bg/en/parcel-locker' },
 ]
 
-const DISCOUNT_CODES: Record<string, number> = { 'WELCOME10': 10 }
+const DISCOUNT_CODES: Record<string, number> = { 'WELCOME10': 10, 'FAMILY40': 40 }
 
 /* ── types ─────────────────────────────────────────── */
 interface Contact { email: string; newsletter: boolean }
