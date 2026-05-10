@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
+import { firePixelEvent } from '@/components/analytics/MetaPixel'
 
 const FREE_SHIPPING_THRESHOLD = 50
 
@@ -61,6 +62,19 @@ export default function CartDrawer() {
       document.body.style.overflow = ''
     }
     return () => { document.body.style.overflow = '' }
+  }, [isDrawerOpen])
+
+  useEffect(() => {
+    if (!isDrawerOpen) return
+    try {
+      const storeItems = useCartStore.getState().items
+      const total = storeItems.reduce((s: number, i: { price: number; quantity: number }) => s + i.price * i.quantity, 0)
+      firePixelEvent('ViewCart', {
+        value: total,
+        currency: 'EUR',
+        num_items: storeItems.reduce((s: number, i: { quantity: number }) => s + i.quantity, 0),
+      })
+    } catch { /* never break UI */ }
   }, [isDrawerOpen])
 
   const subtotal = getSubtotal()
@@ -273,7 +287,15 @@ export default function CartDrawer() {
 
                 <Link
                   href="/checkout"
-                  onClick={closeDrawer}
+                  onClick={() => {
+                    try {
+                      firePixelEvent('InitiateCheckout', {
+                        value: subtotal,
+                        currency: 'EUR',
+                      })
+                    } catch { /* never break UI */ }
+                    closeDrawer()
+                  }}
                   className="w-full bg-onyx text-linen text-center py-[17px] rounded-lg font-sans font-medium text-[15px] hover:bg-iron transition-colors flex items-center justify-center gap-2"
                 >
                   <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
