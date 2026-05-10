@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
+import { firePixelEvent } from '@/components/analytics/MetaPixel'
 
 type Lens = 'evening' | 'daily'
 type Tab = 'description' | 'science' | 'reviews'
@@ -68,6 +69,16 @@ export default function ProductPage() {
     return () => obs.disconnect()
   }, [])
 
+  useEffect(() => {
+    firePixelEvent('ViewContent', {
+      content_name: 'ALPÉ Glasses',
+      content_ids: ['ALPÉ-glasses'],
+      content_type: 'product',
+      value: bundlePrices[1],
+      currency: 'EUR',
+    })
+  }, [])
+
   function handleLens(l: Lens) {
     setLens(l)
     setThumbIdx(prev => ({ ...prev }))
@@ -97,6 +108,13 @@ export default function ProductPage() {
       slug: 'ALPÉ-glasses',
       originalPrice: bundle > 1 ? bundlePrices[1] * bundle : undefined,
       saving: bundle > 1 ? bundleSavings[bundle] : undefined,
+    })
+    firePixelEvent('AddToCart', {
+      content_name: d.name,
+      content_ids: [`ALPÉ-${lens}`],
+      content_type: 'product',
+      value: bundlePrices[bundle],
+      currency: 'EUR',
     })
     openDrawer()
   }
