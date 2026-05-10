@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { Client } from '@notionhq/client'
+import { sendCAPIEvent } from '@/lib/meta-capi'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
@@ -50,6 +51,26 @@ export async function POST(req: Request) {
     console.error('Notion error:', err)
     return NextResponse.json({ error: 'Notion write failed' }, { status: 500 })
   }
+
+  // Meta Conversions API — server-side Purchase event
+  const nameParts = (meta.name ?? '').trim().split(' ')
+  const firstName = nameParts[0] ?? ''
+  const lastName = nameParts.slice(1).join(' ') || firstName
+
+  await sendCAPIEvent('Purchase', {
+    email: session.customer_email ?? undefined,
+    phone: meta.phone ?? undefined,
+    firstName,
+    lastName,
+    city: meta.city ?? undefined,
+    value: total,
+    currency: 'EUR',
+    orderId: session.id,
+    contentIds: lineItems.data.map(i => i.description ?? 'ALPÉ'),
+    numItems: lineItems.data.reduce((s, i) => s + (i.quantity ?? 1), 0),
+    eventId: `purchase-${session.id}`,
+    sourceUrl: 'https://alpewear.com/checkout/success',
+  })
 
   return NextResponse.json({ received: true })
 }
