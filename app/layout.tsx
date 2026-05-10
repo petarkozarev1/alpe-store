@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import CartDrawer from '@/components/layout/CartDrawer'
 import CookieBanner from '@/components/layout/CookieBanner'
+import MetaPixel from '@/components/analytics/MetaPixel'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <CartDrawer />
         <CookieBanner />
+        <MetaPixel />
       </body>
     </html>
   )
