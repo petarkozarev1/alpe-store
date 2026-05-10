@@ -1,8 +1,9 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/lib/store/cartStore'
+import { firePixelEvent } from '@/components/analytics/MetaPixel'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -45,6 +46,23 @@ export default function CheckoutPageClient() {
   const afterDiscount = subtotal - discount
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
   const total = +(afterDiscount + shipping_).toFixed(2)
+
+  /* ── InitiateCheckout pixel ────────────────────── */
+  useEffect(() => {
+    try {
+      const items = useCartStore.getState().items
+      const total = items.reduce((sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity, 0)
+      firePixelEvent('InitiateCheckout', {
+        content_ids: items.map((i: { productId: string }) => i.productId),
+        num_items: items.reduce((sum: number, i: { quantity: number }) => sum + i.quantity, 0),
+        value: total,
+        currency: 'EUR',
+      })
+    } catch {
+      // pixel failure must never break checkout
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   /* ── discount code ──────────────────────────────── */
   const applyCode = () => {
