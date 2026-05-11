@@ -58,7 +58,7 @@ export default function PricingPage() {
               className={`rounded-2xl p-8 flex flex-col gap-4 ${tier.highlight ? 'bg-iron text-linen' : 'border border-iron/20'}`}
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">{tier.name}</span>
+                <span className={`font-sans text-[10px] uppercase tracking-widest ${tier.highlight ? 'text-linen/65' : 'text-stone/75'}`}>{tier.name}</span>
                 {tier.badge && (
                   <span className={`font-sans text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded ${tier.highlight ? 'bg-linen/20 text-linen' : 'bg-onyx text-linen'}`}>
                     {tier.badge}
@@ -68,15 +68,15 @@ export default function PricingPage() {
               <div>
                 <p className={`font-serif text-4xl ${tier.highlight ? 'text-linen' : 'text-iron'}`}>{tier.price}</p>
                 {tier.originalPrice && (
-                  <p className="font-sans text-xs text-stone/50 mt-1">поотделно: {tier.originalPrice}</p>
+                  <p className="font-sans text-xs text-stone/65 mt-1">поотделно: {tier.originalPrice}</p>
                 )}
               </div>
-              <p className="font-sans text-sm leading-relaxed text-stone">
+              <p className={`font-sans text-sm leading-relaxed ${tier.highlight ? 'text-linen/80' : 'text-stone'}`}>
                 {tier.description}
               </p>
               <ul className="flex flex-col gap-2 flex-1">
                 {tier.features.map(f => (
-                  <li key={f} className="font-sans text-xs text-stone flex items-center gap-2">
+                  <li key={f} className={`font-sans text-xs flex items-center gap-2 ${tier.highlight ? 'text-linen/80' : 'text-stone'}`}>
                     <span className="text-gold">✓</span> {f}
                   </li>
                 ))}
@@ -95,7 +95,7 @@ export default function PricingPage() {
           ))}
         </div>
 
-        <p className="font-sans text-xs text-stone/60 text-center">
+        <p className="font-sans text-xs text-stone/70 text-center">
           Безплатна доставка над €50 · EU сертифицирани стъкла
         </p>
       </section>

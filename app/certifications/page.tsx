@@ -102,7 +102,7 @@ export default function CertificationsPage() {
             >
               {/* Lens header */}
               <div className={`px-8 pt-8 pb-6 border-b ${lens.color === 'dark' ? 'border-linen/20' : 'border-iron/10'}`}>
-                <span className={`font-sans text-[10px] uppercase tracking-widest ${lens.color === 'dark' ? 'text-linen/60' : 'text-stone/50'}`}>
+                <span className={`font-sans text-[10px] uppercase tracking-widest ${lens.color === 'dark' ? 'text-linen/60' : 'text-stone/70'}`}>
                   {lens.code}
                 </span>
                 <h2 className={`font-serif text-2xl mt-2 mb-1 ${lens.color === 'dark' ? 'text-linen' : 'text-iron'}`}>
@@ -121,7 +121,7 @@ export default function CertificationsPage() {
                       <p className={`font-sans text-xs ${lens.color === 'dark' ? 'text-linen/75' : 'text-stone/70'}`}>
                         {spec.label}
                       </p>
-                      <p className={`font-sans text-[10px] mt-0.5 ${lens.color === 'dark' ? 'text-linen/55' : 'text-stone/40'}`}>
+                      <p className={`font-sans text-[10px] mt-0.5 ${lens.color === 'dark' ? 'text-linen/55' : 'text-stone/60'}`}>
                         {spec.note}
                       </p>
                     </div>
@@ -136,7 +136,7 @@ export default function CertificationsPage() {
 
               {/* Standards passed */}
               <div className={`px-8 pb-8 pt-2`}>
-                <p className={`font-sans text-[10px] uppercase tracking-widest mb-3 ${lens.color === 'dark' ? 'text-linen/55' : 'text-stone/40'}`}>
+                <p className={`font-sans text-[10px] uppercase tracking-widest mb-3 ${lens.color === 'dark' ? 'text-linen/55' : 'text-stone/60'}`}>
                   Преминати стандарти
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -146,7 +146,7 @@ export default function CertificationsPage() {
                       className={`font-sans text-[10px] px-3 py-1 rounded-full border ${
                         lens.color === 'dark'
                           ? 'border-linen/30 text-linen/75'
-                          : 'border-iron/20 text-stone/60'
+                          : 'border-iron/25 text-stone/75'
                       }`}
                     >
                       ✓ {std}
@@ -200,7 +200,7 @@ export default function CertificationsPage() {
         <p className="font-sans text-xs text-stone/60 mt-4">
           Безплатна доставка над €50
         </p>
-        <p className="font-sans text-xs text-stone/40 mt-6 max-w-sm mx-auto">
+        <p className="font-sans text-xs text-stone/55 mt-6 max-w-sm mx-auto">
           Лабораторен доклад: AHD TMS · Стандарти: BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015, AS/NZS 1067.1:2016
         </p>
       </section>
