@@ -21,7 +21,8 @@ export default function PurchasePixelFire({ value, currency = 'EUR', orderId }: 
     } catch {
       // pixel failure must never break the success page
     }
-  }, [value, currency, orderId])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return null
 }

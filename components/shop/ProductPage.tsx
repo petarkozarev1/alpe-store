@@ -74,7 +74,7 @@ export default function ProductPage() {
       content_name: 'ALPÉ Glasses',
       content_ids: ['ALPÉ-glasses'],
       content_type: 'product',
-      value: bundlePrices[1],
+      value: bundlePrices[bundle],
       currency: 'EUR',
     })
   }, [])
