@@ -40,7 +40,7 @@ export default function SciencePage() {
         <div className="flex flex-col gap-10 max-w-2xl">
           {facts.map((f, i) => (
             <div key={f.title} className="flex gap-6">
-              <span className="font-serif text-4xl text-gold/40 leading-none mt-1">{i + 1}</span>
+              <span className="font-serif text-4xl text-gold/65 leading-none mt-1">{i + 1}</span>
               <div>
                 <h2 className="font-serif text-xl text-iron mb-2">{f.title}</h2>
                 <p className="font-sans text-sm text-stone leading-relaxed">{f.body}</p>

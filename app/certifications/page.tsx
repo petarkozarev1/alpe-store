@@ -72,10 +72,10 @@ export default function CertificationsPage() {
         </p>
       </section>
 
-      {/* Standards strip */}
+      {/* Standards strip — dark bg-iron section */}
       <section className="bg-iron">
         <div className="max-w-content mx-auto px-6 md:px-10 py-12">
-          <p className="font-sans text-[10px] uppercase tracking-widest text-stone/60 mb-8">Преминати стандарти</p>
+          <p className="font-sans text-[10px] uppercase tracking-widest text-linen/60 mb-8">Преминати стандарти</p>
           <div className="grid md:grid-cols-3 gap-8">
             {standards.map((s) => (
               <div key={s.code} className="flex flex-col gap-2">
@@ -83,8 +83,8 @@ export default function CertificationsPage() {
                   <span className="text-gold text-sm">✓</span>
                   <span className="font-sans text-xs font-medium text-linen tracking-wide">{s.code}</span>
                 </div>
-                <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">{s.region}</span>
-                <p className="font-sans text-xs text-stone leading-relaxed mt-1">{s.what}</p>
+                <span className="font-sans text-[10px] uppercase tracking-widest text-linen/60">{s.region}</span>
+                <p className="font-sans text-xs text-linen/75 leading-relaxed mt-1">{s.what}</p>
               </div>
             ))}
           </div>
@@ -101,14 +101,14 @@ export default function CertificationsPage() {
               className={`rounded-2xl overflow-hidden ${lens.color === 'dark' ? 'bg-iron' : 'border border-iron/20'}`}
             >
               {/* Lens header */}
-              <div className={`px-8 pt-8 pb-6 border-b ${lens.color === 'dark' ? 'border-stone/20' : 'border-iron/10'}`}>
-                <span className={`font-sans text-[10px] uppercase tracking-widest ${lens.color === 'dark' ? 'text-stone/60' : 'text-stone/50'}`}>
+              <div className={`px-8 pt-8 pb-6 border-b ${lens.color === 'dark' ? 'border-linen/20' : 'border-iron/10'}`}>
+                <span className={`font-sans text-[10px] uppercase tracking-widest ${lens.color === 'dark' ? 'text-linen/60' : 'text-stone/50'}`}>
                   {lens.code}
                 </span>
                 <h2 className={`font-serif text-2xl mt-2 mb-1 ${lens.color === 'dark' ? 'text-linen' : 'text-iron'}`}>
                   {lens.name}
                 </h2>
-                <p className={`font-sans text-xs ${lens.color === 'dark' ? 'text-stone' : 'text-stone'}`}>
+                <p className={`font-sans text-xs ${lens.color === 'dark' ? 'text-linen/75' : 'text-stone'}`}>
                   {lens.tint}
                 </p>
               </div>
@@ -118,10 +118,10 @@ export default function CertificationsPage() {
                 {lens.specs.map((spec) => (
                   <div key={spec.label} className="flex justify-between items-start gap-4">
                     <div>
-                      <p className={`font-sans text-xs ${lens.color === 'dark' ? 'text-stone/70' : 'text-stone/70'}`}>
+                      <p className={`font-sans text-xs ${lens.color === 'dark' ? 'text-linen/75' : 'text-stone/70'}`}>
                         {spec.label}
                       </p>
-                      <p className={`font-sans text-[10px] mt-0.5 ${lens.color === 'dark' ? 'text-stone/40' : 'text-stone/40'}`}>
+                      <p className={`font-sans text-[10px] mt-0.5 ${lens.color === 'dark' ? 'text-linen/55' : 'text-stone/40'}`}>
                         {spec.note}
                       </p>
                     </div>
@@ -136,7 +136,7 @@ export default function CertificationsPage() {
 
               {/* Standards passed */}
               <div className={`px-8 pb-8 pt-2`}>
-                <p className={`font-sans text-[10px] uppercase tracking-widest mb-3 ${lens.color === 'dark' ? 'text-stone/40' : 'text-stone/40'}`}>
+                <p className={`font-sans text-[10px] uppercase tracking-widest mb-3 ${lens.color === 'dark' ? 'text-linen/55' : 'text-stone/40'}`}>
                   Преминати стандарти
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -145,7 +145,7 @@ export default function CertificationsPage() {
                       key={std}
                       className={`font-sans text-[10px] px-3 py-1 rounded-full border ${
                         lens.color === 'dark'
-                          ? 'border-stone/30 text-stone/70'
+                          ? 'border-linen/30 text-linen/75'
                           : 'border-iron/20 text-stone/60'
                       }`}
                     >

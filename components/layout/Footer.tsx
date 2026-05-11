@@ -14,7 +14,7 @@ export default function Footer() {
             <Link href="/" className="font-serif text-xl text-linen tracking-widest">
               {siteConfig.brand}
             </Link>
-            <p className="font-sans text-xs text-stone leading-relaxed max-w-[200px]">
+            <p className="font-sans text-xs text-linen/60 leading-relaxed max-w-[200px]">
               {siteConfig.footer.description}
             </p>
           </div>
@@ -22,7 +22,7 @@ export default function Footer() {
           {/* 3 link columns */}
           {siteConfig.footer.columns.map(col => (
             <div key={col.title}>
-              <p className="font-sans text-[10px] uppercase tracking-widest text-stone/50 mb-5">
+              <p className="font-sans text-[10px] uppercase tracking-widest text-linen/50 mb-5">
                 {col.title}
               </p>
               <ul className="flex flex-col gap-3">
@@ -30,7 +30,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="font-sans text-xs text-stone hover:text-gold transition-colors"
+                      className="font-sans text-xs text-linen/65 hover:text-gold transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -45,7 +45,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-iron/30">
         <div className="max-w-content mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
-          <span className="font-sans text-[10px] text-stone/40">
+          <span className="font-sans text-[10px] text-linen/45">
             {siteConfig.footer.copyright}
           </span>
           <div className="flex gap-6 flex-wrap justify-center">
@@ -53,7 +53,7 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="font-sans text-[10px] text-stone/40 hover:text-stone transition-colors"
+                className="font-sans text-[10px] text-linen/45 hover:text-linen transition-colors"
               >
                 {link.label}
               </Link>
@@ -62,13 +62,13 @@ export default function Footer() {
               href="https://ec.europa.eu/consumers/odr"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-sans text-[10px] text-stone/40 hover:text-stone transition-colors"
+              className="font-sans text-[10px] text-linen/45 hover:text-linen transition-colors"
             >
               Онлайн решаване на спорове (ЕС)
             </a>
             <button
               onClick={resetCookieConsent}
-              className="font-sans text-[10px] text-stone/40 hover:text-stone transition-colors bg-transparent border-none cursor-pointer p-0"
+              className="font-sans text-[10px] text-linen/45 hover:text-linen transition-colors bg-transparent border-none cursor-pointer p-0"
             >
               Настройки за бисквитки
             </button>
