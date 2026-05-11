@@ -300,7 +300,7 @@ export default function ProductPage() {
 
           {/* Payment icons */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, margin: '12px 0 0', flexWrap: 'wrap' as const }}>
-            {['VISA', 'MC', 'PayPal', 'Apple Pay', 'AMEX'].map(p => (
+            {['VISA', 'MC', 'Apple Pay', 'Google Pay', 'Revolut Pay'].map(p => (
               <div key={p} style={{ padding: '4px 10px', border: '1px solid rgba(28,15,10,0.12)', borderRadius: 4, fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', color: 'rgba(28,15,10,0.35)', background: '#fff8f2' }}>{p}</div>
             ))}
           </div>
