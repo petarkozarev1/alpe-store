@@ -22,6 +22,11 @@ const raleway = Raleway({
 export const metadata: Metadata = {
   title: 'ALPÉ — Screen All Day. Sleep All Night.',
   description: 'ALPÉ blue light blocking glasses protect your eyes during long screen sessions — reducing eye strain and sleep disruption.',
+  verification: {
+    other: {
+      'facebook-domain-verification': 'gxj9eq9kycevuqe4cxh9d1dqn1qb39',
+    },
+  },
 }
 
 export const viewport: Viewport = {

@@ -1,9 +1,8 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/lib/store/cartStore'
-import { firePixelEvent } from '@/components/analytics/MetaPixel'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -16,6 +15,16 @@ const DELIVERY = [
 ]
 
 const DISCOUNT_CODES: Record<string, number> = { 'WELCOME10': 10, 'FAMILY40': 40 }
+
+function getCookieValue(name: string) {
+  if (typeof document === 'undefined') return ''
+  return document.cookie
+    .split('; ')
+    .find(row => row.startsWith(`${name}=`))
+    ?.split('=')
+    .slice(1)
+    .join('=') ?? ''
+}
 
 /* ── types ─────────────────────────────────────────── */
 interface Contact { email: string; newsletter: boolean }
@@ -47,23 +56,6 @@ export default function CheckoutPageClient() {
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
   const total = +(afterDiscount + shipping_).toFixed(2)
 
-  /* ── InitiateCheckout pixel ────────────────────── */
-  useEffect(() => {
-    try {
-      const items = useCartStore.getState().items
-      const total = items.reduce((sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity, 0)
-      firePixelEvent('InitiateCheckout', {
-        content_ids: items.map((i: { productId: string }) => i.productId),
-        num_items: items.reduce((sum: number, i: { quantity: number }) => sum + i.quantity, 0),
-        value: total,
-        currency: 'EUR',
-      })
-    } catch {
-      // pixel failure must never break checkout
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   /* ── discount code ──────────────────────────────── */
   const applyCode = () => {
     const pct = DISCOUNT_CODES[codeInput.toUpperCase()]
@@ -84,12 +76,24 @@ export default function CheckoutPageClient() {
       ...(discount > 0 ? [{ name: `Отстъпка ${applied!.code}`, price: -discount, quantity: 1 }] : []),
       ...(shipping_ > 0 ? [{ name: `Доставка — ${deliveryType === 'address' ? 'До адрес' : delivery.label}`, price: shipping_, quantity: 1 }] : []),
     ]
+    const checkoutShipping = {
+      name: `${shipping.firstName} ${shipping.lastName}`,
+      phone: shipping.phone,
+      city: shipping.city,
+      address: deliveryType === 'address' ? shipping.address : officeLocation,
+      postalCode: deliveryType === 'address' ? shipping.postalCode : '',
+      country: deliveryType === 'address' ? shipping.country : 'България',
+      deliveryMethod: deliveryType === 'address' ? 'До адрес' : delivery.label,
+      officeLocation: deliveryType === 'office' ? officeLocation : '',
+      fbp: getCookieValue('_fbp'),
+      fbc: getCookieValue('_fbc'),
+    }
 
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: lineItems, email: contact.email, shipping: { name: `${shipping.firstName} ${shipping.lastName}`, phone: shipping.phone, city: shipping.city, address: deliveryType === 'address' ? shipping.address : officeLocation, postalCode: deliveryType === 'address' ? shipping.postalCode : '', country: deliveryType === 'address' ? shipping.country : 'България', deliveryMethod: deliveryType === 'address' ? 'До адрес' : delivery.label, officeLocation: deliveryType === 'office' ? officeLocation : '' } }),
+        body: JSON.stringify({ items: lineItems, email: contact.email, shipping: checkoutShipping }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Грешка')

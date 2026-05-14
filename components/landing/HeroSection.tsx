@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, type Transition } from 'framer-motion'
+import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
 import { heroContent } from '@/lib/data/content'
 
@@ -82,9 +83,7 @@ export default function HeroSection() {
           variant="primary"
           className="font-bold"
           onClick={() => {
-            if (typeof window !== 'undefined' && typeof window.fbq === 'function' && localStorage.getItem('alpe-cookie-consent') === 'all') {
-              window.fbq('trackCustom', 'CTAClick', { cta_location: 'hero' })
-            }
+            firePixelCustomEvent('CTAClick', { cta_location: 'hero' })
           }}
         />
       </motion.div>

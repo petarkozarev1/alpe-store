@@ -45,6 +45,7 @@ const lensData = {
 
 const bundlePrices: Record<number, number> = { 1: 44.99, 2: 66.99, 3: 89.99 }
 const bundleSavings: Record<number, number> = { 1: 0, 2: 23, 3: 45 }
+const initialBundleValue = bundlePrices[1]
 
 export default function ProductPage() {
   const [lens, setLens] = useState<Lens>('evening')
@@ -74,7 +75,7 @@ export default function ProductPage() {
       content_name: 'ALPÉ Glasses',
       content_ids: ['ALPÉ-glasses'],
       content_type: 'product',
-      value: bundlePrices[bundle],
+      value: initialBundleValue,
       currency: 'EUR',
     })
   }, [])

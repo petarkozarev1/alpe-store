@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState('')
@@ -11,10 +11,8 @@ export default function NewsletterSection() {
     if (!email) return
     setSubmitted(true)
     try {
-      firePixelEvent('Lead', {
+      firePixelCustomEvent('NewsletterSignup', {
         content_name: 'newsletter_signup',
-        currency: 'EUR',
-        value: 0,
       })
     } catch { /* never break UI */ }
   }

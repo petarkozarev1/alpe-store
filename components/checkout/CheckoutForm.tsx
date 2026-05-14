@@ -15,6 +15,16 @@ const FIELDS = [
 
 type FormData = Record<typeof FIELDS[number]['id'], string>
 
+function getCookieValue(name: string) {
+  if (typeof document === 'undefined') return ''
+  return document.cookie
+    .split('; ')
+    .find(row => row.startsWith(`${name}=`))
+    ?.split('=')
+    .slice(1)
+    .join('=') ?? ''
+}
+
 export default function CheckoutForm() {
   const items = useCartStore(s => s.items)
   const [form, setForm] = useState<FormData>({
@@ -55,6 +65,8 @@ export default function CheckoutForm() {
             city: form.city,
             postalCode: form.postalCode,
             country: form.country,
+            fbp: getCookieValue('_fbp'),
+            fbc: getCookieValue('_fbc'),
           },
         }),
       })

@@ -20,6 +20,7 @@ export default function CookieBanner() {
 
   function accept() {
     localStorage.setItem('alpe-cookie-consent', 'all')
+    window.dispatchEvent(new Event('alpe-cookie-consent-accepted'))
     setConsent('all')
   }
 

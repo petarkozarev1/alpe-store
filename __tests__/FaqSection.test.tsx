@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import FaqSection from '@/components/landing/FaqSection'
+import { faqs } from '@/lib/data/content'
 
 jest.mock('framer-motion', () => {
   const el = (tag: string) => ({ children, ...props }: any) => {
@@ -21,19 +22,19 @@ jest.mock('framer-motion', () => {
 
 test('FAQ answer is hidden by default', () => {
   render(<FaqSection />)
-  expect(screen.queryByText(/Most users notice/)).not.toBeInTheDocument()
+  expect(screen.queryByText(faqs[0].answer)).not.toBeInTheDocument()
 })
 
 test('clicking a question reveals the answer', () => {
   render(<FaqSection />)
-  fireEvent.click(screen.getByText('How long before I start seeing results?'))
-  expect(screen.getByText(/Most users notice/)).toBeInTheDocument()
+  fireEvent.click(screen.getByText(faqs[0].question))
+  expect(screen.getByText(faqs[0].answer)).toBeInTheDocument()
 })
 
 test('clicking open question closes it', () => {
   render(<FaqSection />)
-  const question = screen.getByText('How long before I start seeing results?')
+  const question = screen.getByText(faqs[0].question)
   fireEvent.click(question)
   fireEvent.click(question)
-  expect(screen.queryByText(/Most users notice/)).not.toBeInTheDocument()
+  expect(screen.queryByText(faqs[0].answer)).not.toBeInTheDocument()
 })

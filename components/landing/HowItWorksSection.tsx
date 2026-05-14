@@ -2,6 +2,7 @@
 import { useRef } from 'react'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { howItWorksContent, steps } from '@/lib/data/content'
@@ -66,9 +67,7 @@ export default function HowItWorksSection() {
             variant="primary"
             className="font-bold self-start"
             onClick={() => {
-              if (typeof window !== 'undefined' && typeof window.fbq === 'function' && localStorage.getItem('alpe-cookie-consent') === 'all') {
-                window.fbq('trackCustom', 'CTAClick', { cta_location: 'how_it_works' })
-              }
+              firePixelCustomEvent('CTAClick', { cta_location: 'how_it_works' })
             }}
           />
         </div>

@@ -10,12 +10,24 @@ async function sha256(value: string): Promise<string> {
     .join('')
 }
 
+function normalizeCountry(value: string) {
+  const normalized = value.trim().toLowerCase()
+  if (normalized === 'българия' || normalized === 'bulgaria') return 'bg'
+  return normalized
+}
+
 export interface CAPIOptions {
   email?: string
   phone?: string
   firstName?: string
   lastName?: string
   city?: string
+  country?: string
+  zip?: string
+  fbp?: string
+  fbc?: string
+  clientIpAddress?: string
+  clientUserAgent?: string
   value?: number
   currency?: string
   orderId?: string
@@ -38,6 +50,12 @@ export async function sendCAPIEvent(eventName: string, opts: CAPIOptions = {}): 
   if (opts.firstName) userData.fn = await sha256(opts.firstName)
   if (opts.lastName)  userData.ln = await sha256(opts.lastName)
   if (opts.city)      userData.ct = await sha256(opts.city)
+  if (opts.country)   userData.country = await sha256(normalizeCountry(opts.country))
+  if (opts.zip)       userData.zp = await sha256(opts.zip)
+  if (opts.fbp)       userData.fbp = opts.fbp
+  if (opts.fbc)       userData.fbc = opts.fbc
+  if (opts.clientIpAddress) userData.client_ip_address = opts.clientIpAddress
+  if (opts.clientUserAgent) userData.client_user_agent = opts.clientUserAgent
 
   const payload = {
     data: [

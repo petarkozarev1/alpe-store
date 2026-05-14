@@ -1,50 +1,20 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import Stripe from 'stripe'
-import { Client } from '@notionhq/client'
 import PurchasePixelFire from '@/components/analytics/PurchasePixelFire'
+import { getStripe } from '@/lib/stripe'
 
 export const metadata: Metadata = {
   title: 'Поръчката е приета — ALPÉ',
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-const notion = new Client({ auth: process.env.NOTION_API_KEY })
-const DB = process.env.NOTION_DATABASE_ID!
-
-async function saveToNotion(sessionId: string) {
+async function getPaidSession(sessionId: string) {
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['line_items'],
-    })
-
-    if (session.payment_status !== 'paid') return
-
-    const meta = (session.metadata ?? {}) as Record<string, string>
-    const items = (session.line_items?.data ?? [])
-      .map(i => `${i.description} ×${i.quantity}`)
-      .join(', ')
-    const total = (session.amount_total ?? 0) / 100
-
-    await notion.pages.create({
-      parent: { database_id: DB },
-      properties: {
-        Name:             { title: [{ text: { content: meta.name ?? '' } }] },
-        Email:            { email: session.customer_email ?? '' },
-        Phone:            { phone_number: meta.phone ?? '' },
-        City:             { rich_text: [{ text: { content: meta.city ?? '' } }] },
-        Address:          { rich_text: [{ text: { content: meta.address ?? '' } }] },
-        Delivery:         { rich_text: [{ text: { content: meta.deliveryMethod ?? '' } }] },
-        Courier:          { rich_text: [{ text: { content: meta.deliveryMethod ?? '' } }] },
-        Office:           { rich_text: [{ text: { content: meta.officeLocation ?? '' } }] },
-        Items:            { rich_text: [{ text: { content: items } }] },
-        Total:            { number: total },
-        Date:             { date: { start: new Date().toISOString() } },
-        'Stripe Session': { rich_text: [{ text: { content: sessionId } }] },
-      },
-    })
+    const stripe = getStripe()
+    const session = await stripe.checkout.sessions.retrieve(sessionId)
+    return session.payment_status === 'paid' ? session : null
   } catch (err) {
-    console.error('Notion save error:', err)
+    console.error('Stripe success lookup error:', err)
+    return null
   }
 }
 
@@ -59,14 +29,10 @@ export default async function CheckoutSuccessPage({
   let pixelOrderId = session_id ?? ''
 
   if (session_id) {
-    await saveToNotion(session_id)
-
-    try {
-      const session = await stripe.checkout.sessions.retrieve(session_id)
+    const session = await getPaidSession(session_id)
+    if (session) {
       pixelValue = (session.amount_total ?? 0) / 100
       pixelOrderId = session.id ?? session_id
-    } catch {
-      // pixel data fetch failure must never break the success page
     }
   }
 
