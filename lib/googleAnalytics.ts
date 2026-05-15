@@ -21,11 +21,6 @@ declare global {
   }
 }
 
-function hasMarketingConsent() {
-  if (typeof window === 'undefined') return false
-  return localStorage.getItem('alpe-cookie-consent') === 'all'
-}
-
 export function updateGoogleConsent(granted: boolean) {
   if (typeof window === 'undefined') return
 
@@ -46,7 +41,7 @@ export function updateGoogleConsent(granted: boolean) {
 }
 
 function pushDataLayer(event: string, params: Record<string, DataLayerValue> = {}) {
-  if (typeof window === 'undefined' || !hasMarketingConsent()) return
+  if (typeof window === 'undefined') return
 
   window.dataLayer = window.dataLayer || []
   window.dataLayer.push({ event, ...params })

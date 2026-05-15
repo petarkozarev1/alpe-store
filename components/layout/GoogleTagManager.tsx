@@ -30,6 +30,12 @@ export default function GoogleTagManager() {
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','${ALPE_GTM_ID}');
+            window.dataLayer.push({
+              event: 'page_view',
+              page_path: window.location.pathname + window.location.search,
+              page_location: window.location.href,
+              page_title: document.title,
+            });
           `,
         }}
       />

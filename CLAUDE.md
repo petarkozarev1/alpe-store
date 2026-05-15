@@ -148,7 +148,7 @@ On **light backgrounds** (`bg-parchment`, `bg-sand`, white cards):
 `1435898268342097`
 
 ### Cookie consent gate
-All client-side pixel events are gated on `localStorage.getItem('alpe-cookie-consent') === 'all'`. Never fire pixel events without checking consent.
+Meta Pixel and GA4/GTM dataLayer events fire on **every page load**, regardless of cookie banner choice. The banner controls Google Consent Mode v2 state only (`analytics_storage` / `ad_storage` flip from `denied` → `granted` on accept), not whether tags fire. Without consent, GA4 receives anonymized "cookieless pings" and Meta Pixel fires with no PII. Server-side CAPI continues to fire from the Stripe webhook regardless. PII (email/phone/name) is only ever sent via CAPI after the user provides it during checkout.
 
 ### Client-side events (browser)
 

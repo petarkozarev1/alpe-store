@@ -49,7 +49,6 @@ declare global {
 export default function MetaPixel() {
   useEffect(() => {
     function initPixel() {
-      if (localStorage.getItem('alpe-cookie-consent') !== 'all') return
       if (typeof window.fbq !== 'function') return
       syncMetaAttributionCookies()
       if (!pixelInitialized && !window.__alpePixelInitialized) {
@@ -82,21 +81,22 @@ export default function MetaPixel() {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            var _consent = localStorage.getItem('alpe-cookie-consent');
-            if (_consent === 'all') {
-              var _now = Date.now();
-              var _cookies = document.cookie ? document.cookie.split('; ') : [];
-              var _hasFbp = _cookies.some(function(row) { return row.indexOf('_fbp=') === 0; });
-              var _hasFbc = _cookies.some(function(row) { return row.indexOf('_fbc=') === 0; });
-              var _fbclid = new URL(window.location.href).searchParams.get('fbclid');
-              if (!_hasFbp) {
-                document.cookie = '_fbp=fb.1.' + _now + '.' + Math.floor(Math.random() * 1e16) + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
-              }
-              if (_fbclid && !_hasFbc) {
-                document.cookie = '_fbc=fb.1.' + _now + '.' + _fbclid + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
-              }
+            var _now = Date.now();
+            var _cookies = document.cookie ? document.cookie.split('; ') : [];
+            var _hasFbp = _cookies.some(function(row) { return row.indexOf('_fbp=') === 0; });
+            var _hasFbc = _cookies.some(function(row) { return row.indexOf('_fbc=') === 0; });
+            var _fbclid = new URL(window.location.href).searchParams.get('fbclid');
+            if (!_hasFbp) {
+              document.cookie = '_fbp=fb.1.' + _now + '.' + Math.floor(Math.random() * 1e16) + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
+            }
+            if (_fbclid && !_hasFbc) {
+              document.cookie = '_fbc=fb.1.' + _now + '.' + _fbclid + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
+            }
+            if (!window.__alpePixelInitialized) {
               fbq('init', '${PIXEL_ID}');
               window.__alpePixelInitialized = true;
+            }
+            if (!window.__alpePageViewTracked) {
               fbq('track', 'PageView');
               window.__alpePageViewTracked = true;
             }
@@ -110,7 +110,6 @@ export default function MetaPixel() {
 
 function ensurePixelReady() {
   if (typeof window === 'undefined') return
-  if (localStorage.getItem('alpe-cookie-consent') !== 'all') return
   if (typeof window.fbq !== 'function') return
   syncMetaAttributionCookies()
   if (!pixelInitialized && !window.__alpePixelInitialized) {
