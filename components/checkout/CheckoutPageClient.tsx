@@ -84,7 +84,9 @@ export default function CheckoutPageClient() {
       postalCode: deliveryType === 'address' ? shipping.postalCode : '',
       country: deliveryType === 'address' ? shipping.country : 'България',
       deliveryMethod: deliveryType === 'address' ? 'До адрес' : delivery.label,
+      courier: deliveryType === 'office' ? delivery.label : '',
       officeLocation: deliveryType === 'office' ? officeLocation : '',
+      courierNote: shipping.note,
       fbp: getCookieValue('_fbp'),
       fbc: getCookieValue('_fbc'),
     }
