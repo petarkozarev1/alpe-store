@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { updateGoogleConsent } from '@/lib/googleAnalytics'
 
 type Consent = 'all' | 'necessary' | null
 
@@ -15,17 +16,20 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const stored = localStorage.getItem('alpe-cookie-consent') as Consent | null
+    if (stored) updateGoogleConsent(stored === 'all')
     setConsent(stored)
   }, [])
 
   function accept() {
     localStorage.setItem('alpe-cookie-consent', 'all')
+    updateGoogleConsent(true)
     window.dispatchEvent(new Event('alpe-cookie-consent-accepted'))
     setConsent('all')
   }
 
   function rejectOptional() {
     localStorage.setItem('alpe-cookie-consent', 'necessary')
+    updateGoogleConsent(false)
     setConsent('necessary')
   }
 

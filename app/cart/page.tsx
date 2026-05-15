@@ -1,6 +1,8 @@
 'use client'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
+import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { googleCartParams, trackGoogleEvent } from '@/lib/googleAnalytics'
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getSubtotal } = useCartStore()
@@ -47,7 +49,21 @@ export default function CartPage() {
       </div>
       <div className="flex justify-between items-center pt-4">
         <span className="text-xl font-bold">Общо: €{getSubtotal().toFixed(2)}</span>
-        <Link href="/checkout" className="bg-onyx text-linen px-8 py-4 rounded-xl font-semibold hover:bg-iron transition-colors">
+        <Link
+          href="/checkout"
+          onClick={() => {
+            firePixelEvent('InitiateCheckout', {
+              content_ids: items.map(item => item.productId),
+              content_type: 'product',
+              contents: items.map(item => ({ id: item.productId, quantity: item.quantity })),
+              currency: 'EUR',
+              num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+              value: Number(items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)),
+            })
+            trackGoogleEvent('begin_checkout', googleCartParams(items))
+          }}
+          className="bg-onyx text-linen px-8 py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
+        >
           Към плащане →
         </Link>
       </div>
