@@ -62,9 +62,6 @@ export async function POST(req: Request) {
         quantity: item.quantity,
       })),
       ...(coupon ? { discounts: [{ coupon: coupon.id }] } : {}),
-      shipping_address_collection: {
-        allowed_countries: ['BG', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'PL', 'RO', 'GR'],
-      },
       metadata: {
         ...shipping,
         ...(clientIpAddress ? { clientIpAddress } : {}),
