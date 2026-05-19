@@ -49,6 +49,7 @@ export async function POST(req: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
+      locale: 'bg',
       customer_email: email,
       line_items: productItems.map(item => ({
         price_data: {

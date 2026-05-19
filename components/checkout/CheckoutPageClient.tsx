@@ -6,6 +6,8 @@ import { useCartStore } from '@/lib/store/cartStore'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
+const BGN_RATE = 1.95583
+const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} лв.`
 
 const DELIVERY = [
   { id: 'speedy',  label: 'Спиди',    badge: 'ПРЕПОРЪЧАНО', requiresOffice: true,  officePlaceholder: 'напр. Спиди офис Сердика, бул. Сливница 2, София',       officeLink: 'https://www.speedy.bg/bg/office-search' },
@@ -33,7 +35,7 @@ interface Shipping { firstName: string; lastName: string; phone: string; city: s
 export default function CheckoutPageClient() {
   const { items } = useCartStore()
 
-  const [contact, setContact] = useState<Contact>({ email: '', newsletter: true })
+  const [contact, setContact] = useState<Contact>({ email: '', newsletter: false })
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: 'България', note: '' })
   const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
   const [deliveryId, setDeliveryId] = useState('speedy')
@@ -43,6 +45,14 @@ export default function CheckoutPageClient() {
   const [codeError, setCodeError] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [attempted, setAttempted] = useState(false)
+
+  /* ── inline validation helpers ──────────────────── */
+  const isInvalid = (val: string) => attempted && !val.trim()
+  const fieldClass = (val: string, base: string) =>
+    `${base} ${isInvalid(val) ? 'border-red-500 focus:ring-red-500' : 'border-stone/25 focus:ring-onyx'}`
+  const ErrorMsg = ({ show }: { show: boolean }) =>
+    show ? <p className="font-sans text-xs text-red-600 mt-1.5">Това поле е задължително</p> : null
 
   /* ── calculations ───────────────────────────────── */
   const delivery = DELIVERY.find(d => d.id === deliveryId)!
@@ -69,6 +79,30 @@ export default function CheckoutPageClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!items.length) { setError('Количката ти е празна.'); return }
+
+    // Validate required fields before hitting the API
+    const requiredOk =
+      contact.email.trim() &&
+      shipping.firstName.trim() &&
+      shipping.lastName.trim() &&
+      shipping.phone.trim() &&
+      shipping.city.trim() &&
+      (deliveryType === 'address'
+        ? shipping.address.trim() && shipping.postalCode.trim()
+        : officeLocation.trim())
+
+    if (!requiredOk) {
+      setAttempted(true)
+      setError(null)
+      // Scroll the first invalid field into view on the next tick
+      setTimeout(() => {
+        const firstInvalid = document.querySelector('.border-red-500') as HTMLElement | null
+        firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        firstInvalid?.focus?.()
+      }, 50)
+      return
+    }
+
     setLoading(true); setError(null)
 
     const lineItems = [
@@ -135,7 +169,7 @@ export default function CheckoutPageClient() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
 
           {/* ── Left column ───────────────────────── */}
@@ -154,14 +188,17 @@ export default function CheckoutPageClient() {
                 <span className="font-sans text-xs text-stone/40">ЗА ПОТВЪРЖДЕНИЕ</span>
               </div>
               <div className="flex flex-col gap-4">
-                <div className="relative">
-                  <input
-                    type="email" required placeholder="имейл@example.com"
-                    value={contact.email}
-                    onChange={e => setContact(p => ({ ...p, email: e.target.value }))}
-                    className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
-                  />
-                  {contact.email.includes('@') && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
+                <div>
+                  <div className="relative">
+                    <input
+                      type="email" required placeholder="имейл@example.com"
+                      value={contact.email}
+                      onChange={e => setContact(p => ({ ...p, email: e.target.value }))}
+                      className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')}
+                    />
+                    {contact.email.includes('@') && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
+                  </div>
+                  <ErrorMsg show={isInvalid(contact.email)} />
                 </div>
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" checked={contact.newsletter} onChange={e => setContact(p => ({ ...p, newsletter: e.target.checked }))} className="mt-0.5 accent-onyx w-4 h-4 flex-shrink-0" />
@@ -184,11 +221,13 @@ export default function CheckoutPageClient() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Име</label>
-                    <input required placeholder="Иван" value={shipping.firstName} onChange={e => setShipping(p => ({ ...p, firstName: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                    <input required placeholder="Иван" value={shipping.firstName} onChange={e => setShipping(p => ({ ...p, firstName: e.target.value }))} className={fieldClass(shipping.firstName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    <ErrorMsg show={isInvalid(shipping.firstName)} />
                   </div>
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Фамилия</label>
-                    <input required placeholder="Иванов" value={shipping.lastName} onChange={e => setShipping(p => ({ ...p, lastName: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                    <input required placeholder="Иванов" value={shipping.lastName} onChange={e => setShipping(p => ({ ...p, lastName: e.target.value }))} className={fieldClass(shipping.lastName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    <ErrorMsg show={isInvalid(shipping.lastName)} />
                   </div>
                 </div>
 
@@ -200,12 +239,14 @@ export default function CheckoutPageClient() {
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40 text-sm">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.55-.55a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
                       </span>
-                      <input required type="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} className="w-full border border-stone/25 rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                      <input required type="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} className={fieldClass(shipping.phone, 'w-full border rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                     </div>
+                    <ErrorMsg show={isInvalid(shipping.phone)} />
                   </div>
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
-                    <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                    <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    <ErrorMsg show={isInvalid(shipping.city)} />
                   </div>
                 </div>
 
@@ -235,13 +276,15 @@ export default function CheckoutPageClient() {
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
-                        <input required placeholder="ул. Витоша 1, ет. 3" value={shipping.address} onChange={e => setShipping(p => ({ ...p, address: e.target.value }))} className="w-full border border-stone/25 rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                        <input required placeholder="ул. Витоша 1, ет. 3" value={shipping.address} onChange={e => setShipping(p => ({ ...p, address: e.target.value }))} className={fieldClass(shipping.address, 'w-full border rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                       </div>
+                      <ErrorMsg show={isInvalid(shipping.address)} />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Пощенски код</label>
-                        <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
+                        <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} className={fieldClass(shipping.postalCode, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                        <ErrorMsg show={isInvalid(shipping.postalCode)} />
                       </div>
                       <div>
                         <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Държава</label>
@@ -287,8 +330,9 @@ export default function CheckoutPageClient() {
                               placeholder={d.officePlaceholder}
                               value={officeLocation}
                               onChange={e => setOfficeLocation(e.target.value)}
-                              className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
+                              className={fieldClass(officeLocation, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')}
                             />
+                            <ErrorMsg show={isInvalid(officeLocation)} />
                             <p className="font-sans text-[10px] text-stone/50 mt-1.5">
                               Намери най-близкия офис на{' '}
                               <a href={d.officeLink} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone transition-colors">сайта на куриера</a>
@@ -359,17 +403,21 @@ export default function CheckoutPageClient() {
               <div className="flex flex-col gap-2.5 font-sans text-sm">
                 <div className="flex justify-between text-stone">
                   <span>Междинна сума</span>
-                  <span>€{subtotal.toFixed(2)}</span>
+                  <span className="text-right">€{subtotal.toFixed(2)} <span className="block text-[11px] text-stone/50">{formatBGN(subtotal)}</span></span>
                 </div>
                 {applied && (
                   <div className="flex justify-between text-green-700">
                     <span>Отстъпка ({applied.code})</span>
-                    <span>−€{discount.toFixed(2)}</span>
+                    <span className="text-right">−€{discount.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(discount)}</span></span>
                   </div>
                 )}
                 <div className="flex justify-between text-stone">
                   <span>Доставка · <em className="not-italic text-stone/60">{deliveryType === 'address' ? 'До адрес' : delivery.label}</em></span>
-                  <span className={shipping_ === 0 ? 'text-green-600 italic' : ''}>{shipping_ === 0 ? 'Безплатна' : `€${shipping_.toFixed(2)}`}</span>
+                  <span className={`text-right ${shipping_ === 0 ? 'text-green-600 italic' : ''}`}>
+                    {shipping_ === 0 ? 'Безплатна' : (
+                      <>€{shipping_.toFixed(2)} <span className="block text-[11px] text-stone/50 not-italic">{formatBGN(shipping_)}</span></>
+                    )}
+                  </span>
                 </div>
                 <div className="flex justify-between text-stone/60 text-xs">
                   <span>ДДС включен в цената</span>
@@ -378,9 +426,35 @@ export default function CheckoutPageClient() {
 
               <hr className="border-stone/15 my-4" />
 
-              <div className="flex justify-between items-baseline mb-6">
+              <div className="flex justify-between items-baseline mb-5">
                 <span className="font-sans text-base font-semibold text-onyx">Общо</span>
-                <span className="font-serif text-3xl font-bold text-onyx">€{total.toFixed(2)} <span className="font-sans text-xs text-stone font-normal">EUR</span></span>
+                <span className="text-right">
+                  <span className="font-serif text-3xl font-bold text-onyx">€{total.toFixed(2)} <span className="font-sans text-xs text-stone font-normal">EUR</span></span>
+                  <span className="block font-sans text-xs text-stone/60 mt-0.5">{formatBGN(total)}</span>
+                </span>
+              </div>
+
+              {/* Trust block — contact + payment security */}
+              <div className="bg-parchment/50 border border-stone/15 rounded-xl px-4 py-3 mb-4 flex flex-col gap-2">
+                <div className="flex items-center gap-2 font-sans text-[11px] text-stone">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-green-600 flex-shrink-0">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                  </svg>
+                  <span>Сигурно плащане със <strong className="text-onyx">Stripe</strong> · SSL криптиране</span>
+                </div>
+                <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-sans font-bold text-stone/70">
+                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">VISA</span>
+                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">MC</span>
+                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5"> Pay</span>
+                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">G Pay</span>
+                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">Revolut</span>
+                </div>
+                <div className="flex items-center gap-2 font-sans text-[11px] text-stone pt-1 border-t border-stone/10">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-stone/50 flex-shrink-0">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                  <span>Нужда от помощ? <a href="mailto:support@alpe.bg" className="underline text-onyx hover:text-iron">support@alpe.bg</a> · <Link href="/contact" className="underline text-onyx hover:text-iron">Контакт</Link></span>
+                </div>
               </div>
 
               {error && <p className="text-red-700 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">{error}</p>}
@@ -390,7 +464,15 @@ export default function CheckoutPageClient() {
                 disabled={loading || !items.length}
                 className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
               >
-                {loading ? 'Пренасочване...' : (
+                {loading ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity="0.25"/>
+                      <path d="M22 12a10 10 0 00-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                    </svg>
+                    ИЗПРАЩАМЕ ТЕ КЪМ ПЛАЩАНЕ...
+                  </>
+                ) : (
                   <>ПОТВЪРДИ ПОРЪЧКА <span className="text-lg">→</span></>
                 )}
               </button>
