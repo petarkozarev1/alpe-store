@@ -81,7 +81,9 @@ export async function POST(req: Request) {
     const cartValue = productItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
     const numItems = productItems.reduce((sum, i) => sum + i.quantity, 0)
 
-    sendCAPIEvent('InitiateCheckout', {
+    // Await CAPI so the serverless function doesn't terminate before the request reaches Meta.
+    // Adds ~200-400ms to the redirect but ensures the event is actually sent.
+    await sendCAPIEvent('InitiateCheckout', {
       email,
       phone: shipping.phone || undefined,
       firstName,
@@ -100,7 +102,7 @@ export async function POST(req: Request) {
       numItems,
       eventId: `initiate_checkout-${session.id}`,
       sourceUrl: `${siteUrl}/checkout`,
-    }).catch(err => console.error('[CAPI] InitiateCheckout fire-and-forget failed:', err))
+    })
 
     return NextResponse.json({ url: session.url })
   } catch (err) {
