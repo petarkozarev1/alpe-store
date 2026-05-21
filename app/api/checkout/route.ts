@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getStripe } from '@/lib/stripe'
 import { sendCAPIEvent } from '@/lib/meta-capi'
+import { notifyAlert } from '@/lib/alerts'
 
 interface LineItem {
   name: string
@@ -83,26 +84,38 @@ export async function POST(req: Request) {
 
     // Await CAPI so the serverless function doesn't terminate before the request reaches Meta.
     // Adds ~200-400ms to the redirect but ensures the event is actually sent.
-    await sendCAPIEvent('InitiateCheckout', {
-      email,
-      phone: shipping.phone || undefined,
-      firstName,
-      lastName,
-      city: shipping.city || undefined,
-      country: shipping.country || undefined,
-      zip: shipping.postalCode || undefined,
-      fbp: shipping.fbp || undefined,
-      fbc: shipping.fbc || undefined,
-      clientIpAddress,
-      clientUserAgent,
-      value: +cartValue.toFixed(2),
-      currency: 'EUR',
-      orderId: session.id,
-      contentIds: productItems.map(i => i.name),
-      numItems,
-      eventId: `initiate_checkout-${session.id}`,
-      sourceUrl: `${siteUrl}/checkout`,
-    })
+    // Wrapped in try/catch so a CAPI failure doesn't block the user reaching Stripe payment.
+    try {
+      await sendCAPIEvent('InitiateCheckout', {
+        email,
+        phone: shipping.phone || undefined,
+        firstName,
+        lastName,
+        city: shipping.city || undefined,
+        country: shipping.country || undefined,
+        zip: shipping.postalCode || undefined,
+        fbp: shipping.fbp || undefined,
+        fbc: shipping.fbc || undefined,
+        clientIpAddress,
+        clientUserAgent,
+        value: +cartValue.toFixed(2),
+        currency: 'EUR',
+        orderId: session.id,
+        contentIds: productItems.map(i => i.name),
+        numItems,
+        eventId: `initiate_checkout-${session.id}`,
+        sourceUrl: `${siteUrl}/checkout`,
+      })
+    } catch (err) {
+      const errMessage = err instanceof Error ? err.message : String(err)
+      console.error(`[CHECKOUT_CAPI_FAIL] session=${session.id} email=${email} error=${errMessage}`)
+      // Fire-and-forget alert; don't block the user's checkout redirect
+      notifyAlert({
+        severity: 'warn',
+        title: 'CAPI InitiateCheckout failed',
+        body: `Customer reached Stripe but Meta did not receive InitiateCheckout.\n\n**Session:** \`${session.id}\`\n**Email:** ${email}\n**Error:** \`${errMessage}\``,
+      }).catch(() => { /* ignore */ })
+    }
 
     return NextResponse.json({ url: session.url })
   } catch (err) {
