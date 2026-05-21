@@ -90,6 +90,7 @@ export async function POST(req: Request) {
     numItems: lineItems.data.reduce((sum, i) => sum + (i.quantity ?? 1), 0),
     eventId: `purchase-${session.id}`,
     sourceUrl: 'https://alpewear.com/checkout/success',
+    eventTime: session.created, // actual checkout completion time, not webhook execution time
   })
 
   return NextResponse.json({ received: true })

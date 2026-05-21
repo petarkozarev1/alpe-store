@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getStripe } from '@/lib/stripe'
+import { sendCAPIEvent } from '@/lib/meta-capi'
 
 interface LineItem {
   name: string
@@ -71,6 +72,35 @@ export async function POST(req: Request) {
       success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/checkout`,
     })
+
+    // Mirror InitiateCheckout server-side to Meta CAPI for higher EMQ + ad-blocker resilience.
+    // Uses session.id in eventId so it dedupes with the browser-side InitiateCheckout pixel event.
+    const nameParts = (shipping.name ?? '').trim().split(' ')
+    const firstName = nameParts[0] ?? ''
+    const lastName = nameParts.slice(1).join(' ') || firstName
+    const cartValue = productItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    const numItems = productItems.reduce((sum, i) => sum + i.quantity, 0)
+
+    sendCAPIEvent('InitiateCheckout', {
+      email,
+      phone: shipping.phone || undefined,
+      firstName,
+      lastName,
+      city: shipping.city || undefined,
+      country: shipping.country || undefined,
+      zip: shipping.postalCode || undefined,
+      fbp: shipping.fbp || undefined,
+      fbc: shipping.fbc || undefined,
+      clientIpAddress,
+      clientUserAgent,
+      value: +cartValue.toFixed(2),
+      currency: 'EUR',
+      orderId: session.id,
+      contentIds: productItems.map(i => i.name),
+      numItems,
+      eventId: `initiate_checkout-${session.id}`,
+      sourceUrl: `${siteUrl}/checkout`,
+    }).catch(err => console.error('[CAPI] InitiateCheckout fire-and-forget failed:', err))
 
     return NextResponse.json({ url: session.url })
   } catch (err) {

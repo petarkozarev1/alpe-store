@@ -133,3 +133,69 @@ export function firePixelCustomEvent(name: string, data?: Record<string, unknown
   if (!ensurePixelReady()) return
   window.fbq('trackCustom', name, data)
 }
+
+/**
+ * Hash a value with SHA-256 (lowercase + trim, matching Meta's spec).
+ * Used by setPixelUser to send pre-hashed PII to Meta for Advanced Matching.
+ */
+async function sha256Hex(value: string): Promise<string> {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(value.trim().toLowerCase())
+  const buf = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+interface PixelUser {
+  email?: string
+  phone?: string
+  firstName?: string
+  lastName?: string
+  city?: string
+  country?: string
+  zip?: string
+}
+
+let lastUserSignature = ''
+
+/**
+ * Enable Advanced Matching on the Meta Pixel by re-initing with hashed user data.
+ * Call this once the user reveals identifying info (e.g. types email on checkout).
+ * Subsequent fbq events automatically include the hashed user data, bumping Event Match Quality.
+ *
+ * Idempotent: skipped if the same user data was already set.
+ */
+export async function setPixelUser(user: PixelUser): Promise<void> {
+  if (typeof window === 'undefined') return
+  if (typeof window.fbq !== 'function') return
+
+  // Normalize and dedupe: if nothing changed since last call, skip the work.
+  const signature = JSON.stringify({
+    em: user.email?.trim().toLowerCase() ?? '',
+    ph: user.phone?.replace(/\D/g, '') ?? '',
+    fn: user.firstName?.trim().toLowerCase() ?? '',
+    ln: user.lastName?.trim().toLowerCase() ?? '',
+    ct: user.city?.trim().toLowerCase() ?? '',
+    country: user.country?.trim().toLowerCase() ?? '',
+    zp: user.zip?.trim() ?? '',
+  })
+  if (signature === lastUserSignature) return
+  // Only proceed if at least one field is present
+  const parsed = JSON.parse(signature) as Record<string, string>
+  if (!Object.values(parsed).some(Boolean)) return
+  lastUserSignature = signature
+
+  const matching: Record<string, string> = {}
+  if (parsed.em) matching.em = await sha256Hex(parsed.em)
+  if (parsed.ph) matching.ph = await sha256Hex(parsed.ph)
+  if (parsed.fn) matching.fn = await sha256Hex(parsed.fn)
+  if (parsed.ln) matching.ln = await sha256Hex(parsed.ln)
+  if (parsed.ct) matching.ct = await sha256Hex(parsed.ct)
+  if (parsed.country) matching.country = await sha256Hex(parsed.country === 'българия' || parsed.country === 'bulgaria' ? 'bg' : parsed.country)
+  if (parsed.zp) matching.zp = await sha256Hex(parsed.zp)
+
+  // Re-init the Pixel with Advanced Matching data. All subsequent fbq events
+  // (including SPA route PageViews via RouteChangeTracker) include this user data.
+  window.fbq('init', PIXEL_ID, matching)
+}

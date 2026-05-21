@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/lib/store/cartStore'
+import { setPixelUser } from '@/components/analytics/MetaPixel'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -53,6 +54,19 @@ export default function CheckoutPageClient() {
     `${base} ${isInvalid(val) ? 'border-red-500 focus:ring-red-500' : 'border-stone/25 focus:ring-onyx'}`
   const ErrorMsg = ({ show }: { show: boolean }) =>
     show ? <p className="font-sans text-xs text-red-600 mt-1.5">Това поле е задължително</p> : null
+
+  /* ── Push collected info to Meta Pixel for Advanced Matching (higher EMQ on InitiateCheckout etc) */
+  const syncPixelUser = () => {
+    setPixelUser({
+      email: contact.email,
+      phone: shipping.phone,
+      firstName: shipping.firstName,
+      lastName: shipping.lastName,
+      city: shipping.city,
+      country: shipping.country,
+      zip: shipping.postalCode,
+    }).catch(() => { /* silent — Pixel might not be initialized yet */ })
+  }
 
   /* ── calculations ───────────────────────────────── */
   const delivery = DELIVERY.find(d => d.id === deliveryId)!
@@ -194,6 +208,7 @@ export default function CheckoutPageClient() {
                       type="email" required placeholder="имейл@example.com"
                       value={contact.email}
                       onChange={e => setContact(p => ({ ...p, email: e.target.value }))}
+                      onBlur={syncPixelUser}
                       className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')}
                     />
                     {contact.email.includes('@') && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
@@ -221,12 +236,12 @@ export default function CheckoutPageClient() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Име</label>
-                    <input required placeholder="Иван" value={shipping.firstName} onChange={e => setShipping(p => ({ ...p, firstName: e.target.value }))} className={fieldClass(shipping.firstName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    <input required placeholder="Иван" value={shipping.firstName} onChange={e => setShipping(p => ({ ...p, firstName: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.firstName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                     <ErrorMsg show={isInvalid(shipping.firstName)} />
                   </div>
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Фамилия</label>
-                    <input required placeholder="Иванов" value={shipping.lastName} onChange={e => setShipping(p => ({ ...p, lastName: e.target.value }))} className={fieldClass(shipping.lastName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    <input required placeholder="Иванов" value={shipping.lastName} onChange={e => setShipping(p => ({ ...p, lastName: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.lastName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                     <ErrorMsg show={isInvalid(shipping.lastName)} />
                   </div>
                 </div>
@@ -239,13 +254,13 @@ export default function CheckoutPageClient() {
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40 text-sm">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.55-.55a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
                       </span>
-                      <input required type="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} className={fieldClass(shipping.phone, 'w-full border rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                      <input required type="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.phone, 'w-full border rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                     </div>
                     <ErrorMsg show={isInvalid(shipping.phone)} />
                   </div>
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
-                    <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                     <ErrorMsg show={isInvalid(shipping.city)} />
                   </div>
                 </div>
@@ -283,7 +298,7 @@ export default function CheckoutPageClient() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Пощенски код</label>
-                        <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} className={fieldClass(shipping.postalCode, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                        <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.postalCode, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                         <ErrorMsg show={isInvalid(shipping.postalCode)} />
                       </div>
                       <div>
