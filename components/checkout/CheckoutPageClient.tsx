@@ -152,6 +152,7 @@ export default function CheckoutPageClient() {
       const codProducts = items.map(i => ({
         name: i.name,
         variantLabel: i.variantLabel,
+        variantId: i.variantId,
         price: i.price,
         quantity: i.quantity,
         image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image,

@@ -2,17 +2,23 @@ import { NextResponse } from 'next/server'
 import { writeOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 import { notifyAlert } from '@/lib/alerts'
-import { computeCodTotal, makeCodOrderId, type CodProduct } from './helpers'
+import {
+  computeCodTotal,
+  computeSubtotal,
+  computeShipping,
+  computeDiscount,
+  isBulgariaEligible,
+  makeCodOrderId,
+  COD_FEE,
+  type CodProduct,
+} from './helpers'
 
 interface CodPayload {
   email: string
   items: CodProduct[]
   shipping: Record<string, string>
   discountCode?: string
-  discountAmount?: number
-  shippingAmount: number
   shippingLabel: string
-  codFee: number
 }
 
 export async function POST(req: Request) {
@@ -26,10 +32,17 @@ export async function POST(req: Request) {
     if (!email?.trim() || !shipping?.name?.trim() || !shipping?.phone?.trim() || !shipping?.city?.trim()) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
+    // COD is Bulgaria-only — enforced server-side, not just in the UI.
+    if (!isBulgariaEligible(shipping.country)) {
+      return NextResponse.json({ error: 'Наложен платеж е достъпен само за България' }, { status: 400 })
+    }
 
-    const discountAmount = body.discountAmount ?? 0
-    const subtotal = +items.reduce((s, i) => s + i.price * i.quantity, 0).toFixed(2)
-    const total = computeCodTotal({ items, discountAmount, shippingAmount: body.shippingAmount, codFee: body.codFee })
+    // Recompute all money server-side — never trust client-sent fee/shipping/discount.
+    const subtotal = computeSubtotal(items)
+    const shippingAmount = computeShipping(items)
+    const { code: discountCode, amount: discountAmount } = computeDiscount(subtotal, body.discountCode)
+    const codFee = COD_FEE
+    const total = computeCodTotal({ items, discountAmount, shippingAmount, codFee })
     const orderId = makeCodOrderId()
 
     const itemsText = items.map(i => `${i.name} — ${i.variantLabel} x${i.quantity}`).join(', ')
@@ -59,8 +72,8 @@ export async function POST(req: Request) {
     const emailModel: OrderEmailModel = {
       orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || 'клиент',
       productRows, subtotal,
-      discount: discountAmount > 0 ? { code: body.discountCode || 'отстъпка', amount: discountAmount } : undefined,
-      shippingLabel: body.shippingLabel, shippingAmount: body.shippingAmount, codFee: body.codFee, total,
+      discount: discountAmount > 0 ? { code: discountCode || 'отстъпка', amount: discountAmount } : undefined,
+      shippingLabel: body.shippingLabel, shippingAmount, codFee, total,
       deliveryTo: { name: shipping.name ?? '', line: shipping.officeLocation || [shipping.address, shipping.city].filter(Boolean).join(', '), phone: shipping.phone ?? '' },
     }
     try {
