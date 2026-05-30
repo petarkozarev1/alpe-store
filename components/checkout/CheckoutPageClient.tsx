@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/lib/store/cartStore'
@@ -7,6 +7,7 @@ import { setPixelUser } from '@/components/analytics/MetaPixel'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
+const COD_FEE = 1.0
 const BGN_RATE = 1.95583
 const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} лв.`
 
@@ -40,6 +41,7 @@ export default function CheckoutPageClient() {
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: 'България', note: '' })
   const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
   const [deliveryId, setDeliveryId] = useState('speedy')
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card')
   const [officeLocation, setOfficeLocation] = useState('')
   const [codeInput, setCodeInput] = useState('')
   const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null)
@@ -78,7 +80,14 @@ export default function CheckoutPageClient() {
   const discount = applied ? +(subtotal * applied.percent / 100).toFixed(2) : 0
   const afterDiscount = subtotal - discount
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
-  const total = +(afterDiscount + shipping_).toFixed(2)
+  const codEligible = deliveryType === 'office' || shipping.country === 'България'
+  const isCod = paymentMethod === 'cod' && codEligible
+  const codFee = isCod ? COD_FEE : 0
+  const total = +(afterDiscount + shipping_ + codFee).toFixed(2)
+
+  useEffect(() => {
+    if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
+  }, [paymentMethod, codEligible])
 
   /* ── discount code ──────────────────────────────── */
   const applyCode = () => {
@@ -139,11 +148,47 @@ export default function CheckoutPageClient() {
       fbc: getCookieValue('_fbc'),
     }
 
+    if (isCod) {
+      const codProducts = items.map(i => ({
+        name: i.name,
+        variantLabel: i.variantLabel,
+        price: i.price,
+        quantity: i.quantity,
+        image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image,
+      }))
+      try {
+        const res = await fetch('/api/checkout/cod', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: contact.email,
+            items: codProducts,
+            shipping: checkoutShipping,
+            discountCode: applied?.code,
+            discountAmount: discount,
+            shippingAmount: shipping_,
+            shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label,
+            codFee: COD_FEE,
+          }),
+        })
+        const data = await res.json()
+        if (!res.ok || !data.orderId) throw new Error(data.error ?? 'Грешка')
+        window.location.href = `/checkout/success?cod=1&order=${encodeURIComponent(data.orderId)}&value=${data.value}`
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Грешка при поръчка')
+        setLoading(false)
+      }
+      return
+    }
+
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: lineItems, email: contact.email, shipping: checkoutShipping }),
+        body: JSON.stringify({
+          items: lineItems, email: contact.email, shipping: checkoutShipping,
+          summary: { subtotal, discountCode: applied?.code ?? '', discountAmount: discount, shippingAmount: shipping_, shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label },
+        }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Грешка')
@@ -362,6 +407,34 @@ export default function CheckoutPageClient() {
 
               </div>
             </div>
+
+            {/* Payment method */}
+            <div className="bg-white rounded-2xl border border-stone/15 p-6">
+              <div className="flex items-center justify-between mb-5">
+                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">03.</span>Начин на плащане</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
+                  <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="accent-onyx" />
+                  <div className="flex-1">
+                    <span className="font-sans text-sm font-semibold text-onyx">Карта</span>
+                    <p className="font-sans text-xs text-stone mt-0.5">Visa · Mastercard · Apple Pay · Google Pay · Revolut</p>
+                  </div>
+                </label>
+                {codEligible && (
+                  <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
+                    <input type="radio" name="payment" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-onyx" />
+                    <div className="flex-1">
+                      <span className="font-sans text-sm font-semibold text-onyx">Наложен платеж</span>
+                      <p className="font-sans text-xs text-stone mt-0.5">Плащаш в брой на куриера при доставка · +€{COD_FEE.toFixed(2)}</p>
+                    </div>
+                  </label>
+                )}
+                {isCod && (
+                  <p className="font-sans text-[11px] text-stone/60 leading-relaxed">При наложен платеж плащаш в брой при получаване. Такса за услугата: €{COD_FEE.toFixed(2)}.</p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* ── Right column — Order summary ──────── */}
@@ -434,6 +507,12 @@ export default function CheckoutPageClient() {
                     )}
                   </span>
                 </div>
+                {isCod && (
+                  <div className="flex justify-between text-stone">
+                    <span>Наложен платеж</span>
+                    <span className="text-right">€{COD_FEE.toFixed(2)} <span className="block text-[11px] text-stone/50">{formatBGN(COD_FEE)}</span></span>
+                  </div>
+                )}
                 <div className="flex justify-between text-stone/60 text-xs">
                   <span>ДДС включен в цената</span>
                 </div>
@@ -451,12 +530,18 @@ export default function CheckoutPageClient() {
 
               {/* Trust block — contact + payment security */}
               <div className="bg-parchment/50 border border-stone/15 rounded-xl px-4 py-3 mb-4 flex flex-col gap-2">
-                <div className="flex items-center gap-2 font-sans text-[11px] text-stone">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-green-600 flex-shrink-0">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-                  </svg>
-                  <span>Сигурно плащане със <strong className="text-onyx">Stripe</strong> · SSL криптиране</span>
-                </div>
+                {isCod ? (
+                  <div className="flex items-center gap-2 font-sans text-[11px] text-stone">
+                    <span>💵</span><span>Плащаш в брой при доставка · без онлайн плащане</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 font-sans text-[11px] text-stone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-green-600 flex-shrink-0">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    <span>Сигурно плащане със <strong className="text-onyx">Stripe</strong> · SSL криптиране</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-sans font-bold text-stone/70">
                   <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">VISA</span>
                   <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">MC</span>
@@ -488,7 +573,7 @@ export default function CheckoutPageClient() {
                     ИЗПРАЩАМЕ ТЕ КЪМ ПЛАЩАНЕ...
                   </>
                 ) : (
-                  <>ПОТВЪРДИ ПОРЪЧКА <span className="text-lg">→</span></>
+                  <>{isCod ? 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ' : 'ПОТВЪРДИ ПОРЪЧКА'} <span className="text-lg">→</span></>
                 )}
               </button>
 
