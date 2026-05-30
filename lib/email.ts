@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 
 const BGN_RATE = 1.95583
 const fmtEUR = (n: number) => `€${n.toFixed(2)}`
-const fmtBGN = (n: number) => `${(Math.ceil(n * BGN_RATE * 100) / 100).toFixed(2)} лв.`
+const fmtBGN = (n: number) => `${(n * BGN_RATE).toFixed(2)} лв.`
 const LOGO_URL = 'https://www.alpewear.com/images/logo.png'
 
 export interface OrderEmailRow { label: string; sublabel?: string; amount: number }

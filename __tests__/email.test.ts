@@ -23,7 +23,7 @@ describe('buildOrderEmailHtml', () => {
     expect(html).toContain('−€6.70')
     expect(html).toContain('Наложен платеж')
     expect(html).toContain('€61.29')
-    expect(html).toContain('119.88 лв.')
+    expect(html).toContain('119.87 лв.')
     expect(html).toContain('cod-1748567640-AX72')
     expect(html).toContain('Иван Иванов')
   })
