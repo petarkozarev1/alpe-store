@@ -35,7 +35,7 @@ confirmation email, and Purchase tracking.
 | Availability | **Bulgaria only** (country = България) |
 | Default method | **Card** stays default; COD is secondary |
 | Order-value limits | **None** |
-| Confirmation email | **Automated via Resend** (instant Bulgarian email after Notion write) |
+| Confirmation email | **Automated via Resend for BOTH flows** — COD route + Stripe webhook send the same branded Bulgarian email |
 | Notion display | Prepend `[НАЛОЖЕН ПЛАТЕЖ]` to Items field (no schema change) |
 | Anti-abuse (repeat refusers) | **Deferred** — monitor manually in Notion |
 
@@ -88,9 +88,13 @@ and the COD route share it (no behavior change for the card flow):
 - Each is independently try/caught with `notifyAlert` on failure, preserving current
   resilience semantics.
 
-### 3. `app/api/webhooks/stripe/route.ts` (refactor)
-Replace the inline Notion-write and CAPI-Purchase blocks with calls into `lib/orders.ts`.
-Behavior identical; this is purely de-duplication so COD and card share one code path.
+### 3. `app/api/webhooks/stripe/route.ts` (refactor + new email)
+- Replace the inline Notion-write and CAPI-Purchase blocks with calls into `lib/orders.ts`.
+  Behavior identical for those two; this is de-duplication so COD and card share one path.
+- **New:** after the Notion write, call `sendOrderConfirmation(...)` (Resend) for **card**
+  orders too, using the Stripe session metadata + line items. Wrapped in its own
+  try/catch + `notifyAlert`, independent of Notion/CAPI. This replaces reliance on Stripe's
+  built-in receipt emails with one branded ALPÉ confirmation shared with the COD flow.
 
 ### 4. `app/api/checkout/cod/route.ts` (new)
 1. Parse `{ items, email, shipping }`; capture `clientIpAddress`/`clientUserAgent` from headers.
@@ -119,7 +123,9 @@ page (the order intent is real), mirroring the webhook's „always succeed, aler
   and feed them to `PurchasePixelFire` (fires `purchase-cod-{id}`, deduping with the
   route's CAPI event).
 - COD confirmation copy (since an email IS sent via Resend): „Поръчката е приета! Изпратихме
-  ти имейл с потвърждение. Ще се свържем с теб за детайли по доставката." Card copy unchanged.
+  ти имейл с потвърждение. Ще се свържем с теб за детайли по доставката."
+- Card copy can keep its email promise — now backed by the Resend webhook email rather than
+  Stripe's receipt setting.
 
 ### 7. `app/terms/page.tsx` (modify)
 Add a short COD clause: payment in cash on delivery, the 1,00 € service fee, and a note
@@ -148,8 +154,6 @@ CheckoutPageClient (COD selected, BG)
 ## Out of scope
 - Automated repeat-refuser detection (no customer accounts / phone-keyed history).
 - COD order-value limits (none).
-- Extending Resend confirmation emails to the **card** flow (the helper is reusable; card
-  continues to rely on Stripe receipts for now — can be a follow-up).
 - SMS / phone verification.
 
 ## Error-handling summary
