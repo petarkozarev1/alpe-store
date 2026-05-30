@@ -21,14 +21,18 @@ async function getPaidSession(sessionId: string) {
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{ session_id?: string; cod?: string; order?: string; value?: string }>
 }) {
-  const { session_id } = await searchParams
+  const { session_id, cod, order, value } = await searchParams
 
+  const isCod = cod === '1'
   let pixelValue = 0
-  let pixelOrderId = session_id ?? ''
+  let pixelOrderId = isCod ? (order ?? '') : (session_id ?? '')
 
-  if (session_id) {
+  if (isCod) {
+    pixelValue = value ? Number(value) : 0
+    pixelOrderId = order ?? ''
+  } else if (session_id) {
     const session = await getPaidSession(session_id)
     if (session) {
       pixelValue = (session.amount_total ?? 0) / 100
@@ -45,7 +49,9 @@ export default async function CheckoutSuccessPage({
         </div>
         <h1 className="font-serif text-4xl font-bold text-onyx">Поръчката е приета!</h1>
         <p className="font-sans text-base text-stone leading-relaxed">
-          Благодарим ти. Ще получиш имейл с потвърждение и информация за доставката.
+          {isCod
+            ? 'Благодарим ти. Изпратихме ти имейл с потвърждение. Ще се свържем с теб за детайли по доставката — плащаш в брой при получаване.'
+            : 'Благодарим ти. Ще получиш имейл с потвърждение и информация за доставката.'}
         </p>
         <Link
           href="/shop"
