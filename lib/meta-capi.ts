@@ -80,35 +80,31 @@ export async function sendCAPIEvent(eventName: string, opts: CAPIOptions = {}): 
     ],
   }
 
-  try {
-    const res = await fetch(`${CAPI_URL}?access_token=${token}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-    const rawBody = await res.text()
-    let body: Record<string, unknown> = {}
-    try { body = JSON.parse(rawBody) } catch { /* keep rawBody as-is */ }
+  const res = await fetch(`${CAPI_URL}?access_token=${token}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  const rawBody = await res.text()
+  let body: Record<string, unknown> = {}
+  try { body = JSON.parse(rawBody) } catch { /* keep rawBody as-is */ }
 
-    if (!res.ok) {
-      console.error(`[CAPI] ${eventName} HTTP ${res.status}:`, rawBody)
-      return
-    }
+  if (!res.ok) {
+    console.error(`[CAPI] ${eventName} HTTP ${res.status}:`, rawBody)
+    throw new Error(`CAPI ${eventName} HTTP ${res.status}: ${rawBody}`)
+  }
 
-    const eventsReceived = body.events_received as number | undefined
-    const messages = body.messages as unknown[] | undefined
-    const fbtraceId = body.fbtrace_id as string | undefined
+  const eventsReceived = body.events_received as number | undefined
+  const messages = body.messages as unknown[] | undefined
+  const fbtraceId = body.fbtrace_id as string | undefined
 
-    if (eventsReceived === 0 || (messages && messages.length > 0)) {
-      console.warn(
-        `[CAPI] ${eventName} accepted but flagged — events_received=${eventsReceived} messages=${JSON.stringify(messages)} fbtrace_id=${fbtraceId}`
-      )
-    } else {
-      console.log(
-        `[CAPI] ${eventName} sent — events_received=${eventsReceived} fbtrace_id=${fbtraceId}`
-      )
-    }
-  } catch (err) {
-    console.error(`[CAPI] ${eventName} fetch failed:`, err)
+  if (eventsReceived === 0 || (messages && messages.length > 0)) {
+    console.warn(
+      `[CAPI] ${eventName} accepted but flagged — events_received=${eventsReceived} messages=${JSON.stringify(messages)} fbtrace_id=${fbtraceId}`
+    )
+  } else {
+    console.log(
+      `[CAPI] ${eventName} sent — events_received=${eventsReceived} fbtrace_id=${fbtraceId}`
+    )
   }
 }
