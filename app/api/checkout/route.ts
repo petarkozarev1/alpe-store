@@ -22,7 +22,13 @@ export async function POST(req: Request) {
       items,
       email,
       shipping,
-    }: { items: LineItem[]; email: string; shipping: Record<string, string> } = await req.json()
+      summary,
+    }: {
+      items: LineItem[]
+      email: string
+      shipping: Record<string, string>
+      summary?: { subtotal: number; discountCode: string; discountAmount: number; shippingAmount: number; shippingLabel: string }
+    } = await req.json()
 
     if (!items?.length) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
@@ -69,6 +75,13 @@ export async function POST(req: Request) {
         ...shipping,
         ...(clientIpAddress ? { clientIpAddress } : {}),
         ...(clientUserAgent ? { clientUserAgent } : {}),
+        ...(summary ? {
+          subtotal: String(summary.subtotal),
+          discountCode: summary.discountCode,
+          discountAmount: String(summary.discountAmount),
+          shippingAmount: String(summary.shippingAmount),
+          shippingLabel: summary.shippingLabel,
+        } : {}),
       },
       success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/checkout`,
