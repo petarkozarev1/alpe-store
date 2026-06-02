@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
-import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { googleCartParams, trackGoogleEvent } from '@/lib/googleAnalytics'
 
 export default function CartPage() {
@@ -52,13 +52,19 @@ export default function CartPage() {
         <Link
           href="/checkout"
           onClick={() => {
-            firePixelEvent('InitiateCheckout', {
-              content_ids: items.map(item => item.productId),
-              content_type: 'product',
-              contents: items.map(item => ({ id: item.productId, quantity: item.quantity })),
-              currency: 'EUR',
-              num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+            fireTrackedEvent('InitiateCheckout', {
+              data: {
+                content_ids: items.map(item => item.productId),
+                content_type: 'product',
+                contents: items.map(item => ({ id: item.productId, quantity: item.quantity })),
+                currency: 'EUR',
+                num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+                value: Number(items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)),
+              },
               value: Number(items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)),
+              currency: 'EUR',
+              contentIds: items.map(item => item.productId),
+              numItems: items.reduce((sum, item) => sum + item.quantity, 0),
             })
             trackGoogleEvent('begin_checkout', googleCartParams(items))
           }}

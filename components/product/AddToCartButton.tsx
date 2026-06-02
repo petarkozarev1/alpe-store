@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { useCartStore } from '@/lib/store/cartStore'
 import type { Product, Variant } from '@/lib/types'
 
@@ -25,12 +25,18 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
       image: product.images[0],
       slug: product.slug,
     })
-    firePixelEvent('AddToCart', {
-      content_name: product.name,
-      content_ids: [product.id],
-      content_type: 'product',
+    fireTrackedEvent('AddToCart', {
+      data: {
+        content_name: product.name,
+        content_ids: [product.id],
+        content_type: 'product',
+        value: product.price,
+        currency: 'EUR',
+      },
       value: product.price,
       currency: 'EUR',
+      contentIds: [product.id],
+      numItems: 1,
     })
     openDrawer()
     setAdded(true)

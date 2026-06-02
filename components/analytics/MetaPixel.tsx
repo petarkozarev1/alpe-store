@@ -134,6 +134,72 @@ export function firePixelCustomEvent(name: string, data?: Record<string, unknown
   window.fbq('trackCustom', name, data)
 }
 
+/** Read a browser cookie value (used to forward _fbp / _fbc to CAPI). */
+function readCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined
+  return document.cookie
+    .split('; ')
+    .find(row => row.startsWith(`${name}=`))
+    ?.split('=').slice(1).join('=') || undefined
+}
+
+export interface TrackedEventOptions {
+  /** Fire as a custom event (fbq trackCustom) instead of a standard event. */
+  custom?: boolean
+  /** Extra params passed to the browser pixel (and, for custom events, mirrored as custom_data). */
+  data?: Record<string, unknown>
+  value?: number
+  currency?: string
+  contentIds?: string[]
+  numItems?: number
+  ctaLocation?: string
+  email?: string
+  phone?: string
+}
+
+/**
+ * Fire a Meta event on BOTH the browser pixel and server-side CAPI, deduplicated via a
+ * shared event_id. The CAPI mirror is a fire-and-forget POST to /api/track (keepalive so it
+ * survives navigation). Safe: silently no-ops if the pixel/network is unavailable.
+ */
+export function fireTrackedEvent(name: string, opts: TrackedEventOptions = {}): void {
+  if (typeof window === 'undefined') return
+  const eventId =
+    typeof crypto !== 'undefined' && crypto.randomUUID
+      ? `${name}-${crypto.randomUUID()}`
+      : `${name}-${Math.random().toString(36).slice(2)}`
+
+  // 1) Browser pixel with the shared eventID
+  if (ensurePixelReady()) {
+    if (opts.custom) window.fbq('trackCustom', name, opts.data, { eventID: eventId })
+    else window.fbq('track', name, opts.data, { eventID: eventId })
+  }
+
+  // 2) Server-side CAPI mirror (deduped by eventId)
+  try {
+    const payload = JSON.stringify({
+      eventName: name,
+      eventId,
+      value: opts.value,
+      currency: opts.currency,
+      contentIds: opts.contentIds,
+      numItems: opts.numItems,
+      ctaLocation: opts.ctaLocation,
+      email: opts.email,
+      phone: opts.phone,
+      fbp: readCookie('_fbp'),
+      fbc: readCookie('_fbc'),
+      sourceUrl: window.location.href,
+    })
+    void fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload,
+      keepalive: true,
+    }).catch(() => { /* tracking must never break the UX */ })
+  } catch { /* ignore */ }
+}
+
 /**
  * Hash a value with SHA-256 (lowercase + trim, matching Meta's spec).
  * Used by setPixelUser to send pre-hashed PII to Meta for Advanced Matching.

@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { howItWorksContent, steps } from '@/lib/data/content'
@@ -67,7 +67,7 @@ export default function HowItWorksSection() {
             variant="primary"
             className="font-bold self-start"
             onClick={() => {
-              firePixelCustomEvent('CTAClick', { cta_location: 'how_it_works' })
+              fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: 'how_it_works' }, ctaLocation: 'how_it_works' })
             }}
           />
         </div>

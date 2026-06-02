@@ -32,19 +32,30 @@ beforeEach(() => {
   localStorage.clear()
   useCartStore.setState({ items: [], isDrawerOpen: false })
   window.fbq = jest.fn()
+  // fireTrackedEvent mirrors to CAPI via a keepalive fetch — stub it out.
+  global.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) })) as unknown as typeof fetch
 })
 
-test('fires AddToCart when an in-stock product is added after consent', () => {
+test('fires AddToCart (pixel + CAPI mirror) when an in-stock product is added after consent', () => {
   localStorage.setItem('alpe-cookie-consent', 'all')
 
   render(<AddToCartButton product={product} selectedVariant={selectedVariant} />)
   fireEvent.click(screen.getByRole('button', { name: 'Add to Cart' }))
 
-  expect(window.fbq).toHaveBeenCalledWith('track', 'AddToCart', {
-    content_name: 'ALPÉ Daily',
-    content_ids: ['alpe-daily'],
-    content_type: 'product',
-    value: 44.99,
-    currency: 'EUR',
-  })
+  // Browser pixel fires with the product data + a shared eventID
+  expect(window.fbq).toHaveBeenCalledWith(
+    'track',
+    'AddToCart',
+    {
+      content_name: 'ALPÉ Daily',
+      content_ids: ['alpe-daily'],
+      content_type: 'product',
+      value: 44.99,
+      currency: 'EUR',
+    },
+    { eventID: expect.stringMatching(/^AddToCart-/) },
+  )
+
+  // CAPI mirror posts to /api/track with the same event
+  expect(global.fetch).toHaveBeenCalledWith('/api/track', expect.objectContaining({ method: 'POST', keepalive: true }))
 })

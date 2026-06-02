@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { faqs, faqSectionContent } from '@/lib/data/content'
@@ -26,7 +26,7 @@ export default function FaqSection() {
               variant="primary"
               className="font-bold self-start"
               onClick={() => {
-                firePixelCustomEvent('CTAClick', { cta_location: 'faq' })
+                fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: 'faq' }, ctaLocation: 'faq' })
               }}
             />
           </div>

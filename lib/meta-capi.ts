@@ -35,6 +35,8 @@ export interface CAPIOptions {
   numItems?: number
   eventId?: string
   sourceUrl?: string
+  /** Extra fields merged into custom_data (e.g. { cta_location: 'hero' } for custom events). */
+  customData?: Record<string, unknown>
   /** Unix timestamp (seconds) of the actual event. Defaults to now. Meta requires within 7 days of real event. */
   eventTime?: number
 }
@@ -75,6 +77,7 @@ export async function sendCAPIEvent(eventName: string, opts: CAPIOptions = {}): 
           content_ids: opts.contentIds,
           content_type: 'product',
           num_items: opts.numItems,
+          ...opts.customData,
         },
       },
     ],

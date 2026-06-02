@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
-import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 
 type Lens = 'evening' | 'daily'
 type Tab = 'description' | 'science' | 'reviews'
@@ -71,12 +71,17 @@ export default function ProductPage() {
   }, [])
 
   useEffect(() => {
-    firePixelEvent('ViewContent', {
-      content_name: 'ALPÉ Glasses',
-      content_ids: ['ALPÉ-glasses'],
-      content_type: 'product',
+    fireTrackedEvent('ViewContent', {
+      data: {
+        content_name: 'ALPÉ Glasses',
+        content_ids: ['ALPÉ-glasses'],
+        content_type: 'product',
+        value: initialBundleValue,
+        currency: 'EUR',
+      },
       value: initialBundleValue,
       currency: 'EUR',
+      contentIds: ['ALPÉ-glasses'],
     })
   }, [])
 
@@ -110,12 +115,18 @@ export default function ProductPage() {
       originalPrice: bundle > 1 ? bundlePrices[1] * bundle : undefined,
       saving: bundle > 1 ? bundleSavings[bundle] : undefined,
     })
-    firePixelEvent('AddToCart', {
-      content_name: d.name,
-      content_ids: [`ALPÉ-${lens}`],
-      content_type: 'product',
+    fireTrackedEvent('AddToCart', {
+      data: {
+        content_name: d.name,
+        content_ids: [`ALPÉ-${lens}`],
+        content_type: 'product',
+        value: bundlePrices[bundle],
+        currency: 'EUR',
+      },
       value: bundlePrices[bundle],
       currency: 'EUR',
+      contentIds: [`ALPÉ-${lens}`],
+      numItems: bundle,
     })
     openDrawer()
   }

@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import type { Product } from '@/lib/types'
 import VariantSelector from './VariantSelector'
 import AddToCartButton from './AddToCartButton'
@@ -14,12 +14,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   const selectedVariant = product.variants.find(v => v.id === selectedVariantId)!
 
   useEffect(() => {
-    firePixelEvent('ViewContent', {
-      content_name: product.name,
-      content_ids: [product.id],
-      content_type: 'product',
+    fireTrackedEvent('ViewContent', {
+      data: {
+        content_name: product.name,
+        content_ids: [product.id],
+        content_type: 'product',
+        value: product.price,
+        currency: 'EUR',
+      },
       value: product.price,
       currency: 'EUR',
+      contentIds: [product.id],
     })
   }, [product.id, product.name, product.price])
 

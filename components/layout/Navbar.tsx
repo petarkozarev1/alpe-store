@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { siteConfig } from '@/lib/data/site'
 import { useCartStore } from '@/lib/store/cartStore'
-import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -16,7 +16,7 @@ export default function Navbar() {
   }
 
   function trackCtaClick(location: 'navbar_desktop' | 'navbar_mobile') {
-    firePixelCustomEvent('CTAClick', { cta_location: location })
+    fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: location }, ctaLocation: location })
   }
   const { items, openDrawer } = useCartStore()
   const itemCount = items.reduce((s, i) => s + i.quantity, 0)

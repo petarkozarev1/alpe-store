@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
-import { firePixelCustomEvent, firePixelEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 
 const FREE_SHIPPING_THRESHOLD = 50
 
@@ -69,11 +69,15 @@ export default function CartDrawer() {
     try {
       const storeItems = useCartStore.getState().items
       const total = storeItems.reduce((s: number, i: { price: number; quantity: number }) => s + i.price * i.quantity, 0)
-      firePixelCustomEvent('ViewCart', {
-        content_ids: storeItems.map((i: { productId: string }) => i.productId),
+      const numItems = storeItems.reduce((s: number, i: { quantity: number }) => s + i.quantity, 0)
+      const contentIds = storeItems.map((i: { productId: string }) => i.productId)
+      fireTrackedEvent('ViewCart', {
+        custom: true,
+        data: { content_ids: contentIds, value: total, currency: 'EUR', num_items: numItems },
         value: total,
         currency: 'EUR',
-        num_items: storeItems.reduce((s: number, i: { quantity: number }) => s + i.quantity, 0),
+        contentIds,
+        numItems,
       })
     } catch { /* never break UI */ }
   }, [isDrawerOpen])
@@ -290,11 +294,17 @@ export default function CartDrawer() {
                   href="/checkout"
                   onClick={() => {
                     try {
-                      firePixelEvent('InitiateCheckout', {
+                      fireTrackedEvent('InitiateCheckout', {
+                        data: {
+                          value: subtotal,
+                          currency: 'EUR',
+                          content_ids: items.map(item => item.productId),
+                          num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+                        },
                         value: subtotal,
                         currency: 'EUR',
-                        content_ids: items.map(item => item.productId),
-                        num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+                        contentIds: items.map(item => item.productId),
+                        numItems: items.reduce((sum, item) => sum + item.quantity, 0),
                       })
                     } catch { /* never break UI */ }
                     closeDrawer()

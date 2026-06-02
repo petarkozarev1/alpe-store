@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, type Transition } from 'framer-motion'
-import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
 import { heroContent } from '@/lib/data/content'
 
@@ -83,7 +83,7 @@ export default function HeroSection() {
           variant="primary"
           className="font-bold"
           onClick={() => {
-            firePixelCustomEvent('CTAClick', { cta_location: 'hero' })
+            fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: 'hero' }, ctaLocation: 'hero' })
           }}
         />
       </motion.div>
