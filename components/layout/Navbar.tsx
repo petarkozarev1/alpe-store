@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { siteConfig } from '@/lib/data/site'
 import { useCartStore } from '@/lib/store/cartStore'
+import { firePixelCustomEvent } from '@/components/analytics/MetaPixel'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -12,6 +13,10 @@ export default function Navbar() {
 
   function navHref(href: string) {
     return href.startsWith('#') && pathname !== '/' ? '/' + href : href
+  }
+
+  function trackCtaClick(location: 'navbar_desktop' | 'navbar_mobile') {
+    firePixelCustomEvent('CTAClick', { cta_location: location })
   }
   const { items, openDrawer } = useCartStore()
   const itemCount = items.reduce((s, i) => s + i.quantity, 0)
@@ -60,6 +65,7 @@ export default function Navbar() {
         <div className="hidden md:flex flex-1 justify-end items-center gap-6">
           <Link
             href="/shop"
+            onClick={() => trackCtaClick('navbar_desktop')}
             className="font-sans text-xs font-bold uppercase tracking-widest bg-onyx text-linen px-5 py-2 rounded-full hover:bg-iron transition-colors"
           >
             Поръчай сега
@@ -82,8 +88,15 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile: cart + hamburger */}
-        <div className="md:hidden flex items-center gap-5">
+        {/* Mobile: CTA + cart + hamburger */}
+        <div className="md:hidden flex items-center gap-4">
+          <Link
+            href="/shop"
+            onClick={() => trackCtaClick('navbar_mobile')}
+            className="font-sans text-[11px] font-bold uppercase tracking-widest bg-onyx text-linen px-4 py-2 rounded-full hover:bg-iron transition-colors whitespace-nowrap"
+          >
+            Поръчай сега
+          </Link>
           <button onClick={openDrawer} aria-label="Отвори количката" className="relative text-linen hover:text-parchment">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>

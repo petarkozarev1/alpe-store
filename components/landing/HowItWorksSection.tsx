@@ -31,7 +31,7 @@ function StepCard({ step, index, progress }: { step: Step; index: number; progre
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#2D0E04]/80 via-transparent to-transparent" />
         <div className="absolute bottom-0 left-0 p-6">
           <span className="inline-block bg-linen text-onyx text-xs font-semibold px-3 py-1 rounded-full mb-3">
-            Step {step.number}
+            Стъпка {step.number}
           </span>
           <h3 className="text-linen text-2xl font-bold mb-1">{step.title}</h3>
           <p className="text-linen/80 text-sm max-w-xs">{step.description}</p>

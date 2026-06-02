@@ -15,7 +15,7 @@ const DELIVERY = [
   { id: 'speedy',  label: 'Спиди',    badge: 'ПРЕПОРЪЧАНО', requiresOffice: true,  officePlaceholder: 'напр. Спиди офис Сердика, бул. Сливница 2, София',       officeLink: 'https://www.speedy.bg/bg/office-search' },
   { id: 'econt',   label: 'Еконт',    badge: null,          requiresOffice: true,  officePlaceholder: 'напр. Еконт Сердика, бул. Сливница 2, София',           officeLink: 'https://www.econt.com/services/offices.html' },
   { id: 'boxnow',  label: 'BoxNow',   badge: null,          requiresOffice: true,  officePlaceholder: 'напр. BoxNow Mall of Sofia, бул. Климент Охридски',     officeLink: 'https://boxnow.bg/lockers' },
-  { id: 'sameday', label: 'SameDay',  badge: null,          requiresOffice: true,  officePlaceholder: 'напр. SameDay локер НДК, пл. България 1, София',        officeLink: 'https://www.sameday.bg/en/parcel-locker' },
+  { id: 'pigeon',  label: 'Pigeon Express', badge: null,      requiresOffice: true,  officePlaceholder: 'напр. Pigeon Express локер НДК, пл. България 1, София', officeLink: 'https://pigeonexpress.com' },
 ]
 
 const DISCOUNT_CODES: Record<string, number> = { 'WELCOME10': 10, 'FAMILY40': 40 }
@@ -31,13 +31,13 @@ function getCookieValue(name: string) {
 }
 
 /* ── types ─────────────────────────────────────────── */
-interface Contact { email: string; newsletter: boolean }
+interface Contact { email: string }
 interface Shipping { firstName: string; lastName: string; phone: string; city: string; address: string; postalCode: string; country: string; note: string }
 
 export default function CheckoutPageClient() {
   const { items } = useCartStore()
 
-  const [contact, setContact] = useState<Contact>({ email: '', newsletter: false })
+  const [contact, setContact] = useState<Contact>({ email: '' })
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: 'България', note: '' })
   const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
   const [deliveryId, setDeliveryId] = useState('speedy')
@@ -49,13 +49,31 @@ export default function CheckoutPageClient() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [attempted, setAttempted] = useState(false)
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
+  const markTouched = (key: string) => setTouched(p => ({ ...p, [key]: true }))
+
+  /* ── format validation ──────────────────────────── */
+  const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
+  // Accepts BG / international numbers: optional leading +, 8–15 digits, allows spaces/dashes/parens
+  const isValidPhone = (v: string) => {
+    const digits = v.replace(/\D/g, '')
+    return /^\+?[\d\s()-]+$/.test(v.trim()) && digits.length >= 8 && digits.length <= 15
+  }
 
   /* ── inline validation helpers ──────────────────── */
+  // generic "required" check for plain text fields
   const isInvalid = (val: string) => attempted && !val.trim()
-  const fieldClass = (val: string, base: string) =>
-    `${base} ${isInvalid(val) ? 'border-red-500 focus:ring-red-500' : 'border-stone/25 focus:ring-onyx'}`
-  const ErrorMsg = ({ show }: { show: boolean }) =>
-    show ? <p className="font-sans text-xs text-red-600 mt-1.5">Това поле е задължително</p> : null
+  // field-specific check: required + correct format, shown after submit or blur
+  const fieldError = (key: string, val: string, format?: (v: string) => boolean): string => {
+    if (!(attempted || touched[key])) return ''
+    if (!val.trim()) return 'Това поле е задължително'
+    if (format && !format(val)) return key === 'email' ? 'Въведи валиден имейл адрес' : 'Въведи валиден телефонен номер'
+    return ''
+  }
+  const fieldClass = (val: string, base: string, invalid = isInvalid(val)) =>
+    `${base} ${invalid ? 'border-red-500 focus:ring-red-500' : 'border-stone/25 focus:ring-onyx'}`
+  const ErrorMsg = ({ show, message = 'Това поле е задължително' }: { show: boolean; message?: string }) =>
+    show ? <p className="font-sans text-xs text-red-600 mt-1.5">{message}</p> : null
 
   /* ── Push collected info to Meta Pixel for Advanced Matching (higher EMQ on InitiateCheckout etc) */
   const syncPixelUser = () => {
@@ -103,12 +121,12 @@ export default function CheckoutPageClient() {
     e.preventDefault()
     if (!items.length) { setError('Количката ти е празна.'); return }
 
-    // Validate required fields before hitting the API
+    // Validate required fields + formats before hitting the API
     const requiredOk =
-      contact.email.trim() &&
+      isValidEmail(contact.email) &&
       shipping.firstName.trim() &&
       shipping.lastName.trim() &&
-      shipping.phone.trim() &&
+      isValidPhone(shipping.phone) &&
       shipping.city.trim() &&
       (deliveryType === 'address'
         ? shipping.address.trim() && shipping.postalCode.trim()
@@ -241,10 +259,38 @@ export default function CheckoutPageClient() {
               <p className="font-sans text-sm text-stone mt-2">Само на крачка от <em className="text-iron">по-спокоен сън</em> и <em className="text-iron">по-ясен ден</em>.<br/>Попълни данните си — изпращаме до 24 часа.</p>
             </div>
 
+            {/* Payment method */}
+            <div className="bg-white rounded-2xl border border-stone/15 p-6">
+              <div className="flex items-center justify-between mb-5">
+                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">01.</span>Начин на плащане</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
+                  <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="accent-onyx" />
+                  <div className="flex-1">
+                    <span className="font-sans text-sm font-semibold text-onyx">Карта</span>
+                    <p className="font-sans text-xs text-stone mt-0.5">Visa · Mastercard · Apple Pay · Google Pay · Revolut</p>
+                  </div>
+                </label>
+                {codEligible && (
+                  <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
+                    <input type="radio" name="payment" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-onyx" />
+                    <div className="flex-1">
+                      <span className="font-sans text-sm font-semibold text-onyx">Наложен платеж</span>
+                      <p className="font-sans text-xs text-stone mt-0.5">Плащаш в брой на куриера при доставка · +€{COD_FEE.toFixed(2)}</p>
+                    </div>
+                  </label>
+                )}
+                {isCod && (
+                  <p className="font-sans text-[11px] text-stone/60 leading-relaxed">При наложен платеж плащаш в брой при получаване. Такса за услугата: €{COD_FEE.toFixed(2)}.</p>
+                )}
+              </div>
+            </div>
+
             {/* Contact */}
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">01.</span>Контакт</span>
+                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Контакт</span>
                 <span className="font-sans text-xs text-stone/40">ЗА ПОТВЪРЖДЕНИЕ</span>
               </div>
               <div className="flex flex-col gap-4">
@@ -254,27 +300,20 @@ export default function CheckoutPageClient() {
                       type="email" required placeholder="имейл@example.com"
                       value={contact.email}
                       onChange={e => setContact(p => ({ ...p, email: e.target.value }))}
-                      onBlur={syncPixelUser}
-                      className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')}
+                      onBlur={() => { markTouched('email'); syncPixelUser() }}
+                      className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('email', contact.email, isValidEmail))}
                     />
-                    {contact.email.includes('@') && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
+                    {isValidEmail(contact.email) && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
                   </div>
-                  <ErrorMsg show={isInvalid(contact.email)} />
+                  <ErrorMsg show={!!fieldError('email', contact.email, isValidEmail)} message={fieldError('email', contact.email, isValidEmail)} />
                 </div>
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="checkbox" checked={contact.newsletter} onChange={e => setContact(p => ({ ...p, newsletter: e.target.checked }))} className="mt-0.5 accent-onyx w-4 h-4 flex-shrink-0" />
-                  <div>
-                    <p className="font-sans text-xs font-bold text-onyx uppercase tracking-wide">Изпращайте ми новини и оферти</p>
-                    <p className="font-sans text-[10px] text-stone/60 uppercase tracking-wide">Само важното — без спам.</p>
-                  </div>
-                </label>
               </div>
             </div>
 
             {/* Delivery — combined section */}
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Доставка</span>
+                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">03.</span>Доставка</span>
               </div>
               <div className="flex flex-col gap-4">
 
@@ -292,23 +331,17 @@ export default function CheckoutPageClient() {
                   </div>
                 </div>
 
-                {/* Phone + City */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Телефон</label>
-                    <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40 text-sm">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.55-.55a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
-                      </span>
-                      <input required type="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.phone, 'w-full border rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                    </div>
-                    <ErrorMsg show={isInvalid(shipping.phone)} />
+                {/* Phone — full width so the whole number fits */}
+                <div>
+                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Телефон</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40 text-sm">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.55-.55a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+                    </span>
+                    <input required type="tel" inputMode="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} onBlur={() => { markTouched('phone'); syncPixelUser() }} className={fieldClass(shipping.phone, 'w-full border rounded-xl pl-10 pr-9 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('phone', shipping.phone, isValidPhone))} />
+                    {isValidPhone(shipping.phone) && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
                   </div>
-                  <div>
-                    <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
-                    <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                    <ErrorMsg show={isInvalid(shipping.city)} />
-                  </div>
+                  <ErrorMsg show={!!fieldError('phone', shipping.phone, isValidPhone)} message={fieldError('phone', shipping.phone, isValidPhone)} />
                 </div>
 
                 {/* Delivery type toggle */}
@@ -348,20 +381,9 @@ export default function CheckoutPageClient() {
                         <ErrorMsg show={isInvalid(shipping.postalCode)} />
                       </div>
                       <div>
-                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Държава</label>
-                        <select value={shipping.country} onChange={e => setShipping(p => ({ ...p, country: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx">
-                          <option>България</option>
-                          <option>Германия</option>
-                          <option>Франция</option>
-                          <option>Италия</option>
-                          <option>Испания</option>
-                          <option>Нидерландия</option>
-                          <option>Белгия</option>
-                          <option>Австрия</option>
-                          <option>Полша</option>
-                          <option>Румъния</option>
-                          <option>Гърция</option>
-                        </select>
+                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
+                        <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                        <ErrorMsg show={isInvalid(shipping.city)} />
                       </div>
                     </div>
                     <div>
@@ -374,6 +396,11 @@ export default function CheckoutPageClient() {
                 {/* Conditional: courier + office/locker */}
                 {deliveryType === 'office' && (
                   <div className="flex flex-col gap-3">
+                    <div>
+                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
+                      <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                      <ErrorMsg show={isInvalid(shipping.city)} />
+                    </div>
                     {DELIVERY.map(d => (
                       <div key={d.id}>
                         <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${deliveryId === d.id ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
@@ -409,33 +436,6 @@ export default function CheckoutPageClient() {
               </div>
             </div>
 
-            {/* Payment method */}
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">03.</span>Начин на плащане</span>
-              </div>
-              <div className="flex flex-col gap-3">
-                <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
-                  <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="accent-onyx" />
-                  <div className="flex-1">
-                    <span className="font-sans text-sm font-semibold text-onyx">Карта</span>
-                    <p className="font-sans text-xs text-stone mt-0.5">Visa · Mastercard · Apple Pay · Google Pay · Revolut</p>
-                  </div>
-                </label>
-                {codEligible && (
-                  <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
-                    <input type="radio" name="payment" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-onyx" />
-                    <div className="flex-1">
-                      <span className="font-sans text-sm font-semibold text-onyx">Наложен платеж</span>
-                      <p className="font-sans text-xs text-stone mt-0.5">Плащаш в брой на куриера при доставка · +€{COD_FEE.toFixed(2)}</p>
-                    </div>
-                  </label>
-                )}
-                {isCod && (
-                  <p className="font-sans text-[11px] text-stone/60 leading-relaxed">При наложен платеж плащаш в брой при получаване. Такса за услугата: €{COD_FEE.toFixed(2)}.</p>
-                )}
-              </div>
-            </div>
           </div>
 
           {/* ── Right column — Order summary ──────── */}
@@ -477,9 +477,9 @@ export default function CheckoutPageClient() {
                     value={codeInput}
                     onChange={e => { setCodeInput(e.target.value); setCodeError('') }}
                     onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyCode())}
-                    className="flex-1 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
+                    className="flex-1 min-w-0 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
                   />
-                  <button type="button" onClick={applyCode} className="font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">
+                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">
                     ПРИЛАГАНЕ
                   </button>
                 </div>
@@ -521,12 +521,28 @@ export default function CheckoutPageClient() {
 
               <hr className="border-stone/15 my-4" />
 
-              <div className="flex justify-between items-baseline mb-5">
+              <div className="flex justify-between items-baseline mb-4">
                 <span className="font-sans text-base font-semibold text-onyx">Общо</span>
                 <span className="text-right">
                   <span className="font-serif text-3xl font-bold text-onyx">€{total.toFixed(2)} <span className="font-sans text-xs text-stone font-normal">EUR</span></span>
                   <span className="block font-sans text-xs text-stone/60 mt-0.5">{formatBGN(total)}</span>
                 </span>
+              </div>
+
+              {/* Reassurance strip */}
+              <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t border-stone/15">
+                <div className="flex flex-col items-center text-center gap-1.5">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 text-iron/80"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span className="font-sans text-[10px] leading-tight text-stone">Преглед при доставка</span>
+                </div>
+                <div className="flex flex-col items-center text-center gap-1.5">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 text-iron/80"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                  <span className="font-sans text-[10px] leading-tight text-stone">14-дневно връщане</span>
+                </div>
+                <div className="flex flex-col items-center text-center gap-1.5">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 text-iron/80"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  <span className="font-sans text-[10px] leading-tight text-stone">1–3 дни доставка</span>
+                </div>
               </div>
 
               {/* Trust block — contact + payment security */}
