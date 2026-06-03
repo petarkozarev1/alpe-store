@@ -2,8 +2,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { CheckoutElementsProvider, PaymentElement, useCheckoutElements } from '@stripe/react-stripe-js/checkout'
 import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
+import { getStripeClient } from '@/lib/stripe-client'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -34,6 +36,57 @@ function getCookieValue(name: string) {
 interface Contact { email: string }
 interface Shipping { firstName: string; lastName: string; phone: string; city: string; address: string; postalCode: string; country: string; note: string }
 
+/* ── Embedded Stripe payment (Payment Element on a Checkout Session, ui_mode: 'custom') ───
+ * Renders inside <CheckoutElementsProvider>. checkout.confirm() handles 3DS and, on success,
+ * redirects to the session's return_url (/checkout/success), which fires the Purchase pixel;
+ * the Stripe webhook fires CAPI Purchase + Notion + email — unchanged by this surface. */
+function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: number) => string }) {
+  const result = useCheckoutElements()
+  const [paying, setPaying] = useState(false)
+  const [msg, setMsg] = useState<string | null>(null)
+
+  if (result.type === 'loading') {
+    return <p className="font-sans text-sm text-stone text-center py-8">Зареждане на сигурната форма…</p>
+  }
+  if (result.type === 'error') {
+    return <p className="font-sans text-sm text-red-600 text-center py-8">{result.error.message}</p>
+  }
+  const checkout = result.checkout
+
+  const pay = async () => {
+    setPaying(true); setMsg(null)
+    try {
+      const res = await checkout.confirm()
+      if (res.type === 'error') { setMsg(res.error.message); setPaying(false) }
+      // on success Stripe redirects to return_url
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : 'Грешка при плащане')
+      setPaying(false)
+    }
+  }
+
+  return (
+    // NOTE: a <div>, not a <form> — this renders inside the checkout's outer <form>, and nested
+    // forms are invalid HTML. The pay button is type="button" and calls confirm() directly.
+    <div className="flex flex-col gap-4">
+      <PaymentElement />
+      {msg && <p className="font-sans text-sm text-red-600">{msg}</p>}
+      <button
+        type="button"
+        onClick={pay}
+        disabled={paying}
+        className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      >
+        {paying ? 'ОБРАБОТКА…' : <>ПЛАТИ €{total.toFixed(2)} <span className="text-lg">→</span></>}
+      </button>
+      <p className="font-sans text-[11px] text-stone/55 text-center flex items-center justify-center gap-1.5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3 h-3 text-green-600"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Сигурно плащане със Stripe · {formatBGN(total)}
+      </p>
+    </div>
+  )
+}
+
 export default function CheckoutPageClient() {
   const { items } = useCartStore()
 
@@ -49,6 +102,8 @@ export default function CheckoutPageClient() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [attempted, setAttempted] = useState(false)
+  // When set, the embedded Stripe Payment Element modal is shown (card flow).
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const markTouched = (key: string) => setTouched(p => ({ ...p, [key]: true }))
 
@@ -210,8 +265,10 @@ export default function CheckoutPageClient() {
         }),
       })
       const data = await res.json()
-      if (!res.ok || !data.url) throw new Error(data.error ?? 'Грешка')
-      window.location.href = data.url
+      if (!res.ok || !data.clientSecret) throw new Error(data.error ?? 'Грешка')
+      // Open the embedded Payment Element instead of redirecting to a Stripe-hosted page.
+      setClientSecret(data.clientSecret)
+      setLoading(false)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Грешка при плащане')
       setLoading(false)
@@ -576,30 +633,48 @@ export default function CheckoutPageClient() {
 
               {error && <p className="text-red-700 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">{error}</p>}
 
-              <button
-                type="submit"
-                disabled={loading || !items.length}
-                className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-              >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity="0.25"/>
-                      <path d="M22 12a10 10 0 00-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-                    </svg>
-                    ИЗПРАЩАМЕ ТЕ КЪМ ПЛАЩАНЕ...
-                  </>
-                ) : (
-                  <>{isCod ? 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ' : 'ПОТВЪРДИ ПОРЪЧКА'} <span className="text-lg">→</span></>
-                )}
-              </button>
+              {clientSecret ? (
+                /* Embedded Stripe Payment Element — appears in-page after details are filled (no redirect) */
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-sans text-xs font-semibold text-onyx uppercase tracking-widest">Данни за плащане</span>
+                    <button type="button" onClick={() => setClientSecret(null)} className="font-sans text-xs text-stone hover:text-onyx transition-colors">← Назад</button>
+                  </div>
+                  <CheckoutElementsProvider
+                    stripe={getStripeClient()}
+                    options={{ clientSecret, elementsOptions: { appearance: { theme: 'flat', variables: { colorPrimary: '#2D0E04', borderRadius: '12px', fontFamily: 'Raleway, sans-serif' } } } }}
+                  >
+                    <StripePayForm total={total} formatBGN={formatBGN} />
+                  </CheckoutElementsProvider>
+                </div>
+              ) : (
+                <>
+                  <button
+                    type="submit"
+                    disabled={loading || !items.length}
+                    className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                  >
+                    {loading ? (
+                      <>
+                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity="0.25"/>
+                          <path d="M22 12a10 10 0 00-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                        </svg>
+                        ПОДГОТВЯМЕ ПЛАЩАНЕТО...
+                      </>
+                    ) : (
+                      <>{isCod ? 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ' : 'ПРОДЪЛЖИ КЪМ ПЛАЩАНЕ'} <span className="text-lg">→</span></>
+                    )}
+                  </button>
 
-              <p className="font-sans text-[11px] text-stone/50 text-center mt-3">
-                Като потвърдиш, приемаш{' '}
-                <Link href="/terms" className="underline hover:text-stone transition-colors">Условията за ползване</Link>
-                {' '}и{' '}
-                <Link href="/privacy" className="underline hover:text-stone transition-colors">Политиката за поверителност</Link>.
-              </p>
+                  <p className="font-sans text-[11px] text-stone/50 text-center mt-3">
+                    Като потвърдиш, приемаш{' '}
+                    <Link href="/terms" className="underline hover:text-stone transition-colors">Условията за ползване</Link>
+                    {' '}и{' '}
+                    <Link href="/privacy" className="underline hover:text-stone transition-colors">Политиката за поверителност</Link>.
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>

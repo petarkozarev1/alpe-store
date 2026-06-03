@@ -56,6 +56,9 @@ export async function POST(req: Request) {
       : null
 
     const session = await stripe.checkout.sessions.create({
+      // 'elements' = in-page Payment Element flow (pairs with CheckoutElementsProvider on the
+      // client). Still a Checkout Session, so checkout.session.completed fires as before.
+      ui_mode: 'elements',
       mode: 'payment',
       locale: 'bg',
       customer_email: email,
@@ -83,8 +86,10 @@ export async function POST(req: Request) {
           shippingLabel: summary.shippingLabel,
         } : {}),
       },
-      success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/checkout`,
+      // ui_mode: 'elements' uses return_url (cancel_url/success_url are not allowed).
+      // Stripe redirects here after checkout.confirm() succeeds; success page reads session_id
+      // and the checkout.session.completed webhook fires Notion + CAPI Purchase + email.
+      return_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     })
 
     // Mirror InitiateCheckout server-side to Meta CAPI for higher EMQ + ad-blocker resilience.
@@ -130,7 +135,7 @@ export async function POST(req: Request) {
       }).catch(() => { /* ignore */ })
     }
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json({ clientSecret: session.client_secret })
   } catch (err) {
     console.error('Stripe checkout error:', err)
     return NextResponse.json({ error: 'Payment could not be created' }, { status: 500 })
