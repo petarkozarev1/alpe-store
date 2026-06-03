@@ -7,6 +7,7 @@ import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
 import { getStripeClient } from '@/lib/stripe-client'
 import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
+import { getPromo, promoDiscount } from '@/lib/promo'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -95,6 +96,9 @@ export default function CheckoutPageClient() {
   const [deliveryId, setDeliveryId] = useState('speedy')
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card')
   const [officeLocation, setOfficeLocation] = useState('')
+  const [codeInput, setCodeInput] = useState('')
+  const [appliedCode, setAppliedCode] = useState<string | null>(null)
+  const [codeError, setCodeError] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [attempted, setAttempted] = useState(false)
@@ -147,15 +151,26 @@ export default function CheckoutPageClient() {
   const subtotal = naiveSubtotal(items)
   const bundlePrice = priceForPairs(totalPairs)
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
+  // Promo code (e.g. ALETEA10) — % off the bundle-discounted product price.
+  const promo = promoDiscount(bundlePrice, appliedCode)
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
   const codEligible = deliveryType === 'office' || shipping.country === 'България'
   const isCod = paymentMethod === 'cod' && codEligible
   const codFee = isCod ? COD_FEE : 0
-  const total = +(bundlePrice + shipping_ + codFee).toFixed(2)
+  const total = +(bundlePrice - promo.amount + shipping_ + codFee).toFixed(2)
 
   useEffect(() => {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
   }, [paymentMethod, codEligible])
+
+  /* ── promo code ─────────────────────────────────── */
+  const applyCode = () => {
+    const p = getPromo(codeInput)
+    if (!p) { setCodeError('Невалиден код'); return }
+    setAppliedCode(p.code)
+    setCodeError('')
+  }
+  const removeCode = () => { setAppliedCode(null); setCodeInput(''); setCodeError('') }
 
   /* ── submit ─────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -229,6 +244,7 @@ export default function CheckoutPageClient() {
             items: codProducts,
             shipping: checkoutShipping,
             shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label,
+            promoCode: appliedCode ?? '',
           }),
         })
         const data = await res.json()
@@ -248,6 +264,7 @@ export default function CheckoutPageClient() {
         body: JSON.stringify({
           items: lineItems, email: contact.email, shipping: checkoutShipping,
           summary: { shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label },
+          promoCode: appliedCode ?? '',
         }),
       })
       const data = await res.json()
@@ -507,6 +524,30 @@ export default function CheckoutPageClient() {
 
               <hr className="border-stone/15 mb-4" />
 
+              {/* Promo code */}
+              {appliedCode ? (
+                <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
+                  <span className="font-sans text-xs font-semibold text-green-700">{appliedCode} · {promo.percent}% отстъпка приложена</span>
+                  <button type="button" onClick={removeCode} className="font-sans text-xs text-stone hover:text-onyx transition-colors">Премахни</button>
+                </div>
+              ) : (
+                <div className="flex gap-2 mb-4">
+                  <input
+                    placeholder="Промо код"
+                    value={codeInput}
+                    onChange={e => { setCodeInput(e.target.value); setCodeError('') }}
+                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyCode())}
+                    className="flex-1 min-w-0 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
+                  />
+                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">
+                    ПРИЛАГАНЕ
+                  </button>
+                </div>
+              )}
+              {codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}
+
+              <hr className="border-stone/15 mb-4" />
+
               {/* Totals */}
               <div className="flex flex-col gap-2.5 font-sans text-sm">
                 <div className="flex justify-between text-stone">
@@ -517,6 +558,12 @@ export default function CheckoutPageClient() {
                   <div className="flex justify-between text-green-700">
                     <span>Отстъпка за комплект</span>
                     <span className="text-right">−€{bundleSaving.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(bundleSaving)}</span></span>
+                  </div>
+                )}
+                {promo.amount > 0 && (
+                  <div className="flex justify-between text-green-700">
+                    <span>Промо код ({promo.code})</span>
+                    <span className="text-right">−€{promo.amount.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(promo.amount)}</span></span>
                   </div>
                 )}
                 <div className="flex justify-between text-stone">

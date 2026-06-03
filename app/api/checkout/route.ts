@@ -3,6 +3,7 @@ import { getStripe } from '@/lib/stripe'
 import { sendCAPIEvent } from '@/lib/meta-capi'
 import { notifyAlert } from '@/lib/alerts'
 import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
+import { promoDiscount } from '@/lib/promo'
 
 const DELIVERY_PRICE = 4.99
 
@@ -27,11 +28,13 @@ export async function POST(req: Request) {
       email,
       shipping,
       summary,
+      promoCode,
     }: {
       items: LineItem[]
       email: string
       shipping: Record<string, string>
       summary?: { shippingLabel: string }
+      promoCode?: string
     } = await req.json()
 
     if (!items?.length) {
@@ -48,16 +51,20 @@ export async function POST(req: Request) {
     const pairs = countPairs(productItems)
     const bundlePrice = priceForPairs(pairs)
     const bundleDiscount = +Math.max(0, naiveSum - bundlePrice).toFixed(2)
+    // Validate the promo code server-side; 10% off the (bundle-discounted) product price.
+    const promo = promoDiscount(bundlePrice, promoCode)
+    // One coupon covers the whole product discount (bundle + promo) so the charge = product − all + shipping.
+    const totalProductDiscount = +(bundleDiscount + promo.amount).toFixed(2)
     const shippingAmount = pairs >= 2 ? 0 : DELIVERY_PRICE
     const shippingLabel = summary?.shippingLabel || shipping.deliveryMethod || 'Доставка'
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alpewear.com'
-    const coupon = bundleDiscount > 0
+    const coupon = totalProductDiscount > 0
       ? await stripe.coupons.create({
-          amount_off: Math.round(bundleDiscount * 100),
+          amount_off: Math.round(totalProductDiscount * 100),
           currency: 'eur',
           duration: 'once',
-          name: 'ALPÉ комплектна отстъпка',
+          name: promo.code ? `ALPÉ отстъпка (${promo.code})` : 'ALPÉ комплектна отстъпка',
         })
       : null
 
@@ -95,8 +102,9 @@ export async function POST(req: Request) {
         ...(clientIpAddress ? { clientIpAddress } : {}),
         ...(clientUserAgent ? { clientUserAgent } : {}),
         subtotal: String(naiveSum),
-        discountCode: bundleDiscount > 0 ? 'Комплектна отстъпка' : '',
-        discountAmount: String(bundleDiscount),
+        discountCode: promo.code || (bundleDiscount > 0 ? 'Комплектна отстъпка' : ''),
+        discountAmount: String(totalProductDiscount),
+        promoCode: promo.code,
         shippingAmount: String(shippingAmount),
         shippingLabel,
       },
@@ -111,7 +119,7 @@ export async function POST(req: Request) {
     const nameParts = (shipping.name ?? '').trim().split(' ')
     const firstName = nameParts[0] ?? ''
     const lastName = nameParts.slice(1).join(' ') || firstName
-    const cartValue = bundlePrice
+    const cartValue = +(bundlePrice - promo.amount).toFixed(2)
     const numItems = productItems.reduce((sum, i) => sum + i.quantity, 0)
 
     // Await CAPI so the serverless function doesn't terminate before the request reaches Meta.

@@ -59,6 +59,7 @@ export async function POST(req: Request) {
     courierNote: meta.courierNote ?? '',
     itemsText: items,
     total,
+    promoCode: meta.promoCode || '',
   }
 
   let notionOk = false

@@ -3,9 +3,11 @@ import { writeOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 import { notifyAlert } from '@/lib/alerts'
 import { signCodOrder } from '@/lib/cod-signature'
+import { promoDiscount } from '@/lib/promo'
 import {
   computeCodTotal,
   computeSubtotal,
+  computeBundlePrice,
   computeBundleSaving,
   computeShipping,
   isBulgariaEligible,
@@ -19,6 +21,7 @@ interface CodPayload {
   items: CodProduct[]
   shipping: Record<string, string>
   shippingLabel: string
+  promoCode?: string
 }
 
 export async function POST(req: Request) {
@@ -40,9 +43,10 @@ export async function POST(req: Request) {
     // Recompute all money server-side — never trust client-sent prices/fees.
     const subtotal = computeSubtotal(items)            // naive sum (for display)
     const bundleSaving = computeBundleSaving(items)    // automatic multi-pair discount
+    const promo = promoDiscount(computeBundlePrice(items), body.promoCode)  // validated server-side
     const shippingAmount = computeShipping(items)
     const codFee = COD_FEE
-    const total = computeCodTotal({ items, shippingAmount, codFee })
+    const total = +(computeCodTotal({ items, shippingAmount, codFee }) - promo.amount).toFixed(2)
     const orderId = makeCodOrderId()
 
     const itemsText = items.map(i => `${i.name} — ${i.variantLabel} x${i.quantity}`).join(', ')
@@ -56,6 +60,7 @@ export async function POST(req: Request) {
       postalCode: shipping.postalCode ?? '', deliveryMethod: shipping.deliveryMethod ?? '',
       courier: shipping.courier ?? '', officeLocation: shipping.officeLocation ?? '',
       courierNote: shipping.courierNote ?? '', itemsText, total,
+      promoCode: promo.code,
     }
 
     // Independent task #1 — Notion
@@ -72,7 +77,9 @@ export async function POST(req: Request) {
     const emailModel: OrderEmailModel = {
       orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || 'клиент',
       productRows, subtotal,
-      discount: bundleSaving > 0 ? { code: 'Комплектна отстъпка', amount: bundleSaving } : undefined,
+      discount: (bundleSaving + promo.amount) > 0
+        ? { code: promo.code || 'Комплектна отстъпка', amount: +(bundleSaving + promo.amount).toFixed(2) }
+        : undefined,
       shippingLabel: body.shippingLabel, shippingAmount, codFee, total,
       deliveryTo: { name: shipping.name ?? '', line: shipping.officeLocation || [shipping.address, shipping.city].filter(Boolean).join(', '), phone: shipping.phone ?? '' },
     }

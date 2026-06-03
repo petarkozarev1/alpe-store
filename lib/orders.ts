@@ -18,6 +18,7 @@ export interface OrderRecord {
   courierNote: string
   itemsText: string
   total: number
+  promoCode?: string
 }
 
 export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
@@ -25,7 +26,7 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
   const databaseId = getRequiredEnv('NOTION_DATABASE_ID')
   const items = order.paymentMethod === 'cod' ? `[НАЛОЖЕН ПЛАТЕЖ] ${order.itemsText}` : order.itemsText
 
-  await notion.pages.create({
+  const page = await notion.pages.create({
     parent: { database_id: databaseId },
     properties: {
       Name: { title: [{ text: { content: order.name } }] },
@@ -44,6 +45,19 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
       'Stripe Session': { rich_text: [{ text: { content: order.orderRef } }] },
     },
   })
+
+  // Best-effort: stamp the promo code in a separate update so a missing 'Промо код' column can
+  // never block the order from saving. Once the column exists, this populates automatically.
+  if (order.promoCode) {
+    try {
+      await notion.pages.update({
+        page_id: page.id,
+        properties: { 'Промо код': { rich_text: [{ text: { content: order.promoCode } }] } },
+      })
+    } catch (err) {
+      console.warn(`[NOTION] could not set 'Промо код' (add a Text column named "Промо код"): ${err instanceof Error ? err.message : err}`)
+    }
+  }
 }
 
 /** Fires CAPI Purchase with try/catch + alert. Returns true on success. */
