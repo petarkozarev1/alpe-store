@@ -6,8 +6,8 @@ import { signCodOrder } from '@/lib/cod-signature'
 import {
   computeCodTotal,
   computeSubtotal,
+  computeBundleSaving,
   computeShipping,
-  computeDiscount,
   isBulgariaEligible,
   makeCodOrderId,
   COD_FEE,
@@ -18,7 +18,6 @@ interface CodPayload {
   email: string
   items: CodProduct[]
   shipping: Record<string, string>
-  discountCode?: string
   shippingLabel: string
 }
 
@@ -38,12 +37,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Наложен платеж е достъпен само за България' }, { status: 400 })
     }
 
-    // Recompute all money server-side — never trust client-sent fee/shipping/discount.
-    const subtotal = computeSubtotal(items)
+    // Recompute all money server-side — never trust client-sent prices/fees.
+    const subtotal = computeSubtotal(items)            // naive sum (for display)
+    const bundleSaving = computeBundleSaving(items)    // automatic multi-pair discount
     const shippingAmount = computeShipping(items)
-    const { code: discountCode, amount: discountAmount } = computeDiscount(subtotal, body.discountCode)
     const codFee = COD_FEE
-    const total = computeCodTotal({ items, discountAmount, shippingAmount, codFee })
+    const total = computeCodTotal({ items, shippingAmount, codFee })
     const orderId = makeCodOrderId()
 
     const itemsText = items.map(i => `${i.name} — ${i.variantLabel} x${i.quantity}`).join(', ')
@@ -73,7 +72,7 @@ export async function POST(req: Request) {
     const emailModel: OrderEmailModel = {
       orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || 'клиент',
       productRows, subtotal,
-      discount: discountAmount > 0 ? { code: discountCode || 'отстъпка', amount: discountAmount } : undefined,
+      discount: bundleSaving > 0 ? { code: 'Комплектна отстъпка', amount: bundleSaving } : undefined,
       shippingLabel: body.shippingLabel, shippingAmount, codFee, total,
       deliveryTo: { name: shipping.name ?? '', line: shipping.officeLocation || [shipping.address, shipping.city].filter(Boolean).join(', '), phone: shipping.phone ?? '' },
     }

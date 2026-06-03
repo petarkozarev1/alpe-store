@@ -3,9 +3,13 @@ import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { googleCartParams, trackGoogleEvent } from '@/lib/googleAnalytics'
+import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, getSubtotal } = useCartStore()
+  const { items, removeItem, updateQuantity } = useCartStore()
+  const naiveSum = naiveSubtotal(items)
+  const bundleTotal = priceForPairs(countPairs(items))
+  const bundleSaving = +Math.max(0, naiveSum - bundleTotal).toFixed(2)
 
   if (items.length === 0) {
     return (
@@ -48,7 +52,10 @@ export default function CartPage() {
         ))}
       </div>
       <div className="flex justify-between items-center pt-4">
-        <span className="text-xl font-bold">Общо: €{getSubtotal().toFixed(2)}</span>
+        <span className="text-xl font-bold">
+          Общо: {bundleSaving > 0 && <span className="text-stone/50 line-through font-normal text-base mr-2">€{naiveSum.toFixed(2)}</span>}€{bundleTotal.toFixed(2)}
+          {bundleSaving > 0 && <span className="block text-sm font-semibold text-green-700">Спестяваш €{bundleSaving.toFixed(2)} за комплект</span>}
+        </span>
         <Link
           href="/checkout"
           onClick={() => {
@@ -59,9 +66,9 @@ export default function CartPage() {
                 contents: items.map(item => ({ id: item.productId, quantity: item.quantity })),
                 currency: 'EUR',
                 num_items: items.reduce((sum, item) => sum + item.quantity, 0),
-                value: Number(items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)),
+                value: bundleTotal,
               },
-              value: Number(items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)),
+              value: bundleTotal,
               currency: 'EUR',
               contentIds: items.map(item => item.productId),
               numItems: items.reduce((sum, item) => sum + item.quantity, 0),

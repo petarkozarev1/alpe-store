@@ -1,18 +1,37 @@
 import {
   computeCodTotal,
+  computeBundlePrice,
+  computeBundleSaving,
   computeShipping,
-  computeDiscount,
   isBulgariaEligible,
   makeCodOrderId,
+  type CodProduct,
 } from '@/app/api/checkout/cod/helpers'
+import { priceForPairs } from '@/lib/pricing'
+
+const single = (qty = 1): CodProduct => ({ name: 'ALPÉ', variantLabel: '🟠 Вечер', price: 44.99, quantity: qty, variantId: 'ALPÉ-evening-bundle-1' })
+
+describe('bundle pricing — auto-applies by total pairs', () => {
+  it('prices two separately-added singles as the 2-pack', () => {
+    const items = [single(), single()] // 2 pairs added separately
+    expect(computeBundlePrice(items)).toBeCloseTo(66.99, 2)
+    expect(computeBundleSaving(items)).toBeCloseTo(89.98 - 66.99, 2) // 22.99 saved vs singles
+  })
+  it('prices three singles as the 3-pack', () => {
+    const items = [single(), single(), single()]
+    expect(computeBundlePrice(items)).toBeCloseTo(89.99, 2)
+  })
+  it('uses the cheapest mix for 4 pairs (2+2, not 3+1)', () => {
+    expect(priceForPairs(4)).toBeCloseTo(133.98, 2) // 66.99 * 2
+    expect(priceForPairs(5)).toBeCloseTo(156.98, 2) // 66.99 + 89.99
+    expect(priceForPairs(6)).toBeCloseTo(179.98, 2) // 89.99 * 2
+  })
+})
 
 describe('computeCodTotal', () => {
-  it('sums products − discount + shipping + COD fee', () => {
-    const total = computeCodTotal({
-      items: [{ name: 'ALPÉ', variantLabel: '🟠 Вечер · 2 чифта', price: 66.99, quantity: 1, image: '' }],
-      discountAmount: 6.7, shippingAmount: 0, codFee: 1,
-    })
-    expect(total).toBeCloseTo(61.29, 2)
+  it('charges bundle price + shipping + COD fee (2 singles → 2-pack + fee)', () => {
+    const total = computeCodTotal({ items: [single(), single()], shippingAmount: 0, codFee: 1 })
+    expect(total).toBeCloseTo(67.99, 2) // 66.99 + 0 + 1
   })
 })
 
@@ -21,20 +40,10 @@ describe('computeShipping', () => {
     expect(computeShipping([{ name: 'ALPÉ', variantLabel: '', price: 66.99, quantity: 1, variantId: 'bundle-2' }])).toBe(0)
   })
   it('is free when single pairs sum to 2+', () => {
-    expect(computeShipping([{ name: 'ALPÉ', variantLabel: '', price: 39.99, quantity: 2, variantId: 'single' }])).toBe(0)
+    expect(computeShipping([single(2)])).toBe(0)
   })
   it('charges the flat fee for a single pair', () => {
-    expect(computeShipping([{ name: 'ALPÉ', variantLabel: '', price: 39.99, quantity: 1, variantId: 'single' }])).toBe(4.99)
-  })
-})
-
-describe('computeDiscount', () => {
-  it('recomputes a valid code from subtotal, ignoring any client amount', () => {
-    expect(computeDiscount(66.99, 'welcome10')).toEqual({ code: 'WELCOME10', amount: 6.7 })
-  })
-  it('returns zero for an unknown or missing code', () => {
-    expect(computeDiscount(66.99, 'HACK99')).toEqual({ code: '', amount: 0 })
-    expect(computeDiscount(66.99, undefined)).toEqual({ code: '', amount: 0 })
+    expect(computeShipping([single(1)])).toBe(4.99)
   })
 })
 

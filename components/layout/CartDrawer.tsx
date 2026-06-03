@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
+import { countPairs, priceForPairs } from '@/lib/pricing'
 
 const FREE_SHIPPING_THRESHOLD = 50
 
@@ -82,7 +83,10 @@ export default function CartDrawer() {
     } catch { /* never break UI */ }
   }, [isDrawerOpen])
 
-  const subtotal = getSubtotal()
+  const naiveSum = getSubtotal()
+  // Auto bundle price by total pairs — same rule as checkout, however pairs were added.
+  const subtotal = priceForPairs(countPairs(items))
+  const bundleSaving = +Math.max(0, naiveSum - subtotal).toFixed(2)
   const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)
   const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0)
 
@@ -283,9 +287,16 @@ export default function CartDrawer() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="px-6 pt-3 pb-6 border-t border-stone/20 flex flex-col gap-3 flex-shrink-0">
+                {bundleSaving > 0 && (
+                  <div className="flex items-center justify-between font-sans text-xs">
+                    <span className="text-green-700 font-semibold">Отстъпка за комплект</span>
+                    <span className="text-green-700">−€{bundleSaving.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex items-baseline justify-between">
                   <span className="font-sans text-sm text-stone">Общо</span>
                   <span className="font-serif text-2xl font-medium text-onyx">
+                    {bundleSaving > 0 && <span className="font-sans text-sm text-stone/50 line-through mr-2">€{naiveSum.toFixed(2)}</span>}
                     €{subtotal.toFixed(2)}
                   </span>
                 </div>

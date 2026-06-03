@@ -6,6 +6,7 @@ import { CheckoutElementsProvider, PaymentElement, useCheckoutElements } from '@
 import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
 import { getStripeClient } from '@/lib/stripe-client'
+import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -19,8 +20,6 @@ const DELIVERY = [
   { id: 'boxnow',  label: 'BoxNow',   badge: null,          requiresOffice: true,  officePlaceholder: 'напр. BoxNow Mall of Sofia, бул. Климент Охридски',     officeLink: 'https://boxnow.bg/lockers' },
   { id: 'pigeon',  label: 'Pigeon Express', badge: null,      requiresOffice: true,  officePlaceholder: 'напр. Pigeon Express локер НДК, пл. България 1, София', officeLink: 'https://pigeonexpress.com' },
 ]
-
-const DISCOUNT_CODES: Record<string, number> = { 'WELCOME10': 10, 'FAMILY40': 40 }
 
 function getCookieValue(name: string) {
   if (typeof document === 'undefined') return ''
@@ -96,9 +95,6 @@ export default function CheckoutPageClient() {
   const [deliveryId, setDeliveryId] = useState('speedy')
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card')
   const [officeLocation, setOfficeLocation] = useState('')
-  const [codeInput, setCodeInput] = useState('')
-  const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null)
-  const [codeError, setCodeError] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [attempted, setAttempted] = useState(false)
@@ -145,31 +141,21 @@ export default function CheckoutPageClient() {
 
   /* ── calculations ───────────────────────────────── */
   const delivery = DELIVERY.find(d => d.id === deliveryId)!
-  const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0)
-  const totalPairs = items.reduce((s, i) => {
-    const m = i.variantId.match(/bundle-(\d+)/)
-    return s + (m ? parseInt(m[1]) : 1) * i.quantity
-  }, 0)
-  const discount = applied ? +(subtotal * applied.percent / 100).toFixed(2) : 0
-  const afterDiscount = subtotal - discount
+  const totalPairs = countPairs(items)
+  // Naive sum (what singles would cost) and the cheapest bundle price for that many pairs.
+  // The bundle price auto-applies however the pairs were added (bundle or separate singles).
+  const subtotal = naiveSubtotal(items)
+  const bundlePrice = priceForPairs(totalPairs)
+  const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
   const codEligible = deliveryType === 'office' || shipping.country === 'България'
   const isCod = paymentMethod === 'cod' && codEligible
   const codFee = isCod ? COD_FEE : 0
-  const total = +(afterDiscount + shipping_ + codFee).toFixed(2)
+  const total = +(bundlePrice + shipping_ + codFee).toFixed(2)
 
   useEffect(() => {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
   }, [paymentMethod, codEligible])
-
-  /* ── discount code ──────────────────────────────── */
-  const applyCode = () => {
-    const pct = DISCOUNT_CODES[codeInput.toUpperCase()]
-    if (!pct) { setCodeError('Невалиден код'); return }
-    setApplied({ code: codeInput.toUpperCase(), percent: pct })
-    setCodeError('')
-  }
-  const removeCode = () => { setApplied(null); setCodeInput(''); setCodeError('') }
 
   /* ── submit ─────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -201,11 +187,15 @@ export default function CheckoutPageClient() {
 
     setLoading(true); setError(null)
 
-    const lineItems = [
-      ...items.map(i => ({ name: `${i.name} — ${i.variantLabel}`, price: i.price, quantity: i.quantity, image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image })),
-      ...(discount > 0 ? [{ name: `Отстъпка ${applied!.code}`, price: -discount, quantity: 1 }] : []),
-      ...(shipping_ > 0 ? [{ name: `Доставка — ${deliveryType === 'address' ? 'До адрес' : delivery.label}`, price: shipping_, quantity: 1 }] : []),
-    ]
+    // Send RAW product items (unit price + variantId). The server recomputes the bundle price,
+    // bundle discount, and shipping — the client total is never trusted.
+    const lineItems = items.map(i => ({
+      name: `${i.name} — ${i.variantLabel}`,
+      price: i.price,
+      quantity: i.quantity,
+      variantId: i.variantId,
+      image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image,
+    }))
     const checkoutShipping = {
       name: `${shipping.firstName} ${shipping.lastName}`,
       phone: shipping.phone,
@@ -238,11 +228,7 @@ export default function CheckoutPageClient() {
             email: contact.email,
             items: codProducts,
             shipping: checkoutShipping,
-            discountCode: applied?.code,
-            discountAmount: discount,
-            shippingAmount: shipping_,
             shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label,
-            codFee: COD_FEE,
           }),
         })
         const data = await res.json()
@@ -261,7 +247,7 @@ export default function CheckoutPageClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items: lineItems, email: contact.email, shipping: checkoutShipping,
-          summary: { subtotal, discountCode: applied?.code ?? '', discountAmount: discount, shippingAmount: shipping_, shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label },
+          summary: { shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label },
         }),
       })
       const data = await res.json()
@@ -521,40 +507,16 @@ export default function CheckoutPageClient() {
 
               <hr className="border-stone/15 mb-4" />
 
-              {/* Discount code */}
-              {applied ? (
-                <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
-                  <span className="font-sans text-xs font-semibold text-green-700">{applied.code} · {applied.percent}% отстъпка приложена</span>
-                  <button type="button" onClick={removeCode} className="font-sans text-xs text-stone hover:text-onyx transition-colors">Премахни</button>
-                </div>
-              ) : (
-                <div className="flex gap-2 mb-4">
-                  <input
-                    placeholder="Код за отстъпка"
-                    value={codeInput}
-                    onChange={e => { setCodeInput(e.target.value); setCodeError('') }}
-                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyCode())}
-                    className="flex-1 min-w-0 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
-                  />
-                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">
-                    ПРИЛАГАНЕ
-                  </button>
-                </div>
-              )}
-              {codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}
-
-              <hr className="border-stone/15 mb-4" />
-
               {/* Totals */}
               <div className="flex flex-col gap-2.5 font-sans text-sm">
                 <div className="flex justify-between text-stone">
                   <span>Междинна сума</span>
                   <span className="text-right">€{subtotal.toFixed(2)} <span className="block text-[11px] text-stone/50">{formatBGN(subtotal)}</span></span>
                 </div>
-                {applied && (
+                {bundleSaving > 0 && (
                   <div className="flex justify-between text-green-700">
-                    <span>Отстъпка ({applied.code})</span>
-                    <span className="text-right">−€{discount.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(discount)}</span></span>
+                    <span>Отстъпка за комплект</span>
+                    <span className="text-right">−€{bundleSaving.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(bundleSaving)}</span></span>
                   </div>
                 )}
                 <div className="flex justify-between text-stone">

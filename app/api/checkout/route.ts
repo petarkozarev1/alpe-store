@@ -2,12 +2,16 @@ import { NextResponse } from 'next/server'
 import { getStripe } from '@/lib/stripe'
 import { sendCAPIEvent } from '@/lib/meta-capi'
 import { notifyAlert } from '@/lib/alerts'
+import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
+
+const DELIVERY_PRICE = 4.99
 
 interface LineItem {
   name: string
   price: number
   quantity: number
   image?: string
+  variantId?: string
 }
 
 export async function POST(req: Request) {
@@ -27,7 +31,7 @@ export async function POST(req: Request) {
       items: LineItem[]
       email: string
       shipping: Record<string, string>
-      summary?: { subtotal: number; discountCode: string; discountAmount: number; shippingAmount: number; shippingLabel: string }
+      summary?: { shippingLabel: string }
     } = await req.json()
 
     if (!items?.length) {
@@ -39,19 +43,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    const discountTotal = Math.abs(
-      items
-        .filter(item => item.price < 0)
-        .reduce((sum, item) => sum + item.price * item.quantity, 0)
-    )
+    // Recompute money server-side — never trust client totals. Price depends on total pairs.
+    const naiveSum = naiveSubtotal(productItems)
+    const pairs = countPairs(productItems)
+    const bundlePrice = priceForPairs(pairs)
+    const bundleDiscount = +Math.max(0, naiveSum - bundlePrice).toFixed(2)
+    const shippingAmount = pairs >= 2 ? 0 : DELIVERY_PRICE
+    const shippingLabel = summary?.shippingLabel || shipping.deliveryMethod || 'Доставка'
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alpewear.com'
-    const coupon = discountTotal > 0
+    const coupon = bundleDiscount > 0
       ? await stripe.coupons.create({
-          amount_off: Math.round(discountTotal * 100),
+          amount_off: Math.round(bundleDiscount * 100),
           currency: 'eur',
           duration: 'once',
-          name: 'ALPÉ discount',
+          name: 'ALPÉ комплектна отстъпка',
         })
       : null
 
@@ -62,29 +68,37 @@ export async function POST(req: Request) {
       mode: 'payment',
       locale: 'bg',
       customer_email: email,
-      line_items: productItems.map(item => ({
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: item.name,
-            ...(item.image ? { images: [item.image] } : {}),
+      line_items: [
+        ...productItems.map(item => ({
+          price_data: {
+            currency: 'eur' as const,
+            product_data: {
+              name: item.name,
+              ...(item.image ? { images: [item.image] } : {}),
+            },
+            unit_amount: Math.round(item.price * 100),
           },
-          unit_amount: Math.round(item.price * 100),
-        },
-        quantity: item.quantity,
-      })),
+          quantity: item.quantity,
+        })),
+        ...(shippingAmount > 0 ? [{
+          price_data: {
+            currency: 'eur' as const,
+            product_data: { name: `Доставка — ${shippingLabel}` },
+            unit_amount: Math.round(shippingAmount * 100),
+          },
+          quantity: 1,
+        }] : []),
+      ],
       ...(coupon ? { discounts: [{ coupon: coupon.id }] } : {}),
       metadata: {
         ...shipping,
         ...(clientIpAddress ? { clientIpAddress } : {}),
         ...(clientUserAgent ? { clientUserAgent } : {}),
-        ...(summary ? {
-          subtotal: String(summary.subtotal),
-          discountCode: summary.discountCode,
-          discountAmount: String(summary.discountAmount),
-          shippingAmount: String(summary.shippingAmount),
-          shippingLabel: summary.shippingLabel,
-        } : {}),
+        subtotal: String(naiveSum),
+        discountCode: bundleDiscount > 0 ? 'Комплектна отстъпка' : '',
+        discountAmount: String(bundleDiscount),
+        shippingAmount: String(shippingAmount),
+        shippingLabel,
       },
       // ui_mode: 'elements' uses return_url (cancel_url/success_url are not allowed).
       // Stripe redirects here after checkout.confirm() succeeds; success page reads session_id
@@ -97,7 +111,7 @@ export async function POST(req: Request) {
     const nameParts = (shipping.name ?? '').trim().split(' ')
     const firstName = nameParts[0] ?? ''
     const lastName = nameParts.slice(1).join(' ') || firstName
-    const cartValue = productItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    const cartValue = bundlePrice
     const numItems = productItems.reduce((sum, i) => sum + i.quantity, 0)
 
     // Await CAPI so the serverless function doesn't terminate before the request reaches Meta.
