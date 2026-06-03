@@ -60,6 +60,33 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
   }
 }
 
+/**
+ * Mirror a promo-code order into a SEPARATE Notion database (NOTION_PROMO_DATABASE_ID) that you
+ * can share read-only with the influencer. Contains NO customer PII — only code, total, items,
+ * date — so the promoter sees just her sales. No-ops if the env var isn't set; best-effort so it
+ * can never block the real order. Database must have columns: Name (title), Промо код (Text),
+ * Сума (Number), Артикули (Text), Дата (Date), and the integration must be connected to it.
+ */
+export async function writePromoOrderToNotion(o: { promoCode: string; total: number; itemsText: string; orderRef: string }): Promise<void> {
+  const promoDbId = process.env.NOTION_PROMO_DATABASE_ID
+  if (!promoDbId || !o.promoCode) return
+  try {
+    const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
+    await notion.pages.create({
+      parent: { database_id: promoDbId },
+      properties: {
+        Name: { title: [{ text: { content: o.orderRef } }] },
+        'Промо код': { rich_text: [{ text: { content: o.promoCode } }] },
+        'Сума': { number: o.total },
+        'Артикули': { rich_text: [{ text: { content: o.itemsText } }] },
+        'Дата': { date: { start: new Date().toISOString() } },
+      },
+    })
+  } catch (err) {
+    console.warn(`[NOTION_PROMO] could not write promo order (check DB columns + integration access): ${err instanceof Error ? err.message : err}`)
+  }
+}
+
 /** Fires CAPI Purchase with try/catch + alert. Returns true on success. */
 export async function firePurchase(opts: CAPIOptions, alertContext: { orderRef: string; email: string; total: number }): Promise<boolean> {
   try {

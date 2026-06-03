@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { writeOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
+import { writeOrderToNotion, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 import { notifyAlert } from '@/lib/alerts'
 import { signCodOrder } from '@/lib/cod-signature'
@@ -70,6 +70,11 @@ export async function POST(req: Request) {
       const m = err instanceof Error ? err.message : String(err)
       console.error(`[COD_NOTION_FAIL] ref=${orderId} email=${email} error=${m}`)
       await notifyAlert({ severity: 'error', title: 'COD order Notion write FAILED', body: `COD order placed but not saved to Notion.\n\n**Ref:** \`${orderId}\`\n**Email:** ${email}\n**Total:** €${total}\n**Items:** ${itemsText}\n**Error:** \`${m}\`` })
+    }
+
+    // Mirror to the promoter's separate (PII-free) Notion DB when a promo code was used.
+    if (promo.code) {
+      await writePromoOrderToNotion({ promoCode: promo.code, total, itemsText, orderRef: orderId })
     }
 
     // Independent task #2 — confirmation email

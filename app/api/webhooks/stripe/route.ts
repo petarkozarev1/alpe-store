@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { notifyAlert } from '@/lib/alerts'
 import { getRequiredEnv, getStripe } from '@/lib/stripe'
-import { writeOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
+import { writeOrderToNotion, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 
 export async function POST(req: Request) {
@@ -75,6 +75,11 @@ export async function POST(req: Request) {
       title: 'Notion order write FAILED',
       body: `Customer paid but order not saved to Notion.\n\n**Session:** \`${session.id}\`\n**Email:** ${customerEmail}\n**Total:** €${total}\n**Items:** ${items}\n**Error:** \`${errMessage}\``,
     })
+  }
+
+  // Mirror to the promoter's separate (PII-free) Notion DB when a promo code was used.
+  if (meta.promoCode) {
+    await writePromoOrderToNotion({ promoCode: meta.promoCode, total, itemsText: items, orderRef: session.id })
   }
 
   // Independent task #2 — Meta CAPI Purchase. Always fires regardless of Notion outcome.
