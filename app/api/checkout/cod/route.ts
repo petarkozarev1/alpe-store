@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { writeOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 import { notifyAlert } from '@/lib/alerts'
+import { signCodOrder } from '@/lib/cod-signature'
 import {
   computeCodTotal,
   computeSubtotal,
@@ -94,7 +95,8 @@ export async function POST(req: Request) {
       eventId: `purchase-${orderId}`, sourceUrl: 'https://alpewear.com/checkout/success',
     }, { orderRef: orderId, email, total })
 
-    return NextResponse.json({ orderId, value: total })
+    // Signed so the success page can verify the Purchase wasn't forged via a crafted URL.
+    return NextResponse.json({ orderId, value: total, sig: signCodOrder(orderId, String(total)) })
   } catch (err) {
     console.error('COD checkout error:', err)
     return NextResponse.json({ error: 'Order could not be created' }, { status: 500 })

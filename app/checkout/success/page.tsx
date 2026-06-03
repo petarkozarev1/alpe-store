@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import PurchasePixelFire from '@/components/analytics/PurchasePixelFire'
 import { getStripe } from '@/lib/stripe'
+import { verifyCodOrder } from '@/lib/cod-signature'
 
 export const metadata: Metadata = {
   title: 'Поръчката е приета — ALPÉ',
@@ -21,17 +22,21 @@ async function getPaidSession(sessionId: string) {
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string; cod?: string; order?: string; value?: string }>
+  searchParams: Promise<{ session_id?: string; cod?: string; order?: string; value?: string; sig?: string }>
 }) {
-  const { session_id, cod, order, value } = await searchParams
+  const { session_id, cod, order, value, sig } = await searchParams
 
   const isCod = cod === '1'
   let pixelValue = 0
   let pixelOrderId = isCod ? (order ?? '') : (session_id ?? '')
 
   if (isCod) {
-    pixelValue = value ? Number(value) : 0
-    pixelOrderId = order ?? ''
+    // Only fire the COD Purchase if the order+value carry a valid server signature — never trust
+    // raw URL params. If the signature is missing/invalid, pixelValue stays 0 and the pixel won't fire.
+    if (order && value && sig && verifyCodOrder(order, value, sig)) {
+      pixelValue = Number(value)
+      pixelOrderId = order
+    }
   } else if (session_id) {
     const session = await getPaidSession(session_id)
     if (session) {

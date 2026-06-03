@@ -247,7 +247,7 @@ export default function CheckoutPageClient() {
         })
         const data = await res.json()
         if (!res.ok || !data.orderId) throw new Error(data.error ?? 'Грешка')
-        window.location.href = `/checkout/success?cod=1&order=${encodeURIComponent(data.orderId)}&value=${data.value}`
+        window.location.href = `/checkout/success?cod=1&order=${encodeURIComponent(data.orderId)}&value=${data.value}&sig=${encodeURIComponent(data.sig ?? '')}`
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Грешка при поръчка')
         setLoading(false)
