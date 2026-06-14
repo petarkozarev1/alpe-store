@@ -1,12 +1,8 @@
-﻿'use client'
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { motion, AnimatePresence, type Transition } from 'framer-motion'
+'use client'
+import { motion, type Transition } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
 import { heroContent } from '@/lib/data/content'
-
-const INTERVAL_MS = 1500
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -15,78 +11,60 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function HeroSection() {
-  const [index, setIndex] = useState(0)
-  const images = [
-    { src: '/images/shuffle5.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle2.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle4.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle1.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle6.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
-    { src: '/images/shuffle3.png', alt: 'ALPÉ customer', objectPosition: '50% 25%' },
-  ]
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex(i => (i + 1) % images.length)
-    }, INTERVAL_MS)
-    return () => clearInterval(id)
-  }, [images.length])
-
-  const current = images[index]
-
   return (
-    <section className="w-full bg-parchment pt-10 pb-10 flex flex-col items-center text-center px-6">
-      <motion.h1
-        {...fadeUp(0.1)}
-        className="mt-6 text-[clamp(48px,7vw,80px)] font-extrabold leading-[1.1] tracking-tight text-onyx max-w-3xl"
+    <section className="relative min-h-[calc(100svh-96px)] w-full overflow-hidden bg-onyx px-6 py-16 text-center text-linen md:min-h-[calc(100svh-120px)] md:px-10">
+      <video
+        className="absolute inset-0 z-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
       >
-        {heroContent.headlinePart1}
-        <br />
-        <span className="inline-flex items-center gap-3 flex-wrap justify-center">
-          {heroContent.headlinePart2Before}
-          <span className="relative inline-block w-14 h-14 md:w-16 md:h-16 rounded-[30%] overflow-hidden border-2 border-white shadow-md align-middle rotate-[8deg]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={current.src}
-                  alt={current.alt}
-                  fill
-                  sizes="(min-width: 768px) 64px, 56px"
-                  className="object-cover"
-                  style={{ objectPosition: current.objectPosition ?? '50% 25%' }}
-                />
-              </motion.div>
-            </AnimatePresence>
-          </span>
-          {heroContent.headlinePart2After}
-        </span>
-      </motion.h1>
+        <source src="/videos/hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
+        <source src="/videos/hero-desktop.mp4" type="video/mp4" media="(min-width: 768px)" />
+      </video>
 
-      <motion.p
-        {...fadeUp(0.2)}
-        className="mt-6 text-base text-stone max-w-md leading-relaxed"
-      >
-        {heroContent.subtext}
-      </motion.p>
+      <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.56)_0%,rgba(45,14,4,0.34)_38%,rgba(45,14,4,0.78)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.16),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.72)_0%,rgba(45,14,4,0.34)_52%,rgba(45,14,4,0.64)_100%)]" />
 
-      <motion.div {...fadeUp(0.3)} className="mt-8">
-        <Button
-          label={heroContent.cta}
-          href="/shop"
-          variant="primary"
-          className="font-bold"
-          onClick={() => {
-            fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: 'hero' }, ctaLocation: 'hero' })
-          }}
-        />
-      </motion.div>
+      <div className="relative z-20 mx-auto flex min-h-[calc(100svh-224px)] max-w-5xl flex-col items-center justify-center pt-10 md:min-h-[calc(100svh-260px)]">
+        <motion.p
+          {...fadeUp(0)}
+          className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-linen/80"
+        >
+          ALPE
+        </motion.p>
+
+        <motion.h1
+          {...fadeUp(0.1)}
+          className="max-w-4xl text-[clamp(46px,8vw,96px)] font-extrabold leading-[0.98] tracking-tight text-linen drop-shadow-[0_2px_22px_rgba(45,14,4,0.55)]"
+        >
+          {heroContent.headlinePart1}
+          <br />
+          {heroContent.headlinePart2Before} {heroContent.headlinePart2After}
+        </motion.h1>
+
+        <motion.p
+          {...fadeUp(0.2)}
+          className="mt-6 max-w-xl text-base leading-relaxed text-linen/86 drop-shadow-[0_1px_12px_rgba(45,14,4,0.55)] md:text-lg"
+        >
+          {heroContent.subtext}
+        </motion.p>
+
+        <motion.div {...fadeUp(0.3)} className="mt-8">
+          <Button
+            label={heroContent.cta}
+            href="/shop"
+            variant="outlined-white"
+            className="border-linen bg-linen text-onyx shadow-[0_18px_40px_rgba(45,14,4,0.28)] hover:bg-parchment hover:text-onyx"
+            onClick={() => {
+              fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: 'hero' }, ctaLocation: 'hero' })
+            }}
+          />
+        </motion.div>
+      </div>
     </section>
   )
 }
