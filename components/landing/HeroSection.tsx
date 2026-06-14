@@ -14,7 +14,7 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-[100svh] w-full overflow-hidden bg-onyx px-6 py-16 text-center text-linen md:px-10">
       <video
-        className="absolute inset-0 z-0 h-full w-full object-cover md:hidden"
+        className="absolute left-1/2 top-0 z-0 h-[72svh] min-w-full max-w-none -translate-x-1/2 object-contain md:hidden"
         src="/videos/hero-mobile.mp4"
         autoPlay
         muted
