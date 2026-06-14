@@ -1,5 +1,4 @@
 import HeroSection from '@/components/landing/HeroSection'
-import DarkCtaCard from '@/components/landing/DarkCtaCard'
 import CertStrip from '@/components/landing/CertStrip'
 import IngredientsSection from '@/components/landing/IngredientsSection'
 import HowItWorksSection from '@/components/landing/HowItWorksSection'
@@ -14,7 +13,6 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <DarkCtaCard />
       <CertStrip />
       <IngredientsSection />
       <HowItWorksSection />
@@ -27,3 +25,4 @@ export default function Home() {
     </>
   )
 }
+
