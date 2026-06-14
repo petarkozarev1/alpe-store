@@ -68,8 +68,10 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
  * Сума (Number), Артикули (Text), Дата (Date), and the integration must be connected to it.
  */
 export async function writePromoOrderToNotion(o: { promoCode: string; total: number; itemsText: string; orderRef: string }): Promise<void> {
-  const promoDbId = process.env.NOTION_PROMO_DATABASE_ID
-  if (!promoDbId || !o.promoCode) return
+  if (!o.promoCode) return
+  const promoKey = o.promoCode.trim().toUpperCase().replace(/[^A-Z0-9]/g, '_')
+  const promoDbId = process.env[`NOTION_PROMO_DATABASE_ID_${promoKey}`] || process.env.NOTION_PROMO_DATABASE_ID
+  if (!promoDbId) return
   try {
     const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
     await notion.pages.create({
