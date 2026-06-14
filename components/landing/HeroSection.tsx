@@ -12,24 +12,32 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[calc(100svh-96px)] w-full overflow-hidden bg-onyx px-6 py-16 text-center text-linen md:min-h-[calc(100svh-120px)] md:px-10">
+    <section className="relative min-h-[100svh] w-full overflow-hidden bg-onyx px-6 py-16 text-center text-linen md:px-10">
       <video
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className="absolute inset-0 z-0 h-full w-full object-cover md:hidden"
+        src="/videos/hero-mobile.mp4"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
         aria-hidden="true"
-      >
-        <source src="/videos/hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
-        <source src="/videos/hero-desktop.mp4" type="video/mp4" media="(min-width: 768px)" />
-      </video>
+      />
+      <video
+        className="absolute inset-0 z-0 hidden h-full w-full object-cover md:block"
+        src="/videos/hero-desktop.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
 
       <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.56)_0%,rgba(45,14,4,0.34)_38%,rgba(45,14,4,0.78)_100%)]" />
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.16),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.72)_0%,rgba(45,14,4,0.34)_52%,rgba(45,14,4,0.64)_100%)]" />
 
-      <div className="relative z-20 mx-auto flex min-h-[calc(100svh-224px)] max-w-5xl flex-col items-center justify-center pt-10 md:min-h-[calc(100svh-260px)]">
+      <div className="relative z-20 mx-auto flex min-h-[calc(100svh-128px)] max-w-5xl flex-col items-center justify-center pt-10 md:min-h-[calc(100svh-160px)]">
         <motion.p
           {...fadeUp(0)}
           className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-linen/80"
