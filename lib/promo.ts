@@ -5,6 +5,7 @@
  */
 export const PROMO_CODES: Record<string, number> = {
   ALETEA10: 10,
+  ILIYANA10: 10,
 }
 
 export function getPromo(code?: string | null): { code: string; percent: number } | null {
