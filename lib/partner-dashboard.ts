@@ -142,8 +142,11 @@ async function fetchPartnerOrders(databaseId: string | undefined, promoCode: str
 
   try {
     const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
+    const dataSourceId = await resolveDataSourceId(notion, databaseId)
+    if (!dataSourceId) return []
+
     const response = await notion.dataSources.query({
-      data_source_id: databaseId,
+      data_source_id: dataSourceId,
       sorts: [{ property: '\u0414\u0430\u0442\u0430', direction: 'descending' }],
       page_size: 100,
     })
@@ -155,6 +158,22 @@ async function fetchPartnerOrders(databaseId: string | undefined, promoCode: str
     console.warn(`[PARTNER_DASHBOARD] could not read Notion orders for ${promoCode}: ${err instanceof Error ? err.message : err}`)
     return []
   }
+}
+
+async function resolveDataSourceId(notion: Client, notionId: string): Promise<string | null> {
+  try {
+    await notion.dataSources.retrieve({ data_source_id: notionId })
+    return notionId
+  } catch {
+    // The env vars historically store Notion database IDs. New Notion API versions query
+    // data sources, so resolve a database container to its first data source.
+  }
+
+  const database = await notion.databases.retrieve({ database_id: notionId })
+  if ('data_sources' in database && database.data_sources[0]?.id) {
+    return database.data_sources[0].id
+  }
+  return null
 }
 
 export function parsePartnerOrder(page: unknown, fallbackPromoCode: string): PartnerOrder | null {

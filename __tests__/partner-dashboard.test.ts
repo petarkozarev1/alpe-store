@@ -1,11 +1,17 @@
 import { getPartnerDashboardAccess, getPartnerDashboardData, parsePartnerOrder } from '@/lib/partner-dashboard'
 
 const notionQuery = jest.fn().mockResolvedValue({ results: [] })
+const notionDataSourceRetrieve = jest.fn().mockResolvedValue({})
+const notionDatabaseRetrieve = jest.fn().mockResolvedValue({ data_sources: [{ id: 'resolved-data-source' }] })
 
 jest.mock('@notionhq/client', () => ({
   Client: jest.fn(() => ({
     dataSources: {
       query: notionQuery,
+      retrieve: notionDataSourceRetrieve,
+    },
+    databases: {
+      retrieve: notionDatabaseRetrieve,
     },
   })),
 }))
@@ -47,6 +53,10 @@ describe('partner dashboard data', () => {
     process.env = originalEnv
     notionQuery.mockReset()
     notionQuery.mockResolvedValue({ results: [] })
+    notionDataSourceRetrieve.mockReset()
+    notionDataSourceRetrieve.mockResolvedValue({})
+    notionDatabaseRetrieve.mockReset()
+    notionDatabaseRetrieve.mockResolvedValue({ data_sources: [{ id: 'resolved-data-source' }] })
   })
 
   it('returns preview rows locally when no env key or notion database is present', async () => {
@@ -98,6 +108,21 @@ describe('partner dashboard data', () => {
       expect(data.totalOrders).toBe(0)
       expect(data.orders).toEqual([])
     }
+  })
+
+  it('resolves legacy database IDs to data source IDs before querying', async () => {
+    process.env = {
+      ...originalEnv,
+      NODE_ENV: 'production',
+      PARTNER_DASHBOARD_KEY_ALETEA: '1111',
+      NOTION_PROMO_DATABASE_ID: 'legacy-database-id',
+    }
+    notionDataSourceRetrieve.mockRejectedValueOnce(new Error('not a data source'))
+
+    await getPartnerDashboardData('aletea', '1111')
+
+    expect(notionDatabaseRetrieve).toHaveBeenCalledWith({ database_id: 'legacy-database-id' })
+    expect(notionQuery).toHaveBeenCalledWith(expect.objectContaining({ data_source_id: 'resolved-data-source' }))
   })
 })
 
