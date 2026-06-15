@@ -1,9 +1,11 @@
 import { getPartnerDashboardAccess, getPartnerDashboardData, parsePartnerOrder } from '@/lib/partner-dashboard'
 
+const notionQuery = jest.fn().mockResolvedValue({ results: [] })
+
 jest.mock('@notionhq/client', () => ({
   Client: jest.fn(() => ({
     dataSources: {
-      query: jest.fn().mockResolvedValue({ results: [] }),
+      query: notionQuery,
     },
   })),
 }))
@@ -43,6 +45,8 @@ describe('partner dashboard data', () => {
 
   afterEach(() => {
     process.env = originalEnv
+    notionQuery.mockReset()
+    notionQuery.mockResolvedValue({ results: [] })
   })
 
   it('returns preview rows locally when no env key or notion database is present', async () => {
@@ -75,6 +79,24 @@ describe('partner dashboard data', () => {
       expect(data.isPreview).toBe(true)
       expect(data.totalOrders).toBe(2)
       expect(data.totalRevenue).toBe(111.98)
+    }
+  })
+
+  it('does not fail the dashboard when Notion cannot be read', async () => {
+    process.env = {
+      ...originalEnv,
+      NODE_ENV: 'production',
+      PARTNER_DASHBOARD_KEY_ALETEA: '1111',
+      NOTION_PROMO_DATABASE_ID: 'notion-db',
+    }
+    notionQuery.mockRejectedValueOnce(new Error('notion is unavailable'))
+
+    const data = await getPartnerDashboardData('aletea', '1111')
+
+    expect(data.status).toBe('authorized')
+    if (data.status === 'authorized') {
+      expect(data.totalOrders).toBe(0)
+      expect(data.orders).toEqual([])
     }
   })
 })

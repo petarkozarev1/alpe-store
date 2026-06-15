@@ -140,16 +140,21 @@ async function fetchCachedPartnerOrders(slug: PartnerSlug, databaseId: string | 
 async function fetchPartnerOrders(databaseId: string | undefined, promoCode: string): Promise<PartnerOrder[]> {
   if (!databaseId) return []
 
-  const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
-  const response = await notion.dataSources.query({
-    data_source_id: databaseId,
-    sorts: [{ property: '\u0414\u0430\u0442\u0430', direction: 'descending' }],
-    page_size: 100,
-  })
+  try {
+    const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
+    const response = await notion.dataSources.query({
+      data_source_id: databaseId,
+      sorts: [{ property: '\u0414\u0430\u0442\u0430', direction: 'descending' }],
+      page_size: 100,
+    })
 
-  return response.results
-    .map((page) => parsePartnerOrder(page, promoCode))
-    .filter((order): order is PartnerOrder => Boolean(order))
+    return response.results
+      .map((page) => parsePartnerOrder(page, promoCode))
+      .filter((order): order is PartnerOrder => Boolean(order))
+  } catch (err) {
+    console.warn(`[PARTNER_DASHBOARD] could not read Notion orders for ${promoCode}: ${err instanceof Error ? err.message : err}`)
+    return []
+  }
 }
 
 export function parsePartnerOrder(page: unknown, fallbackPromoCode: string): PartnerOrder | null {
