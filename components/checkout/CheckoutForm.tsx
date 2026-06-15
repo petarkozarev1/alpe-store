@@ -81,7 +81,7 @@ export default function CheckoutForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="clarity-mask flex flex-col gap-4">
       <h2 className="text-xl font-bold mb-2">Данни за доставка</h2>
       {FIELDS.map(field => (
         <div key={field.id}>

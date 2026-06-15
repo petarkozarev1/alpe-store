@@ -307,7 +307,7 @@ export default function CheckoutPageClient() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit} noValidate className="clarity-mask">
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
 
           {/* ── Left column ───────────────────────── */}

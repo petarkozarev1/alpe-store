@@ -7,6 +7,7 @@ import CartDrawer from '@/components/layout/CartDrawer'
 import CookieBanner from '@/components/layout/CookieBanner'
 import GoogleTagManager from '@/components/layout/GoogleTagManager'
 import MetaPixel from '@/components/analytics/MetaPixel'
+import MicrosoftClarity from '@/components/analytics/MicrosoftClarity'
 import RouteChangeTracker from '@/components/analytics/RouteChangeTracker'
 
 const cormorant = Cormorant_Garamond({
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GoogleTagManager />
         <CookieBanner />
         <MetaPixel />
+        <MicrosoftClarity />
         <RouteChangeTracker />
       </body>
     </html>
