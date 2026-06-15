@@ -169,11 +169,27 @@ async function resolveDataSourceId(notion: Client, notionId: string): Promise<st
     // data sources, so resolve a database container to its first data source.
   }
 
-  const database = await notion.databases.retrieve({ database_id: notionId })
+  const database = await retrieveDatabaseOrPageChildDatabase(notion, notionId)
   if ('data_sources' in database && database.data_sources[0]?.id) {
     return database.data_sources[0].id
   }
   return null
+}
+
+async function retrieveDatabaseOrPageChildDatabase(notion: Client, notionId: string) {
+  try {
+    return await notion.databases.retrieve({ database_id: notionId })
+  } catch (err) {
+    const children = await notion.blocks.children.list({ block_id: notionId, page_size: 100 })
+    const childDatabase = children.results.find((block) => {
+      return typeof block === 'object' && block !== null && 'type' in block && block.type === 'child_database'
+    })
+
+    if (childDatabase && 'id' in childDatabase && typeof childDatabase.id === 'string') {
+      return notion.databases.retrieve({ database_id: childDatabase.id })
+    }
+    throw err
+  }
 }
 
 export function parsePartnerOrder(page: unknown, fallbackPromoCode: string): PartnerOrder | null {

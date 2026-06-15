@@ -3,6 +3,7 @@ import { getPartnerDashboardAccess, getPartnerDashboardData, parsePartnerOrder }
 const notionQuery = jest.fn().mockResolvedValue({ results: [] })
 const notionDataSourceRetrieve = jest.fn().mockResolvedValue({})
 const notionDatabaseRetrieve = jest.fn().mockResolvedValue({ data_sources: [{ id: 'resolved-data-source' }] })
+const notionBlocksChildrenList = jest.fn().mockResolvedValue({ results: [] })
 
 jest.mock('@notionhq/client', () => ({
   Client: jest.fn(() => ({
@@ -12,6 +13,11 @@ jest.mock('@notionhq/client', () => ({
     },
     databases: {
       retrieve: notionDatabaseRetrieve,
+    },
+    blocks: {
+      children: {
+        list: notionBlocksChildrenList,
+      },
     },
   })),
 }))
@@ -57,6 +63,8 @@ describe('partner dashboard data', () => {
     notionDataSourceRetrieve.mockResolvedValue({})
     notionDatabaseRetrieve.mockReset()
     notionDatabaseRetrieve.mockResolvedValue({ data_sources: [{ id: 'resolved-data-source' }] })
+    notionBlocksChildrenList.mockReset()
+    notionBlocksChildrenList.mockResolvedValue({ results: [] })
   })
 
   it('returns preview rows locally when no env key or notion database is present', async () => {
@@ -123,6 +131,28 @@ describe('partner dashboard data', () => {
 
     expect(notionDatabaseRetrieve).toHaveBeenCalledWith({ database_id: 'legacy-database-id' })
     expect(notionQuery).toHaveBeenCalledWith(expect.objectContaining({ data_source_id: 'resolved-data-source' }))
+  })
+
+  it('resolves Notion page IDs to their child database data source', async () => {
+    process.env = {
+      ...originalEnv,
+      NODE_ENV: 'production',
+      PARTNER_DASHBOARD_KEY_ALETEA: '1111',
+      NOTION_PROMO_DATABASE_ID: 'page-id',
+    }
+    notionDataSourceRetrieve.mockRejectedValueOnce(new Error('not a data source'))
+    notionDatabaseRetrieve
+      .mockRejectedValueOnce(new Error('page is not a database'))
+      .mockResolvedValueOnce({ data_sources: [{ id: 'child-data-source' }] })
+    notionBlocksChildrenList.mockResolvedValueOnce({
+      results: [{ id: 'child-database-id', type: 'child_database' }],
+    })
+
+    await getPartnerDashboardData('aletea', '1111')
+
+    expect(notionBlocksChildrenList).toHaveBeenCalledWith({ block_id: 'page-id', page_size: 100 })
+    expect(notionDatabaseRetrieve).toHaveBeenLastCalledWith({ database_id: 'child-database-id' })
+    expect(notionQuery).toHaveBeenCalledWith(expect.objectContaining({ data_source_id: 'child-data-source' }))
   })
 })
 
