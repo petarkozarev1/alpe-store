@@ -31,6 +31,13 @@ export interface PartnerDashboardDenied {
 type PartnerDashboardResult = PartnerDashboardData | PartnerDashboardDenied
 
 const PARTNERS = {
+  kaloyan: {
+    name: 'KALOYAN',
+    promoCode: 'KALOYAN10',
+    keyEnv: 'PARTNER_DASHBOARD_KEY_KALOYAN',
+    notionDbEnv: 'NOTION_PROMO_DATABASE_ID_KALOYAN10',
+    localPassword: '20072026',
+  },
   iliyana: {
     name: 'ILIYANA',
     promoCode: 'ILIYANA10',
@@ -50,6 +57,22 @@ const PARTNERS = {
 type PartnerSlug = keyof typeof PARTNERS
 
 const PREVIEW_ORDERS: Record<PartnerSlug, PartnerOrder[]> = {
+  kaloyan: [
+    {
+      orderRef: 'preview-3001',
+      promoCode: 'KALOYAN10',
+      total: 66.99,
+      items: 'ALPE Daily - 1 chift',
+      date: '2026-07-20T10:30:00.000Z',
+    },
+    {
+      orderRef: 'preview-3002',
+      promoCode: 'KALOYAN10',
+      total: 44.99,
+      items: 'ALPE Evening - 1 chift',
+      date: '2026-07-19T17:45:00.000Z',
+    },
+  ],
   iliyana: [
     {
       orderRef: 'preview-1001',

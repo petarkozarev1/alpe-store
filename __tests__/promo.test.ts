@@ -9,4 +9,13 @@ describe('promo codes', () => {
       amount: 6.7,
     })
   })
+
+  it('accepts KALOYAN10 as a 10 percent influencer code', () => {
+    expect(getPromo('KALOYAN10')).toEqual({ code: 'KALOYAN10', percent: 10 })
+    expect(promoDiscount(66.99, 'kaloyan10')).toEqual({
+      code: 'KALOYAN10',
+      percent: 10,
+      amount: 6.7,
+    })
+  })
 })

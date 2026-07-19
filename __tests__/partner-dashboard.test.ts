@@ -33,6 +33,7 @@ describe('partner dashboard access', () => {
       NODE_ENV: 'test',
       PARTNER_DASHBOARD_KEY_ILIYANA: 'secret-key',
       PARTNER_DASHBOARD_KEY_ALETEA: 'aletea-key',
+      PARTNER_DASHBOARD_KEY_KALOYAN: '20072026',
     }
   })
 
@@ -43,12 +44,14 @@ describe('partner dashboard access', () => {
   it('allows the configured partner key', () => {
     expect(getPartnerDashboardAccess('iliyana', 'secret-key')).toBe(true)
     expect(getPartnerDashboardAccess('aletea', 'aletea-key')).toBe(true)
+    expect(getPartnerDashboardAccess('kaloyan', '20072026')).toBe(true)
   })
 
   it('rejects missing and wrong keys', () => {
     expect(getPartnerDashboardAccess('iliyana', null)).toBe(false)
     expect(getPartnerDashboardAccess('iliyana', 'wrong')).toBe(false)
     expect(getPartnerDashboardAccess('aletea', 'wrong')).toBe(false)
+    expect(getPartnerDashboardAccess('kaloyan', 'wrong')).toBe(false)
   })
 })
 
@@ -97,6 +100,22 @@ describe('partner dashboard data', () => {
       expect(data.isPreview).toBe(true)
       expect(data.totalOrders).toBe(2)
       expect(data.totalRevenue).toBe(111.98)
+    }
+  })
+
+  it('uses KALOYAN10 preview rows locally with password 20072026', async () => {
+    process.env = { ...originalEnv, NODE_ENV: 'development' }
+    delete process.env.PARTNER_DASHBOARD_KEY_KALOYAN
+    delete process.env.NOTION_PROMO_DATABASE_ID_KALOYAN10
+
+    const data = await getPartnerDashboardData('kaloyan', '20072026')
+
+    expect(data.status).toBe('authorized')
+    if (data.status === 'authorized') {
+      expect(data.partnerName).toBe('KALOYAN')
+      expect(data.promoCode).toBe('KALOYAN10')
+      expect(data.isPreview).toBe(true)
+      expect(data.totalOrders).toBe(2)
     }
   })
 
