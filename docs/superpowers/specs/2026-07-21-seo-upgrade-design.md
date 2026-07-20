@@ -67,6 +67,9 @@ The implementation must not create separate prices, duplicate checkout calculati
 
 ## Performance improvements
 
+- Replace the homepage hero visual in the local preview with the user-supplied `E:/Google Downloads/alpe website.mp4` clip.
+- The supplied clip is 1920×1080, 30 fps, approximately 9 seconds, and 14.6 MB. Preserve the source file outside the repository and copy it into `public/videos/` under a web-safe name for preview.
+- Because the Adobe video connector and local FFmpeg are unavailable in this session, the raw clip may be used only for local visual approval. Do not deploy the 14.6 MB source to production without first producing a smaller web rendition or receiving explicit approval to accept the performance cost.
 - Prevent desktop and mobile hero videos from both being eagerly preloaded.
 - Provide a poster/fallback where an existing suitable asset is available.
 - Respect reduced-motion preferences without hiding crawlable text.
