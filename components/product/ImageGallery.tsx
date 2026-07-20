@@ -25,18 +25,27 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
       </div>
       {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="flex gap-3">
+        <div className="flex gap-2.5 overflow-x-auto px-0.5 pb-2 pt-1 sm:gap-3">
           {images.map((src, i) => (
             <button
-              key={i}
+              key={src}
+              type="button"
               onClick={() => setActiveIndex(i)}
               aria-label={`View image ${i + 1}`}
               aria-pressed={i === activeIndex}
-              className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-colors ${
-                i === activeIndex ? 'border-onyx' : 'border-transparent'
+              className={`relative aspect-[4/3] w-[5.25rem] flex-none overflow-hidden rounded-xl border bg-parchment shadow-sm transition duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:w-24 ${
+                i === activeIndex
+                  ? '-translate-y-0.5 border-onyx shadow-md ring-1 ring-onyx/10'
+                  : 'border-iron/10 opacity-80 hover:-translate-y-0.5 hover:border-gold/60 hover:opacity-100'
               }`}
             >
-              <Image src={src} alt={`${alt} ${i + 1}`} fill sizes="80px" className="object-cover" />
+              <Image
+                src={src}
+                alt={`${alt} ${i + 1}`}
+                fill
+                sizes="(max-width: 640px) 84px, 96px"
+                className="object-contain p-1"
+              />
             </button>
           ))}
         </div>
