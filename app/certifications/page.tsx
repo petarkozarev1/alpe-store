@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Сертификати | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Сертификати',
   description: 'Официални лабораторни тестове на лещите ALPÉ. BS EN ISO 12312-1, ANSI Z80.3, AS/NZS 1067.1 — всички преминати.',
-}
+  path: '/certifications',
+})
 
 const standards = [
   {

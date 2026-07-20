@@ -17,6 +17,8 @@ const product: Product = {
   name: 'ALPÉ Daily',
   subtitle: 'Daily lenses',
   description: 'Screen glasses',
+  facts: ['65% филтър на синята светлина'],
+  details: [],
   price: 44.99,
   images: ['/images/shop/shop-daily-1.png'],
   variants: [],
@@ -40,7 +42,7 @@ test('fires AddToCart (pixel + CAPI mirror) when an in-stock product is added af
   localStorage.setItem('alpe-cookie-consent', 'all')
 
   render(<AddToCartButton product={product} selectedVariant={selectedVariant} />)
-  fireEvent.click(screen.getByRole('button', { name: 'Add to Cart' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Добави в количката' }))
 
   // Browser pixel fires with the product data + a shared eventID
   expect(window.fbq).toHaveBeenCalledWith(

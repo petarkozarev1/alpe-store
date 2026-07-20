@@ -4,8 +4,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
+import {
+  getInitialShopSelection,
+  type BundleCount,
+  type Lens,
+  type ShopSelection,
+} from '@/lib/shop-selection'
 
-type Lens = 'evening' | 'daily'
 type Tab = 'description' | 'science' | 'reviews'
 
 const lensData = {
@@ -20,9 +25,9 @@ const lensData = {
     benefitColor: '#7a4e1a',
     descText: "Лещите ALPÉ Evening са създадени с една цел: сън. Носени след залез слънце и поне 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
     images: [
-      { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening — lifestyle' },
-      { src: '/images/shop/shop-evening-2.png', alt: 'ALPÉ Evening — glasses' },
-      { src: '/images/shop/shop-evening-3.png', alt: 'ALPÉ Evening — box' },
+      { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening очила за синя светлина с оранжеви стъкла' },
+      { src: '/images/shop/shop-evening-2.png', alt: 'Оранжеви blue light blocking glasses ALPÉ Evening' },
+      { src: '/images/shop/shop-evening-3.png', alt: 'Кутия ALPÉ Evening очила против синя светлина' },
     ],
   },
   daily: {
@@ -36,9 +41,9 @@ const lensData = {
     benefitColor: '#7a6200',
     descText: "Очилата ALPÉ Daily са създадени за продължителна работа пред екрана. Тяхната кехлибарено-жълта оцветка филтрира 65% от синята светлина. Достатъчно, за да намали напрежението в очите и главоболието в края на деня, като същевременно запазва цветовете достатъчно точни за работа с дизайн, редактиране на снимки и видеоразговори. Леки, удобни и подходящи за носене в продължение на 8+ часа.",
     images: [
-      { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily — lifestyle' },
-      { src: '/images/shop/shop-daily-2.png', alt: 'ALPÉ Daily — glasses' },
-      { src: '/images/shop/shop-daily-3.png', alt: 'ALPÉ Daily — box' },
+      { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily очила за компютър с жълти стъкла' },
+      { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина ALPÉ Daily' },
+      { src: '/images/shop/shop-daily-3.png', alt: 'Кутия ALPÉ Daily blue light glasses за работа пред екран' },
     ],
   },
 }
@@ -47,16 +52,16 @@ const bundlePrices: Record<number, number> = { 1: 44.99, 2: 66.99, 3: 89.99 }
 const bundleSavings: Record<number, number> = { 1: 0, 2: 23, 3: 45 }
 const initialBundleValue = bundlePrices[1]
 
-export default function ProductPage() {
-  const [lens, setLens] = useState<Lens>('evening')
-  const [bundle, setBundle] = useState(1)
+export default function ProductPage({
+  initialSelection = getInitialShopSelection(),
+}: { initialSelection?: ShopSelection } = {}) {
+  const [lens, setLens] = useState<Lens>(initialSelection.lens)
+  const [bundle, setBundle] = useState(initialSelection.bundle)
   const [thumbIdx, setThumbIdx] = useState({ evening: 0, daily: 0 })
-  const [slots, setSlots] = useState<Lens[]>(['evening'])
+  const [slots, setSlots] = useState<Lens[]>(initialSelection.slots)
   const [tab, setTab] = useState<Tab>('description')
   const [stickyVisible, setStickyVisible] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [viewerCount, setViewerCount] = useState(0)
-  useEffect(() => { setViewerCount(Math.floor(Math.random() * 20) + 18) }, [])
   const ctaRef = useRef<HTMLDivElement>(null)
   const addToCart = useCartStore(s => s.addItem)
   const openDrawer = useCartStore(s => s.openDrawer)
@@ -91,7 +96,7 @@ export default function ProductPage() {
     if (bundle === 1) setSlots([l])
   }
 
-  function handleBundle(n: number) {
+  function handleBundle(n: BundleCount) {
     setBundle(n)
     if (n > 1) setSlots(Array(n).fill(lens) as Lens[])
     else setSlots([lens])
@@ -152,8 +157,8 @@ export default function ProductPage() {
         {/* LEFT: Gallery */}
         <div className="product-gallery-col" style={{ position: 'sticky', top: 80 }}>
           {/* Main image */}
-          <div style={{ width: '100%', aspectRatio: '4/3', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
-            <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className={thumbIdx[lens] === 1 ? 'object-contain' : 'object-cover'} quality={100} />
+          <div style={{ width: '100%', aspectRatio: '16/10', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
+            <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className={thumbIdx[lens] === 1 ? 'object-contain' : 'object-cover'} quality={85} />
 
             {/* Lens toggle on image */}
             <div style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8, background: 'rgba(28,15,10,0.72)', backdropFilter: 'blur(12px)', borderRadius: 100, padding: 5, zIndex: 2, whiteSpace: 'nowrap' }}>
@@ -175,43 +180,38 @@ export default function ProductPage() {
           </div>
 
           {/* Thumbnails */}
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
             {d.images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setThumbIdx(prev => ({ ...prev, [lens]: i }))}
-                style={{ flex: 1, aspectRatio: '1', borderRadius: 8, overflow: 'hidden', border: `2px solid ${thumbIdx[lens] === i ? '#1C0F0A' : 'transparent'}`, cursor: 'pointer', padding: 0, background: 'none', position: 'relative', transition: 'border-color 0.2s, transform 0.2s', transform: 'none' }}
+                style={{ aspectRatio: '4/3', borderRadius: 8, overflow: 'hidden', border: `2px solid ${thumbIdx[lens] === i ? '#1C0F0A' : 'transparent'}`, cursor: 'pointer', padding: 0, background: 'none', position: 'relative', transition: 'border-color 0.2s, transform 0.2s', transform: 'none' }}
               >
-                <Image src={img.src} alt={img.alt} fill sizes="(min-width:960px) 200px, 33vw" className={i === 1 ? 'object-contain' : 'object-cover'} quality={100} />
+                <Image src={img.src} alt={img.alt} fill sizes="(min-width:960px) 200px, 33vw" className={i === 1 ? 'object-contain' : 'object-cover'} quality={85} />
               </button>
             ))}
+          </div>
+
+          <div className="product-gallery-copy" style={{ marginTop: 28 }}>
+            <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 36, fontWeight: 500, lineHeight: 1.1, color: '#1C0F0A', marginBottom: 10 }}>
+              {d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em>
+            </h1>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', lineHeight: 1.75, marginBottom: 18 }}>{d.tagline}</p>
+
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, borderRadius: 100, padding: '7px 16px', marginBottom: 12, background: d.benefitBg, border: `1px solid ${d.benefitBorder}`, fontSize: 13 }}>
+              <span style={{ width: 9, height: 9, borderRadius: '50%', background: d.benefitDot, display: 'inline-block', flexShrink: 0 }} />
+              <span style={{ color: d.benefitColor }}>{d.benefitText}</span>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginTop: 10, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
+              <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
+              <span><strong>Безплатна експресна доставка при поръчки над €50.</strong> Пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
+            </div>
           </div>
         </div>
 
         {/* RIGHT: Product details */}
         <div>
-          {/* Stars */}
-
-          {/* Name */}
-          <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, lineHeight: 1.1, color: '#1C0F0A', marginBottom: 10 }}>
-            {d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em>
-          </h1>
-          <p style={{ fontSize: 15, color: 'rgba(28,15,10,0.8)', lineHeight: 1.75, marginBottom: 20 }}>{d.tagline}</p>
-
-          {/* Benefit pill */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, borderRadius: 100, padding: '7px 16px', marginBottom: 12, background: d.benefitBg, border: `1px solid ${d.benefitBorder}`, fontSize: 13 }}>
-            <span style={{ width: 9, height: 9, borderRadius: '50%', background: d.benefitDot, display: 'inline-block', flexShrink: 0 }} />
-            <span style={{ color: d.benefitColor }}>{d.benefitText}</span>
-          </div>
-
-          {/* Delivery strip */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginTop: 10, marginBottom: 0, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
-            <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
-            <span><strong>Безплатна експресна доставка при поръчки над €50.</strong> Пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
-          </div>
-
-          <div style={{ height: 1, background: 'rgba(28,15,10,0.09)', margin: '24px 0' }} />
-
           {/* Lens selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Изберете вашите очила</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
@@ -234,7 +234,7 @@ export default function ProductPage() {
           {/* Bundle selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
           <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
-            {[1, 2, 3].map(n => (
+            {([1, 2, 3] as const).map(n => (
               <button
                 key={n}
                 onClick={() => handleBundle(n)}
@@ -291,12 +291,6 @@ export default function ProductPage() {
               🎉 Спестявате <strong>€{saving}</strong> с тази комбинация
             </div>
           )}
-
-          {/* Viewing now */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'rgba(28,15,10,0.8)', marginBottom: 20 }}>
-            <span style={{ width: 7, height: 7, background: '#4caf6a', borderRadius: '50%', flexShrink: 0, animation: 'pulse-dot 1.8s ease infinite' }} />
-            <span>{viewerCount} души разглеждат това в момента</span>
-          </div>
 
           {/* CTA */}
           <div ref={ctaRef} style={{ margin: '24px 0 14px' }}>
@@ -528,21 +522,44 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* More images */}
-      <div className="product-more-images" style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 48px 100px' }}>
-        <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 32, fontWeight: 500, marginBottom: 32, color: '#1C0F0A' }}>Две стъкла. <em style={{ fontStyle: 'italic', fontWeight: 400 }}>Една рамка.</em></h2>
-        <div className="product-more-images-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-          {[
-            { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening lens', label: 'Вечер · Преди лягане' },
-            { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily lens', label: 'За всеки ден · Работа пред екран' },
-          ].map(img => (
-            <div key={img.label} style={{ borderRadius: 12, overflow: 'hidden', position: 'relative', aspectRatio: '4/3' }}>
-              <Image src={img.src} alt={img.alt} fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" quality={100} />
-              <div style={{ position: 'absolute', bottom: 20, left: 20, background: 'rgba(28,15,10,0.75)', backdropFilter: 'blur(8px)', color: '#fff8f0', fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase' as const, padding: '8px 16px', borderRadius: 100 }}>{img.label}</div>
+      <section className="product-search-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', padding: '76px 48px' }}>
+        <div style={{ maxWidth: 980, margin: '0 auto', display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: 48, alignItems: 'start' }}>
+          <div>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 600, marginBottom: 14 }}>
+              Очилa за синя светлина
             </div>
-          ))}
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 38, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1, marginBottom: 18 }}>
+              ALPÉ е за хора, които прекарват деня си пред екран.
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.8, color: 'rgba(28,15,10,0.72)' }}>
+              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, ALPÉ комбинира дневни и вечерни лещи в една ясна система: Daily за работа, фокус и по-малко напрежение в очите, Evening за времето след залез и по-спокоен сън.
+            </p>
+          </div>
+          <div style={{ display: 'grid', gap: 16 }}>
+            {[
+              {
+                title: 'За работа пред компютър',
+                body: 'ALPÉ Daily използва прозрачно-жълт филтър за ежедневна работа пред лаптоп, монитор и телефон, без силно изкривяване на цветовете.',
+              },
+              {
+                title: 'За вечерна защита от синя и зелена светлина',
+                body: 'ALPÉ Evening е създаден за употреба след залез слънце и преди сън, когато ярките екрани най-често пречат на естественото отпускане.',
+              },
+              {
+                title: 'За търсещите качествени blue light glasses',
+                body: 'Очилата са леки, удобни за дълго носене и позиционирани като премиум алтернатива на обикновените очила против синя светлина.',
+              },
+            ].map((item) => (
+              <div key={item.title} style={{ borderBottom: '1px solid rgba(28,15,10,0.1)', paddingBottom: 16 }}>
+                <h3 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 21, fontWeight: 500, color: '#1C0F0A', marginBottom: 6 }}>
+                  {item.title}
+                </h3>
+                <p style={{ fontSize: 14, lineHeight: 1.75, color: 'rgba(28,15,10,0.68)' }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Sticky add to cart — desktop: full-height right sidebar; mobile: bottom bar */}
       <>
@@ -675,7 +692,6 @@ export default function ProductPage() {
       </>
 
       <style>{`
-        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(0.75);} }
         .product-sticky-bar-mobile { display: none !important; }
 
         @media (max-width:960px) {
@@ -685,7 +701,8 @@ export default function ProductPage() {
           .product-stats-section { padding: 60px 24px !important; }
           .product-nights-section { padding: 60px 24px !important; }
           .product-comparison-section { padding: 60px 24px !important; }
-          .product-more-images { padding: 60px 24px 80px !important; }
+          .product-search-section { padding: 56px 24px !important; }
+          .product-search-section > div { grid-template-columns: 1fr !important; gap: 30px !important; }
           .product-sticky-bar-desktop { display: none !important; }
           .product-sticky-tab-desktop { display: none !important; }
           .product-sticky-bar-mobile { display: flex !important; }
@@ -704,8 +721,7 @@ export default function ProductPage() {
           .product-nights-section { padding: 48px 16px !important; }
           .product-nights-grid { grid-template-columns: repeat(2,1fr) !important; }
           .product-comparison-section { padding: 48px 16px !important; }
-          .product-more-images { padding: 48px 16px 80px !important; }
-          .product-more-images-grid { grid-template-columns: 1fr !important; }
+          .product-search-section { padding: 48px 16px !important; }
         }
       `}</style>
     </div>

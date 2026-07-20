@@ -12,42 +12,28 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden bg-onyx px-6 py-16 text-center text-linen md:px-10">
+    <section className="relative min-h-[calc(100svh-97px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
-        className="absolute left-1/2 top-0 z-0 h-[72svh] min-w-full max-w-none -translate-x-1/2 object-contain md:hidden"
-        src="/videos/hero-mobile.mp4"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] motion-reduce:hidden md:object-center"
+        src="/videos/alpe-hero-web.mp4"
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
-        aria-hidden="true"
-      />
-      <video
-        className="absolute inset-0 z-0 hidden h-full w-full object-cover md:block"
-        src="/videos/hero-desktop.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
       />
 
-      <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.56)_0%,rgba(45,14,4,0.34)_38%,rgba(45,14,4,0.78)_100%)]" />
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.16),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.72)_0%,rgba(45,14,4,0.34)_52%,rgba(45,14,4,0.64)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.62)_0%,rgba(45,14,4,0.28)_38%,rgba(45,14,4,0.8)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.14),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.66)_0%,rgba(45,14,4,0.24)_52%,rgba(45,14,4,0.58)_100%)]" />
 
-      <div className="relative z-20 mx-auto flex min-h-[calc(100svh-128px)] max-w-5xl flex-col items-center justify-center pt-10 md:min-h-[calc(100svh-160px)]">
-        <motion.p
-          {...fadeUp(0)}
-          className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-linen/80"
-        >
-          ALPE
-        </motion.p>
-
+      <div
+        data-testid="hero-content"
+        className="relative z-20 mx-auto flex min-h-[calc(100svh-97px)] max-w-5xl flex-col items-center justify-center px-6 py-10 md:px-10 md:py-14"
+      >
         <motion.h1
-          {...fadeUp(0.1)}
-          className="max-w-4xl text-[clamp(46px,8vw,96px)] font-extrabold leading-[0.98] tracking-tight text-linen drop-shadow-[0_2px_22px_rgba(45,14,4,0.55)]"
+          {...fadeUp(0)}
+          className="max-w-4xl text-[clamp(40px,11vw,96px)] font-extrabold leading-[0.98] tracking-tight text-linen drop-shadow-[0_2px_22px_rgba(45,14,4,0.55)] md:text-[clamp(56px,8vw,96px)]"
         >
           {heroContent.headlinePart1}
           <br />

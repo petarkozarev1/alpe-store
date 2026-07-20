@@ -1,9 +1,12 @@
 ﻿import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Общи условия | ALPÉ',
+import { createPageMetadata } from '@/lib/seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Общи условия',
   description: 'Общи условия за ползване на ALPÉ. Поръчки, доставка и връщане.',
-}
+  path: '/terms',
+})
 
 export default function TermsPage() {
   return (

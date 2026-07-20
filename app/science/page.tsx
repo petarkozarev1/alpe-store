@@ -1,10 +1,11 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 
-export const metadata: Metadata = {
-  title: 'Науката | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Науката',
   description: 'Как синята светлина влияе на очите и съня. Научните факти зад ALPÉ.',
-}
+  path: '/science',
+})
 
 const facts = [
   {

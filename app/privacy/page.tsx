@@ -1,9 +1,12 @@
 ﻿import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Политика за поверителност | ALPÉ',
+import { createPageMetadata } from '@/lib/seo'
+
+export const metadata: Metadata = createPageMetadata({
+  title: 'Политика за поверителност',
   description: 'Как ALPÉ обработва вашите лични данни. GDPR съответствие.',
-}
+  path: '/privacy',
+})
 
 export default function PrivacyPage() {
   return (

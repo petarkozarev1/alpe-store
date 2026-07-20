@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Контакт | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Контакт',
   description: 'Свържете се с ALPÉ. Отговаряме в рамките на 24 часа.',
-}
+  path: '/contact',
+})
 
 export default function ContactPage() {
   return (

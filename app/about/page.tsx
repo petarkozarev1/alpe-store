@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Нашата история | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Нашата история',
   description: 'ALPÉ е основана от хора, които познават умората от екрана. Научете повече за нашата мисия.',
-}
+  path: '/about',
+})
 
 export default function AboutPage() {
   return (

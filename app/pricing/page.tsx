@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Цени | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Цени',
   description: 'Прозрачни цени без изненади. Очила за синя и зелена светлина ALPÉ от €44.99.',
-}
+  path: '/pricing',
+})
 
 const tiers = [
   {

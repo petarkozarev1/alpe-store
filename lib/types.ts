@@ -10,6 +10,11 @@ export interface Product {
   name: string
   subtitle: string
   description: string
+  facts: string[]
+  details: Array<{
+    title: string
+    body: string
+  }>
   price: number
   images: string[]
   variants: Variant[]

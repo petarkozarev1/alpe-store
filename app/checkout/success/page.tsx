@@ -1,12 +1,10 @@
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { noIndexMetadata } from '@/lib/seo'
 import PurchasePixelFire from '@/components/analytics/PurchasePixelFire'
 import { getStripe } from '@/lib/stripe'
 import { verifyCodOrder } from '@/lib/cod-signature'
 
-export const metadata: Metadata = {
-  title: 'Поръчката е приета — ALPÉ',
-}
+export const metadata = noIndexMetadata('Поръчката е приета')
 
 async function getPaidSession(sessionId: string) {
   try {

@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Стъкла | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Стъкла',
   description: 'Дневни и вечерни лещи за синя светлина. EU сертифицирани. Блокират до 99% от синята светлина.',
-}
+  path: '/lenses',
+})
 
 export default function LensesPage() {
   return (
@@ -32,6 +33,12 @@ export default function LensesPage() {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/product/alpe-daily"
+              className="mt-2 w-fit font-sans text-xs font-semibold text-iron underline decoration-gold/60 underline-offset-4 transition-colors hover:text-gold"
+            >
+              Разгледай ALPÉ Daily →
+            </Link>
           </div>
 
           <div className="bg-iron rounded-2xl p-8 flex flex-col gap-4">
@@ -47,6 +54,12 @@ export default function LensesPage() {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/product/alpe-evening"
+              className="mt-2 w-fit font-sans text-xs font-semibold text-linen underline decoration-gold/60 underline-offset-4 transition-colors hover:text-gold"
+            >
+              Разгледай ALPÉ Evening →
+            </Link>
           </div>
         </div>
 

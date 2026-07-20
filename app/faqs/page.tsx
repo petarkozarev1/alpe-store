@@ -1,11 +1,12 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { faqs, faqSectionContent } from '@/lib/data/content'
 
-export const metadata: Metadata = {
-  title: 'Въпроси | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Въпроси',
   description: 'Отговори на най-честите въпроси за очилата ALPÉ за синя светлина.',
-}
+  path: '/faqs',
+})
 
 export default function FaqsPage() {
   return (

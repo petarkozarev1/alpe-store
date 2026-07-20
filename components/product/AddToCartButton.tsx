@@ -52,13 +52,13 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
       aria-disabled={!selectedVariant.inStock}
       className={`w-full py-4 rounded-xl font-semibold text-base transition-colors ${
         added
-          ? 'bg-gold text-white'
+          ? 'bg-gold text-onyx'
           : selectedVariant.inStock
-          ? 'bg-onyx text-white hover:bg-iron'
+          ? 'bg-onyx text-linen hover:bg-iron'
           : 'bg-iron text-stone cursor-not-allowed'
       }`}
     >
-      {added ? 'Added ✓' : selectedVariant.inStock ? 'Add to Cart' : 'Sold Out'}
+      {added ? 'Добавено ✓' : selectedVariant.inStock ? 'Добави в количката' : 'Изчерпано'}
     </motion.button>
   )
 }

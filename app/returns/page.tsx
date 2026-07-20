@@ -1,9 +1,10 @@
-import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Връщане | ALPÉ',
+export const metadata = createPageMetadata({
+  title: 'Връщане',
   description: '10 дена тест. Не ви харесват — връщате ги. Без въпроси.',
-}
+  path: '/returns',
+})
 
 const steps = [
   { num: '01', title: 'Носете ги поне 10 дена', body: 'Дайте им реален шанс. Системно, поне 10 дена пред екрана. Повечето хора усещат разлика до тогава.' },
