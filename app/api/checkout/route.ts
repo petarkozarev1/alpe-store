@@ -1,82 +1,27 @@
-import { NextResponse } from 'next/server'
+import { randomUUID } from 'crypto'
+import { cookies } from 'next/headers'
 import { getStripe } from '@/lib/stripe'
+import {
+  getP2GAttribution,
+  P2G_COOKIE_NAME,
+} from '@/lib/orders/attribution'
+import {
+  createCheckoutHandler,
+  type CheckoutDependencies,
+  type StripeClient,
+} from '@/lib/orders/checkout'
+import { createOrUpdateOrder } from '@/lib/orders/notion'
 
-interface LineItem {
-  name: string
-  price: number
-  quantity: number
-  image?: string
+const dependencies: CheckoutDependencies = {
+  getStripeClient: () => getStripe() as unknown as StripeClient,
+  getAffiliateId: () => {
+    const cookieValue = cookies().get(P2G_COOKIE_NAME)?.value
+    return getP2GAttribution(cookieValue, process.env.P2G_AFFILIATE_ID)
+  },
+  saveOrder: createOrUpdateOrder,
+  createOrderId: () => `ALPE-${randomUUID()}`,
+  now: () => new Date().toISOString(),
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alpewear.com',
 }
 
-export async function POST(req: Request) {
-  try {
-    const stripe = getStripe()
-    const clientIpAddress =
-      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-      req.headers.get('x-real-ip') ??
-      undefined
-    const clientUserAgent = req.headers.get('user-agent') ?? undefined
-    const {
-      items,
-      email,
-      shipping,
-    }: { items: LineItem[]; email: string; shipping: Record<string, string> } = await req.json()
-
-    if (!items?.length) {
-      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
-    }
-
-    const productItems = items.filter(item => item.price > 0)
-    if (!productItems.length) {
-      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
-    }
-
-    const discountTotal = Math.abs(
-      items
-        .filter(item => item.price < 0)
-        .reduce((sum, item) => sum + item.price * item.quantity, 0)
-    )
-
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alpewear.com'
-    const coupon = discountTotal > 0
-      ? await stripe.coupons.create({
-          amount_off: Math.round(discountTotal * 100),
-          currency: 'eur',
-          duration: 'once',
-          name: 'ALPÉ discount',
-        })
-      : null
-
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      customer_email: email,
-      line_items: productItems.map(item => ({
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: item.name,
-            ...(item.image ? { images: [item.image] } : {}),
-          },
-          unit_amount: Math.round(item.price * 100),
-        },
-        quantity: item.quantity,
-      })),
-      ...(coupon ? { discounts: [{ coupon: coupon.id }] } : {}),
-      shipping_address_collection: {
-        allowed_countries: ['BG', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'PL', 'RO', 'GR'],
-      },
-      metadata: {
-        ...shipping,
-        ...(clientIpAddress ? { clientIpAddress } : {}),
-        ...(clientUserAgent ? { clientUserAgent } : {}),
-      },
-      success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/checkout`,
-    })
-
-    return NextResponse.json({ url: session.url })
-  } catch (err) {
-    console.error('Stripe checkout error:', err)
-    return NextResponse.json({ error: 'Payment could not be created' }, { status: 500 })
-  }
-}
+export const POST = createCheckoutHandler(dependencies)
