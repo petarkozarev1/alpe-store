@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { firePixelEvent } from '@/components/analytics/MetaPixel'
+import { BUNDLE_PRICES, BUNDLE_SAVINGS } from '@/lib/orders/catalog'
 
 type Lens = 'evening' | 'daily'
 type Tab = 'description' | 'science' | 'reviews'
@@ -43,9 +44,7 @@ const lensData = {
   },
 }
 
-const bundlePrices: Record<number, number> = { 1: 44.99, 2: 66.99, 3: 89.99 }
-const bundleSavings: Record<number, number> = { 1: 0, 2: 23, 3: 45 }
-const initialBundleValue = bundlePrices[1]
+const initialBundleValue = BUNDLE_PRICES[1] / 100
 
 export default function ProductPage() {
   const [lens, setLens] = useState<Lens>('evening')
@@ -103,18 +102,18 @@ export default function ProductPage() {
       variantId: `ALPÉ-${lens}-bundle-${bundle}`,
       name: d.name,
       variantLabel: `${slots.map(s => s === 'evening' ? '🟠 Вечер' : '🟡 За всеки ден').join(' · ')} · ${bundle} чифт${bundle > 1 ? 'а' : ''}`,
-      price: bundlePrices[bundle],
+      price: BUNDLE_PRICES[bundle] / 100,
       quantity: 1,
       image: d.images[0].src,
       slug: 'ALPÉ-glasses',
-      originalPrice: bundle > 1 ? bundlePrices[1] * bundle : undefined,
-      saving: bundle > 1 ? bundleSavings[bundle] : undefined,
+      originalPrice: bundle > 1 ? BUNDLE_PRICES[1] * bundle / 100 : undefined,
+      saving: bundle > 1 ? BUNDLE_SAVINGS[bundle] / 100 : undefined,
     })
     firePixelEvent('AddToCart', {
       content_name: d.name,
       content_ids: [`ALPÉ-${lens}`],
       content_type: 'product',
-      value: bundlePrices[bundle],
+      value: BUNDLE_PRICES[bundle] / 100,
       currency: 'EUR',
     })
     openDrawer()
@@ -122,8 +121,8 @@ export default function ProductPage() {
 
   const d = lensData[lens]
   const currentImg = d.images[thumbIdx[lens]]
-  const price = bundlePrices[bundle]
-  const saving = bundleSavings[bundle]
+  const price = BUNDLE_PRICES[bundle] / 100
+  const saving = BUNDLE_SAVINGS[bundle] / 100
 
   return (
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
@@ -243,7 +242,7 @@ export default function ProductPage() {
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{bundlePrices[n]}</div>
+                  <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{(BUNDLE_PRICES[n] / 100).toFixed(2)}</div>
                   {n > 1 && <div style={{ fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 2 }}>поотделно: €{n === 2 ? '89.98' : '134.97'}</div>}
                 </div>
               </button>
