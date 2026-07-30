@@ -123,20 +123,20 @@ export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean 
       {/* Progress bar */}
       <div className="border-b border-stone/20 bg-parchment">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm font-sans">
+          <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-sans">
             <span className="flex items-center gap-1.5 text-stone/50">
               <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs">✓</span>
-              КОШНИЦА
+              <span className="hidden sm:inline">КОШНИЦА</span>
             </span>
-            <span className="text-stone/30">──</span>
+            <span className="hidden sm:inline text-stone/30">──</span>
             <span className="flex items-center gap-1.5 text-onyx font-semibold">
               <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs font-bold">2</span>
               ПЛАЩАНЕ
             </span>
-            <span className="text-stone/30">──</span>
+            <span className="hidden sm:inline text-stone/30">──</span>
             <span className="flex items-center gap-1.5 text-stone/40">
               <span className="w-6 h-6 rounded-full border border-stone/30 flex items-center justify-center text-xs">3</span>
-              ГОТОВО
+              <span className="hidden sm:inline">ГОТОВО</span>
             </span>
           </div>
           <span className="hidden sm:flex items-center gap-1.5 text-xs text-stone font-sans">
