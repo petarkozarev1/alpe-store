@@ -25,6 +25,8 @@ test('stores a validated source_id in an HTTP-only 30-day cookie', () => {
   expect(setCookie).toContain('HttpOnly')
   expect(setCookie).toContain('SameSite=lax')
   expect(setCookie).toContain('Max-Age=2592000')
+  expect(response.status).toBe(307)
+  expect(response.headers.get('location')).toBe('https://alpewear.com/shop')
 })
 
 test('does not create a cookie for an unknown source_id', () => {

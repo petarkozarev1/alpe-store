@@ -21,9 +21,14 @@ async function getPaidSession(sessionId: string) {
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{
+    session_id?: string
+    order_id?: string
+    payment?: string
+  }>
 }) {
-  const { session_id } = await searchParams
+  const { session_id, order_id, payment } = await searchParams
+  const isCod = payment === 'cod' && Boolean(order_id)
 
   let pixelValue = 0
   let pixelOrderId = session_id ?? ''
@@ -38,14 +43,18 @@ export default async function CheckoutSuccessPage({
 
   return (
     <main className="bg-parchment min-h-screen flex items-center justify-center px-6">
-      <PurchasePixelFire value={pixelValue} currency="EUR" orderId={pixelOrderId} />
+      {!isCod && pixelValue > 0 && (
+        <PurchasePixelFire value={pixelValue} currency="EUR" orderId={pixelOrderId} />
+      )}
       <div className="flex flex-col items-center text-center gap-6 max-w-md">
         <div className="w-20 h-20 rounded-full bg-linen flex items-center justify-center">
           <span className="text-gold text-4xl">✓</span>
         </div>
         <h1 className="font-serif text-4xl font-bold text-onyx">Поръчката е приета!</h1>
         <p className="font-sans text-base text-stone leading-relaxed">
-          Благодарим ти. Ще получиш имейл с потвърждение и информация за доставката.
+          {isCod
+            ? 'Плащането се извършва при получаване.'
+            : 'Благодарим ти. Ще получиш имейл с потвърждение и информация за доставката.'}
         </p>
         <Link
           href="/shop"

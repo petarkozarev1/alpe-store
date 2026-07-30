@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/lib/store/cartStore'
+import type { PaymentMethod } from '@/lib/orders/types'
 
 /* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
@@ -30,7 +31,7 @@ function getCookieValue(name: string) {
 interface Contact { email: string; newsletter: boolean }
 interface Shipping { firstName: string; lastName: string; phone: string; city: string; address: string; postalCode: string; country: string; note: string }
 
-export default function CheckoutPageClient() {
+export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean }) {
   const { items } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '', newsletter: true })
@@ -41,6 +42,7 @@ export default function CheckoutPageClient() {
   const [codeInput, setCodeInput] = useState('')
   const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null)
   const [codeError, setCodeError] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -51,13 +53,17 @@ export default function CheckoutPageClient() {
     const m = i.variantId.match(/bundle-(\d+)/)
     return s + (m ? parseInt(m[1]) : 1) * i.quantity
   }, 0)
-  const discount = applied ? +(subtotal * applied.percent / 100).toFixed(2) : 0
+  const discountPercent = isP2G ? 20 : (applied?.percent ?? 0)
+  const discount = discountPercent
+    ? +(subtotal * discountPercent / 100).toFixed(2)
+    : 0
   const afterDiscount = subtotal - discount
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
   const total = +(afterDiscount + shipping_).toFixed(2)
 
   /* ── discount code ──────────────────────────────── */
   const applyCode = () => {
+    if (isP2G) return
     const pct = DISCOUNT_CODES[codeInput.toUpperCase()]
     if (!pct) { setCodeError('Невалиден код'); return }
     setApplied({ code: codeInput.toUpperCase(), percent: pct })
@@ -71,11 +77,11 @@ export default function CheckoutPageClient() {
     if (!items.length) { setError('Количката ти е празна.'); return }
     setLoading(true); setError(null)
 
-    const lineItems = [
-      ...items.map(i => ({ name: `${i.name} — ${i.variantLabel}`, price: i.price, quantity: i.quantity, image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image })),
-      ...(discount > 0 ? [{ name: `Отстъпка ${applied!.code}`, price: -discount, quantity: 1 }] : []),
-      ...(shipping_ > 0 ? [{ name: `Доставка — ${deliveryType === 'address' ? 'До адрес' : delivery.label}`, price: shipping_, quantity: 1 }] : []),
-    ]
+    const checkoutItems = items.map(i => ({
+      productId: i.productId,
+      variantId: i.variantId,
+      quantity: i.quantity,
+    }))
     const checkoutShipping = {
       name: `${shipping.firstName} ${shipping.lastName}`,
       phone: shipping.phone,
@@ -95,7 +101,12 @@ export default function CheckoutPageClient() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: lineItems, email: contact.email, shipping: checkoutShipping }),
+        body: JSON.stringify({
+          items: checkoutItems,
+          email: contact.email,
+          shipping: checkoutShipping,
+          paymentMethod,
+        }),
       })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Грешка')
@@ -303,6 +314,46 @@ export default function CheckoutPageClient() {
 
               </div>
             </div>
+
+            <div className="bg-cream rounded-2xl border border-stone/15 p-6">
+              <div className="flex items-center justify-between mb-5">
+                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest">
+                  <span className="text-stone/40 mr-2">03.</span>Метод на плащане
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {([
+                  ['card', 'Карта', 'Сигурно плащане чрез Stripe'],
+                  ['cod', 'Наложен платеж', 'Плащане при получаване'],
+                ] as const).map(([value, label, description]) => (
+                  <label
+                    key={value}
+                    className={`flex items-start gap-3 border rounded-xl p-4 cursor-pointer transition-colors ${
+                      paymentMethod === value
+                        ? 'border-onyx bg-parchment'
+                        : 'border-stone/25'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value={value}
+                      checked={paymentMethod === value}
+                      onChange={() => setPaymentMethod(value)}
+                      className="mt-1 accent-onyx"
+                    />
+                    <span>
+                      <span className="block font-sans text-sm font-semibold text-onyx">
+                        {label}
+                      </span>
+                      <span className="block font-sans text-xs text-stone mt-1">
+                        {description}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* ── Right column — Order summary ──────── */}
@@ -332,7 +383,16 @@ export default function CheckoutPageClient() {
               <hr className="border-stone/15 mb-4" />
 
               {/* Discount code */}
-              {applied ? (
+              {isP2G ? (
+                <div className="flex items-center justify-between bg-cream border border-gold/40 rounded-xl px-4 py-3 mb-4">
+                  <span className="font-sans text-xs font-semibold text-iron">
+                    P2G отстъпка (20%)
+                  </span>
+                  <span className="font-sans text-xs text-stone">
+                    Приложена автоматично
+                  </span>
+                </div>
+              ) : applied ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
                   <span className="font-sans text-xs font-semibold text-green-700">{applied.code} · {applied.percent}% отстъпка приложена</span>
                   <button type="button" onClick={removeCode} className="font-sans text-xs text-stone hover:text-onyx transition-colors">Премахни</button>
@@ -361,9 +421,9 @@ export default function CheckoutPageClient() {
                   <span>Междинна сума</span>
                   <span>€{subtotal.toFixed(2)}</span>
                 </div>
-                {applied && (
+                {discount > 0 && (
                   <div className="flex justify-between text-green-700">
-                    <span>Отстъпка ({applied.code})</span>
+                    <span>{isP2G ? 'P2G отстъпка (20%)' : `Отстъпка (${applied?.code})`}</span>
                     <span>−€{discount.toFixed(2)}</span>
                   </div>
                 )}
