@@ -19,19 +19,26 @@ https://<p2g-redirect-host>/<campaign>?source_id=<p2g-affiliate-id>
 ```
 
 The campaign path identifies ALPE inside P2G, while `source_id` identifies the
-affiliate inside P2G. Those values are owned by P2G and are not ALPE order
-identifiers.
+affiliate inside P2G. P2G has confirmed that ALPE's affiliate ID is fixed for
+every visit. The final ID will be generated after P2G creates ALPE's account;
+UAT may use a temporary static value that is replaced in configuration later.
+The affiliate ID is not an ALPE order identifier.
 
-ALPE supplies this destination URL to P2G:
+ALPE supplies this base destination URL to P2G:
 
 ```text
-https://alpewear.com/shop?ref=p2g
+https://alpewear.com/shop
 ```
 
-When P2G redirects a customer to that URL, ALPE stores the `p2g` referral in a
-first-party, secure, same-site cookie for 30 days. The referral is copied into
-the checkout session and the Notion order. The server validates the cookie;
-checkout request data alone cannot assert P2G attribution.
+P2G's redirect must forward its fixed affiliate ID to ALPE as `source_id`.
+When a customer reaches ALPE with that parameter, the server compares it with
+the configured `P2G_AFFILIATE_ID`. A match is stored in a first-party, secure,
+same-site cookie for 30 days. The exact affiliate ID is copied into the checkout
+session and the Notion order, which marks the order as belonging to P2G.
+
+The configured affiliate ID is stored in a server-only Vercel environment
+variable. Checkout request data alone cannot assert P2G attribution, and an
+unknown `source_id` does not receive the discount or P2G attribution.
 
 ## Discount Rules
 
@@ -63,11 +70,12 @@ provided by P2G.
 ### Stripe
 
 1. The server creates a Stripe Checkout Session with validated products,
-   discount, shipping, ALPE order ID, and referral metadata.
+   discount, shipping, ALPE order ID, and validated affiliate metadata.
 2. The signed Stripe webhook handles `checkout.session.completed`.
 3. The handler proceeds only when `session.payment_status === "paid"`.
 4. The order is created or updated in Notion with Payment Status `Paid`.
-5. If Referral Source is `p2g`, the server attempts the P2G postback.
+5. If the stored Affiliate ID matches the configured P2G ID, the server
+   attempts the P2G postback.
 
 The success page never marks an order paid and never sends the P2G postback.
 
@@ -100,6 +108,7 @@ customer, delivery, item, and tracking fields:
 | Payment Method | Select | `Card` or `Cash on delivery` |
 | Payment Status | Status | `Awaiting payment`, `Paid`, or `Cancelled` |
 | Referral Source | Select | `p2g` or empty |
+| Affiliate ID | Rich text | Exact validated P2G `source_id` or empty |
 | Subtotal | Number | Merchandise value before discount |
 | Discount | Number | Applied discount value |
 | Shipping | Number | Shipping charged |
@@ -143,12 +152,16 @@ the production endpoint.
 The service sends a postback only when all conditions hold:
 
 - Payment Status is `Paid`.
-- Referral Source is `p2g`.
+- Affiliate ID matches the configured `P2G_AFFILIATE_ID`.
 - Paid Amount is greater than zero.
 - P2G Reported is false.
 
 Amounts use a fixed two-decimal representation with `.` as the decimal
 separator. Query values are URL-encoded.
+
+P2G has said the affiliate ID may also be returned in the postback, but it is
+not required. ALPE will omit it unless P2G supplies an explicit query-parameter
+name. The required `customer_id` remains the stable ALPE order ID.
 
 After a successful 2xx response, ALPE updates `P2G Reported` and
 `P2G Reported At` in Notion. Non-2xx responses and network failures are logged
@@ -176,7 +189,7 @@ idempotent. This confirmation is a launch requirement.
 - The P2G base URL is server-only configuration.
 - No customer name, email, phone, or address is sent to P2G.
 - The P2G postback contains only order ID, paid amount, and brand.
-- Referral cookies contain only the referral source, not personal data.
+- Referral cookies contain only the fixed affiliate ID, not personal data.
 
 ## Error Handling
 
@@ -192,7 +205,7 @@ idempotent. This confirmation is a launch requirement.
 
 Automated tests cover:
 
-- P2G referral capture and expiration.
+- Exact P2G `source_id` validation, capture, and expiration.
 - Automatic 20% merchandise discount.
 - Server-side rejection of manipulated prices or referrals.
 - Shipping inclusion for one-pair orders and free shipping under the existing
@@ -220,8 +233,10 @@ UAT acceptance covers:
 1. Add the Notion properties and webhook subscription.
 2. Configure the P2G UAT endpoint in Vercel.
 3. Deploy to a preview environment and run automated tests.
-4. Give P2G the ALPE destination URL and run UAT conversions.
+4. Give P2G the ALPE base destination URL, configure a static UAT affiliate ID,
+   and verify that the redirect forwards it to ALPE as `source_id`.
 5. Obtain P2G confirmation that the ALPE order ID is accepted as
    `customer_id`, retries are idempotent, and the production endpoint is ready.
-6. Configure the production endpoint.
+6. Replace the UAT affiliate ID with the fixed ID generated for ALPE's P2G
+   account and configure the production endpoint.
 7. Deploy to production and verify one low-value card or controlled COD order.
