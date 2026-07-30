@@ -1,4 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ALPE Store
+
+Next.js 14 ecommerce site for ALPE blue-light-blocking glasses.
+
+## P2G and order configuration
+
+Copy the variable names from `.env.example` into local and Vercel
+configuration. Keep all values except `NEXT_PUBLIC_*` server-only.
+
+P2G test configuration:
+
+- `P2G_AFFILIATE_ID`: the fixed UAT affiliate ID forwarded as `source_id`.
+- `P2G_POSTBACK_URL`: use the supplied `p2g-uat.epixel.link` URL until P2G
+  confirms test conversions.
+- Replace both values with P2G's production values only after acceptance.
+
+Stripe sends paid checkout events to:
+
+```text
+https://alpewear.com/api/webhooks/stripe
+```
+
+Notion sends page property events to:
+
+```text
+https://alpewear.com/api/webhooks/notion
+```
+
+When creating the Notion subscription, its first request writes the one-time
+verification token to the private Vercel function log. Enter that token in the
+Notion connection UI and save it as `NOTION_WEBHOOK_VERIFICATION_TOKEN`.
+Subsequent events are verified using HMAC-SHA256.
+
+The Notion order data source must contain the existing customer and delivery
+properties plus:
+
+| Property | Type |
+|---|---|
+| Order ID | Rich text |
+| Stripe Session | Rich text |
+| Payment Method | Select |
+| Payment Status | Status |
+| Referral Source | Select |
+| Affiliate ID | Rich text |
+| Subtotal | Number |
+| Discount | Number |
+| Shipping | Number |
+| Paid Amount | Number |
+| Currency | Select |
+| P2G Reported | Checkbox |
+| P2G Reported At | Date |
+
+`Payment Method` uses `Card` and `Cash on delivery`. `Payment Status` uses
+`Awaiting payment`, `Paid`, and `Cancelled`. After collecting a COD payment,
+change its Notion status to `Paid`; only a matching P2G order triggers the
+partner postback.
 
 ## Getting Started
 

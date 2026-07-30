@@ -12,6 +12,7 @@ interface NotionWebhookDependencies {
   }) => Promise<boolean>
   getOrder: (pageId: string) => Promise<OrderRecord | null>
   reportOrder: (order: OrderRecord) => Promise<unknown>
+  recordVerificationToken: (token: string) => void
 }
 
 interface NotionEvent {
@@ -55,6 +56,7 @@ export function createNotionWebhookHandler(
     }
 
     if (event.verification_token) {
+      dependencies.recordVerificationToken(event.verification_token)
       return NextResponse.json({ received: true })
     }
 

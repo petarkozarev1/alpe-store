@@ -36,17 +36,20 @@ function makeDependencies(order: OrderRecord | null = paidP2GOrder) {
   const verifySignature = jest.fn().mockResolvedValue(true)
   const getOrder = jest.fn().mockResolvedValue(order)
   const reportOrder = jest.fn().mockResolvedValue('sent')
+  const recordVerificationToken = jest.fn()
 
   return {
     verifySignature,
     getOrder,
     reportOrder,
+    recordVerificationToken,
     handler: createNotionWebhookHandler({
       verificationToken: 'notion-verification-token',
       affiliateId: 'partner-fixed-id',
       verifySignature,
       getOrder,
       reportOrder,
+      recordVerificationToken,
     }),
   }
 }
@@ -85,6 +88,7 @@ test('acknowledges initial verification without processing an order', async () =
 
   expect(response.status).toBe(200)
   expect(setup.verifySignature).not.toHaveBeenCalled()
+  expect(setup.recordVerificationToken).toHaveBeenCalledWith('one-time-token')
   expect(setup.getOrder).not.toHaveBeenCalled()
   expect(setup.reportOrder).not.toHaveBeenCalled()
 })

@@ -13,5 +13,8 @@ export async function POST(req: Request) {
     verifySignature: verifyNotionSignature,
     getOrder: getOrderByPageId,
     reportOrder: reportPaidP2GOrder,
+    recordVerificationToken: token => {
+      console.info('[Notion webhook] verification token:', token)
+    },
   })(req)
 }
