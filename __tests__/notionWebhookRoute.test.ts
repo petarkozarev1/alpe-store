@@ -94,7 +94,7 @@ test('verifies Notion HMAC-SHA256 signatures against the raw body', async () => 
   })).resolves.toBe(false)
 })
 
-test('acknowledges initial verification without processing an order', async () => {
+test('does not log a verification payload after the webhook is configured', async () => {
   const setup = makeDependencies()
 
   const response = await setup.handler(notionRequest(
@@ -104,9 +104,29 @@ test('acknowledges initial verification without processing an order', async () =
 
   expect(response.status).toBe(200)
   expect(setup.verifySignature).not.toHaveBeenCalled()
-  expect(setup.recordVerificationToken).toHaveBeenCalledWith('one-time-token')
+  expect(setup.recordVerificationToken).not.toHaveBeenCalled()
   expect(setup.getOrder).not.toHaveBeenCalled()
   expect(setup.reportOrder).not.toHaveBeenCalled()
+})
+
+test('records the initial verification token during webhook bootstrap', async () => {
+  const setup = makeDependencies()
+  const handler = createNotionWebhookHandler({
+    verificationToken: '',
+    affiliateId: 'partner-fixed-id',
+    verifySignature: setup.verifySignature,
+    getOrder: setup.getOrder,
+    reportOrder: setup.reportOrder,
+    recordVerificationToken: setup.recordVerificationToken,
+  })
+
+  const response = await handler(notionRequest(
+    { verification_token: 'one-time-token' },
+    null
+  ))
+
+  expect(response.status).toBe(200)
+  expect(setup.recordVerificationToken).toHaveBeenCalledWith('one-time-token')
 })
 
 test('route accepts initial verification before the verification token is configured', async () => {

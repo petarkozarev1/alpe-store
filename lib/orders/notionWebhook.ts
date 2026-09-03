@@ -56,7 +56,9 @@ export function createNotionWebhookHandler(
     }
 
     if (event.verification_token) {
-      dependencies.recordVerificationToken(event.verification_token)
+      if (!dependencies.verificationToken) {
+        dependencies.recordVerificationToken(event.verification_token)
+      }
       return NextResponse.json({ received: true })
     }
 
