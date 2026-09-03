@@ -8,12 +8,18 @@ import {
 import type { OrderRecord } from '@/lib/orders/notion'
 
 const originalVerificationToken = process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN
+const originalAffiliateId = process.env.P2G_AFFILIATE_ID
 
 afterEach(() => {
   if (originalVerificationToken === undefined) {
     delete process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN
   } else {
     process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN = originalVerificationToken
+  }
+  if (originalAffiliateId === undefined) {
+    delete process.env.P2G_AFFILIATE_ID
+  } else {
+    process.env.P2G_AFFILIATE_ID = originalAffiliateId
   }
 })
 
@@ -105,7 +111,7 @@ test('acknowledges initial verification without processing an order', async () =
 
 test('route accepts initial verification before the verification token is configured', async () => {
   delete process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN
-  process.env.P2G_AFFILIATE_ID = 'partner-fixed-id'
+  delete process.env.P2G_AFFILIATE_ID
   const { POST } = await import('@/app/api/webhooks/notion/route')
 
   const response = await POST(notionRequest(
