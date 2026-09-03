@@ -7,6 +7,16 @@ import {
 } from '@/lib/orders/notionWebhook'
 import type { OrderRecord } from '@/lib/orders/notion'
 
+const originalVerificationToken = process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN
+
+afterEach(() => {
+  if (originalVerificationToken === undefined) {
+    delete process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN
+  } else {
+    process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN = originalVerificationToken
+  }
+})
+
 const paidP2GOrder: OrderRecord = {
   pageId: 'notion-page-1',
   orderId: 'ALPE-order-1',
@@ -91,6 +101,41 @@ test('acknowledges initial verification without processing an order', async () =
   expect(setup.recordVerificationToken).toHaveBeenCalledWith('one-time-token')
   expect(setup.getOrder).not.toHaveBeenCalled()
   expect(setup.reportOrder).not.toHaveBeenCalled()
+})
+
+test('route accepts initial verification before the verification token is configured', async () => {
+  delete process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN
+  process.env.P2G_AFFILIATE_ID = 'partner-fixed-id'
+  const { POST } = await import('@/app/api/webhooks/notion/route')
+
+  const response = await POST(notionRequest(
+    { verification_token: 'one-time-token' },
+    null
+  ))
+
+  expect(response.status).toBe(200)
+  await expect(response.json()).resolves.toEqual({ received: true })
+})
+
+test('rejects order events when the verification token is not configured', async () => {
+  const verifySignature = jest.fn().mockResolvedValue(true)
+  const getOrder = jest.fn().mockResolvedValue(paidP2GOrder)
+  const reportOrder = jest.fn().mockResolvedValue('sent')
+  const handler = createNotionWebhookHandler({
+    verificationToken: '',
+    affiliateId: 'partner-fixed-id',
+    verifySignature,
+    getOrder,
+    reportOrder,
+    recordVerificationToken: jest.fn(),
+  })
+
+  const response = await handler(notionRequest(propertyEvent))
+
+  expect(response.status).toBe(500)
+  expect(verifySignature).not.toHaveBeenCalled()
+  expect(getOrder).not.toHaveBeenCalled()
+  expect(reportOrder).not.toHaveBeenCalled()
 })
 
 test('rejects a missing or invalid Notion signature', async () => {

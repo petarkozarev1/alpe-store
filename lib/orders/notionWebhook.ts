@@ -60,6 +60,13 @@ export function createNotionWebhookHandler(
       return NextResponse.json({ received: true })
     }
 
+    if (!dependencies.verificationToken) {
+      return NextResponse.json(
+        { error: 'Webhook verification is not configured' },
+        { status: 500 }
+      )
+    }
+
     const signature = req.headers.get('x-notion-signature')
     if (!signature) {
       return NextResponse.json(

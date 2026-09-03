@@ -8,7 +8,7 @@ import { getRequiredEnv } from '@/lib/stripe'
 
 export async function POST(req: Request) {
   return createNotionWebhookHandler({
-    verificationToken: getRequiredEnv('NOTION_WEBHOOK_VERIFICATION_TOKEN'),
+    verificationToken: process.env.NOTION_WEBHOOK_VERIFICATION_TOKEN ?? '',
     affiliateId: getRequiredEnv('P2G_AFFILIATE_ID'),
     verifySignature: verifyNotionSignature,
     getOrder: getOrderByPageId,
