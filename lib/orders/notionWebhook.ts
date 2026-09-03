@@ -96,7 +96,20 @@ export function createNotionWebhookHandler(
     }
 
     try {
-      const order = await dependencies.getOrder(event.entity.id)
+      let order = await dependencies.getOrder(event.entity.id)
+      for (
+        let attempt = 0;
+        attempt < 2 &&
+        order?.paymentMethod === 'cod' &&
+        order.paymentStatus === 'Awaiting payment' &&
+        order.affiliateId === dependencies.affiliateId &&
+        !order.p2gReported;
+        attempt += 1
+      ) {
+        await new Promise(resolve => setTimeout(resolve, 750))
+        order = await dependencies.getOrder(event.entity.id)
+      }
+
       if (
         order?.paymentMethod === 'cod' &&
         order.paymentStatus === 'Paid' &&

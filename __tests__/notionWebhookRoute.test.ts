@@ -176,6 +176,28 @@ test('retrieves and reports a paid P2G COD order', async () => {
   expect(setup.reportOrder).toHaveBeenCalledWith(paidP2GOrder)
 })
 
+test('retries when Notion briefly returns the pre-payment order state', async () => {
+  jest.useFakeTimers()
+  const setup = makeDependencies()
+  setup.getOrder
+    .mockResolvedValueOnce({
+      ...paidP2GOrder,
+      paymentStatus: 'Awaiting payment',
+    })
+    .mockResolvedValueOnce(paidP2GOrder)
+
+  try {
+    const responsePromise = setup.handler(notionRequest(propertyEvent))
+    await jest.runAllTimersAsync()
+    const response = await responsePromise
+
+    expect(response.status).toBe(200)
+    expect(setup.reportOrder).toHaveBeenCalledWith(paidP2GOrder)
+  } finally {
+    jest.useRealTimers()
+  }
+})
+
 test.each([
   { paymentStatus: 'Awaiting payment' as const },
   { paymentMethod: 'card' as const },
