@@ -100,26 +100,23 @@ describe('checkout API', () => {
     )
   })
 
-  test('applies the P2G product discount only for validated attribution', async () => {
+  test('preserves P2G attribution without changing the price', async () => {
     const { stripe, dependencies } = makeDependencies('partner-fixed-id')
     const response = await createCheckoutHandler(dependencies)(checkoutRequest())
 
     expect(response.status).toBe(200)
-    expect(stripe.coupons.create).toHaveBeenCalledWith({
-      amount_off: 900,
-      currency: 'eur',
-      duration: 'once',
-      name: 'ALPÉ P2G discount',
-    })
+    expect(stripe.coupons.create).not.toHaveBeenCalled()
     expect(stripe.checkout.sessions.create).toHaveBeenCalledWith(
       expect.objectContaining({
-        discounts: [{ coupon: 'coupon-p2g' }],
         metadata: expect.objectContaining({
           affiliateId: 'partner-fixed-id',
-          totalCents: '4098',
+          discountCents: '0',
+          totalCents: '4998',
         }),
       })
     )
+    expect(stripe.checkout.sessions.create.mock.calls[0][0])
+      .not.toHaveProperty('discounts')
   })
 
   test('creates COD in Notion as awaiting payment without calling Stripe', async () => {
@@ -141,7 +138,10 @@ describe('checkout API', () => {
       paymentMethod: 'cod',
       paymentStatus: 'Awaiting payment',
       affiliateId: 'partner-fixed-id',
-      quote: expect.objectContaining({ totalCents: 4098 }),
+      quote: expect.objectContaining({
+        discountCents: 0,
+        totalCents: 4998,
+      }),
     }))
   })
 

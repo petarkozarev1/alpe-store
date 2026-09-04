@@ -45,11 +45,12 @@ beforeEach(() => {
   jest.restoreAllMocks()
 })
 
-test('shows automatic P2G pricing and both payment methods', () => {
-  render(<CheckoutPageClient isP2G />)
+test('shows normal pricing and promo input for a P2G visitor', () => {
+  render(<CheckoutPageClient />)
 
-  expect(screen.getAllByText('P2G отстъпка (20%)')).toHaveLength(2)
-  expect(screen.getByText('€40.98', { exact: false })).toBeInTheDocument()
+  expect(screen.queryByText(/P2G отстъпка/)).not.toBeInTheDocument()
+  expect(screen.getByPlaceholderText('Код за отстъпка')).toBeInTheDocument()
+  expect(screen.getByText('€49.98', { exact: false })).toBeInTheDocument()
   expect(screen.getByRole('radio', { name: /^Карта/ })).toBeChecked()
   expect(screen.getByRole('radio', { name: /^Наложен платеж/ })).not.toBeChecked()
 })
@@ -65,7 +66,7 @@ test('submits product identifiers and COD without browser prices', async () => {
     }),
   })
   global.fetch = fetchMock
-  render(<CheckoutPageClient isP2G />)
+  render(<CheckoutPageClient />)
 
   await user.type(screen.getByPlaceholderText('имейл@example.com'), 'test@example.com')
   await user.type(screen.getByPlaceholderText('Иван'), 'Test')

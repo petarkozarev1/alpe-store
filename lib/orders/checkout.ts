@@ -7,9 +7,6 @@ import type {
 } from './types'
 
 export interface StripeClient {
-  coupons: {
-    create(args: unknown): Promise<{ id: string }>
-  }
   checkout: {
     sessions: {
       create(args: unknown): Promise<{ id: string; url: string | null }>
@@ -108,7 +105,7 @@ export function createCheckoutHandler(dependencies: CheckoutDependencies) {
     try {
       const body = parseCheckoutBody(await req.json())
       const affiliateId = dependencies.getAffiliateId()
-      const quote = quoteOrder(body.items, Boolean(affiliateId))
+      const quote = quoteOrder(body.items)
       const orderId = dependencies.createOrderId()
       const createdAt = dependencies.now()
       const clientIpAddress =
@@ -154,14 +151,6 @@ export function createCheckoutHandler(dependencies: CheckoutDependencies) {
       }
 
       const stripe = dependencies.getStripeClient()
-      const coupon = affiliateId
-        ? await stripe.coupons.create({
-            amount_off: quote.discountCents,
-            currency: 'eur',
-            duration: 'once',
-            name: 'ALPÉ P2G discount',
-          })
-        : null
       const lineItems = quote.items.map(item => ({
         price_data: {
           currency: 'eur',
@@ -186,7 +175,6 @@ export function createCheckoutHandler(dependencies: CheckoutDependencies) {
         mode: 'payment',
         customer_email: body.email,
         line_items: lineItems,
-        ...(coupon ? { discounts: [{ coupon: coupon.id }] } : {}),
         shipping_address_collection: {
           allowed_countries: [
             'BG', 'DE', 'FR', 'IT', 'ES', 'NL',

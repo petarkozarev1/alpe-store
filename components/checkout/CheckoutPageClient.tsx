@@ -31,7 +31,7 @@ function getCookieValue(name: string) {
 interface Contact { email: string; newsletter: boolean }
 interface Shipping { firstName: string; lastName: string; phone: string; city: string; address: string; postalCode: string; country: string; note: string }
 
-export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean }) {
+export default function CheckoutPageClient() {
   const { items } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '', newsletter: true })
@@ -53,7 +53,7 @@ export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean 
     const m = i.variantId.match(/bundle-(\d+)/)
     return s + (m ? parseInt(m[1]) : 1) * i.quantity
   }, 0)
-  const discountPercent = isP2G ? 20 : (applied?.percent ?? 0)
+  const discountPercent = applied?.percent ?? 0
   const discount = discountPercent
     ? +(subtotal * discountPercent / 100).toFixed(2)
     : 0
@@ -63,7 +63,6 @@ export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean 
 
   /* ── discount code ──────────────────────────────── */
   const applyCode = () => {
-    if (isP2G) return
     const pct = DISCOUNT_CODES[codeInput.toUpperCase()]
     if (!pct) { setCodeError('Невалиден код'); return }
     setApplied({ code: codeInput.toUpperCase(), percent: pct })
@@ -383,16 +382,7 @@ export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean 
               <hr className="border-stone/15 mb-4" />
 
               {/* Discount code */}
-              {isP2G ? (
-                <div className="flex items-center justify-between bg-cream border border-gold/40 rounded-xl px-4 py-3 mb-4">
-                  <span className="font-sans text-xs font-semibold text-iron">
-                    P2G отстъпка (20%)
-                  </span>
-                  <span className="font-sans text-xs text-stone">
-                    Приложена автоматично
-                  </span>
-                </div>
-              ) : applied ? (
+              {applied ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
                   <span className="font-sans text-xs font-semibold text-green-700">{applied.code} · {applied.percent}% отстъпка приложена</span>
                   <button type="button" onClick={removeCode} className="font-sans text-xs text-stone hover:text-onyx transition-colors">Премахни</button>
@@ -423,7 +413,7 @@ export default function CheckoutPageClient({ isP2G = false }: { isP2G?: boolean 
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-green-700">
-                    <span>{isP2G ? 'P2G отстъпка (20%)' : `Отстъпка (${applied?.code})`}</span>
+                    <span>{`Отстъпка (${applied?.code})`}</span>
                     <span>−€{discount.toFixed(2)}</span>
                   </div>
                 )}
