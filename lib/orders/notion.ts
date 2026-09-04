@@ -33,6 +33,7 @@ export interface OrderInput {
   customer: OrderCustomer
   shipping: OrderShipping
   createdAt?: string
+  paidAt?: string
 }
 
 export interface OrderRecord {
@@ -45,10 +46,13 @@ export interface OrderRecord {
   paidAmountCents: number
   currency: 'EUR'
   p2gReported: boolean
+  paidAt?: string
 }
 
 interface QueryResponse {
   results: Array<{ id: string }>
+  has_more?: boolean
+  next_cursor?: string | null
 }
 
 interface PageResponse {
@@ -81,7 +85,7 @@ function orderProperties(order: OrderInput): Record<string, unknown> {
     .map(item => `${item.name} x${item.quantity}`)
     .join(', ')
 
-  return {
+  const properties: Record<string, unknown> = {
     Name: { title: [{ text: { content: order.customer.name } }] },
     Email: { email: order.customer.email },
     Phone: { phone_number: order.customer.phone },
@@ -128,6 +132,12 @@ function orderProperties(order: OrderInput): Record<string, unknown> {
     Currency: { select: { name: 'EUR' } },
     'P2G Reported': { checkbox: false },
   }
+
+  if (order.paidAt) {
+    properties['Paid At'] = { date: { start: order.paidAt } }
+  }
+
+  return properties
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -164,6 +174,12 @@ function numberValue(properties: Record<string, unknown>, name: string) {
 function checkboxValue(properties: Record<string, unknown>, name: string) {
   const property = asRecord(properties[name])
   return property?.checkbox === true
+}
+
+function dateValue(properties: Record<string, unknown>, name: string) {
+  const property = asRecord(properties[name])
+  const date = asRecord(property?.date)
+  return typeof date?.start === 'string' ? date.start : undefined
 }
 
 function parseOrderPage(
@@ -214,6 +230,7 @@ function parseOrderPage(
     paidAmountCents: Math.round(numberValue(properties, 'Paid Amount') * 100),
     currency: 'EUR',
     p2gReported: checkboxValue(properties, 'P2G Reported'),
+    paidAt: dateValue(properties, 'Paid At'),
   }
 }
 
@@ -228,6 +245,7 @@ function recordFromInput(pageId: string, order: OrderInput): OrderRecord {
     paidAmountCents: order.quote.totalCents,
     currency: 'EUR',
     p2gReported: false,
+    paidAt: order.paidAt,
   }
 }
 
@@ -249,6 +267,11 @@ export function createNotionOrderRepository(
       const existingPage = existing.results[0]
 
       if (existingPage) {
+        delete properties['P2G Reported']
+        if (order.paidAt) {
+          const existingOrder = await this.getOrderByPageId(existingPage.id)
+          if (existingOrder?.paidAt) delete properties['Paid At']
+        }
         await client.pages.update({
           page_id: existingPage.id,
           properties,
@@ -269,6 +292,55 @@ export function createNotionOrderRepository(
     async getOrderByPageId(pageId: string): Promise<OrderRecord | null> {
       const page = await client.pages.retrieve({ page_id: pageId })
       return parseOrderPage(page, dataSourceId)
+    },
+
+    async setPaidAtIfMissing(
+      pageId: string,
+      paidAt: string
+    ): Promise<OrderRecord | null> {
+      const order = await this.getOrderByPageId(pageId)
+      if (!order || order.paidAt) return order
+
+      await client.pages.update({
+        page_id: pageId,
+        properties: {
+          'Paid At': { date: { start: paidAt } },
+        },
+      })
+      return { ...order, paidAt }
+    },
+
+    async listP2GCandidates(
+      cutoff: string,
+      affiliateId: string
+    ): Promise<OrderRecord[]> {
+      const pageIds: string[] = []
+      let cursor: string | undefined
+
+      do {
+        const response = await client.dataSources.query({
+          data_source_id: dataSourceId,
+          filter: {
+            and: [
+              { property: 'Payment Status', status: { equals: 'Paid' } },
+              { property: 'Affiliate ID', rich_text: { equals: affiliateId } },
+              { property: 'P2G Reported', checkbox: { equals: false } },
+              { property: 'Paid At', date: { on_or_before: cutoff } },
+            ],
+          },
+          page_size: 100,
+          ...(cursor ? { start_cursor: cursor } : {}),
+        })
+        pageIds.push(...response.results.map(page => page.id))
+        cursor = response.has_more && response.next_cursor
+          ? response.next_cursor
+          : undefined
+      } while (cursor)
+
+      const orders = await Promise.all(
+        pageIds.map(pageId => this.getOrderByPageId(pageId))
+      )
+      return orders.filter((order): order is OrderRecord => Boolean(order))
     },
 
     async markP2GReported(pageId: string, reportedAt: string): Promise<void> {
@@ -303,4 +375,12 @@ export function getOrderByPageId(pageId: string) {
 
 export function markP2GReported(pageId: string, reportedAt: string) {
   return getRepository().markP2GReported(pageId, reportedAt)
+}
+
+export function setPaidAtIfMissing(pageId: string, paidAt: string) {
+  return getRepository().setPaidAtIfMissing(pageId, paidAt)
+}
+
+export function listP2GCandidates(cutoff: string, affiliateId: string) {
+  return getRepository().listP2GCandidates(cutoff, affiliateId)
 }
