@@ -1,9 +1,11 @@
-import { getOrderByPageId } from '@/lib/orders/notion'
+import {
+  getOrderByPageId,
+  setPaidAtIfMissing,
+} from '@/lib/orders/notion'
 import {
   createNotionWebhookHandler,
   verifyNotionSignature,
 } from '@/lib/orders/notionWebhook'
-import { reportPaidP2GOrder } from '@/lib/orders/p2g'
 
 export async function POST(req: Request) {
   return createNotionWebhookHandler({
@@ -11,7 +13,8 @@ export async function POST(req: Request) {
     affiliateId: process.env.P2G_AFFILIATE_ID ?? '',
     verifySignature: verifyNotionSignature,
     getOrder: getOrderByPageId,
-    reportOrder: reportPaidP2GOrder,
+    setPaidAtIfMissing,
+    now: () => new Date().toISOString(),
     recordVerificationToken: token => {
       console.info('[Notion webhook] verification token:', token)
     },

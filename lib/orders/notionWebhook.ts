@@ -11,7 +11,11 @@ interface NotionWebhookDependencies {
     verificationToken: string
   }) => Promise<boolean>
   getOrder: (pageId: string) => Promise<OrderRecord | null>
-  reportOrder: (order: OrderRecord) => Promise<unknown>
+  setPaidAtIfMissing: (
+    pageId: string,
+    paidAt: string
+  ) => Promise<OrderRecord | null>
+  now: () => string
   recordVerificationToken: (token: string) => void
 }
 
@@ -117,7 +121,7 @@ export function createNotionWebhookHandler(
         order.paymentStatus === 'Paid' &&
         order.affiliateId === dependencies.affiliateId
       ) {
-        await dependencies.reportOrder(order)
+        await dependencies.setPaidAtIfMissing(order.pageId, dependencies.now())
       }
 
       return NextResponse.json({ received: true })

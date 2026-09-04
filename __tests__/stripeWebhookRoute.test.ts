@@ -47,7 +47,6 @@ function makeDependencies(session = baseSession) {
     p2gReported: false,
   }
   const saveOrder = jest.fn().mockResolvedValue(savedOrder)
-  const reportOrder = jest.fn().mockResolvedValue('sent')
   const sendCapi = jest.fn().mockResolvedValue(undefined)
   const listLineItems = jest.fn().mockResolvedValue({
     data: [{
@@ -60,7 +59,6 @@ function makeDependencies(session = baseSession) {
 
   return {
     saveOrder,
-    reportOrder,
     sendCapi,
     listLineItems,
     handler: createStripeWebhookHandler({
@@ -70,8 +68,8 @@ function makeDependencies(session = baseSession) {
       }),
       listLineItems,
       saveOrder,
-      reportOrder,
       sendCapi,
+      now: () => '2026-07-30T13:00:00.000Z',
     }),
   }
 }
@@ -95,11 +93,10 @@ test('acknowledges a completed but unpaid session without side effects', async (
   expect(response.status).toBe(200)
   expect(setup.listLineItems).not.toHaveBeenCalled()
   expect(setup.saveOrder).not.toHaveBeenCalled()
-  expect(setup.reportOrder).not.toHaveBeenCalled()
   expect(setup.sendCapi).not.toHaveBeenCalled()
 })
 
-test('upserts and reports a paid P2G card order', async () => {
+test('upserts a paid P2G card order with Paid At without reporting it', async () => {
   const setup = makeDependencies()
 
   const response = await setup.handler(stripeRequest())
@@ -111,6 +108,7 @@ test('upserts and reports a paid P2G card order', async () => {
     paymentMethod: 'card',
     paymentStatus: 'Paid',
     affiliateId: 'partner-fixed-id',
+    paidAt: '2026-07-30T13:00:00.000Z',
     quote: expect.objectContaining({
       subtotalCents: 4499,
       discountCents: 900,
@@ -118,14 +116,10 @@ test('upserts and reports a paid P2G card order', async () => {
       totalCents: 4098,
     }),
   }))
-  expect(setup.reportOrder).toHaveBeenCalledWith(expect.objectContaining({
-    orderId: 'ALPE-order-1',
-    paymentStatus: 'Paid',
-  }))
   expect(setup.sendCapi).toHaveBeenCalledTimes(1)
 })
 
-test('saves a direct paid order without invoking the P2G reporter', async () => {
+test('saves a direct paid order with its payment time', async () => {
   const setup = makeDependencies({
     ...baseSession,
     metadata: { ...baseSession.metadata, affiliateId: '' },
@@ -135,7 +129,9 @@ test('saves a direct paid order without invoking the P2G reporter', async () => 
 
   expect(response.status).toBe(200)
   expect(setup.saveOrder).toHaveBeenCalledTimes(1)
-  expect(setup.reportOrder).not.toHaveBeenCalled()
+  expect(setup.saveOrder).toHaveBeenCalledWith(expect.objectContaining({
+    paidAt: '2026-07-30T13:00:00.000Z',
+  }))
 })
 
 test('reuses the metadata ALPE order ID across Stripe retries', async () => {
@@ -162,8 +158,8 @@ test('rejects an invalid Stripe signature', async () => {
     },
     listLineItems: setup.listLineItems,
     saveOrder: setup.saveOrder,
-    reportOrder: setup.reportOrder,
     sendCapi: setup.sendCapi,
+    now: () => '2026-07-30T13:00:00.000Z',
   })
 
   const response = await handler(stripeRequest())

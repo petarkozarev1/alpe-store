@@ -1,6 +1,5 @@
 import { sendCAPIEvent } from '@/lib/meta-capi'
 import { createOrUpdateOrder } from '@/lib/orders/notion'
-import { reportPaidP2GOrder } from '@/lib/orders/p2g'
 import {
   createStripeWebhookHandler,
   type StripeWebhookEvent,
@@ -31,6 +30,6 @@ export const POST = createStripeWebhookHandler({
     }
   },
   saveOrder: createOrUpdateOrder,
-  reportOrder: reportPaidP2GOrder,
   sendCapi: sendCAPIEvent,
+  now: () => new Date().toISOString(),
 })

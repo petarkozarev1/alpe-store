@@ -31,8 +31,8 @@ interface StripeWebhookDependencies {
     sessionId: string
   ) => Promise<{ data: StripeLineItem[] }>
   saveOrder: (order: OrderInput) => Promise<OrderRecord>
-  reportOrder: (order: OrderRecord) => Promise<unknown>
   sendCapi: (eventName: string, options: CAPIOptions) => Promise<void>
+  now: () => string
 }
 
 function cents(value: string | undefined, fallback = 0) {
@@ -91,11 +91,12 @@ export function createStripeWebhookHandler(
       const orderId = metadata.orderId || session.id
       const affiliateId = metadata.affiliateId || undefined
 
-      const savedOrder = await dependencies.saveOrder({
+      await dependencies.saveOrder({
         orderId,
         stripeSessionId: session.id,
         paymentMethod: 'card',
         paymentStatus: 'Paid',
+        paidAt: dependencies.now(),
         affiliateId,
         quote: {
           items: productItems.map(item => ({
@@ -159,10 +160,6 @@ export function createStripeWebhookHandler(
         eventId: `purchase-${orderId}`,
         sourceUrl: 'https://alpewear.com/checkout/success',
       })
-
-      if (affiliateId) {
-        await dependencies.reportOrder(savedOrder)
-      }
 
       return NextResponse.json({ received: true })
     } catch (error) {

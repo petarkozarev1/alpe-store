@@ -51,20 +51,21 @@ function notionRequest(
 function makeDependencies(order: OrderRecord | null = paidP2GOrder) {
   const verifySignature = jest.fn().mockResolvedValue(true)
   const getOrder = jest.fn().mockResolvedValue(order)
-  const reportOrder = jest.fn().mockResolvedValue('sent')
+  const setPaidAtIfMissing = jest.fn().mockResolvedValue(order)
   const recordVerificationToken = jest.fn()
 
   return {
     verifySignature,
     getOrder,
-    reportOrder,
+    setPaidAtIfMissing,
     recordVerificationToken,
     handler: createNotionWebhookHandler({
       verificationToken: 'notion-verification-token',
       affiliateId: 'partner-fixed-id',
       verifySignature,
       getOrder,
-      reportOrder,
+      setPaidAtIfMissing,
+      now: () => '2026-07-30T13:00:00.000Z',
       recordVerificationToken,
     }),
   }
@@ -106,7 +107,7 @@ test('does not log a verification payload after the webhook is configured', asyn
   expect(setup.verifySignature).not.toHaveBeenCalled()
   expect(setup.recordVerificationToken).not.toHaveBeenCalled()
   expect(setup.getOrder).not.toHaveBeenCalled()
-  expect(setup.reportOrder).not.toHaveBeenCalled()
+  expect(setup.setPaidAtIfMissing).not.toHaveBeenCalled()
 })
 
 test('records the initial verification token during webhook bootstrap', async () => {
@@ -116,7 +117,8 @@ test('records the initial verification token during webhook bootstrap', async ()
     affiliateId: 'partner-fixed-id',
     verifySignature: setup.verifySignature,
     getOrder: setup.getOrder,
-    reportOrder: setup.reportOrder,
+    setPaidAtIfMissing: setup.setPaidAtIfMissing,
+    now: () => '2026-07-30T13:00:00.000Z',
     recordVerificationToken: setup.recordVerificationToken,
   })
 
@@ -146,13 +148,14 @@ test('route accepts initial verification before the verification token is config
 test('rejects order events when the verification token is not configured', async () => {
   const verifySignature = jest.fn().mockResolvedValue(true)
   const getOrder = jest.fn().mockResolvedValue(paidP2GOrder)
-  const reportOrder = jest.fn().mockResolvedValue('sent')
+  const setPaidAtIfMissing = jest.fn().mockResolvedValue(paidP2GOrder)
   const handler = createNotionWebhookHandler({
     verificationToken: '',
     affiliateId: 'partner-fixed-id',
     verifySignature,
     getOrder,
-    reportOrder,
+    setPaidAtIfMissing,
+    now: () => '2026-07-30T13:00:00.000Z',
     recordVerificationToken: jest.fn(),
   })
 
@@ -161,7 +164,7 @@ test('rejects order events when the verification token is not configured', async
   expect(response.status).toBe(500)
   expect(verifySignature).not.toHaveBeenCalled()
   expect(getOrder).not.toHaveBeenCalled()
-  expect(reportOrder).not.toHaveBeenCalled()
+  expect(setPaidAtIfMissing).not.toHaveBeenCalled()
 })
 
 test('rejects a missing or invalid Notion signature', async () => {
@@ -186,14 +189,17 @@ test('ignores unrelated Notion event types', async () => {
   expect(setup.getOrder).not.toHaveBeenCalled()
 })
 
-test('retrieves and reports a paid P2G COD order', async () => {
+test('records Paid At for a paid P2G COD order without reporting it', async () => {
   const setup = makeDependencies()
 
   const response = await setup.handler(notionRequest(propertyEvent))
 
   expect(response.status).toBe(200)
   expect(setup.getOrder).toHaveBeenCalledWith('notion-page-1')
-  expect(setup.reportOrder).toHaveBeenCalledWith(paidP2GOrder)
+  expect(setup.setPaidAtIfMissing).toHaveBeenCalledWith(
+    'notion-page-1',
+    '2026-07-30T13:00:00.000Z'
+  )
 })
 
 test('retries when Notion briefly returns the pre-payment order state', async () => {
@@ -212,7 +218,10 @@ test('retries when Notion briefly returns the pre-payment order state', async ()
     const response = await responsePromise
 
     expect(response.status).toBe(200)
-    expect(setup.reportOrder).toHaveBeenCalledWith(paidP2GOrder)
+    expect(setup.setPaidAtIfMissing).toHaveBeenCalledWith(
+      'notion-page-1',
+      '2026-07-30T13:00:00.000Z'
+    )
   } finally {
     jest.useRealTimers()
   }
@@ -223,11 +232,11 @@ test.each([
   { paymentMethod: 'card' as const },
   { affiliateId: undefined },
   { affiliateId: 'another-partner' },
-])('does not report an ineligible Notion order: %o', async change => {
+])('does not timestamp an ineligible Notion order: %o', async change => {
   const setup = makeDependencies({ ...paidP2GOrder, ...change })
 
   const response = await setup.handler(notionRequest(propertyEvent))
 
   expect(response.status).toBe(200)
-  expect(setup.reportOrder).not.toHaveBeenCalled()
+  expect(setup.setPaidAtIfMissing).not.toHaveBeenCalled()
 })
