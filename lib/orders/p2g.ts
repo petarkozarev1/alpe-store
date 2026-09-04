@@ -5,6 +5,10 @@ import {
 } from './notion'
 
 type ReportResult = 'sent' | 'skipped' | 'failed'
+export type P2GReportResult = ReportResult
+
+export const P2G_HOLD_DAYS = 15
+const P2G_HOLD_MS = P2G_HOLD_DAYS * 24 * 60 * 60 * 1000
 
 interface P2GReporterDependencies {
   affiliateId: string
@@ -29,16 +33,29 @@ export function buildP2GPostbackUrl(
   return url
 }
 
+export function isP2GEligible(
+  order: OrderRecord,
+  affiliateId: string,
+  now: string
+) {
+  const paidAt = order.paidAt ? Date.parse(order.paidAt) : Number.NaN
+  const currentTime = Date.parse(now)
+
+  return order.paymentStatus === 'Paid' &&
+    order.affiliateId === affiliateId &&
+    order.paidAmountCents > 0 &&
+    !order.p2gReported &&
+    Number.isFinite(paidAt) &&
+    Number.isFinite(currentTime) &&
+    paidAt <= currentTime - P2G_HOLD_MS
+}
+
 export function createP2GReporter(dependencies: P2GReporterDependencies) {
   return async function reportPaidP2GOrder(
     order: OrderRecord
   ): Promise<ReportResult> {
-    if (
-      order.paymentStatus !== 'Paid' ||
-      order.affiliateId !== dependencies.affiliateId ||
-      order.paidAmountCents <= 0 ||
-      order.p2gReported
-    ) {
+    const now = dependencies.now()
+    if (!isP2GEligible(order, dependencies.affiliateId, now)) {
       return 'skipped'
     }
 
@@ -59,7 +76,7 @@ export function createP2GReporter(dependencies: P2GReporterDependencies) {
         return 'failed'
       }
 
-      await dependencies.markReported(order.pageId, dependencies.now())
+      await dependencies.markReported(order.pageId, now)
       return 'sent'
     } catch (error) {
       dependencies.logError('P2G postback failed', {

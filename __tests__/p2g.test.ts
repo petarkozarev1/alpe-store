@@ -3,6 +3,7 @@
 import {
   buildP2GPostbackUrl,
   createP2GReporter,
+  isP2GEligible,
 } from '@/lib/orders/p2g'
 import type { OrderRecord } from '@/lib/orders/notion'
 
@@ -15,6 +16,7 @@ const paidOrder: OrderRecord = {
   paidAmountCents: 4098,
   currency: 'EUR',
   p2gReported: false,
+  paidAt: '2026-07-15T13:00:00.000Z',
 }
 
 function makeReporter(overrides: Partial<{
@@ -59,12 +61,35 @@ test.each([
   { affiliateId: 'another-partner' },
   { paidAmountCents: 0 },
   { p2gReported: true },
+  { paidAt: undefined },
+  { paidAt: '2026-07-15T13:00:00.001Z' },
 ])('skips an ineligible order: %o', async (change) => {
   const { report, fetchPostback, markReported } = makeReporter()
 
   await expect(report({ ...paidOrder, ...change })).resolves.toBe('skipped')
   expect(fetchPostback).not.toHaveBeenCalled()
   expect(markReported).not.toHaveBeenCalled()
+})
+
+test('accepts an order at the exact 15-day boundary', () => {
+  expect(isP2GEligible(
+    paidOrder,
+    'partner-fixed-id',
+    '2026-07-30T13:00:00.000Z'
+  )).toBe(true)
+})
+
+test('rejects cancelled and invalid-date orders', () => {
+  expect(isP2GEligible(
+    { ...paidOrder, paymentStatus: 'Cancelled' },
+    'partner-fixed-id',
+    '2026-07-30T13:00:00.000Z'
+  )).toBe(false)
+  expect(isP2GEligible(
+    { ...paidOrder, paidAt: 'not-a-date' },
+    'partner-fixed-id',
+    '2026-07-30T13:00:00.000Z'
+  )).toBe(false)
 })
 
 test('marks Notion reported only after a successful GET', async () => {
