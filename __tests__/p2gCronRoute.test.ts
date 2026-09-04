@@ -52,7 +52,6 @@ test('rejects a missing or incorrect cron secret', async () => {
   expect((await setup.handler(cronRequest('wrong'))).status).toBe(401)
   expect(setup.listCandidates).not.toHaveBeenCalled()
 })
-
 test('queries the cutoff, re-reads candidates, and reports eligible orders', async () => {
   const setup = makeDependencies()
 
@@ -112,4 +111,3 @@ test('continues after one order fails without exposing customer data', async () 
   )
   expect(JSON.stringify(setup.logError.mock.calls)).not.toContain('customer')
 })
-

@@ -231,4 +231,3 @@
 - [ ] **Step 6: Report the exact operational state**
 
   State what was removed, how the 15-day clock works, what was deployed, test/build results, and the remaining external dependency on P2G's endpoint confirmation.
-

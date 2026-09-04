@@ -16,4 +16,3 @@ export async function GET(req: Request) {
     logError: (message, details) => console.error(message, details),
   })(req)
 }
-

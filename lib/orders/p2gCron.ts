@@ -18,7 +18,6 @@ interface P2GCronDependencies {
   reportOrder: (order: OrderRecord) => Promise<P2GReportResult>
   logError: (message: string, details: unknown) => void
 }
-
 export function createP2GCronHandler(dependencies: P2GCronDependencies) {
   return async function p2gCronHandler(req: Request) {
     if (
@@ -81,4 +80,3 @@ export function createP2GCronHandler(dependencies: P2GCronDependencies) {
     }
   }
 }
-
