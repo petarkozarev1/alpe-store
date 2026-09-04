@@ -39,9 +39,9 @@ const order: OrderInput = {
       pairsPerUnit: 1,
     }],
     subtotalCents: 4499,
-    discountCents: 900,
+    discountCents: 0,
     shippingCents: 499,
-    totalCents: 4098,
+    totalCents: 4998,
     totalPairs: 1,
   },
   customer: {
@@ -130,7 +130,7 @@ describe('Notion order repository', () => {
       paymentMethod: 'cod',
       paymentStatus: 'Awaiting payment',
       affiliateId: 'partner-fixed-id',
-      paidAmountCents: 4098,
+      paidAmountCents: 4998,
       p2gReported: false,
     })
     expect(client.pages.create).toHaveBeenCalledWith(expect.objectContaining({
@@ -145,7 +145,7 @@ describe('Notion order repository', () => {
         'Affiliate ID': {
           rich_text: [{ text: { content: 'partner-fixed-id' } }],
         },
-        'Paid Amount': { number: 40.98 },
+        'Paid Amount': { number: 49.98 },
         'P2G Reported': { checkbox: false },
       }),
     }))

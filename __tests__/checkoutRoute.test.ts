@@ -40,9 +40,6 @@ function checkoutRequest(overrides: Record<string, unknown> = {}) {
 
 function makeDependencies(affiliateId: string | null = null) {
   const stripe = {
-    coupons: {
-      create: jest.fn().mockResolvedValue({ id: 'coupon-p2g' }),
-    },
     checkout: {
       sessions: {
         create: jest.fn().mockResolvedValue({
@@ -105,7 +102,6 @@ describe('checkout API', () => {
     const response = await createCheckoutHandler(dependencies)(checkoutRequest())
 
     expect(response.status).toBe(200)
-    expect(stripe.coupons.create).not.toHaveBeenCalled()
     expect(stripe.checkout.sessions.create).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: expect.objectContaining({

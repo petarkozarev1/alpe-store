@@ -6,7 +6,7 @@ import type { OrderRecord } from '@/lib/orders/notion'
 const baseSession = {
   id: 'cs_test_1',
   payment_status: 'paid',
-  amount_total: 4098,
+  amount_total: 4998,
   customer_email: 'test@example.com',
   metadata: {
     orderId: 'ALPE-order-1',
@@ -22,9 +22,9 @@ const baseSession = {
     courierNote: '',
     affiliateId: 'partner-fixed-id',
     subtotalCents: '4499',
-    discountCents: '900',
+    discountCents: '0',
     shippingCents: '499',
-    totalCents: '4098',
+    totalCents: '4998',
     totalPairs: '1',
     createdAt: '2026-07-30T12:00:00.000Z',
     fbp: '',
@@ -111,9 +111,9 @@ test('upserts a paid P2G card order with Paid At without reporting it', async ()
     paidAt: '2026-07-30T13:00:00.000Z',
     quote: expect.objectContaining({
       subtotalCents: 4499,
-      discountCents: 900,
+      discountCents: 0,
       shippingCents: 499,
-      totalCents: 4098,
+      totalCents: 4998,
     }),
   }))
   expect(setup.sendCapi).toHaveBeenCalledTimes(1)
