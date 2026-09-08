@@ -4,6 +4,8 @@ import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from 
 import { notifyAlert } from '@/lib/alerts'
 import { signCodOrder } from '@/lib/cod-signature'
 import { promoDiscount } from '@/lib/promo'
+import { cookies } from 'next/headers'
+import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
 import {
   computeCodTotal,
   computeSubtotal,
@@ -48,6 +50,7 @@ export async function POST(req: Request) {
     const codFee = COD_FEE
     const total = +(computeCodTotal({ items, shippingAmount, codFee }) - promo.amount).toFixed(2)
     const orderId = makeCodOrderId()
+    const affiliateId = getP2GAttribution(cookies().get(P2G_COOKIE_NAME)?.value, process.env.P2G_AFFILIATE_ID)
 
     const itemsText = items.map(i => `${i.name} — ${i.variantLabel} x${i.quantity}`).join(', ')
     const nameParts = (shipping.name ?? '').trim().split(' ')
@@ -61,6 +64,7 @@ export async function POST(req: Request) {
       courier: shipping.courier ?? '', officeLocation: shipping.officeLocation ?? '',
       courierNote: shipping.courierNote ?? '', itemsText, total,
       promoCode: promo.code,
+      affiliateId: affiliateId ?? undefined,
     }
 
     // Independent task #1 — Notion

@@ -4,6 +4,8 @@ import { sendCAPIEvent } from '@/lib/meta-capi'
 import { notifyAlert } from '@/lib/alerts'
 import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 import { promoDiscount } from '@/lib/promo'
+import { cookies } from 'next/headers'
+import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
 
 const DELIVERY_PRICE = 4.99
 
@@ -57,6 +59,7 @@ export async function POST(req: Request) {
     const totalProductDiscount = +(bundleDiscount + promo.amount).toFixed(2)
     const shippingAmount = pairs >= 2 ? 0 : DELIVERY_PRICE
     const shippingLabel = summary?.shippingLabel || shipping.deliveryMethod || 'Доставка'
+    const affiliateId = getP2GAttribution(cookies().get(P2G_COOKIE_NAME)?.value, process.env.P2G_AFFILIATE_ID)
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alpewear.com'
     const coupon = totalProductDiscount > 0
@@ -107,6 +110,7 @@ export async function POST(req: Request) {
         promoCode: promo.code,
         shippingAmount: String(shippingAmount),
         shippingLabel,
+        ...(affiliateId ? { affiliateId } : {}),
       },
       // ui_mode: 'elements' uses return_url (cancel_url/success_url are not allowed).
       // Stripe redirects here after checkout.confirm() succeeds; success page reads session_id

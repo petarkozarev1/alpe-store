@@ -21,6 +21,18 @@ describe('writeOrderToNotion', () => {
     expect(props.Items.rich_text[0].text.content).toContain('[НАЛОЖЕН ПЛАТЕЖ]')
     expect(props.Total.number).toBe(61.29)
     expect(props['Stripe Session'].rich_text[0].text.content).toBe('cod-1-AX')
+    expect(props['Payment Status'].status.name).toBe('Awaiting payment')
+    expect(props['P2G Reported'].checkbox).toBe(false)
+  })
+
+  it('persists P2G attribution without applying a discount', async () => {
+    const notion = require('@notionhq/client')
+    notion.__create.mockClear()
+    await writeOrderToNotion({ ...base, affiliateId: 'VPL5EQ42' })
+    const props = notion.__create.mock.calls[0][0].properties
+    expect(props['Affiliate ID'].rich_text[0].text.content).toBe('VPL5EQ42')
+    expect(props['Referral Source'].select.name).toBe('p2g')
+    expect(props.Total.number).toBe(base.total)
   })
 
   it('does NOT prefix card orders', async () => {

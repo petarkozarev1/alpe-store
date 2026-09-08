@@ -60,6 +60,8 @@ export async function POST(req: Request) {
     itemsText: items,
     total,
     promoCode: meta.promoCode || '',
+    affiliateId: meta.affiliateId || undefined,
+    paidAt: new Date().toISOString(),
   }
 
   let notionOk = false

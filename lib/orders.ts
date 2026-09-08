@@ -19,6 +19,8 @@ export interface OrderRecord {
   itemsText: string
   total: number
   promoCode?: string
+  affiliateId?: string
+  paidAt?: string
 }
 
 export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
@@ -43,6 +45,15 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
       Total: { number: order.total },
       Date: { date: { start: new Date().toISOString() } },
       'Stripe Session': { rich_text: [{ text: { content: order.orderRef } }] },
+      'Order ID': { rich_text: [{ text: { content: order.orderRef } }] },
+      'Payment Method': { select: { name: order.paymentMethod === 'card' ? 'Card' : 'Cash on delivery' } },
+      'Payment Status': { status: { name: order.paymentMethod === 'card' ? 'Paid' : 'Awaiting payment' } },
+      'Referral Source': { select: order.affiliateId ? { name: 'p2g' } : null },
+      'Affiliate ID': { rich_text: [{ text: { content: order.affiliateId ?? '' } }] },
+      'Paid Amount': { number: order.total },
+      Currency: { select: { name: 'EUR' } },
+      'P2G Reported': { checkbox: false },
+      ...(order.paidAt ? { 'Paid At': { date: { start: order.paidAt } } } : {}),
     },
   })
 
