@@ -1,4 +1,7 @@
-const items = [
+import type { Locale } from '@/lib/i18n/config'
+import { localizeValue } from '@/lib/i18n/translations'
+
+const sourceItems = [
   { icon: '☆', title: 'BS EN ISO 12312-1', sub: 'EU оптична безопасност' },
   { icon: '◷', title: 'ANSI Z80.3', sub: 'Американски стандарт' },
   { icon: '◉', title: 'AS/NZS 1067.1', sub: 'Австралийски стандарт' },
@@ -6,7 +9,8 @@ const items = [
   { icon: '◎', title: 'GREEN LIGHT BLOCK', sub: '500–560nm филтър' },
 ]
 
-export default function CertStrip() {
+export default function CertStrip({ locale }: { locale: Locale }) {
+  const items = localizeValue(locale, sourceItems)
   return (
     <div className="w-full bg-onyx py-4 overflow-x-auto">
       <div className="min-w-max max-w-content mx-auto px-6 md:px-10 flex items-center justify-center divide-x divide-stone/20">

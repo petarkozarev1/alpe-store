@@ -1,5 +1,8 @@
 ﻿import type { Product } from '@/lib/types'
 
+import type { Locale } from '@/lib/i18n/config'
+import { localizeValue } from '@/lib/i18n/translations'
+
 export const products: Product[] = [
   {
     id: 'alpe-daily',
@@ -61,4 +64,12 @@ export const products: Product[] = [
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find(p => p.slug === slug)
+}
+
+export function getProducts(locale: Locale): Product[] {
+  return localizeValue(locale, products)
+}
+
+export function getLocalizedProductBySlug(slug: string, locale: Locale) {
+  return getProducts(locale).find(product => product.slug === slug)
 }

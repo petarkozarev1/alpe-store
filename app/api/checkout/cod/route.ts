@@ -6,6 +6,7 @@ import { signCodOrder } from '@/lib/cod-signature'
 import { promoDiscount } from '@/lib/promo'
 import { cookies } from 'next/headers'
 import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
+import { isLocale } from '@/lib/i18n/config'
 import {
   computeCodTotal,
   computeSubtotal,
@@ -24,6 +25,7 @@ interface CodPayload {
   shipping: Record<string, string>
   shippingLabel: string
   promoCode?: string
+  locale?: string
 }
 
 export async function POST(req: Request) {
@@ -32,6 +34,7 @@ export async function POST(req: Request) {
     const clientUserAgent = req.headers.get('user-agent') ?? undefined
     const body = (await req.json()) as CodPayload
     const { email, items, shipping } = body
+    const locale = isLocale(body.locale) ? body.locale : 'bg'
 
     if (!items?.length) return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     if (!email?.trim() || !shipping?.name?.trim() || !shipping?.phone?.trim() || !shipping?.city?.trim()) {
@@ -39,7 +42,7 @@ export async function POST(req: Request) {
     }
     // COD is Bulgaria-only — enforced server-side, not just in the UI.
     if (!isBulgariaEligible(shipping.country)) {
-      return NextResponse.json({ error: 'Наложен платеж е достъпен само за България' }, { status: 400 })
+      return NextResponse.json({ error: locale === 'en' ? 'Cash on delivery is available only in Bulgaria' : 'Наложен платеж е достъпен само за България' }, { status: 400 })
     }
 
     // Recompute all money server-side — never trust client-sent prices/fees.
@@ -84,7 +87,7 @@ export async function POST(req: Request) {
     // Independent task #2 — confirmation email
     const productRows: OrderEmailRow[] = items.map(i => ({ label: i.name, sublabel: i.variantLabel, amount: +(i.price * i.quantity).toFixed(2) }))
     const emailModel: OrderEmailModel = {
-      orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || 'клиент',
+      orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || (locale === 'en' ? 'customer' : 'клиент'), locale,
       productRows, subtotal,
       discount: (bundleSaving + promo.amount) > 0
         ? { code: promo.code || 'Комплектна отстъпка', amount: +(bundleSaving + promo.amount).toFixed(2) }

@@ -6,13 +6,19 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { siteConfig } from '@/lib/data/site'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
+import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher'
+import { localizedPath } from '@/lib/i18n/routing'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
+  const locale = useLocale()
+  const t = useTranslations()
 
   function navHref(href: string) {
-    return href.startsWith('#') && pathname !== '/' ? '/' + href : href
+    const base = href.startsWith('#') && pathname !== '/' && pathname !== '/en' ? '/' + href : href
+    return localizedPath(base, locale)
   }
 
   function trackCtaClick(location: 'navbar_desktop' | 'navbar_mobile') {
@@ -35,7 +41,7 @@ export default function Navbar() {
       `}</style>
       <div className="w-full bg-onyx overflow-hidden py-2 relative h-8 flex items-center">
         <span className="ticker-glide absolute whitespace-nowrap font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
-          ✦ Безплатна доставка при поръчка над €50
+          ✦ {t('Безплатна доставка при поръчка над €50')}
         </span>
       </div>
       <div className="w-full bg-[#B8906A] border-b border-stone/30">
@@ -43,7 +49,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <div className="flex-1">
-          <Link href="/" className="font-serif text-xl text-linen tracking-widest">
+          <Link href={localizedPath('/', locale)} className="font-serif text-xl text-linen tracking-widest">
             {siteConfig.brand}
           </Link>
         </div>
@@ -56,7 +62,7 @@ export default function Navbar() {
               href={navHref(link.href)}
               className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors duration-200"
             >
-              {link.label}
+              {t(link.label)}
             </Link>
           ))}
         </nav>
@@ -64,15 +70,15 @@ export default function Navbar() {
         {/* Desktop right: CTA + cart */}
         <div className="hidden md:flex flex-1 justify-end items-center gap-6">
           <Link
-            href="/shop"
+            href={localizedPath('/shop', locale)}
             onClick={() => trackCtaClick('navbar_desktop')}
             className="font-sans text-xs font-bold uppercase tracking-widest bg-onyx text-linen px-5 py-2 rounded-full hover:bg-iron transition-colors"
           >
-            Поръчай сега
+            {t('Поръчай сега')}
           </Link>
           <button
             onClick={openDrawer}
-            aria-label="Отвори количката"
+            aria-label={t('Отвори количката')}
             className="relative text-linen hover:text-parchment transition-colors"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -89,15 +95,16 @@ export default function Navbar() {
         </div>
 
         {/* Mobile: CTA + cart + hamburger */}
+        <div className="hidden md:flex items-center ml-5"><LanguageSwitcher /></div>
         <div className="md:hidden flex items-center gap-4">
           <Link
-            href="/shop"
+            href={localizedPath('/shop', locale)}
             onClick={() => trackCtaClick('navbar_mobile')}
             className="font-sans text-[11px] font-bold uppercase tracking-widest bg-onyx text-linen px-4 py-2 rounded-full hover:bg-iron transition-colors whitespace-nowrap"
           >
-            Поръчай сега
+            {t('Поръчай сега')}
           </Link>
-          <button onClick={openDrawer} aria-label="Отвори количката" className="relative text-linen hover:text-parchment">
+          <button onClick={openDrawer} aria-label={t('Отвори количката')} className="relative text-linen hover:text-parchment">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
@@ -112,7 +119,7 @@ export default function Navbar() {
           <button
             className="flex flex-col gap-1.5 p-1"
             onClick={() => setMobileOpen(v => !v)}
-            aria-label="Меню"
+            aria-label={t('Меню')}
             aria-expanded={mobileOpen}
           >
             <span className={`block w-5 h-px bg-onyx transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
@@ -135,6 +142,7 @@ export default function Navbar() {
             className="overflow-hidden md:hidden border-t border-stone/30 bg-[#B8906A]"
           >
             <div className="flex flex-col px-6 py-6 gap-5">
+              <LanguageSwitcher />
               {siteConfig.nav.map(link => (
                 <Link
                   key={link.label}
@@ -142,7 +150,7 @@ export default function Navbar() {
                   className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {link.label}
+                  {t(link.label)}
                 </Link>
               ))}
             </div>

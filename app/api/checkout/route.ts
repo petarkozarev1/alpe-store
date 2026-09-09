@@ -6,6 +6,8 @@ import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 import { promoDiscount } from '@/lib/promo'
 import { cookies } from 'next/headers'
 import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
+import { isLocale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
 const DELIVERY_PRICE = 4.99
 
@@ -31,13 +33,16 @@ export async function POST(req: Request) {
       shipping,
       summary,
       promoCode,
+      locale: localeValue,
     }: {
       items: LineItem[]
       email: string
       shipping: Record<string, string>
       summary?: { shippingLabel: string }
       promoCode?: string
+      locale?: string
     } = await req.json()
+    const locale = isLocale(localeValue) ? localeValue : 'bg'
 
     if (!items?.length) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
@@ -76,7 +81,7 @@ export async function POST(req: Request) {
       // client). Still a Checkout Session, so checkout.session.completed fires as before.
       ui_mode: 'elements',
       mode: 'payment',
-      locale: 'bg',
+      locale,
       customer_email: email,
       line_items: [
         ...productItems.map(item => ({
@@ -111,11 +116,12 @@ export async function POST(req: Request) {
         shippingAmount: String(shippingAmount),
         shippingLabel,
         ...(affiliateId ? { affiliateId } : {}),
+        locale,
       },
       // ui_mode: 'elements' uses return_url (cancel_url/success_url are not allowed).
       // Stripe redirects here after checkout.confirm() succeeds; success page reads session_id
       // and the checkout.session.completed webhook fires Notion + CAPI Purchase + email.
-      return_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${siteUrl}${localizedPath('/checkout/success', locale)}?session_id={CHECKOUT_SESSION_ID}`,
     })
 
     // Mirror InitiateCheckout server-side to Meta CAPI for higher EMQ + ad-blocker resilience.

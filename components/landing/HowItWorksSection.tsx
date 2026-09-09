@@ -5,12 +5,13 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
-import { howItWorksContent, steps } from '@/lib/data/content'
+import { getLandingContent, steps as sourceSteps } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
-type Step = typeof steps[0]
+type Step = typeof sourceSteps[0]
 
-function StepCard({ step, index, progress }: { step: Step; index: number; progress: ReturnType<typeof import('framer-motion').useScroll>['scrollYProgress'] }) {
-  const total = steps.length
+function StepCard({ step, index, progress, locale, total }: { step: Step; index: number; locale: Locale; total: number; progress: ReturnType<typeof import('framer-motion').useScroll>['scrollYProgress'] }) {
   const scaleStart = (index + 0.4) / total
   const scaleEnd = (index + 1) / total
   const scale = useTransform(progress, [scaleStart, scaleEnd], [1, 0.93])
@@ -31,7 +32,7 @@ function StepCard({ step, index, progress }: { step: Step; index: number; progre
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#2D0E04]/80 via-transparent to-transparent" />
         <div className="absolute bottom-0 left-0 p-6">
           <span className="inline-block bg-linen text-onyx text-xs font-semibold px-3 py-1 rounded-full mb-3">
-            Стъпка {step.number}
+            {locale === 'en' ? 'Step' : 'Стъпка'} {step.number}
           </span>
           <h3 className="text-linen text-2xl font-bold mb-1">{step.title}</h3>
           <p className="text-linen/80 text-sm max-w-xs">{step.description}</p>
@@ -41,7 +42,8 @@ function StepCard({ step, index, progress }: { step: Step; index: number; progre
   )
 }
 
-export default function HowItWorksSection() {
+export default function HowItWorksSection({ locale }: { locale: Locale }) {
+  const { howItWorksContent, steps } = getLandingContent(locale)
   const sectionRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -63,7 +65,7 @@ export default function HowItWorksSection() {
           </h2>
           <Button
             label={howItWorksContent.cta}
-            href="/shop"
+            href={localizedPath('/shop', locale)}
             variant="primary"
             className="font-bold self-start"
             onClick={() => {
@@ -75,7 +77,7 @@ export default function HowItWorksSection() {
         {/* Right stacking cards */}
         <div className="flex-1 pt-24 pb-24">
           {steps.map((step, i) => (
-            <StepCard key={step.number} step={step} index={i} progress={scrollYProgress} />
+            <StepCard key={step.number} step={step} index={i} progress={scrollYProgress} locale={locale} total={steps.length} />
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import type { CartItem } from '@/lib/types'
 
 interface CartStore {
@@ -14,7 +15,7 @@ interface CartStore {
   getSubtotal: () => number
 }
 
-export const useCartStore = create<CartStore>((set, get) => ({
+export const useCartStore = create<CartStore>()(persist<CartStore, [], [], Pick<CartStore, 'items'>>((set, get) => ({
   items: [],
   isDrawerOpen: false,
 
@@ -53,4 +54,9 @@ export const useCartStore = create<CartStore>((set, get) => ({
   closeDrawer: () => set({ isDrawerOpen: false }),
   getItemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
   getSubtotal: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
+}), {
+  name: 'alpe-cart',
+  version: 1,
+  storage: createJSONStorage(() => localStorage),
+  partialize: state => ({ items: state.items }),
 }))

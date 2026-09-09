@@ -1,4 +1,6 @@
 ﻿'use client'
+import { useLocale } from '@/components/i18n/LocaleProvider'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -55,6 +57,7 @@ const initialBundleValue = bundlePrices[1]
 export default function ProductPage({
   initialSelection = getInitialShopSelection(),
 }: { initialSelection?: ShopSelection } = {}) {
+  const locale = useLocale()
   const [lens, setLens] = useState<Lens>(initialSelection.lens)
   const [bundle, setBundle] = useState(initialSelection.bundle)
   const [thumbIdx, setThumbIdx] = useState({ evening: 0, daily: 0 })
@@ -112,7 +115,9 @@ export default function ProductPage({
       productId: `ALPÉ-${lens}`,
       variantId: `ALPÉ-${lens}-bundle-${bundle}`,
       name: d.name,
-      variantLabel: `${slots.map(s => s === 'evening' ? '🟠 Вечер' : '🟡 За всеки ден').join(' · ')} · ${bundle} чифт${bundle > 1 ? 'а' : ''}`,
+      variantLabel: locale === 'en'
+        ? `${slots.map(s => s === 'evening' ? '🟠 Evening' : '🟡 Daily').join(' · ')} · ${bundle} ${bundle === 1 ? 'pair' : 'pairs'}`
+        : `${slots.map(s => s === 'evening' ? '🟠 Вечер' : '🟡 За всеки ден').join(' · ')} · ${bundle} чифт${bundle > 1 ? 'а' : ''}`,
       price: bundlePrices[bundle],
       quantity: 1,
       image: d.images[0].src,
@@ -141,7 +146,7 @@ export default function ProductPage({
   const price = bundlePrices[bundle]
   const saving = bundleSavings[bundle]
 
-  return (
+  return localizeContent(locale, (
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
       {/* Breadcrumb */}
@@ -244,7 +249,7 @@ export default function ProductPage({
                   <input type="radio" readOnly checked={bundle === n} style={{ width: 18, height: 18, accentColor: '#1C0F0A', flexShrink: 0 }} />
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
-                      <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{n} чифт{n > 1 ? 'а' : ''}</span>
+                      <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`}</span>
                       {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
                       {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Най-изгодно</span>}
                     </div>
@@ -301,7 +306,7 @@ export default function ProductPage({
               Добави в количката — €{price} →
             </button>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла &nbsp;·&nbsp; ✓ Безплатна доставка над €50 &nbsp;·&nbsp; ✓ Сигурно плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка над €50 · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 6 }}>Цената включва ДДС · Не е медицинско изделие</p>
 
           {/* Payment icons */}
@@ -575,7 +580,7 @@ export default function ProductPage({
           {/* Name */}
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, lineHeight: 1.2 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
-            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 5 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
+            <div style={{ fontSize: 12, opacity: 0.6, marginTop: 5 }}>{locale === 'en' ? `${bundle} ${bundle === 1 ? 'pair' : 'pairs'}` : `${bundle} чифт${bundle > 1 ? 'а' : ''}`}</div>
           </div>
 
           {/* Lens selector / slot picker */}
@@ -683,7 +688,7 @@ export default function ProductPage({
         <div className="product-sticky-bar-mobile" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
           <div>
             <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 15, fontWeight: 500 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
-            <div style={{ fontSize: 11, opacity: 0.55, marginTop: 1 }}>{bundle} чифт{bundle > 1 ? 'а' : ''}</div>
+            <div style={{ fontSize: 11, opacity: 0.55, marginTop: 1 }}>{locale === 'en' ? `${bundle} ${bundle === 1 ? 'pair' : 'pairs'}` : `${bundle} чифт${bundle > 1 ? 'а' : ''}`}</div>
           </div>
           <button onClick={handleAddToCart} style={{ background: '#FAF0E4', color: '#1C0F0A', border: 'none', padding: '11px 20px', fontFamily: 'var(--font-raleway)', fontSize: 13, fontWeight: 600, borderRadius: 6, cursor: 'pointer', whiteSpace: 'nowrap' as const }}>
             Добави в количката →
@@ -725,5 +730,5 @@ export default function ProductPage({
         }
       `}</style>
     </div>
-  )
+  ))
 }

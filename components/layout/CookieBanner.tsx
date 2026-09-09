@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { updateGoogleConsent } from '@/lib/googleAnalytics'
+import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
+import { localizedPath } from '@/lib/i18n/routing'
 
 type Consent = 'all' | 'necessary' | null
 
@@ -11,6 +13,8 @@ export function resetCookieConsent() {
 }
 
 export default function CookieBanner() {
+  const locale = useLocale()
+  const t = useTranslations()
   const [consent, setConsent] = useState<Consent | 'loading'>('loading')
   const [expanded, setExpanded] = useState(false)
 
@@ -38,7 +42,7 @@ export default function CookieBanner() {
   return (
     <div
       role="dialog"
-      aria-label="Съгласие за бисквитки"
+      aria-label={t('Съгласие за бисквитки')}
       aria-modal="false"
       style={{
         position: 'fixed',
@@ -58,12 +62,12 @@ export default function CookieBanner() {
       {/* Main row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
         <p style={{ fontSize: 12, color: 'rgba(237,228,214,0.8)', flex: '1 1 200px', lineHeight: 1.5 }}>
-          Използваме бисквитки за работата на сайта, анализ и персонализация.{' '}
+          {t('Използваме бисквитки за работата на сайта, анализ и персонализация.')}{' '}
           <button
             onClick={() => setExpanded(v => !v)}
             style={{ background: 'none', border: 'none', padding: 0, color: '#C4A266', fontSize: 12, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3, fontFamily: 'inherit' }}
           >
-            {expanded ? 'По-малко' : 'Научи повече'}
+            {expanded ? t('По-малко') : t('Научи повече')}
           </button>
         </p>
 
@@ -72,13 +76,13 @@ export default function CookieBanner() {
             onClick={rejectOptional}
             style={{ background: 'transparent', color: 'rgba(237,228,214,0.65)', border: '1px solid rgba(237,228,214,0.2)', borderRadius: 6, padding: '7px 14px', fontSize: 11, fontWeight: 500, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
-            Само необходимите
+            {t('Само необходимите')}
           </button>
           <button
             onClick={accept}
             style={{ background: '#C4A266', color: '#1C0F0A', border: 'none', borderRadius: 6, padding: '7px 14px', fontSize: 11, fontWeight: 700, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
-            Приемам всички
+            {t('Приемам всички')}
           </button>
         </div>
       </div>
@@ -86,17 +90,17 @@ export default function CookieBanner() {
       {/* Expandable details */}
       {expanded && (
         <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid rgba(237,228,214,0.1)', fontSize: 11, color: 'rgba(237,228,214,0.55)', lineHeight: 1.65 }}>
-          <p><strong style={{ color: 'rgba(237,228,214,0.8)' }}>Задължителни:</strong> количка, сесия, сигурност — винаги активни.</p>
-          <p style={{ marginTop: 4 }}><strong style={{ color: 'rgba(237,228,214,0.8)' }}>Аналитични:</strong> Google Analytics — брой посетители, поведение на сайта, конверсии.</p>
-          <p style={{ marginTop: 4 }}><strong style={{ color: 'rgba(237,228,214,0.8)' }}>Маркетингови:</strong> Meta Pixel, ремаркетинг — персонализирани реклами в социалните мрежи.</p>
+          <p><strong style={{ color: 'rgba(237,228,214,0.8)' }}>{t('Задължителни:')}</strong> {t('количка, сесия, сигурност — винаги активни.')}</p>
+          <p style={{ marginTop: 4 }}><strong style={{ color: 'rgba(237,228,214,0.8)' }}>{t('Аналитични:')}</strong> {t('Google Analytics — брой посетители, поведение на сайта, конверсии.')}</p>
+          <p style={{ marginTop: 4 }}><strong style={{ color: 'rgba(237,228,214,0.8)' }}>{t('Маркетингови:')}</strong> {t('Meta Pixel, ремаркетинг — персонализирани реклами в социалните мрежи.')}</p>
           <p style={{ marginTop: 6 }}>
-            Изборът ви важи 365 дни. Можете да го промените по всяко време.{' '}
-            <Link href="/privacy" style={{ color: '#C4A266', textDecoration: 'underline', textUnderlineOffset: 3 }}>
-              Политика за поверителност →
+            {t('Изборът ви важи 365 дни. Можете да го промените по всяко време.')}{' '}
+            <Link href={localizedPath('/privacy', locale)} style={{ color: '#C4A266', textDecoration: 'underline', textUnderlineOffset: 3 }}>
+              {t('Политика за поверителност →')}
             </Link>
           </p>
           <p style={{ marginTop: 6, fontSize: 10, opacity: 0.6 }}>
-            Съгл. Регламент (ЕС) 2016/679 (GDPR) и Директива 2002/58/ЕО.
+            {t('Съгл. Регламент (ЕС) 2016/679 (GDPR) и Директива 2002/58/ЕО.')}
           </p>
         </div>
       )}

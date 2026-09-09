@@ -2,9 +2,12 @@
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
-import { ingredientsContent, ingredients } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
-export default function IngredientsSection() {
+export default function IngredientsSection({ locale }: { locale: Locale }) {
+  const { ingredientsContent, ingredients } = getLandingContent(locale)
   return (
     <section id="ingredients" className="w-full bg-parchment py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
@@ -39,7 +42,7 @@ export default function IngredientsSection() {
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h3 className="text-xl font-bold text-onyx">{ingredientsContent.sectionTitle}</h3>
-            <Button label={ingredientsContent.cta} href="/shop" variant="primary" className="font-bold self-start sm:self-auto" />
+            <Button label={ingredientsContent.cta} href={localizedPath('/shop', locale)} variant="primary" className="font-bold self-start sm:self-auto" />
           </div>
 
           <div className="flex flex-col">

@@ -1,5 +1,8 @@
 ﻿import type { BenefitItem, StepItem, Ingredient, FaqItem } from '@/lib/types'
 
+import type { Locale } from '@/lib/i18n/config'
+import { localizeValue } from '@/lib/i18n/translations'
+
 export const heroContent = {
   badge: '✓ EU сертифицирани · ★★★★★ 1000+ доволни клиенти',
   headlinePart1: 'Очите ти заслужават почивка.',
@@ -148,4 +151,12 @@ export const finalCtaContent = {
   cta: 'Вземи своя чифт',
   image: '/images/final-cta.png',
   subtext: 'BS EN ISO 12312-1 сертифицирани · Безплатна доставка над €50 · 1000+ доволни клиенти',
+}
+
+export function getLandingContent(locale: Locale) {
+  return localizeValue(locale, {
+    heroContent, benefits, darkCtaContent, ingredientsContent, ingredients,
+    howItWorksContent, steps, beforeAfterContent, withoutItems, withItems,
+    testimonialContent, galleryContent, faqs, faqSectionContent, finalCtaContent,
+  })
 }

@@ -1,9 +1,11 @@
 ﻿'use client'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { benefits } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
 
-export default function BenefitsScroll() {
+export default function BenefitsScroll({ locale }: { locale: Locale }) {
+  const { benefits } = getLandingContent(locale)
   return (
     <section id="benefits" className="relative w-full bg-parchment overflow-hidden">
       {/* Tall scroll container with sticky bottle */}

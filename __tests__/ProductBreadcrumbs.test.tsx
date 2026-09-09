@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ProductPage from '@/app/product/[slug]/page'
+import ProductPage from '@/app/[locale]/product/[slug]/page'
 
 jest.mock('@/components/product/ImageGallery', () => function MockGallery() {
   return <div>Gallery</div>
@@ -14,7 +14,7 @@ jest.mock('@/components/product/ComplementaryProductCard', () => function MockCr
 })
 
 test('renders visible and structured breadcrumbs for an indexable product', () => {
-  const { container } = render(<ProductPage params={{ slug: 'alpe-daily' }} />)
+  const { container } = render(<ProductPage params={{ locale: 'bg', slug: 'alpe-daily' }} />)
 
   expect(screen.getByRole('navigation', { name: 'Навигация' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Начало' })).toHaveAttribute('href', '/')
@@ -36,13 +36,13 @@ test('renders visible and structured breadcrumbs for an indexable product', () =
 })
 
 test('renders product-specific information already used by the shop', () => {
-  const { unmount } = render(<ProductPage params={{ slug: 'alpe-daily' }} />)
+  const { unmount } = render(<ProductPage params={{ locale: 'bg', slug: 'alpe-daily' }} />)
 
   expect(screen.getByText(/кехлибарено-жълта оцветка филтрира 65%/i)).toBeInTheDocument()
   expect(screen.getByText(/работа с дизайн, редактиране на снимки и видеоразговори/i)).toBeInTheDocument()
 
   unmount()
-  render(<ProductPage params={{ slug: 'alpe-evening' }} />)
+  render(<ProductPage params={{ locale: 'bg', slug: 'alpe-evening' }} />)
 
   expect(screen.getByText(/оранжев цвят блокира 98% от синята светлина/i)).toBeInTheDocument()
   expect(screen.getByText(/след залез слънце и поне 2 часа преди лягане/i)).toBeInTheDocument()

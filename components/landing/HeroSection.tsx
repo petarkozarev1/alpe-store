@@ -2,7 +2,9 @@
 import { motion, type Transition } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
-import { heroContent } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -10,7 +12,8 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, delay, ease: 'easeOut' } as Transition,
 })
 
-export default function HeroSection() {
+export default function HeroSection({ locale }: { locale: Locale }) {
+  const { heroContent } = getLandingContent(locale)
   return (
     <section className="relative min-h-[calc(100svh-97px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
@@ -50,7 +53,7 @@ export default function HeroSection() {
         <motion.div {...fadeUp(0.3)} className="mt-8">
           <Button
             label={heroContent.cta}
-            href="/shop"
+            href={localizedPath('/shop', locale)}
             variant="outlined-white"
             className="border-linen bg-linen text-onyx shadow-[0_18px_40px_rgba(45,14,4,0.28)] hover:bg-parchment hover:text-onyx"
             onClick={() => {

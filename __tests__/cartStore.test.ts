@@ -73,3 +73,14 @@ test('getSubtotal returns sum of price * quantity', () => {
   act(() => result.current.updateQuantity('p1', 'v1', 3))
   expect(result.current.getSubtotal()).toBe(147)
 })
+
+test('persists items but not drawer UI state', () => {
+  localStorage.clear()
+  const { result } = renderHook(() => useCartStore())
+  act(() => result.current.addItem(mockItem))
+  act(() => result.current.openDrawer())
+
+  const stored = JSON.parse(localStorage.getItem('alpe-cart') ?? '{}')
+  expect(stored.state.items).toHaveLength(1)
+  expect(stored.state.isDrawerOpen).toBeUndefined()
+})

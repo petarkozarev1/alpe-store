@@ -1,4 +1,6 @@
 'use client'
+import { useLocale } from '@/components/i18n/LocaleProvider'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
@@ -43,7 +45,8 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
     setTimeout(() => setAdded(false), 1500)
   }
 
-  return (
+  const locale = useLocale()
+  return localizeContent(locale, (
     <motion.button
       whileHover={{ scale: 0.97 }}
       whileTap={{ scale: 0.95 }}
@@ -60,5 +63,5 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
     >
       {added ? 'Добавено ✓' : selectedVariant.inStock ? 'Добави в количката' : 'Изчерпано'}
     </motion.button>
-  )
+  ))
 }

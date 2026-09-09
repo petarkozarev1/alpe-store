@@ -6,6 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { countPairs, priceForPairs } from '@/lib/pricing'
+import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
+import { localizedPath } from '@/lib/i18n/routing'
+import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 
 const FREE_SHIPPING_THRESHOLD = 50
 
@@ -54,6 +57,8 @@ const certItems = [
 ]
 
 export default function CartDrawer() {
+  const locale = useLocale()
+  const t = useTranslations()
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, getSubtotal } = useCartStore()
 
   useEffect(() => {
@@ -113,14 +118,14 @@ export default function CartDrawer() {
             transition={{ type: 'spring', damping: 28, stiffness: 280, mass: 0.9 }}
             role="dialog"
             aria-modal="true"
-            aria-label="Количка"
+            aria-label={t('Количка')}
             className="fixed top-0 right-0 bottom-0 w-full max-w-[420px] bg-parchment z-50 flex flex-col shadow-[-8px_0_48px_rgba(45,14,4,0.18)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-[22px] border-b border-stone/20 flex-shrink-0">
               <div className="flex items-center gap-3">
                 <h2 className="font-serif text-xl font-medium text-onyx">
-                  Количка
+                  {t('Количка')}
                 </h2>
                 <span className="w-5 h-5 rounded-full bg-onyx text-linen text-[10px] font-sans font-medium flex items-center justify-center">
                   {items.reduce((s, i) => s + i.quantity, 0)}
@@ -128,7 +133,7 @@ export default function CartDrawer() {
               </div>
               <button
                 onClick={closeDrawer}
-                aria-label="Затвори количката"
+                aria-label={t('Затвори количката')}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-stone hover:bg-stone/10 hover:text-onyx transition-all duration-150 text-xl leading-none"
               >
                 ×
@@ -146,12 +151,12 @@ export default function CartDrawer() {
                       <path d="M16 10a4 4 0 01-8 0"/>
                     </svg>
                   </div>
-                  <p className="font-sans text-sm">Количката ви е празна.</p>
+                  <p className="font-sans text-sm">{t('Количката ви е празна.')}</p>
                   <button
                     onClick={closeDrawer}
                     className="font-sans text-sm text-onyx border-b border-onyx/40 hover:border-onyx transition-colors pb-px"
                   >
-                    Продължи пазаруването
+                    {t('Продължи пазаруването')}
                   </button>
                 </div>
               ) : (
@@ -174,17 +179,17 @@ export default function CartDrawer() {
                     {/* Body */}
                     <div className="flex-1 min-w-0">
                       <p className="font-serif text-[15px] font-medium text-onyx mb-0.5">{item.name}</p>
-                      <p className="font-sans text-xs text-stone mb-3">{item.variantLabel}</p>
+                      <p className="font-sans text-xs text-stone mb-3">{localizeCartVariantLabel(locale, item.variantLabel)}</p>
                       <div className="flex items-center justify-between">
                         {/* Qty stepper */}
                         <div
                           className="flex items-center border border-stone/25 rounded-lg overflow-hidden"
                           role="group"
-                          aria-label="Количество"
+                          aria-label={t('Количество')}
                         >
                           <button
                             className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors"
-                            aria-label="Намали количеството"
+                            aria-label={t('Намали количеството')}
                             onClick={() =>
                               item.quantity > 1
                                 ? updateQuantity(item.productId, item.variantId, item.quantity - 1)
@@ -201,7 +206,7 @@ export default function CartDrawer() {
                           </span>
                           <button
                             className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors"
-                            aria-label="Увеличи количеството"
+                            aria-label={t('Увеличи количеството')}
                             onClick={() => updateQuantity(item.productId, item.variantId, item.quantity + 1)}
                           >
                             +
@@ -221,7 +226,7 @@ export default function CartDrawer() {
                       {item.saving && (
                         <div className="mt-2 inline-flex items-center gap-1 bg-[#E8F4EC] rounded-full px-2.5 py-1">
                           <span className="font-sans text-[10px] font-semibold text-[#2d6a3a]">
-                            Спестяваш €{item.saving}
+                            {locale === 'en' ? 'You save' : 'Спестяваш'} €{item.saving}
                           </span>
                         </div>
                       )}
@@ -230,7 +235,7 @@ export default function CartDrawer() {
                     {/* Remove */}
                     <button
                       onClick={() => removeItem(item.productId, item.variantId)}
-                      aria-label={`Премахни ${item.name} от количката`}
+                      aria-label={locale === 'en' ? `Remove ${item.name} from cart` : `Премахни ${item.name} от количката`}
                       className="text-stone/40 hover:text-red-500 transition-colors mt-0.5 flex-shrink-0"
                     >
                       <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24">
@@ -254,8 +259,8 @@ export default function CartDrawer() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-sans text-xs text-iron">
                         {remaining > 0
-                          ? `Добави €${remaining.toFixed(0)} за безплатна доставка`
-                          : 'Получаваш безплатна доставка!'}
+                          ? (locale === 'en' ? `Add €${remaining.toFixed(0)} for free delivery` : `Добави €${remaining.toFixed(0)} за безплатна доставка`)
+                          : t('Получаваш безплатна доставка!')}
                       </span>
                       <span className="font-sans text-xs font-semibold text-iron">
                         {Math.round(shippingProgress)}%
@@ -289,12 +294,12 @@ export default function CartDrawer() {
               <div className="px-6 pt-3 pb-6 border-t border-stone/20 flex flex-col gap-3 flex-shrink-0">
                 {bundleSaving > 0 && (
                   <div className="flex items-center justify-between font-sans text-xs">
-                    <span className="text-green-700 font-semibold">Отстъпка за комплект</span>
+                    <span className="text-green-700 font-semibold">{t('Отстъпка за комплект')}</span>
                     <span className="text-green-700">−€{bundleSaving.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex items-baseline justify-between">
-                  <span className="font-sans text-sm text-stone">Общо</span>
+                  <span className="font-sans text-sm text-stone">{t('Общо')}</span>
                   <span className="font-serif text-2xl font-medium text-onyx">
                     {bundleSaving > 0 && <span className="font-sans text-sm text-stone/50 line-through mr-2">€{naiveSum.toFixed(2)}</span>}
                     €{subtotal.toFixed(2)}
@@ -302,7 +307,7 @@ export default function CartDrawer() {
                 </div>
 
                 <Link
-                  href="/checkout"
+                  href={localizedPath('/checkout', locale)}
                   onClick={() => {
                     try {
                       fireTrackedEvent('InitiateCheckout', {
@@ -325,14 +330,14 @@ export default function CartDrawer() {
                   <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
-                  Към плащане
+                  {t('Към плащане')}
                 </Link>
 
                 <button
                   onClick={closeDrawer}
                   className="font-sans text-sm text-stone hover:text-onyx transition-colors text-center"
                 >
-                  Продължи пазаруването
+                  {t('Продължи пазаруването')}
                 </button>
               </div>
             )}

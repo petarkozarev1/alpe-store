@@ -1,4 +1,6 @@
 'use client'
+import { useLocale } from '@/components/i18n/LocaleProvider'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
@@ -23,7 +25,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     })
   }, [product.id, product.name, product.price])
 
-  return (
+  const locale = useLocale()
+  return localizeContent(locale, (
     <div className="flex flex-col gap-6">
       {product.badge && (
         <span className="inline-block bg-onyx text-linen text-xs font-semibold px-3 py-1 rounded-full w-fit">
@@ -55,5 +58,5 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
       <AddToCartButton product={product} selectedVariant={selectedVariant} />
     </div>
-  )
+  ))
 }

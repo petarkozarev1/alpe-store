@@ -2,7 +2,9 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
-import { galleryContent } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
 const images = [
   { src: '/images/shuffle5.png', alt: 'ALPÉ customer' },
@@ -13,7 +15,8 @@ const images = [
   { src: '/images/shuffle3.png', alt: 'ALPÉ customer' },
 ]
 
-export default function GallerySection() {
+export default function GallerySection({ locale }: { locale: Locale }) {
+  const { galleryContent } = getLandingContent(locale)
   return (
     <section className="w-full bg-parchment py-24">
       <motion.h2
@@ -79,7 +82,7 @@ export default function GallerySection() {
       </div>
 
       <div className="flex justify-center mt-12">
-        <Button label={galleryContent.cta} href="/shop" variant="primary" className="font-bold" />
+        <Button label={galleryContent.cta} href={localizedPath('/shop', locale)} variant="primary" className="font-bold" />
       </div>
     </section>
   )

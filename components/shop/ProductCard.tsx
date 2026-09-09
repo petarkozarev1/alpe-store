@@ -1,4 +1,6 @@
 'use client'
+import { useLocale } from '@/components/i18n/LocaleProvider'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -9,7 +11,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  return (
+  const locale = useLocale()
+  return localizeContent(locale, (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -46,5 +49,5 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </Link>
     </motion.div>
-  )
+  ))
 }

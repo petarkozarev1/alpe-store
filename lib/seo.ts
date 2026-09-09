@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import type { Product } from '@/lib/types'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
+import { isLocale } from '@/lib/i18n/config'
+import { translate } from '@/lib/i18n/translations'
 
 export const siteUrl = 'https://www.alpewear.com'
 
@@ -92,33 +96,43 @@ export const websiteJsonLd = {
 }
 
 export function absoluteUrl(path = '') {
-  if (!path) return siteUrl
+  if (!path || path === '/') return siteUrl
   return `${siteUrl}${path.startsWith('/') ? path : `/${path}`}`
 }
 
-export function productUrl(product: Product) {
-  return absoluteUrl(`/product/${product.slug}`)
+export function productUrl(product: Product, locale: Locale = 'bg') {
+  return absoluteUrl(localizedPath(`/product/${product.slug}`, locale))
 }
 
 export function createPageMetadata({
   title,
   description,
   path,
+  locale = 'bg',
 }: {
   title: string
   description: string
   path: string
+  locale?: Locale
 }): Metadata {
+  const canonicalPath = localizedPath(path, locale)
+  const languages = {
+    'bg-BG': localizedPath(path, 'bg'),
+    'en': localizedPath(path, 'en'),
+    'x-default': localizedPath(path, 'bg'),
+  }
   return {
     title,
     description,
     alternates: {
-      canonical: path || '/',
+      canonical: canonicalPath,
+      languages,
     },
     openGraph: {
       type: 'website',
-      locale: defaultSeo.locale,
-      url: absoluteUrl(path),
+      locale: locale === 'en' ? 'en_US' : defaultSeo.locale,
+      alternateLocale: [locale === 'en' ? defaultSeo.locale : 'en_US'],
+      url: absoluteUrl(canonicalPath),
       siteName: defaultSeo.siteName,
       title,
       description,
@@ -140,6 +154,19 @@ export function createPageMetadata({
   }
 }
 
+export function createLocalizedPageMetadata(
+  localeValue: string,
+  options: { title: string; description: string; path: string },
+) {
+  const locale: Locale = isLocale(localeValue) ? localeValue : 'bg'
+  return createPageMetadata({
+    ...options,
+    title: translate(locale, options.title),
+    description: translate(locale, options.description),
+    locale,
+  })
+}
+
 export function noIndexMetadata(title: string, description?: string): Metadata {
   return {
     title,
@@ -149,4 +176,9 @@ export function noIndexMetadata(title: string, description?: string): Metadata {
       follow: false,
     },
   }
+}
+
+export function localizedNoIndexMetadata(localeValue: string, title: string, description?: string): Metadata {
+  const locale: Locale = isLocale(localeValue) ? localeValue : 'bg'
+  return noIndexMetadata(translate(locale, title), description ? translate(locale, description) : undefined)
 }

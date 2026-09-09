@@ -3,9 +3,12 @@ import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import BeforeAfterSlider from '@/components/landing/BeforeAfterSlider'
-import { beforeAfterContent, withoutItems, withItems } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
-export default function ComparisonSection() {
+export default function ComparisonSection({ locale }: { locale: Locale }) {
+  const { beforeAfterContent, withoutItems, withItems } = getLandingContent(locale)
   return (
     <section id="why-ALPÉ" className="w-full bg-parchment py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
@@ -28,13 +31,15 @@ export default function ComparisonSection() {
         <BeforeAfterSlider
           beforeImage={beforeAfterContent.beforeImage}
           afterImage={beforeAfterContent.afterImage}
+          beforeLabel={locale === 'en' ? 'Before' : 'Преди'}
+          afterLabel={locale === 'en' ? 'After' : 'След'}
         />
 
         {/* Comparison cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
           {/* Without ALPÉ */}
           <div className="bg-iron rounded-2xl p-8">
-            <h3 className="text-2xl font-semibold text-linen mb-6 text-center">Без ALPÉ</h3>
+            <h3 className="text-2xl font-semibold text-linen mb-6 text-center">{locale === 'en' ? 'Without ALPÉ' : 'Без ALPÉ'}</h3>
             <ul className="flex flex-col gap-4">
               {withoutItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-stone">
@@ -49,7 +54,7 @@ export default function ComparisonSection() {
 
           {/* With ALPÉ */}
           <div className="bg-onyx rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-linen mb-6 text-center">С ALPÉ</h3>
+            <h3 className="text-2xl font-bold text-linen mb-6 text-center">{locale === 'en' ? 'With ALPÉ' : 'С ALPÉ'}</h3>
             <ul className="flex flex-col gap-4">
               {withItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 font-medium text-linen">
@@ -65,7 +70,7 @@ export default function ComparisonSection() {
 
         {/* CTA */}
         <div className="flex justify-center mt-10">
-          <Button label="Искам и аз" href="/shop" variant="primary" className="font-bold" />
+          <Button label={locale === 'en' ? 'I want this too' : 'Искам и аз'} href={localizedPath('/shop', locale)} variant="primary" className="font-bold" />
         </div>
 
       </div>

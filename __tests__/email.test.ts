@@ -33,4 +33,20 @@ describe('buildOrderEmailHtml', () => {
     expect(html).not.toContain('Наложен платеж')
     expect(html).toContain('Безплатна')
   })
+
+  it('renders English confirmation copy and escapes customer-supplied HTML', () => {
+    const html = buildOrderEmailHtml({
+      ...codModel,
+      locale: 'en',
+      customerFirstName: '<Alex>',
+      productRows: [{ label: '<script>alert(1)</script>', amount: 44.99 }],
+    })
+    expect(html).toContain('<html lang="en">')
+    expect(html).toContain('Order confirmed!')
+    expect(html).toContain('Cash on delivery')
+    expect(html).toContain('119.87 BGN')
+    expect(html).toContain('&lt;Alex&gt;')
+    expect(html).toContain('&lt;script&gt;alert(1)&lt;/script&gt;')
+    expect(html).not.toContain('<script>alert(1)</script>')
+  })
 })

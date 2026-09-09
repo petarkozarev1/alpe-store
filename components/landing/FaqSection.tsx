@@ -4,9 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
-import { faqs, faqSectionContent } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
+import { localizedPath } from '@/lib/i18n/routing'
 
-export default function FaqSection() {
+export default function FaqSection({ locale }: { locale: Locale }) {
+  const { faqs, faqSectionContent } = getLandingContent(locale)
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
@@ -22,7 +25,7 @@ export default function FaqSection() {
             </h2>
             <Button
               label={faqSectionContent.cta}
-              href="/shop"
+              href={localizedPath('/shop', locale)}
               variant="primary"
               className="font-bold self-start"
               onClick={() => {

@@ -11,8 +11,8 @@ import {
   siteUrl,
   websiteId,
 } from '@/lib/seo'
-import { metadata as privacyMetadata } from '@/app/privacy/page'
-import { metadata as termsMetadata } from '@/app/terms/page'
+import { generateMetadata as privacyMetadata } from '@/app/[locale]/privacy/page'
+import { generateMetadata as termsMetadata } from '@/app/[locale]/terms/page'
 
 describe('SEO route configuration', () => {
   it('uses the production www origin for absolute URLs', () => {
@@ -50,12 +50,14 @@ describe('SEO route configuration', () => {
     const entries = sitemap()
     const urls = entries.map((entry) => entry.url)
 
-    expect(urls).toHaveLength(indexableRoutes.length)
+    expect(urls).toHaveLength(indexableRoutes.length * 2)
     expect(urls).toEqual(expect.arrayContaining([
       'https://www.alpewear.com',
       'https://www.alpewear.com/shop',
       'https://www.alpewear.com/product/alpe-daily',
       'https://www.alpewear.com/product/alpe-evening',
+      'https://www.alpewear.com/en',
+      'https://www.alpewear.com/en/shop',
     ]))
     expect(urls.every((url) => url.startsWith('https://www.alpewear.com'))).toBe(true)
     expect(entries.every((entry) => entry.lastModified instanceof Date)).toBe(true)
@@ -82,7 +84,10 @@ describe('SEO route configuration', () => {
 
     expect(metadata.title).toBe('Нашата история')
     expect(metadata.description).toBe('Историята на ALPÉ.')
-    expect(metadata.alternates).toEqual({ canonical: '/about' })
+    expect(metadata.alternates).toEqual({
+      canonical: '/about',
+      languages: { 'bg-BG': '/about', en: '/en/about', 'x-default': '/about' },
+    })
     expect(String(metadata.title)).not.toContain('| ALPÉ')
     expect(metadata.openGraph).toEqual(expect.objectContaining({
       title: 'Нашата история',
@@ -96,10 +101,10 @@ describe('SEO route configuration', () => {
   })
 
   it('gives legal pages their own social metadata instead of homepage defaults', () => {
-    expect(privacyMetadata.openGraph).toEqual(expect.objectContaining({
+    expect(privacyMetadata({ params: { locale: 'bg' } }).openGraph).toEqual(expect.objectContaining({
       url: 'https://www.alpewear.com/privacy',
     }))
-    expect(termsMetadata.openGraph).toEqual(expect.objectContaining({
+    expect(termsMetadata({ params: { locale: 'bg' } }).openGraph).toEqual(expect.objectContaining({
       url: 'https://www.alpewear.com/terms',
     }))
   })

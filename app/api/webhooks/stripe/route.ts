@@ -122,9 +122,10 @@ export async function POST(req: Request) {
     return { label, sublabel, amount: (li.amount_total ?? 0) / 100 }
   })
   const emailModel: OrderEmailModel = {
+    locale: meta.locale === 'en' ? 'en' : 'bg',
     orderRef: session.id,
     paymentMethod: 'card',
-    customerFirstName: firstName || 'клиент',
+    customerFirstName: firstName || (meta.locale === 'en' ? 'customer' : 'клиент'),
     productRows,
     subtotal,
     discount: discountAmount > 0 ? { code: meta.discountCode || 'отстъпка', amount: discountAmount } : undefined,

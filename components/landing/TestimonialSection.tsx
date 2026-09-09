@@ -1,9 +1,11 @@
 'use client'
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
-import { testimonialContent } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
 
-export default function TestimonialSection() {
+export default function TestimonialSection({ locale }: { locale: Locale }) {
+  const { testimonialContent } = getLandingContent(locale)
   return (
     <section className="w-full bg-parchment py-24 text-onyx">
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col items-center text-center">

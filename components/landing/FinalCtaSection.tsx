@@ -2,9 +2,11 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
-import { finalCtaContent } from '@/lib/data/content'
+import { getLandingContent } from '@/lib/data/content'
+import type { Locale } from '@/lib/i18n/config'
 
-export default function FinalCtaSection() {
+export default function FinalCtaSection({ locale }: { locale: Locale }) {
+  const { finalCtaContent } = getLandingContent(locale)
   return (
     <section className="w-full bg-iron text-linen py-24 relative overflow-hidden">
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col items-center text-center relative z-10">

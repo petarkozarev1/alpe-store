@@ -1,9 +1,11 @@
+import { localizeContent } from '@/components/i18n/LocalizedContent'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Product } from '@/lib/types'
+import type { Locale } from '@/lib/i18n/config'
 
-export default function ComplementaryProductCard({ product }: { product: Product }) {
-  return (
+export default function ComplementaryProductCard({ product, locale }: { product: Product; locale: Locale }) {
+  return localizeContent(locale, (
     <section
       aria-labelledby="complete-routine-title"
       className="relative overflow-hidden rounded-[2rem] border border-iron/10 bg-linen"
@@ -53,5 +55,5 @@ export default function ComplementaryProductCard({ product }: { product: Product
         </div>
       </div>
     </section>
-  )
+  ))
 }

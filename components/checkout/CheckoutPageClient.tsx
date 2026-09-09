@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutElementsProvider, PaymentElement, useCheckoutElements } from '@stripe/react-stripe-js/checkout'
+import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
+import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
 import { getStripeClient } from '@/lib/stripe-client'
@@ -13,7 +16,6 @@ import { getPromo, promoDiscount } from '@/lib/promo'
 const DELIVERY_PRICE = 4.99
 const COD_FEE = 1.0
 const BGN_RATE = 1.95583
-const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} лв.`
 
 const DELIVERY = [
   { id: 'speedy',  label: 'Спиди',    badge: 'ПРЕПОРЪЧАНО', requiresOffice: true,  officePlaceholder: 'напр. Спиди офис Сердика, бул. Сливница 2, София',       officeLink: 'https://www.speedy.bg/bg/office-search' },
@@ -41,12 +43,13 @@ interface Shipping { firstName: string; lastName: string; phone: string; city: s
  * redirects to the session's return_url (/checkout/success), which fires the Purchase pixel;
  * the Stripe webhook fires CAPI Purchase + Notion + email — unchanged by this surface. */
 function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: number) => string }) {
+  const t = useTranslations()
   const result = useCheckoutElements()
   const [paying, setPaying] = useState(false)
   const [msg, setMsg] = useState<string | null>(null)
 
   if (result.type === 'loading') {
-    return <p className="font-sans text-sm text-stone text-center py-8">Зареждане на сигурната форма…</p>
+    return <p className="font-sans text-sm text-stone text-center py-8">{t('Зареждане на сигурната форма…')}</p>
   }
   if (result.type === 'error') {
     return <p className="font-sans text-sm text-red-600 text-center py-8">{result.error.message}</p>
@@ -60,7 +63,7 @@ function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: n
       if (res.type === 'error') { setMsg(res.error.message); setPaying(false) }
       // on success Stripe redirects to return_url
     } catch (err) {
-      setMsg(err instanceof Error ? err.message : 'Грешка при плащане')
+      setMsg(err instanceof Error ? err.message : t('Грешка при плащане'))
       setPaying(false)
     }
   }
@@ -88,10 +91,12 @@ function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: n
 }
 
 export default function CheckoutPageClient() {
+  const locale = useLocale()
+  const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
   const { items } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '' })
-  const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: 'България', note: '' })
+  const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: locale === 'en' ? 'Bulgaria' : 'България', note: '' })
   const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
   const [deliveryId, setDeliveryId] = useState('speedy')
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card')
@@ -154,7 +159,7 @@ export default function CheckoutPageClient() {
   // Promo code (e.g. ALETEA10) — % off the bundle-discounted product price.
   const promo = promoDiscount(bundlePrice, appliedCode)
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
-  const codEligible = deliveryType === 'office' || shipping.country === 'България'
+  const codEligible = deliveryType === 'office' || ['България', 'Bulgaria', 'BG'].includes(shipping.country.trim())
   const isCod = paymentMethod === 'cod' && codEligible
   const codFee = isCod ? COD_FEE : 0
   const total = +(bundlePrice - promo.amount + shipping_ + codFee).toFixed(2)
@@ -205,7 +210,7 @@ export default function CheckoutPageClient() {
     // Send RAW product items (unit price + variantId). The server recomputes the bundle price,
     // bundle discount, and shipping — the client total is never trusted.
     const lineItems = items.map(i => ({
-      name: `${i.name} — ${i.variantLabel}`,
+      name: `${i.name} — ${localizeCartVariantLabel(locale, i.variantLabel)}`,
       price: i.price,
       quantity: i.quantity,
       variantId: i.variantId,
@@ -217,8 +222,8 @@ export default function CheckoutPageClient() {
       city: shipping.city,
       address: deliveryType === 'address' ? shipping.address : officeLocation,
       postalCode: deliveryType === 'address' ? shipping.postalCode : '',
-      country: deliveryType === 'address' ? shipping.country : 'България',
-      deliveryMethod: deliveryType === 'address' ? 'До адрес' : delivery.label,
+      country: deliveryType === 'address' ? shipping.country : locale === 'en' ? 'Bulgaria' : 'България',
+      deliveryMethod: deliveryType === 'address' ? (locale === 'en' ? 'To an address' : 'До адрес') : delivery.label,
       courier: deliveryType === 'office' ? delivery.label : '',
       officeLocation: deliveryType === 'office' ? officeLocation : '',
       courierNote: shipping.note,
@@ -229,7 +234,7 @@ export default function CheckoutPageClient() {
     if (isCod) {
       const codProducts = items.map(i => ({
         name: i.name,
-        variantLabel: i.variantLabel,
+        variantLabel: localizeCartVariantLabel(locale, i.variantLabel),
         variantId: i.variantId,
         price: i.price,
         quantity: i.quantity,
@@ -240,10 +245,11 @@ export default function CheckoutPageClient() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            locale,
             email: contact.email,
             items: codProducts,
             shipping: checkoutShipping,
-            shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label,
+            shippingLabel: deliveryType === 'address' ? (locale === 'en' ? 'To an address' : 'До адрес') : delivery.label,
             promoCode: appliedCode ?? '',
           }),
         })
@@ -262,8 +268,9 @@ export default function CheckoutPageClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          locale,
           items: lineItems, email: contact.email, shipping: checkoutShipping,
-          summary: { shippingLabel: deliveryType === 'address' ? 'До адрес' : delivery.label },
+          summary: { shippingLabel: deliveryType === 'address' ? (locale === 'en' ? 'To an address' : 'До адрес') : delivery.label },
           promoCode: appliedCode ?? '',
         }),
       })
@@ -279,7 +286,7 @@ export default function CheckoutPageClient() {
   }
 
   /* ── UI ─────────────────────────────────────────── */
-  return (
+  return localizeContent(locale, (
     <div className="min-h-screen bg-parchment">
       {/* Progress bar */}
       <div className="border-b border-stone/20 bg-parchment">
@@ -515,7 +522,7 @@ export default function CheckoutPageClient() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-serif text-sm font-medium text-onyx truncate">{item.name}</p>
-                      <p className="font-sans text-xs text-stone">{item.variantLabel}</p>
+                      <p className="font-sans text-xs text-stone">{localizeCartVariantLabel(locale, item.variantLabel)}</p>
                     </div>
                     <span className="font-serif text-sm font-semibold text-onyx flex-shrink-0">€{(item.price * item.quantity).toFixed(2)}</span>
                   </div>
@@ -636,7 +643,7 @@ export default function CheckoutPageClient() {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-stone/50 flex-shrink-0">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
                   </svg>
-                  <span>Нужда от помощ? <a href="mailto:support@alpe.bg" className="underline text-onyx hover:text-iron">support@alpe.bg</a> · <Link href="/contact" className="underline text-onyx hover:text-iron">Контакт</Link></span>
+                  <span>Нужда от помощ? <a href="mailto:hello@alpewear.com" className="underline text-onyx hover:text-iron">hello@alpewear.com</a> · <Link href="/contact" className="underline text-onyx hover:text-iron">Контакт</Link></span>
                 </div>
               </div>
 
@@ -689,5 +696,5 @@ export default function CheckoutPageClient() {
         </div>
       </form>
     </div>
-  )
+  ))
 }
