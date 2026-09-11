@@ -15,6 +15,8 @@ export function middleware(request: NextRequest) {
     return response
   }
 
+  if (request.nextUrl.pathname === '/icon') return NextResponse.next()
+
   const destination = request.nextUrl.clone()
   if (destination.pathname === '/bg' || destination.pathname.startsWith('/bg/')) {
     destination.pathname = destination.pathname.slice(3) || '/'

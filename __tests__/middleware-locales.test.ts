@@ -24,6 +24,12 @@ describe('locale middleware composition', () => {
     expect(response.headers.get('x-middleware-next')).toBe('1')
   })
 
+  it('leaves the favicon metadata route untouched', () => {
+    const response = middleware(new NextRequest('https://www.alpewear.com/icon'))
+    expect(response.headers.get('x-middleware-next')).toBe('1')
+    expect(response.headers.get('x-middleware-rewrite')).toBeNull()
+  })
+
   it('redirects an explicit Bulgarian prefix to the canonical unprefixed URL', () => {
     const response = middleware(new NextRequest('https://www.alpewear.com/bg/shop?x=1'))
     expect(response.status).toBe(307)
