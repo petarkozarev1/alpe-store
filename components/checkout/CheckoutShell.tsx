@@ -1,56 +1,9 @@
 'use client'
-import Link from 'next/link'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
-import { COD_FEE, type DeliveryOption, courierBadge } from '@/lib/checkout-delivery'
+import { COD_FEE, courierBadge } from '@/lib/checkout-delivery'
 import { CheckoutSummary } from './CheckoutSummary'
 
-type Promo = { amount: number; percent?: number; code?: string | null }
-
-export function CheckoutShell(p: {
-  locale: 'bg' | 'en'
-  formatBGN: (n: number) => string
-  items: any[]
-  contact: { email: string }
-  setContact: (fn: any) => void
-  shipping: any
-  setShipping: (fn: any) => void
-  deliveryType: 'address' | 'office'
-  setDeliveryType: (v: 'address' | 'office') => void
-  deliveryId: string
-  setDeliveryId: (v: string) => void
-  paymentMethod: 'card' | 'cod'
-  setPaymentMethod: (v: 'card' | 'cod') => void
-  officeLocation: string
-  setOfficeLocation: (v: string) => void
-  codeInput: string
-  setCodeInput: (v: string) => void
-  appliedCode: string | null
-  codeError: string
-  applyCode: () => void
-  removeCode: () => void
-  loading: boolean
-  error: string | null
-  clientSecret: string | null
-  setClientSecret: (v: string | null) => void
-  handleSubmit: (e: React.FormEvent) => void
-  fieldClass: any
-  fieldError: any
-  isInvalid: (v: string) => boolean
-  ErrorMsg: any
-  markTouched: (k: string) => void
-  syncPixelUser: () => void
-  isValidEmail: (v: string) => boolean
-  isValidPhone: (v: string) => boolean
-  isCod: boolean
-  codEligible: boolean
-  visibleDelivery: DeliveryOption[]
-  delivery: DeliveryOption
-  subtotal: number
-  bundleSaving: number
-  promo: Promo
-  shipping_: number
-  total: number
-}) {
+export function CheckoutShell(p: any) {
   const {
     locale, contact, setContact, shipping, setShipping,
     deliveryType, setDeliveryType, deliveryId, setDeliveryId, paymentMethod, setPaymentMethod,
@@ -150,7 +103,7 @@ export function CheckoutShell(p: {
                 {deliveryType === 'office' && (
                   <div className="flex flex-col gap-3">
                     <input required placeholder="София" value={shipping.city} onChange={e => setShipping((prev: any) => ({ ...prev, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                    {visibleDelivery.map(d => (
+                    {visibleDelivery.map((d: any) => (
                       <div key={d.id}>
                         <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer ${deliveryId === d.id ? 'border-onyx bg-onyx/5' : 'border-stone/20'}`}>
                           <input type="radio" name="delivery" value={d.id} checked={deliveryId === d.id} onChange={() => { setDeliveryId(d.id); setOfficeLocation('') }} className="accent-onyx" />
