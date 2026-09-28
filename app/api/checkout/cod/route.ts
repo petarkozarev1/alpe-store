@@ -19,11 +19,14 @@ import {
   type CodProduct,
 } from './helpers'
 
+const COD_ALLOWED_DELIVERY = new Set(['address', 'speedy', 'econt', 'pigeon'])
+
 interface CodPayload {
   email: string
   items: CodProduct[]
   shipping: Record<string, string>
   shippingLabel: string
+  deliveryId?: string
   promoCode?: string
   locale?: string
 }
@@ -43,6 +46,17 @@ export async function POST(req: Request) {
     // COD is Bulgaria-only — enforced server-side, not just in the UI.
     if (!isBulgariaEligible(shipping.country)) {
       return NextResponse.json({ error: locale === 'en' ? 'Cash on delivery is available only in Bulgaria' : 'Наложен платеж е достъпен само за България' }, { status: 400 })
+    }
+
+    const deliveryId = (body.deliveryId || '').trim().toLowerCase()
+    const label = (body.shippingLabel || '').toLowerCase()
+    const boxNowAttempt = deliveryId === 'boxnow' || label.includes('boxnow')
+    if (boxNowAttempt || (deliveryId && !COD_ALLOWED_DELIVERY.has(deliveryId))) {
+      return NextResponse.json({
+        error: locale === 'en'
+          ? 'Cash on delivery is available for address, Speedy, Econt, or Pigeon only'
+          : 'Наложен платеж е наличен само до адрес, Спиди, Еконт или Pigeon',
+      }, { status: 400 })
     }
 
     // Recompute all money server-side — never trust client-sent prices/fees.
