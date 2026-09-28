@@ -5,9 +5,10 @@ const HOLD_MS = P2G_HOLD_DAYS * 24 * 60 * 60 * 1000
 
 export function buildP2GPostbackUrl(order: P2GOrder, postbackUrl: string) {
   const url = new URL(postbackUrl)
-  url.searchParams.set('customer_id', order.orderId)
-  url.searchParams.set('deposit', (order.paidAmountCents / 100).toFixed(2))
-  url.searchParams.set('brand', 'ALPE')
+  url.searchParams.set('customer_id', 'KI3VPAIN')
+  url.searchParams.set('status', 'ftd')
+  url.searchParams.set('payout', (order.paidAmountCents / 100).toFixed(2))
+  url.searchParams.set('brand', 'alpee')
   return url
 }
 

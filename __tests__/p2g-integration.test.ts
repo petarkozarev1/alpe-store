@@ -25,10 +25,12 @@ describe('P2G delayed reporting', () => {
     expect(isP2GEligible({ ...order, p2gReported: true }, 'VPL5EQ42', '2026-08-20T00:00:00.000Z')).toBe(false)
   })
 
-  it('sends only the order reference and paid amount to P2G', () => {
+  it('sends the P2G product id, ftd status, paid payout and alpee brand', () => {
     const url = buildP2GPostbackUrl(order, 'https://example.test/postback')
-    expect(url.searchParams.get('customer_id')).toBe('order-1')
-    expect(url.searchParams.get('deposit')).toBe('44.99')
+    expect(url.searchParams.get('customer_id')).toBe('KI3VPAIN')
+    expect(url.searchParams.get('status')).toBe('ftd')
+    expect(url.searchParams.get('payout')).toBe('44.99')
+    expect(url.searchParams.get('brand')).toBe('alpee')
     expect(url.toString()).not.toContain('email')
     expect(url.toString()).not.toContain('name')
   })
