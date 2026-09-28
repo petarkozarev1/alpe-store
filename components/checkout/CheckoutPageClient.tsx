@@ -1,94 +1,33 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { CheckoutElementsProvider, PaymentElement, useCheckoutElements } from '@stripe/react-stripe-js/checkout'
-import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
-import { localizeContent } from '@/components/i18n/LocalizedContent'
+import { CheckoutShell } from './CheckoutShell'
+import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
-import { getStripeClient } from '@/lib/stripe-client'
 import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 import { getPromo, promoDiscount } from '@/lib/promo'
 
-/* ── constants ─────────────────────────────────────── */
 const DELIVERY_PRICE = 4.99
 const COD_FEE = 1.0
 const BGN_RATE = 1.95583
 
 const DELIVERY = [
-  { id: 'speedy',  label: 'Спиди',    badge: 'ПРЕПОРЪЧАНО', requiresOffice: true,  officePlaceholder: 'напр. Спиди офис Сердика, бул. Сливница 2, София',       officeLink: 'https://www.speedy.bg/bg/office-search' },
-  { id: 'econt',   label: 'Еконт',    badge: null,          requiresOffice: true,  officePlaceholder: 'напр. Еконт Сердика, бул. Сливница 2, София',           officeLink: 'https://www.econt.com/services/offices.html' },
-  { id: 'boxnow',  label: 'BoxNow',   badge: null,          requiresOffice: true,  officePlaceholder: 'напр. BoxNow Mall of Sofia, бул. Климент Охридски',     officeLink: 'https://boxnow.bg/lockers' },
-  { id: 'pigeon',  label: 'Pigeon Express', badge: null,      requiresOffice: true,  officePlaceholder: 'напр. Pigeon Express локер НДК, пл. България 1, София', officeLink: 'https://pigeonexpress.com' },
+  { id: 'speedy',  label: 'Спиди',    badge: null as string | null, requiresOffice: true,  officePlaceholder: 'напр. Спиди офис Сердика, бул. Сливница 2, София',       officeLink: 'https://www.speedy.bg/bg/office-search', availableOnCod: true },
+  { id: 'econt',   label: 'Еконт',    badge: null,          requiresOffice: true,  officePlaceholder: 'напр. Еконт Сердика, бул. Сливница 2, София',           officeLink: 'https://www.econt.com/services/offices.html', availableOnCod: true },
+  { id: 'boxnow',  label: 'BoxNow',   badge: null,          requiresOffice: true,  officePlaceholder: 'напр. BoxNow Mall of Sofia, бул. Климент Охридски',     officeLink: 'https://boxnow.bg/lockers', availableOnCod: false },
+  { id: 'pigeon',  label: 'Pigeon Express', badge: 'ПРЕПОРЪЧАНО', requiresOffice: true,  officePlaceholder: 'напр. Pigeon Express локер НДК, пл. България 1, София', officeLink: 'https://pigeonexpress.com', availableOnCod: true },
 ]
+
+const COD_PREFERRED_COURIER = 'pigeon'
 
 function getCookieValue(name: string) {
   if (typeof document === 'undefined') return ''
-  return document.cookie
-    .split('; ')
-    .find(row => row.startsWith(`${name}=`))
-    ?.split('=')
-    .slice(1)
-    .join('=') ?? ''
+  return document.cookie.split('; ').find(row => row.startsWith(`${name}=`))?.split('=').slice(1).join('=') ?? ''
 }
 
-/* ── types ─────────────────────────────────────────── */
 interface Contact { email: string }
 interface Shipping { firstName: string; lastName: string; phone: string; city: string; address: string; postalCode: string; country: string; note: string }
-
-/* ── Embedded Stripe payment (Payment Element on a Checkout Session, ui_mode: 'custom') ───
- * Renders inside <CheckoutElementsProvider>. checkout.confirm() handles 3DS and, on success,
- * redirects to the session's return_url (/checkout/success), which fires the Purchase pixel;
- * the Stripe webhook fires CAPI Purchase + Notion + email — unchanged by this surface. */
-function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: number) => string }) {
-  const t = useTranslations()
-  const result = useCheckoutElements()
-  const [paying, setPaying] = useState(false)
-  const [msg, setMsg] = useState<string | null>(null)
-
-  if (result.type === 'loading') {
-    return <p className="font-sans text-sm text-stone text-center py-8">{t('Зареждане на сигурната форма…')}</p>
-  }
-  if (result.type === 'error') {
-    return <p className="font-sans text-sm text-red-600 text-center py-8">{result.error.message}</p>
-  }
-  const checkout = result.checkout
-
-  const pay = async () => {
-    setPaying(true); setMsg(null)
-    try {
-      const res = await checkout.confirm()
-      if (res.type === 'error') { setMsg(res.error.message); setPaying(false) }
-      // on success Stripe redirects to return_url
-    } catch (err) {
-      setMsg(err instanceof Error ? err.message : t('Грешка при плащане'))
-      setPaying(false)
-    }
-  }
-
-  return (
-    // NOTE: a <div>, not a <form> — this renders inside the checkout's outer <form>, and nested
-    // forms are invalid HTML. The pay button is type="button" and calls confirm() directly.
-    <div className="flex flex-col gap-4">
-      <PaymentElement />
-      {msg && <p className="font-sans text-sm text-red-600">{msg}</p>}
-      <button
-        type="button"
-        onClick={pay}
-        disabled={paying}
-        className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-      >
-        {paying ? 'ОБРАБОТКА…' : <>ПЛАТИ €{total.toFixed(2)} <span className="text-lg">→</span></>}
-      </button>
-      <p className="font-sans text-[11px] text-stone/55 text-center flex items-center justify-center gap-1.5">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3 h-3 text-green-600"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        Сигурно плащане със Stripe · {formatBGN(total)}
-      </p>
-    </div>
-  )
-}
 
 export default function CheckoutPageClient() {
   const locale = useLocale()
@@ -98,7 +37,7 @@ export default function CheckoutPageClient() {
   const [contact, setContact] = useState<Contact>({ email: '' })
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: locale === 'en' ? 'Bulgaria' : 'България', note: '' })
   const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
-  const [deliveryId, setDeliveryId] = useState('speedy')
+  const [deliveryId, setDeliveryId] = useState('pigeon')
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card')
   const [officeLocation, setOfficeLocation] = useState('')
   const [codeInput, setCodeInput] = useState('')
@@ -107,23 +46,16 @@ export default function CheckoutPageClient() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [attempted, setAttempted] = useState(false)
-  // When set, the embedded Stripe Payment Element modal is shown (card flow).
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const markTouched = (key: string) => setTouched(p => ({ ...p, [key]: true }))
 
-  /* ── format validation ──────────────────────────── */
   const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
-  // Accepts BG / international numbers: optional leading +, 8–15 digits, allows spaces/dashes/parens
   const isValidPhone = (v: string) => {
     const digits = v.replace(/\D/g, '')
     return /^\+?[\d\s()-]+$/.test(v.trim()) && digits.length >= 8 && digits.length <= 15
   }
-
-  /* ── inline validation helpers ──────────────────── */
-  // generic "required" check for plain text fields
   const isInvalid = (val: string) => attempted && !val.trim()
-  // field-specific check: required + correct format, shown after submit or blur
   const fieldError = (key: string, val: string, format?: (v: string) => boolean): string => {
     if (!(attempted || touched[key])) return ''
     if (!val.trim()) return 'Това поле е задължително'
@@ -135,32 +67,23 @@ export default function CheckoutPageClient() {
   const ErrorMsg = ({ show, message = 'Това поле е задължително' }: { show: boolean; message?: string }) =>
     show ? <p className="font-sans text-xs text-red-600 mt-1.5">{message}</p> : null
 
-  /* ── Push collected info to Meta Pixel for Advanced Matching (higher EMQ on InitiateCheckout etc) */
   const syncPixelUser = () => {
     setPixelUser({
-      email: contact.email,
-      phone: shipping.phone,
-      firstName: shipping.firstName,
-      lastName: shipping.lastName,
-      city: shipping.city,
-      country: shipping.country,
-      zip: shipping.postalCode,
-    }).catch(() => { /* silent — Pixel might not be initialized yet */ })
+      email: contact.email, phone: shipping.phone, firstName: shipping.firstName, lastName: shipping.lastName,
+      city: shipping.city, country: shipping.country, zip: shipping.postalCode,
+    }).catch(() => {})
   }
 
-  /* ── calculations ───────────────────────────────── */
-  const delivery = DELIVERY.find(d => d.id === deliveryId)!
   const totalPairs = countPairs(items)
-  // Naive sum (what singles would cost) and the cheapest bundle price for that many pairs.
-  // The bundle price auto-applies however the pairs were added (bundle or separate singles).
   const subtotal = naiveSubtotal(items)
   const bundlePrice = priceForPairs(totalPairs)
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
-  // Promo code (e.g. ALETEA10) — % off the bundle-discounted product price.
   const promo = promoDiscount(bundlePrice, appliedCode)
   const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
   const codEligible = deliveryType === 'office' || ['България', 'Bulgaria', 'BG'].includes(shipping.country.trim())
   const isCod = paymentMethod === 'cod' && codEligible
+  const visibleDelivery = isCod ? DELIVERY.filter(d => d.availableOnCod) : DELIVERY
+  const delivery = visibleDelivery.find(d => d.id === deliveryId) ?? visibleDelivery[0]
   const codFee = isCod ? COD_FEE : 0
   const total = +(bundlePrice - promo.amount + shipping_ + codFee).toFixed(2)
 
@@ -168,7 +91,15 @@ export default function CheckoutPageClient() {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
   }, [paymentMethod, codEligible])
 
-  /* ── promo code ─────────────────────────────────── */
+  useEffect(() => {
+    if (!isCod) return
+    const allowed = DELIVERY.filter(d => d.availableOnCod).map(d => d.id)
+    if (!allowed.includes(deliveryId)) {
+      setDeliveryId(COD_PREFERRED_COURIER)
+      setOfficeLocation('')
+    }
+  }, [isCod, deliveryId])
+
   const applyCode = () => {
     const p = getPromo(codeInput)
     if (!p) { setCodeError('Невалиден код'); return }
@@ -177,26 +108,16 @@ export default function CheckoutPageClient() {
   }
   const removeCode = () => { setAppliedCode(null); setCodeInput(''); setCodeError('') }
 
-  /* ── submit ─────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!items.length) { setError('Количката ти е празна.'); return }
-
-    // Validate required fields + formats before hitting the API
     const requiredOk =
-      isValidEmail(contact.email) &&
-      shipping.firstName.trim() &&
-      shipping.lastName.trim() &&
-      isValidPhone(shipping.phone) &&
-      shipping.city.trim() &&
-      (deliveryType === 'address'
-        ? shipping.address.trim() && shipping.postalCode.trim()
-        : officeLocation.trim())
-
+      isValidEmail(contact.email) && shipping.firstName.trim() && shipping.lastName.trim() &&
+      isValidPhone(shipping.phone) && shipping.city.trim() &&
+      (deliveryType === 'address' ? shipping.address.trim() && shipping.postalCode.trim() : officeLocation.trim())
     if (!requiredOk) {
       setAttempted(true)
       setError(null)
-      // Scroll the first invalid field into view on the next tick
       setTimeout(() => {
         const firstInvalid = document.querySelector('.border-red-500') as HTMLElement | null
         firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -204,22 +125,15 @@ export default function CheckoutPageClient() {
       }, 50)
       return
     }
-
     setLoading(true); setError(null)
-
-    // Send RAW product items (unit price + variantId). The server recomputes the bundle price,
-    // bundle discount, and shipping — the client total is never trusted.
     const lineItems = items.map(i => ({
       name: `${i.name} — ${localizeCartVariantLabel(locale, i.variantLabel)}`,
-      price: i.price,
-      quantity: i.quantity,
-      variantId: i.variantId,
+      price: i.price, quantity: i.quantity, variantId: i.variantId,
       image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image,
     }))
     const checkoutShipping = {
       name: `${shipping.firstName} ${shipping.lastName}`,
-      phone: shipping.phone,
-      city: shipping.city,
+      phone: shipping.phone, city: shipping.city,
       address: deliveryType === 'address' ? shipping.address : officeLocation,
       postalCode: deliveryType === 'address' ? shipping.postalCode : '',
       country: deliveryType === 'address' ? shipping.country : locale === 'en' ? 'Bulgaria' : 'България',
@@ -227,29 +141,21 @@ export default function CheckoutPageClient() {
       courier: deliveryType === 'office' ? delivery.label : '',
       officeLocation: deliveryType === 'office' ? officeLocation : '',
       courierNote: shipping.note,
-      fbp: getCookieValue('_fbp'),
-      fbc: getCookieValue('_fbc'),
+      fbp: getCookieValue('_fbp'), fbc: getCookieValue('_fbc'),
     }
-
     if (isCod) {
       const codProducts = items.map(i => ({
-        name: i.name,
-        variantLabel: localizeCartVariantLabel(locale, i.variantLabel),
-        variantId: i.variantId,
-        price: i.price,
-        quantity: i.quantity,
+        name: i.name, variantLabel: localizeCartVariantLabel(locale, i.variantLabel),
+        variantId: i.variantId, price: i.price, quantity: i.quantity,
         image: i.image.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${i.image}` : i.image,
       }))
       try {
         const res = await fetch('/api/checkout/cod', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            locale,
-            email: contact.email,
-            items: codProducts,
-            shipping: checkoutShipping,
+            locale, email: contact.email, items: codProducts, shipping: checkoutShipping,
             shippingLabel: deliveryType === 'address' ? (locale === 'en' ? 'To an address' : 'До адрес') : delivery.label,
+            deliveryId: deliveryType === 'address' ? 'address' : delivery.id,
             promoCode: appliedCode ?? '',
           }),
         })
@@ -262,21 +168,17 @@ export default function CheckoutPageClient() {
       }
       return
     }
-
     try {
       const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          locale,
-          items: lineItems, email: contact.email, shipping: checkoutShipping,
+          locale, items: lineItems, email: contact.email, shipping: checkoutShipping,
           summary: { shippingLabel: deliveryType === 'address' ? (locale === 'en' ? 'To an address' : 'До адрес') : delivery.label },
           promoCode: appliedCode ?? '',
         }),
       })
       const data = await res.json()
       if (!res.ok || !data.clientSecret) throw new Error(data.error ?? 'Грешка')
-      // Open the embedded Payment Element instead of redirecting to a Stripe-hosted page.
       setClientSecret(data.clientSecret)
       setLoading(false)
     } catch (err) {
@@ -285,416 +187,28 @@ export default function CheckoutPageClient() {
     }
   }
 
-  /* ── UI ─────────────────────────────────────────── */
-  return localizeContent(locale, (
-    <div className="min-h-screen bg-parchment">
-      {/* Progress bar */}
-      <div className="border-b border-stone/20 bg-parchment">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm font-sans">
-            <span className="flex items-center gap-1.5 text-stone/50">
-              <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs">✓</span>
-              КОШНИЦА
-            </span>
-            <span className="text-stone/30">──</span>
-            <span className="flex items-center gap-1.5 text-onyx font-semibold">
-              <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs font-bold">2</span>
-              ПЛАЩАНЕ
-            </span>
-            <span className="text-stone/30">──</span>
-            <span className="flex items-center gap-1.5 text-stone/40">
-              <span className="w-6 h-6 rounded-full border border-stone/30 flex items-center justify-center text-xs">3</span>
-              ГОТОВО
-            </span>
-          </div>
-          <span className="hidden sm:flex items-center gap-1.5 text-xs text-stone font-sans">
-            <span className="w-2 h-2 rounded-full bg-green-500 inline-block"/>
-            ЗАЩИТЕНО · SSL
-          </span>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} noValidate className="clarity-mask">
-        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
-
-          {/* ── Left column ───────────────────────── */}
-          <div className="flex flex-col gap-6">
-
-            {/* Section title */}
-            <div>
-              <h1 className="font-serif text-5xl font-bold text-onyx">Плащане.</h1>
-              <p className="font-sans text-sm text-stone mt-2">Само на крачка от <em className="text-iron">по-спокоен сън</em> и <em className="text-iron">по-ясен ден</em>.<br/>Попълни данните си — изпращаме до 24 часа.</p>
-            </div>
-
-            {/* Payment method */}
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">01.</span>Начин на плащане</span>
-              </div>
-              <div className="flex flex-col gap-3">
-                <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
-                  <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="accent-onyx" />
-                  <div className="flex-1">
-                    <span className="font-sans text-sm font-semibold text-onyx">Карта</span>
-                    <p className="font-sans text-xs text-stone mt-0.5">Visa · Mastercard · Apple Pay · Google Pay · Revolut</p>
-                  </div>
-                </label>
-                {codEligible && (
-                  <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
-                    <input type="radio" name="payment" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} className="accent-onyx" />
-                    <div className="flex-1">
-                      <span className="font-sans text-sm font-semibold text-onyx">Наложен платеж</span>
-                      <p className="font-sans text-xs text-stone mt-0.5">Плащаш в брой на куриера при доставка · +€{COD_FEE.toFixed(2)}</p>
-                    </div>
-                  </label>
-                )}
-                {isCod && (
-                  <p className="font-sans text-[11px] text-stone/60 leading-relaxed">При наложен платеж плащаш в брой при получаване. Такса за услугата: €{COD_FEE.toFixed(2)}.</p>
-                )}
-              </div>
-            </div>
-
-            {/* Contact */}
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Контакт</span>
-                <span className="font-sans text-xs text-stone/40">ЗА ПОТВЪРЖДЕНИЕ</span>
-              </div>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <div className="relative">
-                    <input
-                      type="email" required placeholder="имейл@example.com"
-                      value={contact.email}
-                      onChange={e => setContact(p => ({ ...p, email: e.target.value }))}
-                      onBlur={() => { markTouched('email'); syncPixelUser() }}
-                      className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('email', contact.email, isValidEmail))}
-                    />
-                    {isValidEmail(contact.email) && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
-                  </div>
-                  <ErrorMsg show={!!fieldError('email', contact.email, isValidEmail)} message={fieldError('email', contact.email, isValidEmail)} />
-                </div>
-              </div>
-            </div>
-
-            {/* Delivery — combined section */}
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">03.</span>Доставка</span>
-              </div>
-              <div className="flex flex-col gap-4">
-
-                {/* Names */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Име</label>
-                    <input required placeholder="Иван" value={shipping.firstName} onChange={e => setShipping(p => ({ ...p, firstName: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.firstName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                    <ErrorMsg show={isInvalid(shipping.firstName)} />
-                  </div>
-                  <div>
-                    <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Фамилия</label>
-                    <input required placeholder="Иванов" value={shipping.lastName} onChange={e => setShipping(p => ({ ...p, lastName: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.lastName, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                    <ErrorMsg show={isInvalid(shipping.lastName)} />
-                  </div>
-                </div>
-
-                {/* Phone — full width so the whole number fits */}
-                <div>
-                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Телефон</label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40 text-sm">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.55-.55a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
-                    </span>
-                    <input required type="tel" inputMode="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping(p => ({ ...p, phone: e.target.value }))} onBlur={() => { markTouched('phone'); syncPixelUser() }} className={fieldClass(shipping.phone, 'w-full border rounded-xl pl-10 pr-9 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('phone', shipping.phone, isValidPhone))} />
-                    {isValidPhone(shipping.phone) && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 text-sm">✓</span>}
-                  </div>
-                  <ErrorMsg show={!!fieldError('phone', shipping.phone, isValidPhone)} message={fieldError('phone', shipping.phone, isValidPhone)} />
-                </div>
-
-                {/* Delivery type toggle */}
-                <div>
-                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-2">Метод на доставка</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(['address', 'office'] as const).map(type => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => { setDeliveryType(type); setOfficeLocation('') }}
-                        className={`py-3 px-4 rounded-xl border text-sm font-sans font-semibold transition-all ${deliveryType === type ? 'border-onyx bg-onyx text-linen' : 'border-stone/25 text-stone hover:border-stone/50'}`}
-                      >
-                        {type === 'address' ? 'До адрес' : 'До офис / локер'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Conditional: address fields */}
-                {deliveryType === 'address' && (
-                  <>
-                    <div>
-                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Адрес <span className="text-stone/40 normal-case tracking-normal">улица, номер, етаж</span></label>
-                      <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-stone/40">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </span>
-                        <input required placeholder="ул. Витоша 1, ет. 3" value={shipping.address} onChange={e => setShipping(p => ({ ...p, address: e.target.value }))} className={fieldClass(shipping.address, 'w-full border rounded-xl pl-10 pr-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                      </div>
-                      <ErrorMsg show={isInvalid(shipping.address)} />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Пощенски код</label>
-                        <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping(p => ({ ...p, postalCode: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.postalCode, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                        <ErrorMsg show={isInvalid(shipping.postalCode)} />
-                      </div>
-                      <div>
-                        <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
-                        <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                        <ErrorMsg show={isInvalid(shipping.city)} />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Бележка към куриера <span className="text-stone/40 normal-case tracking-normal">по избор</span></label>
-                      <input placeholder="напр. Звъни преди доставка" value={shipping.note} onChange={e => setShipping(p => ({ ...p, note: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
-                    </div>
-                  </>
-                )}
-
-                {/* Conditional: courier + office/locker */}
-                {deliveryType === 'office' && (
-                  <div className="flex flex-col gap-3">
-                    <div>
-                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Град</label>
-                      <input required placeholder="София" value={shipping.city} onChange={e => setShipping(p => ({ ...p, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
-                      <ErrorMsg show={isInvalid(shipping.city)} />
-                    </div>
-                    {DELIVERY.map(d => (
-                      <div key={d.id}>
-                        <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${deliveryId === d.id ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
-                          <input type="radio" name="delivery" value={d.id} checked={deliveryId === d.id} onChange={() => { setDeliveryId(d.id); setOfficeLocation('') }} className="accent-onyx" />
-                          <div className="flex items-center gap-2 flex-wrap flex-1">
-                            <span className="font-sans text-sm font-semibold text-onyx">{d.label}</span>
-                            {d.badge && <span className="font-sans text-[9px] font-bold uppercase tracking-widest bg-gold/20 text-iron px-2 py-0.5 rounded-full">{d.badge}</span>}
-                          </div>
-                        </label>
-                        {deliveryId === d.id && (
-                          <div className="mt-2 ml-4 pl-4 border-l-2 border-onyx/20">
-                            <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Офис / локер <span className="normal-case tracking-normal text-stone/50">— въведи точното местоположение</span></label>
-                            <input
-                              required
-                              placeholder={d.officePlaceholder}
-                              value={officeLocation}
-                              onChange={e => setOfficeLocation(e.target.value)}
-                              className={fieldClass(officeLocation, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')}
-                            />
-                            <ErrorMsg show={isInvalid(officeLocation)} />
-                            <p className="font-sans text-[10px] text-stone/50 mt-1.5">
-                              Намери най-близкия офис на{' '}
-                              <a href={d.officeLink} target="_blank" rel="noopener noreferrer" className="underline hover:text-stone transition-colors">сайта на куриера</a>
-                              {' '}и го въведи тук.
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-              </div>
-            </div>
-
-          </div>
-
-          {/* ── Right column — Order summary ──────── */}
-          <div className="lg:sticky lg:top-6 self-start flex flex-col gap-4">
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <h2 className="font-serif text-lg font-bold text-onyx">Твоята поръчка</h2>
-              </div>
-
-              {/* Items */}
-              <div className="flex flex-col gap-4 mb-5">
-                {items.map(item => (
-                  <div key={`${item.productId}-${item.variantId}`} className="flex items-center gap-3">
-                    <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-linen flex-shrink-0">
-                      <Image src={item.image} alt={item.name} fill sizes="56px" className="object-cover" />
-                      <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-onyx text-linen text-[10px] font-bold flex items-center justify-center">{item.quantity}</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-serif text-sm font-medium text-onyx truncate">{item.name}</p>
-                      <p className="font-sans text-xs text-stone">{localizeCartVariantLabel(locale, item.variantLabel)}</p>
-                    </div>
-                    <span className="font-serif text-sm font-semibold text-onyx flex-shrink-0">€{(item.price * item.quantity).toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
-
-              <hr className="border-stone/15 mb-4" />
-
-              {/* Promo code */}
-              {appliedCode ? (
-                <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
-                  <span className="font-sans text-xs font-semibold text-green-700">{appliedCode} · {promo.percent}% отстъпка приложена</span>
-                  <button type="button" onClick={removeCode} className="font-sans text-xs text-stone hover:text-onyx transition-colors">Премахни</button>
-                </div>
-              ) : (
-                <div className="flex gap-2 mb-4">
-                  <input
-                    placeholder="Промо код"
-                    value={codeInput}
-                    onChange={e => { setCodeInput(e.target.value); setCodeError('') }}
-                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyCode())}
-                    className="flex-1 min-w-0 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
-                  />
-                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">
-                    ПРИЛАГАНЕ
-                  </button>
-                </div>
-              )}
-              {codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}
-
-              <hr className="border-stone/15 mb-4" />
-
-              {/* Totals */}
-              <div className="flex flex-col gap-2.5 font-sans text-sm">
-                <div className="flex justify-between text-stone">
-                  <span>Междинна сума</span>
-                  <span className="text-right">€{subtotal.toFixed(2)} <span className="block text-[11px] text-stone/50">{formatBGN(subtotal)}</span></span>
-                </div>
-                {bundleSaving > 0 && (
-                  <div className="flex justify-between text-green-700">
-                    <span>Отстъпка за комплект</span>
-                    <span className="text-right">−€{bundleSaving.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(bundleSaving)}</span></span>
-                  </div>
-                )}
-                {promo.amount > 0 && (
-                  <div className="flex justify-between text-green-700">
-                    <span>Промо код ({promo.code})</span>
-                    <span className="text-right">−€{promo.amount.toFixed(2)} <span className="block text-[11px] text-green-600/70">−{formatBGN(promo.amount)}</span></span>
-                  </div>
-                )}
-                <div className="flex justify-between text-stone">
-                  <span>Доставка · <em className="not-italic text-stone/60">{deliveryType === 'address' ? 'До адрес' : delivery.label}</em></span>
-                  <span className={`text-right ${shipping_ === 0 ? 'text-green-600 italic' : ''}`}>
-                    {shipping_ === 0 ? 'Безплатна' : (
-                      <>€{shipping_.toFixed(2)} <span className="block text-[11px] text-stone/50 not-italic">{formatBGN(shipping_)}</span></>
-                    )}
-                  </span>
-                </div>
-                {isCod && (
-                  <div className="flex justify-between text-stone">
-                    <span>Наложен платеж</span>
-                    <span className="text-right">€{COD_FEE.toFixed(2)} <span className="block text-[11px] text-stone/50">{formatBGN(COD_FEE)}</span></span>
-                  </div>
-                )}
-                <div className="flex justify-between text-stone/60 text-xs">
-                  <span>ДДС включен в цената</span>
-                </div>
-              </div>
-
-              <hr className="border-stone/15 my-4" />
-
-              <div className="flex justify-between items-baseline mb-4">
-                <span className="font-sans text-base font-semibold text-onyx">Общо</span>
-                <span className="text-right">
-                  <span className="font-serif text-3xl font-bold text-onyx">€{total.toFixed(2)} <span className="font-sans text-xs text-stone font-normal">EUR</span></span>
-                  <span className="block font-sans text-xs text-stone/60 mt-0.5">{formatBGN(total)}</span>
-                </span>
-              </div>
-
-              {/* Reassurance strip */}
-              <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t border-stone/15">
-                <div className="flex flex-col items-center text-center gap-1.5">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 text-iron/80"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                  <span className="font-sans text-[10px] leading-tight text-stone">Преглед при доставка</span>
-                </div>
-                <div className="flex flex-col items-center text-center gap-1.5">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 text-iron/80"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-                  <span className="font-sans text-[10px] leading-tight text-stone">14-дневно връщане</span>
-                </div>
-                <div className="flex flex-col items-center text-center gap-1.5">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5 text-iron/80"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                  <span className="font-sans text-[10px] leading-tight text-stone">1–3 дни доставка</span>
-                </div>
-              </div>
-
-              {/* Trust block — contact + payment security */}
-              <div className="bg-parchment/50 border border-stone/15 rounded-xl px-4 py-3 mb-4 flex flex-col gap-2">
-                {isCod ? (
-                  <div className="flex items-center gap-2 font-sans text-[11px] text-stone">
-                    <span>💵</span><span>Плащаш в брой при доставка · без онлайн плащане</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 font-sans text-[11px] text-stone">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-green-600 flex-shrink-0">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-                    </svg>
-                    <span>Сигурно плащане със <strong className="text-onyx">Stripe</strong> · SSL криптиране</span>
-                  </div>
-                )}
-                <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-sans font-bold text-stone/70">
-                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">VISA</span>
-                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">MC</span>
-                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5"> Pay</span>
-                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">G Pay</span>
-                  <span className="bg-white border border-stone/15 rounded px-1.5 py-0.5">Revolut</span>
-                </div>
-                <div className="flex items-center gap-2 font-sans text-[11px] text-stone pt-1 border-t border-stone/10">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 text-stone/50 flex-shrink-0">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-                  </svg>
-                  <span>Нужда от помощ? <a href="mailto:hello@alpewear.com" className="underline text-onyx hover:text-iron">hello@alpewear.com</a> · <Link href="/contact" className="underline text-onyx hover:text-iron">Контакт</Link></span>
-                </div>
-              </div>
-
-              {error && <p className="text-red-700 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-4">{error}</p>}
-
-              {clientSecret ? (
-                /* Embedded Stripe Payment Element — appears in-page after details are filled (no redirect) */
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-sans text-xs font-semibold text-onyx uppercase tracking-widest">Данни за плащане</span>
-                    <button type="button" onClick={() => setClientSecret(null)} className="font-sans text-xs text-stone hover:text-onyx transition-colors">← Назад</button>
-                  </div>
-                  <CheckoutElementsProvider
-                    stripe={getStripeClient()}
-                    options={{ clientSecret, elementsOptions: { appearance: { theme: 'flat', variables: { colorPrimary: '#2D0E04', borderRadius: '12px', fontFamily: 'Raleway, sans-serif' } } } }}
-                  >
-                    <StripePayForm total={total} formatBGN={formatBGN} />
-                  </CheckoutElementsProvider>
-                </div>
-              ) : (
-                <>
-                  <button
-                    type="submit"
-                    disabled={loading || !items.length}
-                    className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-                  >
-                    {loading ? (
-                      <>
-                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeOpacity="0.25"/>
-                          <path d="M22 12a10 10 0 00-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-                        </svg>
-                        ПОДГОТВЯМЕ ПЛАЩАНЕТО...
-                      </>
-                    ) : (
-                      <>{isCod ? 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ' : 'ПРОДЪЛЖИ КЪМ ПЛАЩАНЕ'} <span className="text-lg">→</span></>
-                    )}
-                  </button>
-
-                  <p className="font-sans text-[11px] text-stone/50 text-center mt-3">
-                    Като потвърдиш, приемаш{' '}
-                    <Link href="/terms" className="underline hover:text-stone transition-colors">Условията за ползване</Link>
-                    {' '}и{' '}
-                    <Link href="/privacy" className="underline hover:text-stone transition-colors">Политиката за поверителност</Link>.
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  ))
+  return (
+    <CheckoutShell
+      locale={locale} formatBGN={formatBGN} items={items}
+      contact={contact} setContact={setContact}
+      shipping={shipping} setShipping={setShipping}
+      deliveryType={deliveryType} setDeliveryType={setDeliveryType}
+      deliveryId={deliveryId} setDeliveryId={setDeliveryId}
+      paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod}
+      officeLocation={officeLocation} setOfficeLocation={setOfficeLocation}
+      codeInput={codeInput} setCodeInput={setCodeInput}
+      appliedCode={appliedCode} codeError={codeError}
+      applyCode={applyCode} removeCode={removeCode}
+      loading={loading} error={error}
+      clientSecret={clientSecret} setClientSecret={setClientSecret}
+      handleSubmit={handleSubmit}
+      fieldClass={fieldClass} fieldError={fieldError} isInvalid={isInvalid} ErrorMsg={ErrorMsg}
+      markTouched={markTouched} syncPixelUser={syncPixelUser}
+      isValidEmail={isValidEmail} isValidPhone={isValidPhone}
+      isCod={isCod} codEligible={codEligible}
+      visibleDelivery={visibleDelivery} delivery={delivery}
+      subtotal={subtotal} bundleSaving={bundleSaving} promo={promo}
+      shipping_={shipping_} total={total}
+    />
+  )
 }
