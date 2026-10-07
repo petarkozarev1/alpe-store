@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { notifyAlert } from '@/lib/alerts'
 import { getRequiredEnv, getStripe } from '@/lib/stripe'
-import { writeOrderToNotion, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
+import { writeOrderToNotionWithRetry, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 
 export async function POST(req: Request) {
@@ -44,6 +44,7 @@ export async function POST(req: Request) {
   console.log(`[WEBHOOK] checkout.session.completed — session=${session.id} email=${customerEmail} total=${total}`)
 
   // Independent task #1 — Notion write. Failures must NOT block CAPI.
+  // Retries only this save. Email and Meta still run once.
   const orderRecord: OrderRecord = {
     orderRef: session.id,
     paymentMethod: 'card',
@@ -66,7 +67,7 @@ export async function POST(req: Request) {
 
   let notionOk = false
   try {
-    await writeOrderToNotion(orderRecord)
+    await writeOrderToNotionWithRetry(orderRecord)
     notionOk = true
     console.log(`[WEBHOOK] Notion row created — session=${session.id}`)
   } catch (err) {
@@ -75,7 +76,7 @@ export async function POST(req: Request) {
     await notifyAlert({
       severity: 'error',
       title: 'Notion order write FAILED',
-      body: `Customer paid but order not saved to Notion.\n\n**Session:** \`${session.id}\`\n**Email:** ${customerEmail}\n**Total:** €${total}\n**Items:** ${items}\n**Error:** \`${errMessage}\``,
+      body: `Customer paid but order not saved to Notion after retries.\n\n**Session:** \`${session.id}\`\n**Email:** ${customerEmail}\n**Total:** €${total}\n**Items:** ${items}\n**Error:** \`${errMessage}\``,
     })
   }
 
