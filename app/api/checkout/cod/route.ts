@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { writeOrderToNotion, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
+import { writeOrderToNotionWithRetry, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 import { notifyAlert } from '@/lib/alerts'
 import { signCodOrder } from '@/lib/cod-signature'
@@ -43,7 +43,6 @@ export async function POST(req: Request) {
     if (!email?.trim() || !shipping?.name?.trim() || !shipping?.phone?.trim() || !shipping?.city?.trim()) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
-    // COD is Bulgaria-only — enforced server-side, not just in the UI.
     if (!isBulgariaEligible(shipping.country)) {
       return NextResponse.json({ error: locale === 'en' ? 'Cash on delivery is available only in Bulgaria' : 'Наложен платеж е достъпен само за България' }, { status: 400 })
     }
@@ -59,10 +58,9 @@ export async function POST(req: Request) {
       }, { status: 400 })
     }
 
-    // Recompute all money server-side — never trust client-sent prices/fees.
-    const subtotal = computeSubtotal(items)            // naive sum (for display)
-    const bundleSaving = computeBundleSaving(items)    // automatic multi-pair discount
-    const promo = promoDiscount(computeBundlePrice(items), body.promoCode)  // validated server-side
+    const subtotal = computeSubtotal(items)
+    const bundleSaving = computeBundleSaving(items)
+    const promo = promoDiscount(computeBundlePrice(items), body.promoCode)
     const shippingAmount = computeShipping(items)
     const codFee = COD_FEE
     const total = +(computeCodTotal({ items, shippingAmount, codFee }) - promo.amount).toFixed(2)
@@ -84,21 +82,18 @@ export async function POST(req: Request) {
       affiliateId: affiliateId ?? undefined,
     }
 
-    // Independent task #1 — Notion
     try {
-      await writeOrderToNotion(orderRecord)
+      await writeOrderToNotionWithRetry(orderRecord)
     } catch (err) {
       const m = err instanceof Error ? err.message : String(err)
       console.error(`[COD_NOTION_FAIL] ref=${orderId} email=${email} error=${m}`)
-      await notifyAlert({ severity: 'error', title: 'COD order Notion write FAILED', body: `COD order placed but not saved to Notion.\n\n**Ref:** \`${orderId}\`\n**Email:** ${email}\n**Total:** €${total}\n**Items:** ${itemsText}\n**Error:** \`${m}\`` })
+      await notifyAlert({ severity: 'error', title: 'COD order Notion write FAILED', body: `COD order placed but not saved to Notion after retries.\n\n**Ref:** \`${orderId}\`\n**Email:** ${email}\n**Total:** €${total}\n**Items:** ${itemsText}\n**Error:** \`${m}\`` })
     }
 
-    // Mirror to the promoter's separate (PII-free) Notion DB when a promo code was used.
     if (promo.code) {
       await writePromoOrderToNotion({ promoCode: promo.code, total, itemsText, orderRef: orderId })
     }
 
-    // Independent task #2 — confirmation email
     const productRows: OrderEmailRow[] = items.map(i => ({ label: i.name, sublabel: i.variantLabel, amount: +(i.price * i.quantity).toFixed(2) }))
     const emailModel: OrderEmailModel = {
       orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || (locale === 'en' ? 'customer' : 'клиент'), locale,
@@ -117,7 +112,6 @@ export async function POST(req: Request) {
       await notifyAlert({ severity: 'warn', title: 'COD confirmation email FAILED', body: `COD order placed but email not sent.\n\n**Ref:** \`${orderId}\`\n**Email:** ${email}\n**Error:** \`${m}\`` })
     }
 
-    // Independent task #3 — CAPI Purchase (dedupes with browser purchase-cod-{id})
     await firePurchase({
       email, phone: shipping.phone || undefined, firstName, lastName,
       city: shipping.city || undefined, country: shipping.country || undefined, zip: shipping.postalCode || undefined,
@@ -127,7 +121,6 @@ export async function POST(req: Request) {
       eventId: `purchase-${orderId}`, sourceUrl: 'https://alpewear.com/checkout/success',
     }, { orderRef: orderId, email, total })
 
-    // Signed so the success page can verify the Purchase wasn't forged via a crafted URL.
     return NextResponse.json({ orderId, value: total, sig: signCodOrder(orderId, String(total)) })
   } catch (err) {
     console.error('COD checkout error:', err)
