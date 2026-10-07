@@ -23,8 +23,26 @@ export interface OrderRecord {
   paidAt?: string
 }
 
+export function isTransientNotionError(err: unknown) {
+  const message = err instanceof Error ? err.message : String(err)
+  return /cross-cell memcached|rate_limited|internal_server_error|service_unavailable|timeout|ECONNRESET|ETIMEDOUT|502|503|504/i.test(message)
+}
+
+function notionClient() {
+  return new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
+}
+
+async function orderAlreadyInNotion(notion: Client, databaseId: string, orderRef: string) {
+  const found = await notion.databases.query({
+    database_id: databaseId,
+    filter: { property: 'Stripe Session', rich_text: { equals: orderRef } },
+    page_size: 1,
+  })
+  return found.results.length > 0
+}
+
 export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
-  const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
+  const notion = notionClient()
   const databaseId = getRequiredEnv('NOTION_DATABASE_ID')
   const items = order.paymentMethod === 'cod' ? `[НАЛОЖЕН ПЛАТЕЖ] ${order.itemsText}` : order.itemsText
 
@@ -71,6 +89,26 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
   }
 }
 
+/** Retry only the Notion row. Does not resend email, Meta, or the Stripe event. */
+export async function writeOrderToNotionWithRetry(order: OrderRecord, attempts = 4): Promise<void> {
+  const notion = notionClient()
+  const databaseId = getRequiredEnv('NOTION_DATABASE_ID')
+  let last: unknown
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      if (attempt > 1 && await orderAlreadyInNotion(notion, databaseId, order.orderRef)) return
+      await writeOrderToNotion(order)
+      return
+    } catch (err) {
+      last = err
+      if (!isTransientNotionError(err) || attempt === attempts) throw err
+      console.warn(`[NOTION_RETRY] ref=${order.orderRef} attempt=${attempt}/${attempts} error=${err instanceof Error ? err.message : err}`)
+      await new Promise(resolve => setTimeout(resolve, 500 * 2 ** (attempt - 1)))
+    }
+  }
+  throw last
+}
+
 /**
  * Mirror a promo-code order into a SEPARATE Notion database (NOTION_PROMO_DATABASE_ID) that you
  * can share read-only with the influencer. Contains NO customer PII — only code, total, items,
@@ -84,7 +122,7 @@ export async function writePromoOrderToNotion(o: { promoCode: string; total: num
   const promoDbId = process.env[`NOTION_PROMO_DATABASE_ID_${promoKey}`] || process.env.NOTION_PROMO_DATABASE_ID
   if (!promoDbId) return
   try {
-    const notion = new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
+    const notion = notionClient()
     await notion.pages.create({
       parent: { database_id: promoDbId },
       properties: {
