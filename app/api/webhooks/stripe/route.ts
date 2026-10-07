@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { notifyAlert } from '@/lib/alerts'
 import { getRequiredEnv, getStripe } from '@/lib/stripe'
-import { writeOrderToNotion, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
+import { writeOrderToNotionWithRetry, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 
 export async function POST(req: Request) {
@@ -43,7 +43,6 @@ export async function POST(req: Request) {
 
   console.log(`[WEBHOOK] checkout.session.completed — session=${session.id} email=${customerEmail} total=${total}`)
 
-  // Independent task #1 — Notion write. Failures must NOT block CAPI.
   const orderRecord: OrderRecord = {
     orderRef: session.id,
     paymentMethod: 'card',
@@ -66,7 +65,7 @@ export async function POST(req: Request) {
 
   let notionOk = false
   try {
-    await writeOrderToNotion(orderRecord)
+    await writeOrderToNotionWithRetry(orderRecord)
     notionOk = true
     console.log(`[WEBHOOK] Notion row created — session=${session.id}`)
   } catch (err) {
@@ -75,16 +74,14 @@ export async function POST(req: Request) {
     await notifyAlert({
       severity: 'error',
       title: 'Notion order write FAILED',
-      body: `Customer paid but order not saved to Notion.\n\n**Session:** \`${session.id}\`\n**Email:** ${customerEmail}\n**Total:** €${total}\n**Items:** ${items}\n**Error:** \`${errMessage}\``,
+      body: `Customer paid but order not saved to Notion after retries.\n\n**Session:** \`${session.id}\`\n**Email:** ${customerEmail}\n**Total:** €${total}\n**Items:** ${items}\n**Error:** \`${errMessage}\``,
     })
   }
 
-  // Mirror to the promoter's separate (PII-free) Notion DB when a promo code was used.
   if (meta.promoCode) {
     await writePromoOrderToNotion({ promoCode: meta.promoCode, total, itemsText: items, orderRef: session.id })
   }
 
-  // Independent task #2 — Meta CAPI Purchase. Always fires regardless of Notion outcome.
   const nameParts = (meta.name ?? '').trim().split(' ')
   const firstName = nameParts[0] ?? ''
   const lastName = nameParts.slice(1).join(' ') || firstName
@@ -111,11 +108,9 @@ export async function POST(req: Request) {
     eventTime: session.created,
   }, { orderRef: session.id, email: customerEmail, total })
 
-  // Independent task #3 — confirmation email. Failures must NOT block the 200 response.
   const shippingAmount = Number(meta.shippingAmount ?? '0') || 0
   const subtotal = Number(meta.subtotal ?? '0') || (total - shippingAmount)
   const discountAmount = Number(meta.discountAmount ?? '0') || 0
-  // Product rows = all Stripe line items except the trailing shipping line (only present when shippingAmount > 0).
   const productLineItems = shippingAmount > 0 ? lineItems.data.slice(0, -1) : lineItems.data
   const productRows: OrderEmailRow[] = productLineItems.map(li => {
     const [label, sublabel] = (li.description ?? 'ALPÉ').split(' — ')
@@ -151,8 +146,6 @@ export async function POST(req: Request) {
     })
   }
 
-  // Always return 200 — webhook itself processed. Failures handled async via alerts.
-  // (Returning 5xx would make Stripe retry every 10h for 3 days, flooding logs without fixing root cause.)
   console.log(`[WEBHOOK] Done — session=${session.id} notion=${notionOk} capi=${capiOk} email=${emailOk}`)
   return NextResponse.json({ received: true, notion: notionOk, capi: capiOk, email: emailOk })
 }
