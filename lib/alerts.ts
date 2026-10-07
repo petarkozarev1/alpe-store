@@ -10,15 +10,17 @@
  * - Slack: use an Incoming Webhook URL
  * - Both accept `{ content: "..." }` JSON payloads.
  *
- * Set ALERT_DISCORD_USER_ID to a Discord user snowflake (right-click your name → Copy User ID)
- * so failure alerts ping that user. Several ids can be comma-separated.
+ * Failure alerts mention ALERT_DISCORD_USER_ID when set, otherwise the owner id below.
+ * Several ids can be comma-separated.
  */
+const DEFAULT_DISCORD_USER_ID = '451498830127693844'
+
 function discordMentions() {
-  const ids = (process.env.ALERT_DISCORD_USER_ID ?? '')
+  const raw = process.env.ALERT_DISCORD_USER_ID || DEFAULT_DISCORD_USER_ID
+  return raw
     .split(',')
     .map(id => id.trim())
     .filter(id => /^\d{15,22}$/.test(id))
-  return ids
 }
 
 export async function notifyAlert(opts: {
