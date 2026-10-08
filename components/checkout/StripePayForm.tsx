@@ -1,9 +1,11 @@
 'use client'
 import { useState } from 'react'
 import { PaymentElement, useCheckoutElements } from '@stripe/react-stripe-js/checkout'
-import { useTranslations } from '@/components/i18n/LocaleProvider'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
+import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 
 export function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: number) => string }) {
+  const locale = useLocale()
   const t = useTranslations()
   const result = useCheckoutElements()
   const [paying, setPaying] = useState(false)
@@ -28,7 +30,7 @@ export function StripePayForm({ total, formatBGN }: { total: number; formatBGN: 
     }
   }
 
-  return (
+  return localizeContent(locale, (
     <div className="flex flex-col gap-4">
       <PaymentElement />
       {msg && <p className="font-sans text-sm text-red-600">{msg}</p>}
@@ -45,5 +47,5 @@ export function StripePayForm({ total, formatBGN }: { total: number; formatBGN: 
         Сигурно плащане със Stripe · {formatBGN(total)}
       </p>
     </div>
-  )
+  ))
 }
