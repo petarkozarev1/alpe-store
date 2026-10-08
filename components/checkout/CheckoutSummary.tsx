@@ -12,7 +12,7 @@ export function CheckoutSummary(p: any) {
   const {
     locale, formatBGN, items, codeInput, setCodeInput, appliedCode, codeError,
     applyCode, removeCode, loading, error, clientSecret, setClientSecret,
-    isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, total,
+    isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total,
   } = p
   return localizeContent(locale, (
           <div className="lg:sticky lg:top-6 self-start flex flex-col gap-4">
@@ -76,6 +76,12 @@ export function CheckoutSummary(p: any) {
                   <span>Доставка · <em className="not-italic text-stone/60">{deliveryType === 'address' ? 'До адрес' : delivery.label}</em></span>
                   <span className={`text-right ${shipping_ === 0 ? 'text-green-600 italic' : ''}`}>{shipping_ === 0 ? 'Безплатна' : <>€{shipping_.toFixed(2)}</>}</span>
                 </div>
+                {intlFee > 0 && (
+                  <div className="flex justify-between text-stone">
+                    <span>{locale === 'en' ? 'International delivery' : 'Международна доставка'}</span>
+                    <span>€{Number(intlFee).toFixed(2)}</span>
+                  </div>
+                )}
                 {isCod && (
                   <div className="flex justify-between text-stone">
                     <span>Наложен платеж</span>
