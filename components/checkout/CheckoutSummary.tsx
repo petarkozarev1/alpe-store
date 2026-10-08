@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutElementsProvider } from '@stripe/react-stripe-js/checkout'
+import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
@@ -13,7 +14,7 @@ export function CheckoutSummary(p: any) {
     applyCode, removeCode, loading, error, clientSecret, setClientSecret,
     isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, total,
   } = p
-  return (
+  return localizeContent(locale, (
           <div className="lg:sticky lg:top-6 self-start flex flex-col gap-4">
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="flex items-center justify-between mb-5">
@@ -113,5 +114,5 @@ export function CheckoutSummary(p: any) {
               )}
             </div>
           </div>
-  )
+  ))
 }
