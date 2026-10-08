@@ -19,7 +19,7 @@ export default function Footer() {
               {siteConfig.brand}
             </Link>
             <p className="font-sans text-xs text-linen/60 leading-relaxed max-w-[200px]">
-              {t(siteConfig.footer.description)}
+              {locale === 'en' ? 'Blue and green-light glasses for everyday screen use.' : t(siteConfig.footer.description)}
             </p>
           </div>
 
