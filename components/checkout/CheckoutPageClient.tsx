@@ -7,9 +7,9 @@ import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
 import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 import { getPromo, promoDiscount } from '@/lib/promo'
+import { deliveryAmount, internationalFee, isBulgaria } from '@/lib/checkout-delivery'
 import { translate } from '@/lib/i18n/translations'
 
-const DELIVERY_PRICE = 4.99
 const COD_FEE = 1.0
 const BGN_RATE = 1.95583
 
@@ -80,13 +80,15 @@ export default function CheckoutPageClient() {
   const bundlePrice = priceForPairs(totalPairs)
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
   const promo = promoDiscount(bundlePrice, appliedCode)
-  const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
-  const codEligible = deliveryType === 'office' || ['България', 'Bulgaria', 'BG'].includes(shipping.country.trim())
+  const shipping_ = deliveryAmount(totalPairs)
+  const intlFee = deliveryType === 'address' ? internationalFee(shipping.country) : 0
+  const domestic = deliveryType === 'office' || isBulgaria(shipping.country)
+  const codEligible = domestic
   const isCod = paymentMethod === 'cod' && codEligible
   const visibleDelivery = isCod ? DELIVERY.filter(d => d.availableOnCod) : DELIVERY
   const delivery = visibleDelivery.find(d => d.id === deliveryId) ?? visibleDelivery[0]
   const codFee = isCod ? COD_FEE : 0
-  const total = +(bundlePrice - promo.amount + shipping_ + codFee).toFixed(2)
+  const total = +(bundlePrice - promo.amount + shipping_ + codFee + intlFee).toFixed(2)
 
   useEffect(() => {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
@@ -209,7 +211,7 @@ export default function CheckoutPageClient() {
       isCod={isCod} codEligible={codEligible}
       visibleDelivery={visibleDelivery} delivery={delivery}
       subtotal={subtotal} bundleSaving={bundleSaving} promo={promo}
-      shipping_={shipping_} total={total}
+      shipping_={shipping_} intlFee={intlFee} total={total}
     />
   )
 }
