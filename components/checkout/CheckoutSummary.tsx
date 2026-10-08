@@ -38,7 +38,7 @@ export function CheckoutSummary(p: any) {
               <hr className="border-stone/15 mb-4" />
               {appliedCode ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
-                  <span className="font-sans text-xs font-semibold text-green-700">{appliedCode} · {promo.percent}% отстъпка приложена</span>
+                  <span className="font-sans text-xs font-semibold text-green-700">{appliedCode}{' · '}{promo.percent}{'% '}отстъпка приложена</span>
                   <button type="button" onClick={removeCode} className="font-sans text-xs text-stone hover:text-onyx transition-colors">Премахни</button>
                 </div>
               ) : (
@@ -50,7 +50,7 @@ export function CheckoutSummary(p: any) {
                     onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyCode())}
                     className="flex-1 min-w-0 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
                   />
-                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">ПРИЛАГАНЕ</button>
+                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">{locale === 'en' ? 'APPLY' : 'ПРИЛАГАНЕ'}</button>
                 </div>
               )}
               {codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}
