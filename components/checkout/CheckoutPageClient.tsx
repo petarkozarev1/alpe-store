@@ -7,8 +7,9 @@ import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
 import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
 import { getPromo, promoDiscount } from '@/lib/promo'
+import { deliveryAmount, internationalFee, isBulgaria } from '@/lib/checkout-delivery'
+import { translate } from '@/lib/i18n/translations'
 
-const DELIVERY_PRICE = 4.99
 const COD_FEE = 1.0
 const BGN_RATE = 1.95583
 
@@ -58,13 +59,13 @@ export default function CheckoutPageClient() {
   const isInvalid = (val: string) => attempted && !val.trim()
   const fieldError = (key: string, val: string, format?: (v: string) => boolean): string => {
     if (!(attempted || touched[key])) return ''
-    if (!val.trim()) return 'Това поле е задължително'
-    if (format && !format(val)) return key === 'email' ? 'Въведи валиден имейл адрес' : 'Въведи валиден телефонен номер'
+    if (!val.trim()) return translate(locale, 'Това поле е задължително')
+    if (format && !format(val)) return translate(locale, key === 'email' ? 'Въведи валиден имейл адрес' : 'Въведи валиден телефонен номер')
     return ''
   }
   const fieldClass = (val: string, base: string, invalid = isInvalid(val)) =>
     `${base} ${invalid ? 'border-red-500 focus:ring-red-500' : 'border-stone/25 focus:ring-onyx'}`
-  const ErrorMsg = ({ show, message = 'Това поле е задължително' }: { show: boolean; message?: string }) =>
+  const ErrorMsg = ({ show, message = translate(locale, 'Това поле е задължително') }: { show: boolean; message?: string }) =>
     show ? <p className="font-sans text-xs text-red-600 mt-1.5">{message}</p> : null
 
   const syncPixelUser = () => {
@@ -79,13 +80,15 @@ export default function CheckoutPageClient() {
   const bundlePrice = priceForPairs(totalPairs)
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
   const promo = promoDiscount(bundlePrice, appliedCode)
-  const shipping_ = totalPairs >= 2 ? 0 : DELIVERY_PRICE
-  const codEligible = deliveryType === 'office' || ['България', 'Bulgaria', 'BG'].includes(shipping.country.trim())
+  const shipping_ = deliveryAmount(totalPairs)
+  const intlFee = deliveryType === 'address' ? internationalFee(shipping.country) : 0
+  const domestic = deliveryType === 'office' || isBulgaria(shipping.country)
+  const codEligible = domestic
   const isCod = paymentMethod === 'cod' && codEligible
   const visibleDelivery = isCod ? DELIVERY.filter(d => d.availableOnCod) : DELIVERY
   const delivery = visibleDelivery.find(d => d.id === deliveryId) ?? visibleDelivery[0]
   const codFee = isCod ? COD_FEE : 0
-  const total = +(bundlePrice - promo.amount + shipping_ + codFee).toFixed(2)
+  const total = +(bundlePrice - promo.amount + shipping_ + codFee + intlFee).toFixed(2)
 
   useEffect(() => {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
@@ -102,7 +105,7 @@ export default function CheckoutPageClient() {
 
   const applyCode = () => {
     const p = getPromo(codeInput)
-    if (!p) { setCodeError('Невалиден код'); return }
+    if (!p) { setCodeError(translate(locale, 'Невалиден код')); return }
     setAppliedCode(p.code)
     setCodeError('')
   }
@@ -110,7 +113,7 @@ export default function CheckoutPageClient() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!items.length) { setError('Количката ти е празна.'); return }
+    if (!items.length) { setError(translate(locale, 'Количката ти е празна.')); return }
     const requiredOk =
       isValidEmail(contact.email) && shipping.firstName.trim() && shipping.lastName.trim() &&
       isValidPhone(shipping.phone) && shipping.city.trim() &&
@@ -160,10 +163,10 @@ export default function CheckoutPageClient() {
           }),
         })
         const data = await res.json()
-        if (!res.ok || !data.orderId) throw new Error(data.error ?? 'Грешка')
+        if (!res.ok || !data.orderId) throw new Error(data.error ?? translate(locale, 'Грешка'))
         window.location.href = `/checkout/success?cod=1&order=${encodeURIComponent(data.orderId)}&value=${data.value}&sig=${encodeURIComponent(data.sig ?? '')}`
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Грешка при поръчка')
+        setError(err instanceof Error ? err.message : translate(locale, 'Грешка при поръчка'))
         setLoading(false)
       }
       return
@@ -178,11 +181,11 @@ export default function CheckoutPageClient() {
         }),
       })
       const data = await res.json()
-      if (!res.ok || !data.clientSecret) throw new Error(data.error ?? 'Грешка')
+      if (!res.ok || !data.clientSecret) throw new Error(data.error ?? translate(locale, 'Грешка'))
       setClientSecret(data.clientSecret)
       setLoading(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Грешка при плащане')
+      setError(err instanceof Error ? err.message : translate(locale, 'Грешка при плащане'))
       setLoading(false)
     }
   }
@@ -208,7 +211,7 @@ export default function CheckoutPageClient() {
       isCod={isCod} codEligible={codEligible}
       visibleDelivery={visibleDelivery} delivery={delivery}
       subtotal={subtotal} bundleSaving={bundleSaving} promo={promo}
-      shipping_={shipping_} total={total}
+      shipping_={shipping_} intlFee={intlFee} total={total}
     />
   )
 }
