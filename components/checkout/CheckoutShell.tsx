@@ -1,6 +1,6 @@
 'use client'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
-import { COD_FEE, courierBadge } from '@/lib/checkout-delivery'
+import { COD_FEE, courierBadge, isBulgaria } from '@/lib/checkout-delivery'
 import { CheckoutSummary } from './CheckoutSummary'
 
 export function CheckoutShell(p: any) {
@@ -11,6 +11,7 @@ export function CheckoutShell(p: any) {
     fieldClass, fieldError, isInvalid, ErrorMsg, markTouched, syncPixelUser, isValidEmail, isValidPhone,
     isCod, codEligible, visibleDelivery,
   } = p
+  const domestic = isBulgaria(shipping.country)
   return localizeContent(locale, (
     <div className="min-h-screen bg-parchment">
       <div className="border-b border-stone/20 bg-parchment">
@@ -85,7 +86,7 @@ export function CheckoutShell(p: any) {
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {(['address', 'office'] as const).map(type => (
-                    <button key={type} type="button" onClick={() => { setDeliveryType(type); setOfficeLocation('') }} className={`py-3 px-4 rounded-xl border text-sm font-sans font-semibold ${deliveryType === type ? 'border-onyx bg-onyx text-linen' : 'border-stone/25 text-stone'}`}>
+                    <button key={type} type="button" disabled={type === 'office' && !domestic} onClick={() => { setDeliveryType(type); setOfficeLocation(''); if (type === 'office') setShipping((prev: any) => ({ ...prev, country: locale === 'en' ? 'Bulgaria' : 'България' })) }} className={`py-3 px-4 rounded-xl border text-sm font-sans font-semibold ${deliveryType === type ? 'border-onyx bg-onyx text-linen' : 'border-stone/25 text-stone'} ${type === 'office' && !domestic ? 'opacity-40 cursor-not-allowed' : ''}`}>
                       {type === 'address' ? 'До адрес' : 'До офис / локер'}
                     </button>
                   ))}
@@ -96,6 +97,11 @@ export function CheckoutShell(p: any) {
                     <div className="grid grid-cols-2 gap-4">
                       <input required placeholder="1000" value={shipping.postalCode} onChange={e => setShipping((prev: any) => ({ ...prev, postalCode: e.target.value }))} className={fieldClass(shipping.postalCode, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
                       <input required placeholder="София" value={shipping.city} onChange={e => setShipping((prev: any) => ({ ...prev, city: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.city, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                    </div>
+                    <div>
+                      <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">{locale === 'en' ? 'Country' : 'Държава'}</label>
+                      <input required placeholder={locale === 'en' ? 'Bulgaria' : 'България'} value={shipping.country} onChange={e => setShipping((prev: any) => ({ ...prev, country: e.target.value }))} onBlur={syncPixelUser} className={fieldClass(shipping.country, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2')} />
+                      <p className="font-sans text-[11px] text-stone/45 leading-relaxed mt-1.5">{locale === 'en' ? 'For delivery outside Bulgaria, an additional €4.99 applies, for logistics.' : 'За доставка извън България се добавя €4.99, заради логистиката.'}</p>
                     </div>
                     <input placeholder="бележка към куриера" value={shipping.note} onChange={e => setShipping((prev: any) => ({ ...prev, note: e.target.value }))} className="w-full border border-stone/25 rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx" />
                   </>
