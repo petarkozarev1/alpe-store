@@ -8,8 +8,7 @@ import { cookies } from 'next/headers'
 import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
 import { isLocale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
-
-const DELIVERY_PRICE = 4.99
+import { deliveryAmount, internationalFee } from '@/lib/checkout-delivery'
 
 interface LineItem {
   name: string
@@ -53,16 +52,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    // Recompute money server-side — never trust client totals. Price depends on total pairs.
     const naiveSum = naiveSubtotal(productItems)
     const pairs = countPairs(productItems)
     const bundlePrice = priceForPairs(pairs)
     const bundleDiscount = +Math.max(0, naiveSum - bundlePrice).toFixed(2)
-    // Validate the promo code server-side; 10% off the (bundle-discounted) product price.
     const promo = promoDiscount(bundlePrice, promoCode)
-    // One coupon covers the whole product discount (bundle + promo) so the charge = product − all + shipping.
     const totalProductDiscount = +(bundleDiscount + promo.amount).toFixed(2)
-    const shippingAmount = pairs >= 2 ? 0 : DELIVERY_PRICE
+    const office = Boolean(shipping.courier)
+    const shippingAmount = deliveryAmount(pairs)
+    const intlFee = office ? 0 : internationalFee(shipping.country)
     const shippingLabel = summary?.shippingLabel || shipping.deliveryMethod || 'Доставка'
     const affiliateId = getP2GAttribution(cookies().get(P2G_COOKIE_NAME)?.value, process.env.P2G_AFFILIATE_ID)
 
@@ -77,8 +75,6 @@ export async function POST(req: Request) {
       : null
 
     const session = await stripe.checkout.sessions.create({
-      // 'elements' = in-page Payment Element flow (pairs with CheckoutElementsProvider on the
-      // client). Still a Checkout Session, so checkout.session.completed fires as before.
       ui_mode: 'elements',
       mode: 'payment',
       locale,
@@ -103,6 +99,14 @@ export async function POST(req: Request) {
           },
           quantity: 1,
         }] : []),
+        ...(intlFee > 0 ? [{
+          price_data: {
+            currency: 'eur' as const,
+            product_data: { name: 'Международна доставка' },
+            unit_amount: Math.round(intlFee * 100),
+          },
+          quantity: 1,
+        }] : []),
       ],
       ...(coupon ? { discounts: [{ coupon: coupon.id }] } : {}),
       metadata: {
@@ -114,27 +118,20 @@ export async function POST(req: Request) {
         discountAmount: String(totalProductDiscount),
         promoCode: promo.code,
         shippingAmount: String(shippingAmount),
+        internationalFee: String(intlFee),
         shippingLabel,
         ...(affiliateId ? { affiliateId } : {}),
         locale,
       },
-      // ui_mode: 'elements' uses return_url (cancel_url/success_url are not allowed).
-      // Stripe redirects here after checkout.confirm() succeeds; success page reads session_id
-      // and the checkout.session.completed webhook fires Notion + CAPI Purchase + email.
       return_url: `${siteUrl}${localizedPath('/checkout/success', locale)}?session_id={CHECKOUT_SESSION_ID}`,
     })
 
-    // Mirror InitiateCheckout server-side to Meta CAPI for higher EMQ + ad-blocker resilience.
-    // Uses session.id in eventId so it dedupes with the browser-side InitiateCheckout pixel event.
     const nameParts = (shipping.name ?? '').trim().split(' ')
     const firstName = nameParts[0] ?? ''
     const lastName = nameParts.slice(1).join(' ') || firstName
     const cartValue = +(bundlePrice - promo.amount).toFixed(2)
     const numItems = productItems.reduce((sum, i) => sum + i.quantity, 0)
 
-    // Await CAPI so the serverless function doesn't terminate before the request reaches Meta.
-    // Adds ~200-400ms to the redirect but ensures the event is actually sent.
-    // Wrapped in try/catch so a CAPI failure doesn't block the user reaching Stripe payment.
     try {
       await sendCAPIEvent('InitiateCheckout', {
         email,
@@ -159,7 +156,6 @@ export async function POST(req: Request) {
     } catch (err) {
       const errMessage = err instanceof Error ? err.message : String(err)
       console.error(`[CHECKOUT_CAPI_FAIL] session=${session.id} email=${email} error=${errMessage}`)
-      // Fire-and-forget alert; don't block the user's checkout redirect
       notifyAlert({
         severity: 'warn',
         title: 'CAPI InitiateCheckout failed',
