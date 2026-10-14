@@ -47,7 +47,10 @@ export default function LensesPage({ params }: { params: { locale: string } }) {
             </Link>
           </div>
 
-          <div className="bg-iron rounded-2xl p-8 flex flex-col gap-4">
+          <div className="bg-iron rounded-2xl p-8 flex flex-col gap-4 relative">
+            <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 bg-gold/20 text-gold text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
+              <span>🌙</span> Restocking
+            </div>
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">За вечерта</span>
             <h2 className="font-serif text-2xl text-linen">Вечерни стъкла</h2>
             <p className="font-sans text-sm text-stone leading-relaxed">
