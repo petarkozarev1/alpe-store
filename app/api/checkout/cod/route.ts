@@ -40,6 +40,19 @@ export async function POST(req: Request) {
     const locale = isLocale(body.locale) ? body.locale : 'bg'
 
     if (!items?.length) return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
+
+    // Temporary: block ALPÉ Evening until restock
+    const hasEvening = items.some(item => {
+      const fields = [item.name, item.variantLabel, (item as any).productId, (item as any).variantId].filter(Boolean)
+      return fields.some(f => String(f).toLowerCase().includes('evening'))
+    })
+    if (hasEvening) {
+      return NextResponse.json(
+        { error: locale === 'en' ? 'ALPÉ Evening is temporarily out of stock. Please choose Daily.' : 'ALPÉ Evening е временно изчерпан. Моля изберете Daily.' },
+        { status: 400 }
+      )
+    }
+
     if (!email?.trim() || !shipping?.name?.trim() || !shipping?.phone?.trim() || !shipping?.city?.trim()) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
