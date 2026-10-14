@@ -16,6 +16,8 @@ interface LineItem {
   quantity: number
   image?: string
   variantId?: string
+  productId?: string
+  variantLabel?: string
 }
 
 export async function POST(req: Request) {
@@ -50,6 +52,18 @@ export async function POST(req: Request) {
     const productItems = items.filter(item => item.price > 0)
     if (!productItems.length) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
+    }
+
+    // Temporary: block ALPÉ Evening until restock
+    const hasEvening = productItems.some(item => {
+      const fields = [item.productId, item.variantId, item.name, item.variantLabel].filter(Boolean)
+      return fields.some(f => String(f).toLowerCase().includes('evening'))
+    })
+    if (hasEvening) {
+      return NextResponse.json(
+        { error: locale === 'en' ? 'ALPÉ Evening is temporarily out of stock. Please choose Daily.' : 'ALPÉ Evening е временно изчерпан. Моля изберете Daily.' },
+        { status: 400 }
+      )
     }
 
     const naiveSum = naiveSubtotal(productItems)
