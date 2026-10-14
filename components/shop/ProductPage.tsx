@@ -226,8 +226,8 @@ export default function ProductPage({
             {(['evening', 'daily'] as Lens[]).map(l => (
               <button
                 key={l}
-                onClick={() => handleLens(l)}
-                style={{ border: `2px solid ${lens === l ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 10, padding: 16, cursor: 'pointer', background: lens === l ? 'rgba(28,15,10,0.05)' : '#fff8f2', transition: 'all 0.2s', textAlign: 'left', boxShadow: lens === l ? '0 0 0 1px #1C0F0A' : 'none' }}
+                onClick={() => !(EVENING_OUT_OF_STOCK && l === 'evening') && handleLens(l)}
+                style={{ border: `2px solid ${lens === l ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 10, padding: 16, cursor: (EVENING_OUT_OF_STOCK && l === 'evening') ? 'not-allowed' : 'pointer', background: lens === l ? 'rgba(28,15,10,0.05)' : '#fff8f2', transition: 'all 0.2s', textAlign: 'left', boxShadow: lens === l ? '0 0 0 1px #1C0F0A' : 'none' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 5 }}>
                   <span style={{ width: 12, height: 12, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', flexShrink: 0, display: 'inline-block' }} />
@@ -236,8 +236,8 @@ export default function ProductPage({
                 <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% блокиране на синята и зелената светлина' : '65% филтър на синята светлина и частичен зелен филтър'}</div>
                 {l === 'evening' && EVENING_OUT_OF_STOCK && (
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#C49A6C' }}>
-                    <span>🌙</span> Restocking
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#8a6a3a', background: 'rgba(196,154,108,0.12)', border: '1px solid rgba(196,154,108,0.35)', borderRadius: 100, padding: '2px 8px' }}>
+                    <span>🌙</span> Временно изчерпано
                   </div>
                 )}
               </button>
@@ -282,16 +282,23 @@ export default function ProductPage({
                 {slots.map((s, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
                     <span style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', width: 52, flexShrink: 0 }}>Чифт {i + 1}</span>
-                    {(['evening', 'daily'] as Lens[]).map(l => (
-                      <button
-                        key={l}
-                        onClick={() => handleSlot(i, l)}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: `1.5px solid ${s === l ? '#1C0F0A' : 'rgba(28,15,10,0.14)'}`, borderRadius: 100, background: s === l ? '#1C0F0A' : '#fff8f2', color: s === l ? '#FAF0E4' : '#1C0F0A', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, padding: '7px 16px', cursor: 'pointer', transition: 'all 0.2s' }}
-                      >
-                        <span style={{ width: 9, height: 9, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
-                        {l === 'evening' ? 'Вечер' : 'За всеки ден'}
-                      </button>
-                    ))}
+                    {(['evening', 'daily'] as Lens[]).map(l => {
+                      const eveningDisabled = EVENING_OUT_OF_STOCK && l === 'evening'
+                      return (
+                        <button
+                          key={l}
+                          onClick={() => !eveningDisabled && handleSlot(i, l)}
+                          disabled={eveningDisabled}
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: `1.5px solid ${s === l ? '#1C0F0A' : 'rgba(28,15,10,0.14)'}`, borderRadius: 100, background: s === l ? '#1C0F0A' : eveningDisabled ? 'rgba(28,15,10,0.04)' : '#fff8f2', color: s === l ? '#FAF0E4' : eveningDisabled ? 'rgba(28,15,10,0.35)' : '#1C0F0A', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, padding: '7px 16px', cursor: eveningDisabled ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: eveningDisabled ? 0.55 : 1 }}
+                        >
+                          <span style={{ width: 9, height: 9, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
+                          {l === 'evening' ? 'Вечер' : 'За всеки ден'}
+                          {eveningDisabled && (
+                            <span style={{ fontSize: 9, letterSpacing: '0.04em', marginLeft: 2, opacity: 0.7 }}>🌙</span>
+                          )}
+                        </button>
+                      )
+                    })}
                   </div>
                 ))}
               </div>
@@ -307,27 +314,21 @@ export default function ProductPage({
 
           {/* CTA */}
           <div ref={ctaRef} style={{ margin: '24px 0 14px' }}>
-            {EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(28,15,10,0.06)', border: '1px solid rgba(196,154,108,0.5)', borderRadius: 100, padding: '8px 16px', fontSize: 12, letterSpacing: '0.08em', color: '#1C0F0A' }}>
-                  <span style={{ fontSize: 14 }}>🌙</span>
-                  <span>Restocking</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) && (
+                <div style={{ display: 'inline-flex', alignSelf: 'flex-start', alignItems: 'center', gap: 6, background: 'rgba(196,154,108,0.12)', border: '1px solid rgba(196,154,108,0.4)', borderRadius: 100, padding: '4px 10px', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#8a6a3a', fontWeight: 500 }}>
+                  <span style={{ fontSize: 11 }}>🌙</span>
+                  <span>Временно изчерпано</span>
                 </div>
-                <button
-                  disabled
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, background: 'rgba(28,15,10,0.25)', color: 'rgba(250,240,228,0.7)', border: 'none', padding: 19, fontFamily: 'var(--font-raleway)', fontSize: 15, fontWeight: 500, letterSpacing: '0.04em', cursor: 'not-allowed', borderRadius: 8 }}
-                >
-                  Изчерпано — restocking
-                </button>
-              </div>
-            ) : (
+              )}
               <button
                 onClick={handleAddToCart}
-                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, background: '#1C0F0A', color: '#FAF0E4', border: 'none', padding: 19, fontFamily: 'var(--font-raleway)', fontSize: 15, fontWeight: 500, letterSpacing: '0.04em', cursor: 'pointer', borderRadius: 8, transition: 'opacity 0.2s, transform 0.2s' }}
+                disabled={EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening'))}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, background: EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) ? 'rgba(28,15,10,0.35)' : '#1C0F0A', color: EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) ? 'rgba(250,240,228,0.55)' : '#FAF0E4', border: 'none', padding: 19, fontFamily: 'var(--font-raleway)', fontSize: 15, fontWeight: 500, letterSpacing: '0.04em', cursor: EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) ? 'not-allowed' : 'pointer', borderRadius: 8, transition: 'opacity 0.2s, transform 0.2s' }}
               >
-                Добави в количката — €{price} →
+                {EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) ? 'Изчерпано' : `Добави в количката — €${price} →`}
               </button>
-            )}
+            </div>
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка над €50 · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 6 }}>Цената включва ДДС · Не е медицинско изделие</p>
