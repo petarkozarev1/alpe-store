@@ -1,4 +1,4 @@
-﻿import type { Product } from '@/lib/types'
+import type { Product } from '@/lib/types'
 
 import type { Locale } from '@/lib/i18n/config'
 import { localizeValue } from '@/lib/i18n/translations'
@@ -56,7 +56,7 @@ export const products: Product[] = [
       '/images/shop/shop-evening-3.png',
     ],
     variants: [
-      { id: 'evening', label: 'Вечер', inStock: true },
+      { id: 'evening', label: 'Вечер', inStock: false },
     ],
     badge: 'Вечерен филтър',
   },
@@ -72,4 +72,8 @@ export function getProducts(locale: Locale): Product[] {
 
 export function getLocalizedProductBySlug(slug: string, locale: Locale) {
   return getProducts(locale).find(product => product.slug === slug)
+}
+
+export function isEveningAvailable(): boolean {
+  return products.find(p => p.id === 'alpe-evening')?.variants.some(v => v.inStock) ?? false
 }
