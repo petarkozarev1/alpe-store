@@ -171,18 +171,19 @@ export default function ProductPage({
             {/* Lens toggle on image */}
             <div style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8, background: 'rgba(28,15,10,0.72)', backdropFilter: 'blur(12px)', borderRadius: 100, padding: 5, zIndex: 2, whiteSpace: 'nowrap' }}>
               <button
-                onClick={() => handleLens('evening')}
-                style={{ border: 'none', background: lens === 'evening' ? '#FAF0E4' : 'transparent', color: lens === 'evening' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s' }}
-              >
-                <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#ff6a00,#c0392b)', display: 'inline-block', flexShrink: 0 }} />
-                Вечер
-              </button>
-              <button
                 onClick={() => handleLens('daily')}
                 style={{ border: 'none', background: lens === 'daily' ? '#FAF0E4' : 'transparent', color: lens === 'daily' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s' }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
                 За всеки ден
+              </button>
+              <button
+                onClick={() => !(EVENING_OUT_OF_STOCK) && handleLens('evening')}
+                disabled={EVENING_OUT_OF_STOCK}
+                style={{ border: 'none', background: lens === 'evening' ? '#FAF0E4' : 'transparent', color: lens === 'evening' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: EVENING_OUT_OF_STOCK ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s', opacity: EVENING_OUT_OF_STOCK ? 0.45 : 1 }}
+              >
+                <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#ff6a00,#c0392b)', display: 'inline-block', flexShrink: 0 }} />
+                Вечер
               </button>
             </div>
           </div>
@@ -223,7 +224,7 @@ export default function ProductPage({
           {/* Lens selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Изберете вашите очила</div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
-            {(['evening', 'daily'] as Lens[]).map(l => (
+            {(['daily', 'evening'] as Lens[]).map(l => (
               <button
                 key={l}
                 onClick={() => !(EVENING_OUT_OF_STOCK && l === 'evening') && handleLens(l)}

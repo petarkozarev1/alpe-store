@@ -17,8 +17,8 @@ export function getInitialShopSelection(bundle?: string): ShopSelection {
   }
 
   return {
-    lens: 'evening',
+    lens: 'daily',
     bundle: 1,
-    slots: ['evening'],
+    slots: ['daily'],
   }
 }

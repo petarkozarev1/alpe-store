@@ -8,10 +8,10 @@ test('preselects one Daily and one Evening pair for the cross-sell bundle', () =
   })
 })
 
-test('keeps the normal one-pair Evening selection for other visits', () => {
+test('keeps the normal one-pair Daily selection for other visits', () => {
   expect(getInitialShopSelection()).toEqual({
-    lens: 'evening',
+    lens: 'daily',
     bundle: 1,
-    slots: ['evening'],
+    slots: ['daily'],
   })
 })
