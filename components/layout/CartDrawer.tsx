@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { countPairs } from '@/lib/pricing'
+import { displayedPairs } from '@/lib/order-lines'
+import { regularPriceForPairs } from '@/lib/sale'
 import { usePairPrice } from '@/components/pricing/PricingProvider'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
@@ -58,7 +60,7 @@ const certItems = [
 export default function CartDrawer() {
   const locale = useLocale()
   const t = useTranslations()
-  const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, getSubtotal } = useCartStore()
+  const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, checkoutLocked, getSubtotal } = useCartStore()
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -89,6 +91,7 @@ export default function CartDrawer() {
 
   const naiveSum = getSubtotal()
   const pairs = countPairs(items)
+  const separateTotal = regularPriceForPairs(pairs)
   const subtotal = usePairPrice(pairs)
   const bundleSaving = +Math.max(0, naiveSum - subtotal).toFixed(2)
   const shippingProgress = pairs >= 2 ? 100 : pairs === 1 ? 50 : 0
@@ -186,13 +189,14 @@ export default function CartDrawer() {
                           aria-label={t('Количество')}
                         >
                           <button
-                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors disabled:opacity-40"
                             aria-label={t('Намали количеството')}
-                            onClick={() =>
-                              item.quantity > 1
-                                ? updateQuantity(item.productId, item.variantId, item.quantity - 1)
-                                : removeItem(item.productId, item.variantId)
-                            }
+                            disabled={checkoutLocked}
+                            onClick={() => {
+                              const current = displayedPairs(item)
+                              if (current > 1) setLinePairs(item.productId, item.variantId, current - 1)
+                              else removeItem(item.productId, item.variantId)
+                            }}
                           >
                             −
                           </button>
@@ -200,20 +204,21 @@ export default function CartDrawer() {
                             className="w-8 text-center font-sans text-sm font-medium text-onyx"
                             aria-live="polite"
                           >
-                            {item.quantity}
+                            {displayedPairs(item)}
                           </span>
                           <button
-                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors disabled:opacity-40"
                             aria-label={t('Увеличи количеството')}
-                            onClick={() => updateQuantity(item.productId, item.variantId, item.quantity + 1)}
+                            disabled={checkoutLocked || pairs >= 10}
+                            onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}
                           >
                             +
                           </button>
                         </div>
                         <div className="flex flex-col items-end gap-0.5">
-                          {item.originalPrice && (
-                            <span className="font-sans text-xs text-stone/50 line-through">
-                              €{(item.originalPrice * item.quantity).toFixed(2)}
+                          {regularPriceForPairs(displayedPairs(item)) > item.price * item.quantity + 0.001 && (
+                            <span className="font-sans text-xs text-iron">
+                              {locale === 'en' ? 'Separately' : 'поотделно'}: €{regularPriceForPairs(displayedPairs(item)).toFixed(2)}
                             </span>
                           )}
                           <p className="font-serif text-[17px] font-medium text-onyx">
@@ -233,8 +238,9 @@ export default function CartDrawer() {
                     {/* Remove */}
                     <button
                       onClick={() => removeItem(item.productId, item.variantId)}
+                      disabled={checkoutLocked}
                       aria-label={locale === 'en' ? `Remove ${item.name} from cart` : `Премахни ${item.name} от количката`}
-                      className="text-stone/40 hover:text-red-500 transition-colors mt-0.5 flex-shrink-0"
+                      className="text-stone/40 hover:text-red-500 transition-colors mt-0.5 flex-shrink-0 disabled:opacity-40"
                     >
                       <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24">
                         <polyline points="3 6 5 6 21 6"/>
@@ -299,7 +305,7 @@ export default function CartDrawer() {
                 <div className="flex items-baseline justify-between">
                   <span className="font-sans text-sm text-stone">{t('Общо')}</span>
                   <span className="font-serif text-2xl font-medium text-onyx">
-                    {bundleSaving > 0 && <span className="font-sans text-sm text-stone/50 line-through mr-2">€{naiveSum.toFixed(2)}</span>}
+                    {separateTotal > subtotal + 0.001 && <span className="font-sans text-sm text-iron mr-2">{locale === 'en' ? 'Separately' : 'поотделно'}: €{separateTotal.toFixed(2)}</span>}
                     €{subtotal.toFixed(2)}
                   </span>
                 </div>

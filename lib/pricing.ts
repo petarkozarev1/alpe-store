@@ -6,19 +6,12 @@
  * recomputed on both checkout routes — the server total is authoritative.
  */
 import { priceForPairs as salePriceForPairs, SINGLE_PRICE } from '@/lib/sale'
+import { countPairs } from '@/lib/order-lines'
 
 export { SINGLE_PRICE }
+export { countPairs }
 
 interface PairItem { variantId?: string; quantity: number }
-
-/** Total pairs across the cart — a `…-bundle-N` variant counts as N pairs. */
-export function countPairs(items: PairItem[]): number {
-  return items.reduce((sum, item) => {
-    const match = (item.variantId ?? '').match(/bundle-(\d+)/)
-    const perUnit = match ? parseInt(match[1], 10) : 1
-    return sum + perUnit * (item.quantity ?? 1)
-  }, 0)
-}
 
 export function priceForPairs(pairs: number, now: Date = new Date()): number {
   return salePriceForPairs(pairs, now)

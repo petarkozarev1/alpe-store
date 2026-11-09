@@ -71,10 +71,10 @@ function renderAccessScreen(partnerName: string, slug: string, hasError = false)
     body: `
       <main class="access">
         <section class="login-card">
-          <img class="logo" src="/images/logo.png" alt="ALPE">
+          <img class="logo" src="/brand/ampe-wordmark-black.svg" alt="AMPÉ">
           <p class="eyebrow">Private partner access</p>
           <h1>${escapeHtml(partnerName)} Dashboard</h1>
-          <p class="muted">Use the password from ALPE to view orders and revenue for this promo code.</p>
+          <p class="muted">Use the password from AMPÉ to view orders and revenue for this promo code.</p>
           <form method="post" action="/partner/${escapeHtml(slug)}">
             <label for="password">Password</label>
             <div class="password-row">
@@ -96,8 +96,8 @@ function renderDashboard(data: PartnerDashboardData): string {
       <main class="dashboard">
         <header class="topbar">
           <div class="brand-title">
-            <img class="logo" src="/images/logo.png" alt="ALPE">
-            <p class="eyebrow">ALPE Partner Dashboard</p>
+            <img class="logo" src="/brand/ampe-wordmark-black.svg" alt="AMPÉ">
+            <p class="eyebrow">AMPÉ Partner Dashboard</p>
             <h1>${escapeHtml(data.partnerName)}</h1>
           </div>
           <div class="code">${escapeHtml(data.promoCode)}</div>

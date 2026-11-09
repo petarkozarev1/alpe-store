@@ -115,7 +115,7 @@ export default function ProductPage({
     const d = lensData[lens]
     addToCart({
       productId: `AMPÉ-${lens}`,
-      variantId: `AMPÉ-${lens}-bundle-${bundle}`,
+      variantId: `AMPÉ-${slots.join('-')}-bundle-${bundle}`,
       name: d.name,
       variantLabel: locale === 'en'
         ? `${slots.map(s => s === 'evening' ? '🟠 Evening' : '🟡 Daily').join(' · ')} · ${bundle} ${bundle === 1 ? 'pair' : 'pairs'}`
@@ -124,8 +124,6 @@ export default function ProductPage({
       quantity: 1,
       image: d.images[0].src,
       slug: 'AMPÉ-glasses',
-      originalPrice: bundle > 1 && pricing.double < pricing.regularDouble ? pricing.regularDouble : undefined,
-      saving: bundle > 1 && pricing.double < pricing.regularDouble ? +(pricing.regularDouble - pricing.double).toFixed(2) : undefined,
     })
     fireTrackedEvent('AddToCart', {
       data: {
@@ -149,7 +147,7 @@ export default function ProductPage({
   const saving = bundle > 1 && pricing.double < pricing.regularDouble ? +(pricing.regularDouble - pricing.double).toFixed(2) : 0
 
   return localizeContent(locale, (
-    <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
+    <div style={{ background: '#F8F1E1', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
       {/* Breadcrumb */}
       <div className="product-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.8)', letterSpacing: '0.06em' }}>
@@ -246,15 +244,20 @@ export default function ProductPage({
 
           {/* Bundle selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
-          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
-            {([1, 2] as const).map(n => (
+          <div role="radiogroup" aria-label={locale === 'en' ? 'How many pairs?' : 'Колко чифта?'} style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
+            {([1, 2] as const).map(n => {
+              const pairName = locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`
+              return (
               <button
                 key={n}
+                role="radio"
+                aria-checked={bundle === n}
+                aria-label={`${pairName}, €${pairPrice(n).toFixed(2)}`}
                 onClick={() => handleBundle(n)}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: `1.5px solid ${bundle === n ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 12, padding: '16px 18px', cursor: 'pointer', background: bundle === n ? 'rgba(28,15,10,0.04)' : '#fff8f2', transition: 'all 0.2s', boxShadow: bundle === n ? '0 0 0 1px #1C0F0A' : 'none', textAlign: 'left' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <input type="radio" readOnly checked={bundle === n} style={{ width: 18, height: 18, accentColor: '#1C0F0A', flexShrink: 0 }} />
+                  <input type="radio" readOnly checked={bundle === n} tabIndex={-1} aria-hidden="true" style={{ width: 18, height: 18, accentColor: '#1C0F0A', flexShrink: 0 }} />
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
                       <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`}</span>
@@ -277,10 +280,11 @@ export default function ProductPage({
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{pairPrice(n).toFixed(2)}</div>
-                  {n === 2 && pricing.double < pricing.regularDouble && <div style={{ fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 2 }}>поотделно: €{pricing.regularDouble.toFixed(2)}</div>}
+                  {n === 2 && pricing.double < pricing.regularDouble && <div style={{ fontSize: 11, color: '#4A3024', marginTop: 2 }}>поотделно: €{pricing.regularDouble.toFixed(2)}</div>}
                 </div>
               </button>
-            ))}
+              )
+            })}
           </div>
 
           {/* Multi-pair lens slot picker */}
@@ -340,7 +344,7 @@ export default function ProductPage({
             </div>
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
-          <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
+          <p style={{ textAlign: 'center', fontSize: 11, color: '#4A3024', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
 
           {/* Payment icons */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, margin: '12px 0 0', flexWrap: 'wrap' as const }}>

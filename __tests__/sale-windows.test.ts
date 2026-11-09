@@ -62,11 +62,46 @@ describe('Sofia sale windows', () => {
     expect(singlePairPromoPrice(15)).toBe(50.99)
   })
 
-  it('still accepts influencer codes outside the sale windows', () => {
-    expect(applyPromo(119.98, 'aletea10', { pairs: 2, now: dec27 })).toMatchObject({
+})
+
+describe('influencer codes are single-pair and year-round', () => {
+  const today = sofia('2026-11-09T12:00:00')
+
+  it('takes 10% off one pair today', () => {
+    for (const code of ['ALETEA10', 'ILIYANA10', 'KALOYAN10']) {
+      expect(applyPromo(59.99, code, { pairs: 1, now: today })).toMatchObject({
+        code,
+        percent: 10,
+        amount: 6,
+        reason: null,
+      })
+    }
+  })
+
+  it('takes 10% off one pair after 27 Dec 2026', () => {
+    expect(applyPromo(59.99, 'ALETEA10', { pairs: 1, now: dec27 })).toMatchObject({
       code: 'ALETEA10',
       percent: 10,
+      amount: 6,
       reason: null,
+    })
+  })
+
+  it('rejects a two-pair order during Black November', () => {
+    for (const code of ['ALETEA10', 'ILIYANA10', 'KALOYAN10']) {
+      expect(applyPromo(89.99, code, { pairs: 2, now: nov15 })).toMatchObject({
+        code: '',
+        amount: 0,
+        reason: 'single-only',
+      })
+    }
+  })
+
+  it('rejects a two-pair order after 27 Dec 2026', () => {
+    expect(applyPromo(119.98, 'ALETEA10', { pairs: 2, now: dec27 })).toMatchObject({
+      code: '',
+      amount: 0,
+      reason: 'single-only',
     })
   })
 })

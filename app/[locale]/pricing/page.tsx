@@ -67,7 +67,7 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
               <div>
                 <p className={`font-serif text-4xl ${tier.highlight ? 'text-linen' : 'text-iron'}`}>{tier.price}</p>
                 {tier.originalPrice && (
-                  <p className="font-sans text-xs text-stone/65 mt-1">поотделно: {tier.originalPrice}</p>
+                  <p className="font-sans text-xs text-iron mt-1">поотделно: {tier.originalPrice}</p>
                 )}
                 {tier.hint && (
                   <p className={`font-sans text-xs mt-2 ${tier.highlight ? 'text-linen/80' : 'text-iron'}`}>{tier.hint}</p>

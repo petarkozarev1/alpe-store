@@ -34,7 +34,7 @@ export const indexableRoutes = [
   '/product/alpe-evening',
 ]
 
-export const seoLastModified = new Date('2026-07-21T00:00:00.000Z')
+export const seoLastModified = new Date('2026-11-09T00:00:00.000Z')
 
 export const organizationId = `${siteUrl}/#organization`
 export const websiteId = `${siteUrl}/#website`
@@ -113,7 +113,7 @@ export function createPageMetadata({
   path,
   locale = 'bg',
 }: {
-  title: string
+  title: string | { absolute: string }
   description: string
   path: string
   locale?: Locale
@@ -159,12 +159,14 @@ export function createPageMetadata({
 
 export function createLocalizedPageMetadata(
   localeValue: string,
-  options: { title: string; description: string; path: string },
+  options: { title: string; description: string; path: string; absoluteTitle?: boolean },
 ) {
   const locale: Locale = isLocale(localeValue) ? localeValue : 'bg'
+  const title = translate(locale, options.title)
+  const { absoluteTitle, ...page } = options
   return createPageMetadata({
-    ...options,
-    title: translate(locale, options.title),
+    ...page,
+    title: absoluteTitle ? { absolute: title } : title,
     description: translate(locale, options.description),
     locale,
   })

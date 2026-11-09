@@ -11,12 +11,12 @@ import { isLocale } from '@/lib/i18n/config'
 import {
   computeBundlePrice,
   computeShipping,
-  computeTotalPairs,
   isBulgariaEligible,
   makeCodOrderId,
   COD_FEE,
   type CodProduct,
 } from './helpers'
+import { describeOrder, orderRejection } from '@/lib/order-lines'
 
 const COD_ALLOWED_DELIVERY = new Set(['address', 'speedy', 'econt', 'pigeon'])
 
@@ -38,19 +38,8 @@ export async function POST(req: Request) {
     const { email, items, shipping } = body
     const locale = isLocale(body.locale) ? body.locale : 'bg'
 
-    if (!items?.length) return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
-
-    // Temporary: block AMPÉ Evening until restock
-    const hasEvening = items.some(item => {
-      const fields = [item.name, item.variantLabel, (item as any).productId, (item as any).variantId].filter(Boolean)
-      return fields.some(f => String(f).toLowerCase().includes('evening'))
-    })
-    if (hasEvening) {
-      return NextResponse.json(
-        { error: locale === 'en' ? 'AMPÉ Evening is temporarily out of stock. Please choose Daily.' : 'AMPÉ Evening е временно изчерпан. Моля изберете Daily.' },
-        { status: 400 }
-      )
-    }
+    const rejection = orderRejection(items, locale)
+    if (rejection) return NextResponse.json({ error: rejection }, { status: 400 })
 
     if (!email?.trim() || !shipping?.name?.trim() || !shipping?.phone?.trim() || !shipping?.city?.trim()) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -70,7 +59,8 @@ export async function POST(req: Request) {
       }, { status: 400 })
     }
 
-    const pairs = computeTotalPairs(items)
+    const described = describeOrder(items, locale)
+    const pairs = described.pairs
     const subtotal = computeBundlePrice(items)
     const promo = applyPromo(subtotal, body.promoCode, { pairs })
     if (body.promoCode?.trim() && !promo.code) {
@@ -82,7 +72,7 @@ export async function POST(req: Request) {
     const orderId = makeCodOrderId()
     const affiliateId = getP2GAttribution(cookies().get(P2G_COOKIE_NAME)?.value, process.env.P2G_AFFILIATE_ID)
 
-    const itemsText = items.map(i => `${i.name} — ${i.variantLabel} x${i.quantity}`).join(', ')
+    const itemsText = described.itemsText
     const nameParts = (shipping.name ?? '').trim().split(' ')
     const firstName = nameParts[0] ?? ''
     const lastName = nameParts.slice(1).join(' ') || firstName
@@ -111,7 +101,7 @@ export async function POST(req: Request) {
 
     const emailModel: OrderEmailModel = {
       orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || (locale === 'en' ? 'customer' : 'клиент'), locale,
-      productRows: [{ label: items.map(i => i.name).join(', '), sublabel: items.map(i => i.variantLabel).filter(Boolean).join(' · '), amount: subtotal }],
+      productRows: [{ label: described.name, sublabel: described.sublabel, amount: subtotal }],
       subtotal,
       discount: promo.amount > 0 ? { code: promo.code, amount: promo.amount } : undefined,
       shippingLabel: body.shippingLabel, shippingAmount, codFee, total,
@@ -130,7 +120,7 @@ export async function POST(req: Request) {
       city: shipping.city || undefined, country: shipping.country || undefined, zip: shipping.postalCode || undefined,
       fbp: shipping.fbp || undefined, fbc: shipping.fbc || undefined, clientIpAddress, clientUserAgent,
       value: total, currency: 'EUR', orderId,
-      contentIds: items.map(i => i.name), numItems: items.reduce((s, i) => s + i.quantity, 0),
+      contentIds: [described.stripeName], numItems: pairs,
       eventId: `purchase-${orderId}`, sourceUrl: `${SITE_URL}/checkout/success`,
     }, { orderRef: orderId, email, total })
 

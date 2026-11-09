@@ -61,7 +61,8 @@ describe('SEO route configuration', () => {
     ]))
     expect(urls.every((url) => url.startsWith('https://www.alpewear.com'))).toBe(true)
     expect(entries.every((entry) => entry.lastModified instanceof Date)).toBe(true)
-    expect(entries.every((entry) => entry.lastModified?.toISOString() === '2026-07-21T00:00:00.000Z')).toBe(true)
+    expect(entries.every((entry) => new Date(entry.lastModified ?? 0).toISOString() === '2026-11-09T00:00:00.000Z')).toBe(true)
+    expect(entries.every((entry) => entry.alternates?.languages?.['x-default'] === entry.alternates?.languages?.['bg-BG'])).toBe(true)
   })
 
   it('lets crawlers read noindex pages while blocking private endpoints', () => {

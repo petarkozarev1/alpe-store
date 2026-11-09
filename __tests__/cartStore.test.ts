@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 import { useCartStore } from '@/lib/store/cartStore'
+import { priceForPairs } from '@/lib/sale'
 
 const mockItem = {
   productId: 'p1',
@@ -21,6 +22,37 @@ test('addItem adds a new item', () => {
   act(() => result.current.addItem(mockItem))
   expect(result.current.items).toHaveLength(1)
   expect(result.current.items[0].quantity).toBe(1)
+})
+
+test('adding the same pair pack twice rewrites the label to 2 чифта', () => {
+  const { result } = renderHook(() => useCartStore())
+  const pair = {
+    ...mockItem,
+    variantId: 'AMPÉ-daily-bundle-1',
+    variantLabel: '🟡 За всеки ден · 1 чифт',
+    price: 59.99,
+  }
+  act(() => result.current.addItem(pair))
+  act(() => result.current.addItem(pair))
+  expect(result.current.items).toHaveLength(1)
+  expect(result.current.items[0].quantity).toBe(1)
+  expect(result.current.items[0].variantId).toBe('AMPÉ-daily-daily-bundle-2')
+  expect(result.current.items[0].variantLabel).toContain('2 чифта')
+  expect(result.current.items[0].price).toBe(priceForPairs(2))
+})
+
+test('setLinePairs keeps the label on the real pair count', () => {
+  const { result } = renderHook(() => useCartStore())
+  act(() => result.current.addItem({
+    ...mockItem,
+    variantId: 'AMPÉ-daily-bundle-1',
+    variantLabel: '🟡 За всеки ден · 1 чифт',
+  }))
+  const line = result.current.items[0]
+  act(() => result.current.setLinePairs(line.productId, line.variantId, 2))
+  expect(result.current.items[0].variantLabel).toContain('2 чифта')
+  expect(result.current.items[0].quantity).toBe(1)
+  expect(result.current.getItemCount()).toBe(2)
 })
 
 test('addItem increments quantity for existing item', () => {

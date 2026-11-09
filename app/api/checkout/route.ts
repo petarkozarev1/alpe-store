@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { getStripe } from '@/lib/stripe'
 import { sendCAPIEvent } from '@/lib/meta-capi'
 import { notifyAlert } from '@/lib/alerts'
-import { countPairs, priceForPairs } from '@/lib/pricing'
+import { priceForPairs } from '@/lib/pricing'
+import { describeOrder, orderRejection } from '@/lib/order-lines'
 import { applyPromo, promoErrorMessage } from '@/lib/promo'
 import { checkoutSiteUrl } from '@/lib/brand'
 import { cookies } from 'next/headers'
@@ -46,28 +47,14 @@ export async function POST(req: Request) {
     } = await req.json()
     const locale = isLocale(localeValue) ? localeValue : 'bg'
 
-    if (!items?.length) {
-      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
+    const rejection = orderRejection(items, locale)
+    if (rejection) {
+      return NextResponse.json({ error: rejection }, { status: 400 })
     }
 
     const productItems = items.filter(item => item.price > 0)
-    if (!productItems.length) {
-      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
-    }
-
-    // Temporary: block AMPÉ Evening until restock
-    const hasEvening = productItems.some(item => {
-      const fields = [item.productId, item.variantId, item.name, item.variantLabel].filter(Boolean)
-      return fields.some(f => String(f).toLowerCase().includes('evening'))
-    })
-    if (hasEvening) {
-      return NextResponse.json(
-        { error: locale === 'en' ? 'AMPÉ Evening is temporarily out of stock. Please choose Daily.' : 'AMPÉ Evening е временно изчерпан. Моля изберете Daily.' },
-        { status: 400 }
-      )
-    }
-
-    const pairs = countPairs(productItems)
+    const described = describeOrder(items, locale)
+    const pairs = described.pairs
     const bundlePrice = priceForPairs(pairs)
     const promo = applyPromo(bundlePrice, promoCode, { pairs })
     if (promoCode?.trim() && !promo.code) {
@@ -90,10 +77,7 @@ export async function POST(req: Request) {
         })
       : null
 
-    const productName = productItems
-      .map(item => item.name)
-      .filter(Boolean)
-      .join(', ') || (locale === 'en' ? 'AMPÉ glasses' : 'AMPÉ очила')
+    const productName = described.stripeName
 
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'elements',
@@ -134,6 +118,8 @@ export async function POST(req: Request) {
         ...shipping,
         ...(clientIpAddress ? { clientIpAddress } : {}),
         ...(clientUserAgent ? { clientUserAgent } : {}),
+        pairs: String(pairs),
+        itemsText: described.itemsText,
         subtotal: String(bundlePrice),
         discountCode: promo.code,
         discountAmount: String(promo.amount),
@@ -152,7 +138,7 @@ export async function POST(req: Request) {
     const firstName = nameParts[0] ?? ''
     const lastName = nameParts.slice(1).join(' ') || firstName
     const cartValue = +(bundlePrice - promo.amount).toFixed(2)
-    const numItems = productItems.reduce((sum, i) => sum + i.quantity, 0)
+    const numItems = pairs
 
     try {
       await sendCAPIEvent('InitiateCheckout', {
@@ -170,7 +156,7 @@ export async function POST(req: Request) {
         value: +cartValue.toFixed(2),
         currency: 'EUR',
         orderId: session.id,
-        contentIds: productItems.map(i => i.name),
+        contentIds: [described.stripeName],
         numItems,
         eventId: `initiate_checkout-${session.id}`,
         sourceUrl: `${siteUrl}/checkout`,

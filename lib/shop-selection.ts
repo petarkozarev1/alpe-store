@@ -9,10 +9,11 @@ export interface ShopSelection {
 
 export function getInitialShopSelection(bundle?: string): ShopSelection {
   if (bundle === 'daily-evening') {
+    // Evening is out of stock, so the two-pair link stays on Daily for both slots.
     return {
       lens: 'daily',
       bundle: 2,
-      slots: ['daily', 'evening'],
+      slots: ['daily', 'daily'],
     }
   }
 

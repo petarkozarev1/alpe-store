@@ -20,7 +20,7 @@ export default function Footer() {
             <Link href={localizedPath('/', locale)} className="inline-flex">
               <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
             </Link>
-            <FormerlyLine locale={locale} className="font-sans text-[10px] text-linen/70" />
+            <FormerlyLine locale={locale} className="font-sans text-[10px] text-linen" />
             <p className="font-sans text-xs text-linen/60 leading-relaxed max-w-[220px]">
               {locale === 'en' ? 'Blue and green-light glasses for everyday screen use.' : t(siteConfig.footer.description)}
             </p>

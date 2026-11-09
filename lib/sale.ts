@@ -55,7 +55,10 @@ export const SALE_WINDOWS: SaleWindow[] = [
   },
 ]
 
-/** Always-on influencer codes. Not shown on the storefront and not date-limited. */
+/**
+ * Influencer codes. Not shown on the storefront and not date-limited.
+ * Each one is 10% off a single pair only (€59.99). They do not apply to 2+ pairs.
+ */
 export const INFLUENCER_PROMOS: Record<string, number> = {
   ALETEA10: 10,
   ILIYANA10: 10,
@@ -136,6 +139,11 @@ export function priceForPairs(pairs: number, now: Date = new Date()): number {
   return priceFromPacks(pairs, snapshot.single, snapshot.double)
 }
 
+/** What the pairs would cost bought separately, with no sale double. */
+export function regularPriceForPairs(pairs: number): number {
+  return priceFromPacks(pairs, SINGLE_PRICE, REGULAR_DOUBLE_PRICE)
+}
+
 export type PromoRejectReason = 'unknown' | 'inactive' | 'single-only'
 
 export interface PromoApplication {
@@ -151,8 +159,8 @@ function emptyPromo(reason: PromoRejectReason | null): PromoApplication {
 
 /**
  * Server-side promo check. Sale codes are valid only inside their Sofia window
- * and only when the order is exactly one pair. Influencer codes stay percent-off
- * the already priced product total, for any quantity.
+ * and only on exactly one pair. Influencer codes are also single-pair only,
+ * but they stay valid all year.
  */
 export function applyPromo(
   productTotal: number,
@@ -173,8 +181,9 @@ export function applyPromo(
 
   const influencer = INFLUENCER_PROMOS[key]
   if (!influencer) return emptyPromo('unknown')
-  const amount = Math.round(Math.round(productTotal * 100) * influencer / 100) / 100
-  return { code: key, percent: influencer, amount, reason: null }
+  if (options.pairs !== 1) return emptyPromo('single-only')
+  const discountCents = Math.round(Math.round(SINGLE_PRICE * 100) * influencer / 100)
+  return { code: key, percent: influencer, amount: discountCents / 100, reason: null }
 }
 
 export function promoErrorMessage(reason: PromoRejectReason, locale: 'bg' | 'en'): string {

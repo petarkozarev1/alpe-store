@@ -50,7 +50,7 @@ export default function Navbar() {
         <div className="flex-1">
           <Link href={localizedPath('/', locale)} className="inline-flex flex-col">
             <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
-            <FormerlyLine locale={locale} className="font-sans text-[9px] tracking-wide text-linen/80 mt-0.5" />
+            <FormerlyLine locale={locale} className="font-sans text-[9px] tracking-wide text-[#1A1A1A] mt-0.5" />
           </Link>
         </div>
 

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutElementsProvider } from '@stripe/react-stripe-js/checkout'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
+import { displayedPairs } from '@/lib/order-lines'
 import { localizedPath } from '@/lib/i18n/routing'
 import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
@@ -27,7 +28,7 @@ export function CheckoutSummary(p: any) {
                   <div key={`${item.productId}-${item.variantId}`} className="flex items-center gap-3">
                     <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-linen flex-shrink-0">
                       <Image src={item.image} alt={item.name} fill sizes="56px" className="object-cover" />
-                      <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-onyx text-linen text-[10px] font-bold flex items-center justify-center">{item.quantity}</span>
+                      <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-onyx text-linen text-[10px] font-bold flex items-center justify-center">{displayedPairs(item)}</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-serif text-sm font-medium text-onyx truncate">{item.name}</p>
@@ -52,7 +53,7 @@ export function CheckoutSummary(p: any) {
                     onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyCode())}
                     className="flex-1 min-w-0 border border-stone/25 rounded-xl px-4 py-2.5 text-sm bg-parchment/50 focus:outline-none focus:ring-2 focus:ring-onyx"
                   />
-                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">{en ? 'APPLY' : 'ПРИЛАГАНЕ'}</button>
+                  <button type="button" onClick={applyCode} className="flex-shrink-0 whitespace-nowrap font-sans text-sm font-semibold text-onyx border border-onyx/30 rounded-xl px-4 py-2.5 hover:bg-onyx hover:text-linen transition-colors">{en ? 'Apply' : 'Приложи'}</button>
                 </div>
               )}
               {codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}

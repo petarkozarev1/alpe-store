@@ -3,7 +3,9 @@ import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { googleCartParams, trackGoogleEvent } from '@/lib/googleAnalytics'
-import { countPairs, naiveSubtotal } from '@/lib/pricing'
+import { countPairs } from '@/lib/pricing'
+import { displayedPairs } from '@/lib/order-lines'
+import { regularPriceForPairs } from '@/lib/sale'
 import { usePairPrice } from '@/components/pricing/PricingProvider'
 import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
@@ -11,10 +13,10 @@ import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 
 export default function CartPage() {
   const locale = useLocale()
-  const { items, removeItem, updateQuantity } = useCartStore()
-  const naiveSum = naiveSubtotal(items)
-  const bundleTotal = usePairPrice(countPairs(items))
-  const bundleSaving = +Math.max(0, naiveSum - bundleTotal).toFixed(2)
+  const { items, removeItem, setLinePairs, checkoutLocked } = useCartStore()
+  const pairCount = countPairs(items)
+  const bundleTotal = usePairPrice(pairCount)
+  const separateTotal = regularPriceForPairs(pairCount)
 
   if (items.length === 0) {
     return localizeContent(locale, (
@@ -36,15 +38,17 @@ export default function CartPage() {
             <div className="font-semibold flex-1">{item.name} — {localizeCartVariantLabel(locale, item.variantLabel)}</div>
             <div className="flex items-center border border-iron rounded-lg overflow-hidden" role="group" aria-label="Quantity">
               <button
-                className="w-8 h-8 flex items-center justify-center hover:bg-iron"
+                className="w-8 h-8 flex items-center justify-center hover:bg-iron disabled:opacity-40"
                 aria-label="Decrease quantity"
-                onClick={() => item.quantity > 1 ? updateQuantity(item.productId, item.variantId, item.quantity - 1) : removeItem(item.productId, item.variantId)}
+                disabled={checkoutLocked}
+                onClick={() => displayedPairs(item) > 1 ? setLinePairs(item.productId, item.variantId, displayedPairs(item) - 1) : removeItem(item.productId, item.variantId)}
               >−</button>
-              <span className="w-10 text-center" aria-live="polite">{item.quantity}</span>
+              <span className="w-10 text-center" aria-live="polite">{displayedPairs(item)}</span>
               <button
-                className="w-8 h-8 flex items-center justify-center hover:bg-iron"
+                className="w-8 h-8 flex items-center justify-center hover:bg-iron disabled:opacity-40"
                 aria-label="Increase quantity"
-                onClick={() => updateQuantity(item.productId, item.variantId, item.quantity + 1)}
+                disabled={checkoutLocked || pairCount >= 10}
+                onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}
               >+</button>
             </div>
             <div className="font-semibold w-20 text-right">€{(item.price * item.quantity).toFixed(2)}</div>
@@ -58,8 +62,7 @@ export default function CartPage() {
       </div>
       <div className="flex justify-between items-center pt-4">
         <span className="text-xl font-bold">
-          Общо: {bundleSaving > 0 && <span className="text-stone/50 line-through font-normal text-base mr-2">€{naiveSum.toFixed(2)}</span>}€{bundleTotal.toFixed(2)}
-          {bundleSaving > 0 && <span className="block text-sm font-semibold text-green-700">Спестяваш €{bundleSaving.toFixed(2)} за комплект</span>}
+          Общо: {separateTotal > bundleTotal + 0.001 && <span className="text-iron font-normal text-base mr-2">поотделно: €{separateTotal.toFixed(2)}</span>}€{bundleTotal.toFixed(2)}
         </span>
         <Link
           href="/checkout"

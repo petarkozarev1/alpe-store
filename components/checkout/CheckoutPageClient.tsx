@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CheckoutShell } from './CheckoutShell'
 import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
@@ -35,7 +35,7 @@ export default function CheckoutPageClient() {
   const locale = useLocale()
   const pricing = usePricingSnapshot()
   const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
-  const { items } = useCartStore()
+  const { items, setCheckoutLocked } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '' })
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: locale === 'en' ? 'Bulgaria' : 'България', note: '' })
@@ -95,6 +95,34 @@ export default function CheckoutPageClient() {
   useEffect(() => {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
   }, [paymentMethod, codEligible])
+
+  const sessionSignature = JSON.stringify({
+    lines: items.map(item => [item.productId, item.variantId, item.quantity, item.price]),
+    appliedCode,
+    deliveryType,
+    deliveryId,
+    country: shipping.country,
+    paymentMethod,
+  })
+  const signedFor = useRef<string | null>(null)
+  useEffect(() => {
+    if (!clientSecret) {
+      signedFor.current = null
+      setCheckoutLocked(false)
+      return
+    }
+    if (signedFor.current === null) {
+      signedFor.current = sessionSignature
+      return
+    }
+    if (signedFor.current !== sessionSignature) {
+      signedFor.current = null
+      setClientSecret(null)
+      setCheckoutLocked(false)
+    }
+  }, [clientSecret, sessionSignature, setCheckoutLocked])
+
+  useEffect(() => () => setCheckoutLocked(false), [setCheckoutLocked])
 
   useEffect(() => {
     if (!isCod) return
@@ -188,6 +216,7 @@ export default function CheckoutPageClient() {
       const data = await res.json()
       if (!res.ok || !data.clientSecret) throw new Error(data.error ?? translate(locale, 'Грешка'))
       setClientSecret(data.clientSecret)
+      setCheckoutLocked(true)
       setLoading(false)
     } catch (err) {
       setError(err instanceof Error ? err.message : translate(locale, 'Грешка при плащане'))
