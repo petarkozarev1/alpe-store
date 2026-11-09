@@ -10,11 +10,11 @@ jest.mock('next/image', () => ({
 }))
 
 test('renders uncropped 4:3 thumbnails and updates the active image', () => {
-  render(<ImageGallery images={['/one.png', '/two.png', '/three.png']} alt="ALPÉ Daily" />)
+  render(<ImageGallery images={['/one.png', '/two.png', '/three.png']} alt="AMPÉ Daily" />)
 
   const first = screen.getByRole('button', { name: 'View image 1' })
   const second = screen.getByRole('button', { name: 'View image 2' })
-  const secondImage = screen.getByAltText('ALPÉ Daily 2')
+  const secondImage = screen.getByAltText('AMPÉ Daily 2')
 
   expect(first).toHaveClass('aspect-[4/3]')
   expect(first).toHaveAttribute('aria-pressed', 'true')
@@ -24,5 +24,5 @@ test('renders uncropped 4:3 thumbnails and updates the active image', () => {
 
   expect(first).toHaveAttribute('aria-pressed', 'false')
   expect(second).toHaveAttribute('aria-pressed', 'true')
-  expect(screen.getByAltText('ALPÉ Daily')).toHaveAttribute('src', '/two.png')
+  expect(screen.getByAltText('AMPÉ Daily')).toHaveAttribute('src', '/two.png')
 })

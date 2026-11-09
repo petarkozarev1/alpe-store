@@ -13,6 +13,8 @@ import { defaultSeo, organizationJsonLd, siteUrl, websiteJsonLd } from '@/lib/se
 import { isLocale, locales } from '@/lib/i18n/config'
 import { notFound } from 'next/navigation'
 import { LocaleProvider } from '@/components/i18n/LocaleProvider'
+import { PricingProvider } from '@/components/pricing/PricingProvider'
+import { getPricingSnapshot } from '@/lib/sale'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin', 'cyrillic'],
@@ -27,12 +29,20 @@ const raleway = Raleway({
 })
 
 function rootMetadata(locale: 'bg' | 'en'): Metadata {
-  const title = locale === 'en' ? 'ALPÉ - Blue-light glasses' : defaultSeo.title
+  const title = locale === 'en' ? 'AMPÉ - Blue-light glasses' : defaultSeo.title
   const description = locale === 'en'
-    ? 'ALPÉ blue- and green-light glasses with EU-certified lenses, UV400 protection and free delivery over €50.'
+    ? 'AMPÉ blue- and green-light glasses with EU-certified lenses, UV400 protection and free delivery on 2 or more pairs.'
     : defaultSeo.description
   return {
   metadataBase: new URL(siteUrl),
+  manifest: '/site.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+  },
   title: {
     default: title,
     template: `%s | ${defaultSeo.siteName}`,
@@ -49,10 +59,10 @@ function rootMetadata(locale: 'bg' | 'en'): Metadata {
     description,
     images: [
       {
-        url: '/images/logo.png',
-        width: 512,
-        height: 512,
-        alt: 'ALPÉ',
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'AMPÉ',
       },
     ],
   },
@@ -60,7 +70,7 @@ function rootMetadata(locale: 'bg' | 'en'): Metadata {
     card: 'summary_large_image',
     title,
     description,
-    images: ['/images/logo.png'],
+    images: ['/twitter-card.png'],
   },
   robots: {
     index: true,
@@ -93,6 +103,7 @@ export default function RootLayout({ children, params }: { children: React.React
     <html lang={params.locale} className={`${cormorant.variable} ${raleway.variable}`}>
       <body>
         <LocaleProvider locale={params.locale}>
+        <PricingProvider snapshot={getPricingSnapshot()}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
@@ -110,6 +121,7 @@ export default function RootLayout({ children, params }: { children: React.React
         <MetaPixel />
         <MicrosoftClarity />
         <RouteChangeTracker />
+        </PricingProvider>
         </LocaleProvider>
       </body>
     </html>

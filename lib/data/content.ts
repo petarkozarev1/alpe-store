@@ -11,12 +11,12 @@ export const heroContent = {
   subtext: 'Блокираме до 99% от синята и зелената светлина за по-малко умора, по-добър сън и повече енергия всеки ден.',
   cta: 'Защити очите си',
   heroFaceImages: [
-    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing ALPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
-    { src: '/images/hero/person-1-night.png', alt: 'Man wearing ALPÉ Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
-    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing ALPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '45% 25%' },
-    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing ALPÉ Day glasses — clear frame, gold lenses',       objectPosition: '55% 25%' },
-    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing ALPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '35% 20%' },
-    { src: '/images/hero/person-6-night.png', alt: 'Man wearing ALPÉ Night glasses — clear frame, orange lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-1-night.png', alt: 'Man wearing AMPÉ Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
+    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '45% 25%' },
+    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing AMPÉ Day glasses — clear frame, gold lenses',       objectPosition: '55% 25%' },
+    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '35% 20%' },
+    { src: '/images/hero/person-6-night.png', alt: 'Man wearing AMPÉ Night glasses — clear frame, orange lenses',   objectPosition: '50% 25%' },
   ],
 }
 
@@ -36,7 +36,7 @@ export const ingredientsContent = {
   badge: 'Технология на стъклата',
   headline: 'Създадено за\n"Дигиталната Ера"',
   editorialImage: '/images/glasses-duo2.png',
-  editorialImageAlt: 'ALPÉ precision lens technology — blue light filter, anti-glare, UV400',
+  editorialImageAlt: 'AMPÉ precision lens technology — blue light filter, anti-glare, UV400',
   sectionTitle: 'Какво има във всяко стъкло?',
   cta: 'Виж стъклата',
 }
@@ -78,7 +78,7 @@ export const steps: StepItem[] = [
 ]
 
 export const beforeAfterContent = {
-  badge: 'Защо ALPÉ?',
+  badge: 'Защо AMPÉ?',
   headline: 'Умора вчера.\nЯснота днес.',
   beforeImage: '/images/before.png',
   afterImage: '/images/after.png',
@@ -104,13 +104,13 @@ export const withItems: string[] = [
 
 export const testimonialContent = {
   badge: 'Какво казват клиентите',
-  quote: 'Работя по 10 часа на ден пред компютър. След като започнах да нося ALPÉ, главоболието изчезна за няколко дни. Сега заспивам веднага щом легна.',
+  quote: 'Работя по 10 часа на ден пред компютър. След като започнах да нося AMPÉ, главоболието изчезна за няколко дни. Сега заспивам веднага щом легна.',
   author: 'Александър М., София',
   stars: 5,
 }
 
 export const galleryContent = {
-  headline: 'Истинска защита. С ALPÉ.',
+  headline: 'Истинска защита. С AMPÉ.',
   images: [
     '/images/shuffle1.png',
     '/images/shuffle2.png',
@@ -123,7 +123,7 @@ export const galleryContent = {
 export const faqs: FaqItem[] = [
   {
     question: 'Наистина ли работят тези очила?',
-    answer: 'Да. Лещите на ALPÉ са тествани по BS EN ISO 12312-1:2013+A1:2015 и блокират до 99% от синята и зелената светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на 1-2 седмици.',
+    answer: 'Да. Лещите на AMPÉ са тествани по BS EN ISO 12312-1:2013+A1:2015 и блокират до 99% от синята и зелената светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на 1-2 седмици.',
   },
   {
     question: 'Може ли да ги нося цял ден?',
@@ -141,7 +141,7 @@ export const faqs: FaqItem[] = [
 
 export const faqSectionContent = {
   badge: 'Често задавани въпроси',
-  headline: 'Всичко, което трябва да\nзнаете за ALPÉ',
+  headline: 'Всичко, което трябва да\nзнаете за AMPÉ',
   cta: 'Поръчай сега',
 }
 
@@ -150,7 +150,7 @@ export const finalCtaContent = {
   headline: 'Защити очите си.\nЖивей оптимално.',
   cta: 'Вземи своя чифт',
   image: '/images/final-cta.png',
-  subtext: 'BS EN ISO 12312-1 сертифицирани · Безплатна доставка над €50 · 1000+ доволни клиенти',
+  subtext: 'BS EN ISO 12312-1 сертифицирани · Безплатна доставка за 2+ чифта · 1000+ доволни клиенти',
 }
 
 export function getLandingContent(locale: Locale) {

@@ -12,7 +12,7 @@ export function CheckoutSummary(p: any) {
   const {
     locale, formatBGN, items, codeInput, setCodeInput, appliedCode, codeError,
     applyCode, removeCode, loading, error, clientSecret, setClientSecret,
-    isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total,
+    isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total, saleHint,
   } = p
   const en = locale === 'en'
   const deliveryLabel = deliveryType === 'address' ? (en ? 'To an address' : 'До адрес') : delivery.label
@@ -56,6 +56,7 @@ export function CheckoutSummary(p: any) {
                 </div>
               )}
               {codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}
+              {saleHint && !appliedCode && <p className="font-sans text-xs text-stone mb-3">{saleHint}</p>}
               <hr className="border-stone/15 mb-4" />
               <div className="flex flex-col gap-2.5 font-sans text-sm">
                 <div className="flex justify-between text-stone">

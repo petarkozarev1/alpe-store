@@ -22,7 +22,7 @@ export default function LensesPage({ params }: { params: { locale: string } }) {
           Стъклата, които правят<br />разликата.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-12">
-          Не всички очила за синя светлина са еднакви. Лещите на ALPÉ са тествани и сертифицирани в ЕС — не просто маркетинг.
+          Не всички очила за синя светлина са еднакви. Лещите на AMPÉ са тествани и сертифицирани в ЕС — не просто маркетинг.
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -43,7 +43,7 @@ export default function LensesPage({ params }: { params: { locale: string } }) {
               href="/product/alpe-daily"
               className="mt-2 w-fit font-sans text-xs font-semibold text-iron underline decoration-gold/60 underline-offset-4 transition-colors hover:text-gold"
             >
-              Разгледай ALPÉ Daily →
+              Разгледай AMPÉ Daily →
             </Link>
           </div>
 
@@ -67,7 +67,7 @@ export default function LensesPage({ params }: { params: { locale: string } }) {
               href="/product/alpe-evening"
               className="mt-2 w-fit font-sans text-xs font-semibold text-linen underline decoration-gold/60 underline-offset-4 transition-colors hover:text-gold"
             >
-              Разгледай ALPÉ Evening →
+              Разгледай AMPÉ Evening →
             </Link>
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function LensesPage({ params }: { params: { locale: string } }) {
           >
             Вземи си чифт →
           </Link>
-          <p className="font-sans text-xs text-stone/60 mt-4">Безплатна доставка над €50</p>
+          <p className="font-sans text-xs text-stone/60 mt-4">Безплатна доставка за 2+ чифта</p>
         </div>
       </section>
     </main>

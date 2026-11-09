@@ -7,12 +7,12 @@ import type { Locale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
 
 const images = [
-  { src: '/images/shuffle5.png', alt: 'ALPÉ customer' },
-  { src: '/images/shuffle2.png', alt: 'ALPÉ customer' },
-  { src: '/images/shuffle4.png', alt: 'ALPÉ customer' },
-  { src: '/images/shuffle1.png', alt: 'ALPÉ customer' },
-  { src: '/images/shuffle6.png', alt: 'ALPÉ customer' },
-  { src: '/images/shuffle3.png', alt: 'ALPÉ customer' },
+  { src: '/images/shuffle5.png', alt: 'AMPÉ customer' },
+  { src: '/images/shuffle2.png', alt: 'AMPÉ customer' },
+  { src: '/images/shuffle4.png', alt: 'AMPÉ customer' },
+  { src: '/images/shuffle1.png', alt: 'AMPÉ customer' },
+  { src: '/images/shuffle6.png', alt: 'AMPÉ customer' },
+  { src: '/images/shuffle3.png', alt: 'AMPÉ customer' },
 ]
 
 export default function GallerySection({ locale }: { locale: Locale }) {

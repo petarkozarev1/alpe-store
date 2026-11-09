@@ -16,7 +16,7 @@ export default function DarkCtaCard() {
         >
           <Image
             src="/images/glasses-duo3.png"
-            alt="ALPÉ blue light blocking glasses"
+            alt="AMPÉ blue light blocking glasses"
             fill
             sizes="(max-width: 768px) 100vw, 576px"
             className="object-contain"

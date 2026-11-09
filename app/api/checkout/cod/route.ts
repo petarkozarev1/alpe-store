@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server'
 import { writeOrderToNotionWithRetry, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
-import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
+import { sendOrderConfirmation, type OrderEmailModel } from '@/lib/email'
+import { SITE_URL } from '@/lib/brand'
 import { notifyAlert } from '@/lib/alerts'
 import { signCodOrder } from '@/lib/cod-signature'
-import { promoDiscount } from '@/lib/promo'
+import { applyPromo, promoErrorMessage } from '@/lib/promo'
 import { cookies } from 'next/headers'
 import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
 import { isLocale } from '@/lib/i18n/config'
 import {
-  computeCodTotal,
-  computeSubtotal,
   computeBundlePrice,
-  computeBundleSaving,
   computeShipping,
+  computeTotalPairs,
   isBulgariaEligible,
   makeCodOrderId,
   COD_FEE,
@@ -41,14 +40,14 @@ export async function POST(req: Request) {
 
     if (!items?.length) return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
 
-    // Temporary: block ALPÉ Evening until restock
+    // Temporary: block AMPÉ Evening until restock
     const hasEvening = items.some(item => {
       const fields = [item.name, item.variantLabel, (item as any).productId, (item as any).variantId].filter(Boolean)
       return fields.some(f => String(f).toLowerCase().includes('evening'))
     })
     if (hasEvening) {
       return NextResponse.json(
-        { error: locale === 'en' ? 'ALPÉ Evening is temporarily out of stock. Please choose Daily.' : 'ALPÉ Evening е временно изчерпан. Моля изберете Daily.' },
+        { error: locale === 'en' ? 'AMPÉ Evening is temporarily out of stock. Please choose Daily.' : 'AMPÉ Evening е временно изчерпан. Моля изберете Daily.' },
         { status: 400 }
       )
     }
@@ -71,12 +70,15 @@ export async function POST(req: Request) {
       }, { status: 400 })
     }
 
-    const subtotal = computeSubtotal(items)
-    const bundleSaving = computeBundleSaving(items)
-    const promo = promoDiscount(computeBundlePrice(items), body.promoCode)
+    const pairs = computeTotalPairs(items)
+    const subtotal = computeBundlePrice(items)
+    const promo = applyPromo(subtotal, body.promoCode, { pairs })
+    if (body.promoCode?.trim() && !promo.code) {
+      return NextResponse.json({ error: promoErrorMessage(promo.reason ?? 'unknown', locale) }, { status: 400 })
+    }
     const shippingAmount = computeShipping(items)
     const codFee = COD_FEE
-    const total = +(computeCodTotal({ items, shippingAmount, codFee }) - promo.amount).toFixed(2)
+    const total = +(subtotal - promo.amount + shippingAmount + codFee).toFixed(2)
     const orderId = makeCodOrderId()
     const affiliateId = getP2GAttribution(cookies().get(P2G_COOKIE_NAME)?.value, process.env.P2G_AFFILIATE_ID)
 
@@ -107,13 +109,11 @@ export async function POST(req: Request) {
       await writePromoOrderToNotion({ promoCode: promo.code, total, itemsText, orderRef: orderId })
     }
 
-    const productRows: OrderEmailRow[] = items.map(i => ({ label: i.name, sublabel: i.variantLabel, amount: +(i.price * i.quantity).toFixed(2) }))
     const emailModel: OrderEmailModel = {
       orderRef: orderId, paymentMethod: 'cod', customerFirstName: firstName || (locale === 'en' ? 'customer' : 'клиент'), locale,
-      productRows, subtotal,
-      discount: (bundleSaving + promo.amount) > 0
-        ? { code: promo.code || 'Комплектна отстъпка', amount: +(bundleSaving + promo.amount).toFixed(2) }
-        : undefined,
+      productRows: [{ label: items.map(i => i.name).join(', '), sublabel: items.map(i => i.variantLabel).filter(Boolean).join(' · '), amount: subtotal }],
+      subtotal,
+      discount: promo.amount > 0 ? { code: promo.code, amount: promo.amount } : undefined,
       shippingLabel: body.shippingLabel, shippingAmount, codFee, total,
       deliveryTo: { name: shipping.name ?? '', line: shipping.officeLocation || [shipping.address, shipping.city].filter(Boolean).join(', '), phone: shipping.phone ?? '' },
     }
@@ -131,7 +131,7 @@ export async function POST(req: Request) {
       fbp: shipping.fbp || undefined, fbc: shipping.fbc || undefined, clientIpAddress, clientUserAgent,
       value: total, currency: 'EUR', orderId,
       contentIds: items.map(i => i.name), numItems: items.reduce((s, i) => s + i.quantity, 0),
-      eventId: `purchase-${orderId}`, sourceUrl: 'https://alpewear.com/checkout/success',
+      eventId: `purchase-${orderId}`, sourceUrl: `${SITE_URL}/checkout/success`,
     }, { orderRef: orderId, email, total })
 
     return NextResponse.json({ orderId, value: total, sig: signCodOrder(orderId, String(total)) })

@@ -4,6 +4,8 @@ import { siteConfig } from '@/lib/data/site'
 import { resetCookieConsent } from '@/components/layout/CookieBanner'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
+import FormerlyLine from '@/components/layout/FormerlyLine'
+import { COMPANY, EMAILS } from '@/lib/brand'
 
 export default function Footer() {
   const locale = useLocale()
@@ -15,11 +17,22 @@ export default function Footer() {
 
           {/* Brand + description */}
           <div className="flex flex-col gap-4">
-            <Link href={localizedPath('/', locale)} className="font-serif text-xl text-linen tracking-widest">
-              {siteConfig.brand}
+            <Link href={localizedPath('/', locale)} className="inline-flex">
+              <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
             </Link>
-            <p className="font-sans text-xs text-linen/60 leading-relaxed max-w-[200px]">
+            <FormerlyLine locale={locale} className="font-sans text-[10px] text-linen/70" />
+            <p className="font-sans text-xs text-linen/60 leading-relaxed max-w-[220px]">
               {locale === 'en' ? 'Blue and green-light glasses for everyday screen use.' : t(siteConfig.footer.description)}
+            </p>
+            <p className="font-sans text-[10px] text-linen/55 leading-relaxed max-w-[240px]">
+              {locale === 'en' ? COMPANY.legalNameEn : COMPANY.legalNameBg}
+              {' · '}{locale === 'en' ? 'Company ID' : 'ЕИК'} {COMPANY.eik}
+              <br />
+              {locale === 'en' ? COMPANY.cityLineEn : COMPANY.cityLineBg}
+              <br />
+              <a href={COMPANY.phoneHref} className="hover:text-gold">{COMPANY.phone}</a>
+              {' · '}
+              <a href={`mailto:${EMAILS.hello}`} className="hover:text-gold">{EMAILS.hello}</a>
             </p>
           </div>
 

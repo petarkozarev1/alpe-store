@@ -3,11 +3,12 @@ import { isLocale } from '@/lib/i18n/config'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import Link from 'next/link'
 import { createLocalizedPageMetadata } from '@/lib/seo'
+import FormerlyLine from '@/components/layout/FormerlyLine'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
   title: 'Нашата история',
-  description: 'ALPÉ е основана от хора, които познават умората от екрана. Научете повече за нашата мисия.',
+  description: 'AMPÉ е основана от хора, които познават умората от екрана. Научете повече за нашата мисия.',
   path: '/about',
   })
 }
@@ -18,6 +19,7 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
     <main className="bg-parchment text-iron min-h-screen">
       <section className="max-w-content mx-auto px-6 md:px-10 pt-32 pb-20">
         <span className="font-sans text-xs uppercase tracking-widest text-stone">Нашата история</span>
+        <FormerlyLine locale={params.locale} className="font-sans text-xs text-stone mt-4" />
         <h1 className="font-serif text-4xl md:text-5xl text-iron mt-4 mb-6 leading-tight">
           Започна със системно главоболие<br />всеки следобед.
         </h1>
@@ -27,12 +29,12 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
             Познато ли е? За нас беше ежедневие, докато не решихме да направим нещо по въпроса.
           </p>
           <p>
-            ALPÉ е основана в България от хора, които работят дигитално и познаваха умората отвътре.
+            AMPÉ е основана в България от хора, които работят дигитално и познаваха умората отвътре.
             Не искахме да правим поредния продукт с хубава опаковка и празни обещания. Искахме нещо,
             което реално работи с EU сертификати, не с маркетинг.
           </p>
           <p>
-            Днес над 1000 клиенти в България носят ALPÉ всеки ден. Голяма част от тях ни пишат,
+            Днес над 1000 клиенти в България носят AMPÉ всеки ден. Голяма част от тях ни пишат,
             че за пръв път от години заспиват без проблем. Това е причината да продължаваме и да се подобряваме.
           </p>
 

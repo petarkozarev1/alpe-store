@@ -78,25 +78,25 @@ describe('SEO route configuration', () => {
   it('creates unbranded child titles with self-referencing canonicals', () => {
     const metadata = createPageMetadata({
       title: 'Нашата история',
-      description: 'Историята на ALPÉ.',
+      description: 'Историята на AMPÉ.',
       path: '/about',
     })
 
     expect(metadata.title).toBe('Нашата история')
-    expect(metadata.description).toBe('Историята на ALPÉ.')
+    expect(metadata.description).toBe('Историята на AMPÉ.')
     expect(metadata.alternates).toEqual({
       canonical: '/about',
       languages: { 'bg-BG': '/about', en: '/en/about', 'x-default': '/about' },
     })
-    expect(String(metadata.title)).not.toContain('| ALPÉ')
+    expect(String(metadata.title)).not.toContain('| AMPÉ')
     expect(metadata.openGraph).toEqual(expect.objectContaining({
       title: 'Нашата история',
-      description: 'Историята на ALPÉ.',
+      description: 'Историята на AMPÉ.',
       url: 'https://www.alpewear.com/about',
     }))
     expect(metadata.twitter).toEqual(expect.objectContaining({
       title: 'Нашата история',
-      description: 'Историята на ALPÉ.',
+      description: 'Историята на AMPÉ.',
     }))
   })
 
@@ -128,17 +128,17 @@ describe('SEO route configuration', () => {
   })
 
   it('describes paid and free Bulgarian shipping without inventing a carrier', () => {
-    expect(offerShippingDetails(44.99).shippingRate).toEqual({
+    expect(offerShippingDetails(1).shippingRate).toEqual({
       '@type': 'MonetaryAmount',
       value: 4.99,
       currency: 'EUR',
     })
-    expect(offerShippingDetails(66.99).shippingRate).toEqual({
+    expect(offerShippingDetails(2).shippingRate).toEqual({
       '@type': 'MonetaryAmount',
       value: 0,
       currency: 'EUR',
     })
-    expect(offerShippingDetails(44.99).shippingDestination).toEqual({
+    expect(offerShippingDetails(1).shippingDestination).toEqual({
       '@type': 'DefinedRegion',
       addressCountry: 'BG',
     })

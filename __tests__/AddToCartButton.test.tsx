@@ -14,7 +14,7 @@ jest.mock('framer-motion', () => ({
 const product: Product = {
   id: 'alpe-daily',
   slug: 'alpe-daily',
-  name: 'ALPÉ Daily',
+  name: 'AMPÉ Daily',
   subtitle: 'Daily lenses',
   description: 'Screen glasses',
   facts: ['65% филтър на синята светлина'],
@@ -49,7 +49,7 @@ test('fires AddToCart (pixel + CAPI mirror) when an in-stock product is added af
     'track',
     'AddToCart',
     {
-      content_name: 'ALPÉ Daily',
+      content_name: 'AMPÉ Daily',
       content_ids: ['alpe-daily'],
       content_type: 'product',
       value: 44.99,

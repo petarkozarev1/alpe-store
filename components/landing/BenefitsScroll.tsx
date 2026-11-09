@@ -15,7 +15,7 @@ export default function BenefitsScroll({ locale }: { locale: Locale }) {
           <div className="relative w-56 h-80 md:w-72 md:h-96">
             <Image
               src="/images/glasses-duo.png"
-              alt="ALPÉ Blue Light Glasses"
+              alt="AMPÉ Blue Light Glasses"
               fill
               className="object-contain"
               priority

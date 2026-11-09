@@ -9,35 +9,34 @@ import {
 } from '@/app/api/checkout/cod/helpers'
 import { priceForPairs } from '@/lib/pricing'
 
-const single = (qty = 1): CodProduct => ({ name: 'ALPÉ', variantLabel: '🟠 Вечер', price: 44.99, quantity: qty, variantId: 'ALPÉ-evening-bundle-1' })
+const saleNow = new Date('2026-11-15T10:00:00.000Z')
+const regularNow = new Date('2026-12-26T22:00:00.000Z')
+const single = (qty = 1): CodProduct => ({ name: 'AMPÉ', variantLabel: '🟠 Вечер', price: 59.99, quantity: qty, variantId: 'AMPÉ-evening-bundle-1' })
 
-describe('bundle pricing — auto-applies by total pairs', () => {
-  it('prices two separately-added singles as the 2-pack', () => {
-    const items = [single(), single()] // 2 pairs added separately
-    expect(computeBundlePrice(items)).toBeCloseTo(66.99, 2)
-    expect(computeBundleSaving(items)).toBeCloseTo(89.98 - 66.99, 2) // 22.99 saved vs singles
+describe('pair pricing — 1 and 2 packs only', () => {
+  it('prices two singles as the sale double during Black November', () => {
+    expect(priceForPairs(2, saleNow)).toBe(89.99)
+    expect(priceForPairs(3, saleNow)).toBe(149.98)
+    expect(priceForPairs(4, saleNow)).toBe(179.98)
   })
-  it('prices three singles as the 3-pack', () => {
-    const items = [single(), single(), single()]
-    expect(computeBundlePrice(items)).toBeCloseTo(89.99, 2)
-  })
-  it('uses the cheapest mix for 4 pairs (2+2, not 3+1)', () => {
-    expect(priceForPairs(4)).toBeCloseTo(133.98, 2) // 66.99 * 2
-    expect(priceForPairs(5)).toBeCloseTo(156.98, 2) // 66.99 + 89.99
-    expect(priceForPairs(6)).toBeCloseTo(179.98, 2) // 89.99 * 2
+  it('prices pairs at the regular rate from 27 Dec 2026 Sofia', () => {
+    expect(priceForPairs(1, regularNow)).toBe(59.99)
+    expect(priceForPairs(2, regularNow)).toBe(119.98)
+    expect(priceForPairs(3, regularNow)).toBe(179.97)
   })
 })
 
 describe('computeCodTotal', () => {
-  it('charges bundle price + shipping + COD fee (2 singles → 2-pack + fee)', () => {
-    const total = computeCodTotal({ items: [single(), single()], shippingAmount: 0, codFee: 1 })
-    expect(total).toBeCloseTo(67.99, 2) // 66.99 + 0 + 1
+  it('charges the current pair price + shipping + COD fee', () => {
+    const items = [single(), single()]
+    const total = computeCodTotal({ items, shippingAmount: 0, codFee: 1 })
+    expect(total).toBeCloseTo(computeBundlePrice(items) + 1, 2)
   })
 })
 
 describe('computeShipping', () => {
   it('is free when a bundle variant covers 2+ pairs', () => {
-    expect(computeShipping([{ name: 'ALPÉ', variantLabel: '', price: 66.99, quantity: 1, variantId: 'bundle-2' }])).toBe(0)
+    expect(computeShipping([{ name: 'AMPÉ', variantLabel: '', price: 66.99, quantity: 1, variantId: 'bundle-2' }])).toBe(0)
   })
   it('is free when single pairs sum to 2+', () => {
     expect(computeShipping([single(2)])).toBe(0)

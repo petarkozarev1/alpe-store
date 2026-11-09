@@ -12,12 +12,13 @@ import {
   type Lens,
   type ShopSelection,
 } from '@/lib/shop-selection'
+import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 
 type Tab = 'description' | 'science' | 'reviews'
 
 const lensData = {
   evening: {
-    name: 'ALPÉ',
+    name: 'AMPÉ',
     nameItalic: 'Evening',
     tagline: 'Оранжевият филтър, който сигнализира на мозъка ви, че е време да се отпуснете. Блокира 98% от синята и зелената светлина за дълбок, възстановяващ сън. Ефектът започва да се усеща още след първата седмица.',
     benefitBg: '#fff5eb',
@@ -25,15 +26,15 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
     benefitText: 'Оптимално да се носят след залез слънце и преди сън.',
     benefitColor: '#7a4e1a',
-    descText: "Лещите ALPÉ Evening са създадени с една цел: сън. Носени след залез слънце и поне 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
+    descText: "Лещите AMPÉ Evening са създадени с една цел: сън. Носени след залез слънце и поне 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
     images: [
-      { src: '/images/shop/shop-evening-1.png', alt: 'ALPÉ Evening очила за синя светлина с оранжеви стъкла' },
-      { src: '/images/shop/shop-evening-2.png', alt: 'Оранжеви blue light blocking glasses ALPÉ Evening' },
-      { src: '/images/shop/shop-evening-3.png', alt: 'Кутия ALPÉ Evening очила против синя светлина' },
+      { src: '/images/shop/shop-evening-1.png', alt: 'AMPÉ Evening очила за синя светлина с оранжеви стъкла' },
+      { src: '/images/shop/shop-evening-2.png', alt: 'Оранжеви blue light blocking glasses AMPÉ Evening' },
+      { src: '/images/shop/shop-evening-3.png', alt: 'Кутия AMPÉ Evening очила против синя светлина' },
     ],
   },
   daily: {
-    name: 'ALPÉ',
+    name: 'AMPÉ',
     nameItalic: 'Daily',
     tagline: 'Прозрачно-жълти стъкла за целодневна работа пред екрана. Филтрират най-агресивните дължини на вълните, без да изкривяват цветовете, за да можете да работите комфортно от 9:00 до 18:00ч.',
     benefitBg: '#fffbe0',
@@ -41,18 +42,14 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#f9e94e,#e6b800)',
     benefitText: 'Идеални за целодневна работа пред екран.',
     benefitColor: '#7a6200',
-    descText: "Очилата ALPÉ Daily са създадени за продължителна работа пред екрана. Тяхната кехлибарено-жълта оцветка филтрира 65% от синята светлина. Достатъчно, за да намали напрежението в очите и главоболието в края на деня, като същевременно запазва цветовете достатъчно точни за работа с дизайн, редактиране на снимки и видеоразговори. Леки, удобни и подходящи за носене в продължение на 8+ часа.",
+    descText: "Очилата AMPÉ Daily са създадени за продължителна работа пред екрана. Тяхната кехлибарено-жълта оцветка филтрира 65% от синята светлина. Достатъчно, за да намали напрежението в очите и главоболието в края на деня, като същевременно запазва цветовете достатъчно точни за работа с дизайн, редактиране на снимки и видеоразговори. Леки, удобни и подходящи за носене в продължение на 8+ часа.",
     images: [
-      { src: '/images/shop/shop-daily-1.png', alt: 'ALPÉ Daily очила за компютър с жълти стъкла' },
-      { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина ALPÉ Daily' },
-      { src: '/images/shop/shop-daily-3.png', alt: 'Кутия ALPÉ Daily blue light glasses за работа пред екран' },
+      { src: '/images/shop/shop-daily-1.png', alt: 'AMPÉ Daily очила за компютър с жълти стъкла' },
+      { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
+      { src: '/images/shop/shop-daily-3.png', alt: 'Кутия AMPÉ Daily blue light glasses за работа пред екран' },
     ],
   },
 }
-
-const bundlePrices: Record<number, number> = { 1: 44.99, 2: 66.99, 3: 89.99 }
-const bundleSavings: Record<number, number> = { 1: 0, 2: 23, 3: 45 }
-const initialBundleValue = bundlePrices[1]
 
 const EVENING_OUT_OF_STOCK = true // temporary until restock
 
@@ -60,6 +57,8 @@ export default function ProductPage({
   initialSelection = getInitialShopSelection(),
 }: { initialSelection?: ShopSelection } = {}) {
   const locale = useLocale()
+  const pricing = usePricingSnapshot()
+  const pairPrice = (n: 1 | 2) => (n === 1 ? pricing.single : pricing.double)
   const [lens, setLens] = useState<Lens>(initialSelection.lens)
   const [bundle, setBundle] = useState(initialSelection.bundle)
   const [thumbIdx, setThumbIdx] = useState({ evening: 0, daily: 0 })
@@ -83,15 +82,15 @@ export default function ProductPage({
   useEffect(() => {
     fireTrackedEvent('ViewContent', {
       data: {
-        content_name: 'ALPÉ Glasses',
-        content_ids: ['ALPÉ-glasses'],
+        content_name: 'AMPÉ Glasses',
+        content_ids: ['AMPÉ-glasses'],
         content_type: 'product',
-        value: initialBundleValue,
+        value: pricing.single,
         currency: 'EUR',
       },
-      value: initialBundleValue,
+      value: pricing.single,
       currency: 'EUR',
-      contentIds: ['ALPÉ-glasses'],
+      contentIds: ['AMPÉ-glasses'],
     })
   }, [])
 
@@ -115,30 +114,30 @@ export default function ProductPage({
     if (EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening'))) return
     const d = lensData[lens]
     addToCart({
-      productId: `ALPÉ-${lens}`,
-      variantId: `ALPÉ-${lens}-bundle-${bundle}`,
+      productId: `AMPÉ-${lens}`,
+      variantId: `AMPÉ-${lens}-bundle-${bundle}`,
       name: d.name,
       variantLabel: locale === 'en'
         ? `${slots.map(s => s === 'evening' ? '🟠 Evening' : '🟡 Daily').join(' · ')} · ${bundle} ${bundle === 1 ? 'pair' : 'pairs'}`
         : `${slots.map(s => s === 'evening' ? '🟠 Вечер' : '🟡 За всеки ден').join(' · ')} · ${bundle} чифт${bundle > 1 ? 'а' : ''}`,
-      price: bundlePrices[bundle],
+      price: pairPrice(bundle),
       quantity: 1,
       image: d.images[0].src,
-      slug: 'ALPÉ-glasses',
-      originalPrice: bundle > 1 ? bundlePrices[1] * bundle : undefined,
-      saving: bundle > 1 ? bundleSavings[bundle] : undefined,
+      slug: 'AMPÉ-glasses',
+      originalPrice: bundle > 1 && pricing.double < pricing.regularDouble ? pricing.regularDouble : undefined,
+      saving: bundle > 1 && pricing.double < pricing.regularDouble ? +(pricing.regularDouble - pricing.double).toFixed(2) : undefined,
     })
     fireTrackedEvent('AddToCart', {
       data: {
         content_name: d.name,
-        content_ids: [`ALPÉ-${lens}`],
+        content_ids: [`AMPÉ-${lens}`],
         content_type: 'product',
-        value: bundlePrices[bundle],
+        value: pairPrice(bundle),
         currency: 'EUR',
       },
-      value: bundlePrices[bundle],
+      value: pairPrice(bundle),
       currency: 'EUR',
-      contentIds: [`ALPÉ-${lens}`],
+      contentIds: [`AMPÉ-${lens}`],
       numItems: bundle,
     })
     openDrawer()
@@ -146,8 +145,8 @@ export default function ProductPage({
 
   const d = lensData[lens]
   const currentImg = d.images[thumbIdx[lens]]
-  const price = bundlePrices[bundle]
-  const saving = bundleSavings[bundle]
+  const price = pairPrice(bundle).toFixed(2)
+  const saving = bundle > 1 && pricing.double < pricing.regularDouble ? +(pricing.regularDouble - pricing.double).toFixed(2) : 0
 
   return localizeContent(locale, (
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
@@ -214,7 +213,7 @@ export default function ProductPage({
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, borderRadius: 8, padding: '12px 16px', marginTop: 10, fontSize: 13, background: '#f0f7ff', border: '1px solid rgba(60,120,200,0.2)', color: '#1a3a6e' }}>
               <svg width="16" height="16" fill="none" stroke="#3c78c8" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" /><rect x="9" y="11" width="14" height="10" rx="2" /><circle cx="12" cy="21" r="1" /><circle cx="20" cy="21" r="1" /></svg>
-              <span><strong>Безплатна експресна доставка при поръчки над €50.</strong> Пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
+              <span><strong>Безплатна доставка за 2 или повече чифта.</strong> Пристига в рамките на 1–3 дни. Поръчайте днес преди 14:00 ч.</span>
             </div>
           </div>
         </div>
@@ -248,7 +247,7 @@ export default function ProductPage({
           {/* Bundle selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
           <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
-            {([1, 2, 3] as const).map(n => (
+            {([1, 2] as const).map(n => (
               <button
                 key={n}
                 onClick={() => handleBundle(n)}
@@ -260,16 +259,25 @@ export default function ProductPage({
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
                       <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`}</span>
                       {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
-                      {n === 3 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#1C0F0A', color: '#FAF0E4' }}>Най-изгодно</span>}
                     </div>
-                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : n === 2 ? 'Защита за целия ден' : 'По един за всеки вкъщи'}</div>
-                    {n === 2 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>Спестете 50% с двойния комплект</div>}
-                    {n === 3 && <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>Спестете 45 € с тройния комплект 🎉</div>}
+                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : 'Защита за целия ден'}</div>
+                    {n === 1 && pricing.promo && (
+                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>
+                        {locale === 'en'
+                          ? `Code ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}`
+                          : `Код ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}`}
+                      </div>
+                    )}
+                    {n === 2 && pricing.double < pricing.regularDouble && (
+                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>
+                        {locale === 'en' ? 'Second pair at 50% off' : 'Вторият чифт на половин цена'}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{bundlePrices[n]}</div>
-                  {n > 1 && <div style={{ fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 2 }}>поотделно: €{n === 2 ? '89.98' : '134.97'}</div>}
+                  <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{pairPrice(n).toFixed(2)}</div>
+                  {n === 2 && pricing.double < pricing.regularDouble && <div style={{ fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 2 }}>поотделно: €{pricing.regularDouble.toFixed(2)}</div>}
                 </div>
               </button>
             ))}
@@ -331,8 +339,8 @@ export default function ProductPage({
               </button>
             </div>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка над €50 · ✓ Сигурно плащане</p>
-          <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 6 }}>Цената включва ДДС · Не е медицинско изделие</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 11, color: 'rgba(28,15,10,0.4)', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
 
           {/* Payment icons */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, margin: '12px 0 0', flexWrap: 'wrap' as const }}>
@@ -365,7 +373,7 @@ export default function ProductPage({
           <div className="product-trust-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, padding: '20px 0', borderTop: '1px solid rgba(28,15,10,0.09)', borderBottom: '1px solid rgba(28,15,10,0.09)', margin: '20px 0' }}>
             {[
               { icon: '🔒', label: 'Сигурно\nплащане' },
-              { icon: '🚚', label: 'Безплатна експресна\nдоставка над €50' },
+              { icon: '🚚', label: 'Безплатна доставка\nза 2+ чифта' },
               { icon: 'CE', label: 'Сертифицирани\nпо CE стъкла' },
               { icon: 'return', label: '14-дневно\nвръщане' },
             ].map(t => (
@@ -424,11 +432,11 @@ export default function ProductPage({
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите ALPÉ използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите AMPÉ използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>Лещите Evening (оранжеви) блокират 98% от този диапазон. Лещите Daily (жълти) блокират 65%, като поддържат ползите за циркадния ритъм и същевременно запазват точността на цветовете при работа пред екран.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>В проучване от 2022 г., публикувано в Journal of Sleep Research, очила, блокиращи синята светлина, носени 2 часа преди лягане, подобряват заспиването със средно 18 минути и увеличават общото време за сън с 24 минути.</p>
                 <div style={{ marginTop: 24, background: '#f5ede4', border: '1.5px solid rgba(196,154,108,0.3)', borderRadius: 12, padding: '20px 22px' }}>
-                  <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Нови изследвания: Зелената светлина също има значение.</strong> Последните проучвания сочат, че зелената светлина в диапазона 500–560 nm също потиска производството на мелатонин, макар и с по-малка сила в сравнение със синята. Лещите ALPÉ Evening са насочени към двата диапазона, като ви осигуряват защита в целия спектър за възстановителен сън.</p>
+                  <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Нови изследвания: Зелената светлина също има значение.</strong> Последните проучвания сочат, че зелената светлина в диапазона 500–560 nm също потиска производството на мелатонин, макар и с по-малка сила в сравнение със синята. Лещите AMPÉ Evening са насочени към двата диапазона, като ви осигуряват защита в целия спектър за възстановителен сън.</p>
                   <p style={{ fontSize: 11, color: 'rgba(196,154,108,0.9)', marginTop: 12 }}>Hattar и др., 2003 · Zhao и др., 2021</p>
                 </div>
               </div>
@@ -439,9 +447,9 @@ export default function ProductPage({
                 <div className="product-reviews-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                   {[
                     { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'София' },
-                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато ALPÉ не го оправи."', author: 'Елена М.', location: 'Пловдив' },
+                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато AMPÉ не го оправи."', author: 'Елена М.', location: 'Пловдив' },
                     { text: '„Бях скептичен. След три седмици спя по-добре, отколкото през последните години. Струва си всеки цент."', author: 'Георги Т.', location: 'Варна' },
-                    { text: '„Купих комплекта от 3 чифта – един за работа, един за вкъщи и един за пътуване. Гениално."', author: 'Мария С.', location: 'Бургас' },
+                    { text: '„Взех два чифта – един за работа и един за вкъщи. Гениално."', author: 'Мария С.', location: 'Бургас' },
                   ].map((r, i) => (
                     <div key={i} style={{ background: '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 10, padding: '22px 20px' }}>
                       <div style={{ color: '#C49A6C', fontSize: 13, letterSpacing: 1, marginBottom: 10 }}>★★★★★</div>
@@ -462,14 +470,14 @@ export default function ProductPage({
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на ALPÉ след 14 дни редовно ползване.</p>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на AMPÉ след 14 дни редовно ползване.</p>
           </div>
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
-              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на ALPÉ', delay: '0.2s' },
+              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на AMPÉ', delay: '0.2s' },
               { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
-              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към ALPÉ Daily', delay: '0.5s' },
-              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали ALPÉ на приятел или член на семейството', delay: '0.65s' },
+              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към AMPÉ Daily', delay: '0.5s' },
+              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали AMPÉ на приятел или член на семейството', delay: '0.65s' },
             ].map(s => (
               <div key={s.label} style={{ background: '#FAF0E4', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 12, padding: '32px 36px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14 }}>
@@ -490,7 +498,7 @@ export default function ProductPage({
       <section className="product-nights-section" style={{ padding: '80px 48px', background: '#FAF0E4' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с ALPÉ</div>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с AMPÉ</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Първите ви <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 нощи.</em></h2>
           </div>
           <div className="product-nights-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
@@ -514,7 +522,7 @@ export default function ProductPage({
       <section className="product-comparison-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Защо ALPÉ</div>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Защо AMPÉ</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Не всички очила със защита от синя светлина <em style={{ fontStyle: 'italic', fontWeight: 400 }}>са еднакви.</em></h2>
           </div>
           <div style={{ overflowX: 'auto' }}>
@@ -522,24 +530,24 @@ export default function ProductPage({
               <thead>
                 <tr>
                   <th style={{ textAlign: 'left', padding: '14px 20px', fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, borderBottom: '2px solid rgba(28,15,10,0.1)' }}></th>
-                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 600, color: '#FAF0E4', background: '#1C0F0A', textAlign: 'center', borderBottom: '2px solid #1C0F0A' }}>ALPÉ</th>
+                  <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 600, color: '#FAF0E4', background: '#1C0F0A', textAlign: 'center', borderBottom: '2px solid #1C0F0A' }}>AMPÉ</th>
                   <th style={{ padding: '14px 20px', fontSize: 13, fontWeight: 500, color: 'rgba(28,15,10,0.8)', textAlign: 'center', borderBottom: '2px solid rgba(28,15,10,0.1)' }}>Обикновени</th>
                 </tr>
               </thead>
               <tbody>
                 {[
-                  { feature: 'Филтриране на синята светлина', ALPÉ: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', ALPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Лещи със сертификат CE', ALPÉ: '✓', generic: 'Рядко', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Изкривяване на цветовете', ALPÉ: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', ALPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Тегло на рамката', ALPÉ: '22 г кристален ацетат', generic: '35–50 г пластмаса', ALPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Покритие против надраскване', ALPÉ: '✓', generic: 'Не', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Две специално създадени лещи', ALPÉ: '✓', generic: 'Един универсален оттенък', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Филтър за зелена светлина (500–560 nm)', ALPÉ: '✓', generic: '✗ Не е включено', ALPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтриране на синята светлина', AMPÉ: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Лещи със сертификат CE', AMPÉ: '✓', generic: 'Рядко', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Изкривяване на цветовете', AMPÉ: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Тегло на рамката', AMPÉ: '22 г кристален ацетат', generic: '35–50 г пластмаса', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Покритие против надраскване', AMPÉ: '✓', generic: 'Не', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Две специално създадени лещи', AMPÉ: '✓', generic: 'Един универсален оттенък', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтър за зелена светлина (500–560 nm)', AMPÉ: '✓', generic: '✗ Не е включено', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
                     <td style={{ padding: '16px 20px', textAlign: 'center', background: 'rgba(28,15,10,0.03)' }}>
-                      <span style={{ fontSize: row.ALPÉColor ? 16 : 13, fontWeight: row.ALPÉColor ? undefined : 500, color: row.ALPÉColor || '#1C0F0A' }}>{row.ALPÉ}</span>
+                      <span style={{ fontSize: row.AMPÉColor ? 16 : 13, fontWeight: row.AMPÉColor ? undefined : 500, color: row.AMPÉColor || '#1C0F0A' }}>{row.AMPÉ}</span>
                     </td>
                     <td style={{ padding: '16px 20px', textAlign: 'center' }}>
                       <span style={{ fontSize: 13, color: 'rgba(28,15,10,0.8)' }}>{row.generic}</span>
@@ -559,21 +567,21 @@ export default function ProductPage({
               Очилa за синя светлина
             </div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 38, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1, marginBottom: 18 }}>
-              ALPÉ е за хора, които прекарват деня си пред екран.
+              AMPÉ е за хора, които прекарват деня си пред екран.
             </h2>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: 'rgba(28,15,10,0.72)' }}>
-              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, ALPÉ комбинира дневни и вечерни лещи в една ясна система: Daily за работа, фокус и по-малко напрежение в очите, Evening за времето след залез и по-спокоен сън.
+              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, AMPÉ комбинира дневни и вечерни лещи в една ясна система: Daily за работа, фокус и по-малко напрежение в очите, Evening за времето след залез и по-спокоен сън.
             </p>
           </div>
           <div style={{ display: 'grid', gap: 16 }}>
             {[
               {
                 title: 'За работа пред компютър',
-                body: 'ALPÉ Daily използва прозрачно-жълт филтър за ежедневна работа пред лаптоп, монитор и телефон, без силно изкривяване на цветовете.',
+                body: 'AMPÉ Daily използва прозрачно-жълт филтър за ежедневна работа пред лаптоп, монитор и телефон, без силно изкривяване на цветовете.',
               },
               {
                 title: 'За вечерна защита от синя и зелена светлина',
-                body: 'ALPÉ Evening е създаден за употреба след залез слънце и преди сън, когато ярките екрани най-често пречат на естественото отпускане.',
+                body: 'AMPÉ Evening е създаден за употреба след залез слънце и преди сън, когато ярките екрани най-често пречат на естественото отпускане.',
               },
               {
                 title: 'За търсещите качествени blue light glasses',
@@ -599,7 +607,7 @@ export default function ProductPage({
           <button onClick={() => setSidebarOpen(false)} style={{ position: 'absolute', top: 16, right: 16, width: 32, height: 32, borderRadius: '50%', border: '1.5px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.08)', color: '#FAF0E4', fontSize: 18, lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.15s' }} aria-label="Затвори">×</button>
           {/* Product image */}
           <div style={{ width: 140, height: 140, borderRadius: 16, overflow: 'hidden', position: 'relative', flexShrink: 0, boxShadow: '0 4px 24px rgba(28,15,10,0.3)' }}>
-            <Image src={d.images[0].src} alt={`ALPÉ ${d.nameItalic}`} fill sizes="140px" className="object-cover" />
+            <Image src={d.images[0].src} alt={`AMPÉ ${d.nameItalic}`} fill sizes="140px" className="object-cover" />
           </div>
 
           {/* Name */}
@@ -671,7 +679,7 @@ export default function ProductPage({
 
           {/* Trust lines */}
           <div style={{ width: '100%', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 8 }}>
-            {['✓ Безплатна доставка над €50', '✓ EU сертифицирани стъкла', '✓ 14-дневно връщане'].map(t => (
+            {['✓ Безплатна доставка за 2+ чифта', '✓ EU сертифицирани стъкла', '✓ 14-дневно връщане'].map(t => (
               <span key={t} style={{ fontFamily: 'var(--font-raleway)', fontSize: 11, opacity: 0.5, textAlign: 'center' as const }}>{t}</span>
             ))}
           </div>

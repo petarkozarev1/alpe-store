@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { googleCartParams, trackGoogleEvent } from '@/lib/googleAnalytics'
-import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
+import { countPairs, naiveSubtotal } from '@/lib/pricing'
+import { usePairPrice } from '@/components/pricing/PricingProvider'
 import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
@@ -12,7 +13,7 @@ export default function CartPage() {
   const locale = useLocale()
   const { items, removeItem, updateQuantity } = useCartStore()
   const naiveSum = naiveSubtotal(items)
-  const bundleTotal = priceForPairs(countPairs(items))
+  const bundleTotal = usePairPrice(countPairs(items))
   const bundleSaving = +Math.max(0, naiveSum - bundleTotal).toFixed(2)
 
   if (items.length === 0) {

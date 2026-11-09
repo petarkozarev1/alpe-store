@@ -7,7 +7,7 @@ import { createLocalizedPageMetadata } from '@/lib/seo'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
   title: 'Сертификати',
-  description: 'Официални лабораторни тестове на лещите ALPÉ. BS EN ISO 12312-1, ANSI Z80.3, AS/NZS 1067.1 — всички преминати.',
+  description: 'Официални лабораторни тестове на лещите AMPÉ. BS EN ISO 12312-1, ANSI Z80.3, AS/NZS 1067.1 — всички преминати.',
   path: '/certifications',
   })
 }
@@ -75,7 +75,7 @@ export default function CertificationsPage({ params }: { params: { locale: strin
           Не казваме<br />&bdquo;EU сертифицирани&rdquo;<br />без причина.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed">
-          Лещите на ALPÉ са изпратени в независима лаборатория (AHD TMS) и тествани срещу три международни стандарта. Ето резултатите — без маркетинг, само числа.
+          Лещите на AMPÉ са изпратени в независима лаборатория (AHD TMS) и тествани срещу три международни стандарта. Ето резултатите — без маркетинг, само числа.
         </p>
       </section>
 
@@ -205,7 +205,7 @@ export default function CertificationsPage({ params }: { params: { locale: strin
           Вземи си чифт →
         </Link>
         <p className="font-sans text-xs text-stone/60 mt-4">
-          Безплатна доставка над €50
+          Безплатна доставка за 2+ чифта
         </p>
         <p className="font-sans text-xs text-stone/55 mt-6 max-w-sm mx-auto">
           Лабораторен доклад: AHD TMS · Стандарти: BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015, AS/NZS 1067.1:2016

@@ -6,7 +6,7 @@ export function generateMetadata({ params }: { params: { locale: string } }) {
   return localizedNoIndexMetadata(
     params.locale,
     en ? 'Checkout' : 'Плащане',
-    en ? 'Complete your ALPÉ order. Free delivery over €50.' : 'Завърши поръчката си за ALPÉ очила. Безплатна доставка над 50€.',
+    en ? 'Complete your AMPÉ order. Free delivery on 2 or more pairs.' : 'Завърши поръчката си за AMPÉ очила. Безплатна доставка за 2 или повече чифта.',
   )
 }
 

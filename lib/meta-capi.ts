@@ -1,3 +1,5 @@
+import { SITE_URL } from '@/lib/brand'
+
 const PIXEL_ID = '1435898268342097'
 const CAPI_URL = `https://graph.facebook.com/v19.0/${PIXEL_ID}/events`
 
@@ -67,7 +69,7 @@ export async function sendCAPIEvent(eventName: string, opts: CAPIOptions = {}): 
         event_name: eventName,
         event_time: opts.eventTime ?? Math.floor(Date.now() / 1000),
         event_id: opts.eventId ?? `${eventName}-${Date.now()}`,
-        event_source_url: opts.sourceUrl ?? 'https://alpewear.com',
+        event_source_url: opts.sourceUrl ?? SITE_URL,
         action_source: 'website',
         user_data: userData,
         custom_data: {

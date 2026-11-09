@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { getStripe } from '@/lib/stripe'
 import { sendCAPIEvent } from '@/lib/meta-capi'
 import { notifyAlert } from '@/lib/alerts'
-import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
-import { promoDiscount } from '@/lib/promo'
+import { countPairs, priceForPairs } from '@/lib/pricing'
+import { applyPromo, promoErrorMessage } from '@/lib/promo'
+import { checkoutSiteUrl } from '@/lib/brand'
 import { cookies } from 'next/headers'
 import { getP2GAttribution, P2G_COOKIE_NAME } from '@/lib/p2g/attribution'
 import { isLocale } from '@/lib/i18n/config'
@@ -54,39 +55,45 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    // Temporary: block ALPÉ Evening until restock
+    // Temporary: block AMPÉ Evening until restock
     const hasEvening = productItems.some(item => {
       const fields = [item.productId, item.variantId, item.name, item.variantLabel].filter(Boolean)
       return fields.some(f => String(f).toLowerCase().includes('evening'))
     })
     if (hasEvening) {
       return NextResponse.json(
-        { error: locale === 'en' ? 'ALPÉ Evening is temporarily out of stock. Please choose Daily.' : 'ALPÉ Evening е временно изчерпан. Моля изберете Daily.' },
+        { error: locale === 'en' ? 'AMPÉ Evening is temporarily out of stock. Please choose Daily.' : 'AMPÉ Evening е временно изчерпан. Моля изберете Daily.' },
         { status: 400 }
       )
     }
 
-    const naiveSum = naiveSubtotal(productItems)
     const pairs = countPairs(productItems)
     const bundlePrice = priceForPairs(pairs)
-    const bundleDiscount = +Math.max(0, naiveSum - bundlePrice).toFixed(2)
-    const promo = promoDiscount(bundlePrice, promoCode)
-    const totalProductDiscount = +(bundleDiscount + promo.amount).toFixed(2)
+    const promo = applyPromo(bundlePrice, promoCode, { pairs })
+    if (promoCode?.trim() && !promo.code) {
+      return NextResponse.json({ error: promoErrorMessage(promo.reason ?? 'unknown', locale) }, { status: 400 })
+    }
     const office = Boolean(shipping.courier)
     const shippingAmount = deliveryAmount(pairs)
     const intlFee = office ? 0 : internationalFee(shipping.country)
     const shippingLabel = summary?.shippingLabel || shipping.deliveryMethod || 'Доставка'
     const affiliateId = getP2GAttribution(cookies().get(P2G_COOKIE_NAME)?.value, process.env.P2G_AFFILIATE_ID)
+    const chargedProducts = +(bundlePrice - promo.amount).toFixed(2)
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alpewear.com'
-    const coupon = totalProductDiscount > 0
+    const siteUrl = checkoutSiteUrl()
+    const coupon = promo.amount > 0
       ? await stripe.coupons.create({
-          amount_off: Math.round(totalProductDiscount * 100),
+          amount_off: Math.round(promo.amount * 100),
           currency: 'eur',
           duration: 'once',
-          name: promo.code ? `ALPÉ отстъпка (${promo.code})` : 'ALPÉ комплектна отстъпка',
+          name: `AMPÉ отстъпка (${promo.code})`,
         })
       : null
+
+    const productName = productItems
+      .map(item => item.name)
+      .filter(Boolean)
+      .join(', ') || (locale === 'en' ? 'AMPÉ glasses' : 'AMPÉ очила')
 
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'elements',
@@ -94,17 +101,17 @@ export async function POST(req: Request) {
       locale,
       customer_email: email,
       line_items: [
-        ...productItems.map(item => ({
+        {
           price_data: {
             currency: 'eur' as const,
             product_data: {
-              name: item.name,
-              ...(item.image ? { images: [item.image] } : {}),
+              name: productName,
+              ...(productItems[0]?.image ? { images: [productItems[0].image] } : {}),
             },
-            unit_amount: Math.round(item.price * 100),
+            unit_amount: Math.round(bundlePrice * 100),
           },
-          quantity: item.quantity,
-        })),
+          quantity: 1,
+        },
         ...(shippingAmount > 0 ? [{
           price_data: {
             currency: 'eur' as const,
@@ -127,13 +134,14 @@ export async function POST(req: Request) {
         ...shipping,
         ...(clientIpAddress ? { clientIpAddress } : {}),
         ...(clientUserAgent ? { clientUserAgent } : {}),
-        subtotal: String(naiveSum),
-        discountCode: promo.code || (bundleDiscount > 0 ? 'Комплектна отстъпка' : ''),
-        discountAmount: String(totalProductDiscount),
+        subtotal: String(bundlePrice),
+        discountCode: promo.code,
+        discountAmount: String(promo.amount),
         promoCode: promo.code,
         shippingAmount: String(shippingAmount),
         internationalFee: String(intlFee),
         shippingLabel,
+        chargedProducts: String(chargedProducts),
         ...(affiliateId ? { affiliateId } : {}),
         locale,
       },

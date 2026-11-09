@@ -7,7 +7,7 @@ import Link from 'next/link'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
   title: 'Науката',
-  description: 'Как синята светлина влияе на очите и съня. Научните факти зад ALPÉ.',
+  description: 'Как синята светлина влияе на очите и съня. Научните факти зад AMPÉ.',
   path: '/science',
   })
 }
@@ -23,7 +23,7 @@ const facts = [
   },
   {
     title: 'EU сертификацията е строга',
-    body: 'EU стандартите за оптични филтри (EN ISO 12312) изискват независими лабораторни тестове. Не е достатъчно да напишеш "блокира синя светлина" на кутията — трябва да го докажеш. Лещите на ALPÉ са преминали тези тестове.',
+    body: 'EU стандартите за оптични филтри (EN ISO 12312) изискват независими лабораторни тестове. Не е достатъчно да напишеш "блокира синя светлина" на кутията — трябва да го докажеш. Лещите на AMPÉ са преминали тези тестове.',
   },
   {
     title: '7 нощи са достатъчни',
@@ -36,7 +36,7 @@ export default function SciencePage({ params }: { params: { locale: string } }) 
   return localizeContent(params.locale, (
     <main className="bg-parchment text-iron min-h-screen">
       <section className="max-w-content mx-auto px-6 md:px-10 pt-32 pb-20">
-        <span className="font-sans text-xs uppercase tracking-widest text-stone">Науката зад ALPÉ</span>
+        <span className="font-sans text-xs uppercase tracking-widest text-stone">Науката зад AMPÉ</span>
         <h1 className="font-serif text-4xl md:text-5xl text-iron mt-4 mb-6 leading-tight">
           Не е магия.<br />Просто физика.
         </h1>

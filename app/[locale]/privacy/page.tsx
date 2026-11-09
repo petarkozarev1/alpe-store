@@ -2,11 +2,13 @@ import { notFound } from 'next/navigation'
 import { isLocale } from '@/lib/i18n/config'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { createLocalizedPageMetadata } from '@/lib/seo'
+import SellerDetails from '@/components/legal/SellerDetails'
+import { EMAILS } from '@/lib/brand'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Политика за поверителност',
-    description: 'Как ALPÉ обработва вашите лични данни. GDPR съответствие.',
+    description: 'Как AMPÉ обработва вашите лични данни. GDPR съответствие.',
     path: '/privacy',
   })
 }
@@ -20,7 +22,8 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
         <h1 className="font-serif text-4xl md:text-5xl text-iron mt-4 mb-6 leading-tight">
           Политика за поверителност
         </h1>
-        <p className="font-sans text-xs text-stone/60 mb-12">Последна актуализация: май 2026</p>
+        <p className="font-sans text-xs text-stone/60 mb-8">Последна актуализация: ноември 2026</p>
+        <SellerDetails locale={params.locale} />
 
         <div className="max-w-2xl flex flex-col gap-10 font-sans text-sm text-stone leading-relaxed">
           <section>
@@ -40,7 +43,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">Вашите права (GDPR)</h2>
-            <p>Имате право да поискате достъп, коригиране или изтриване на личните си данни. Изпратете заявка на <a href="mailto:hello@alpewear.com" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpewear.com</a> и ще отговорим в рамките на 30 дни.</p>
+            <p>Имате право да поискате достъп, коригиране или изтриване на личните си данни. Изпратете заявка на <a href={`mailto:${EMAILS.hello}`} className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">{EMAILS.hello}</a> и ще отговорим в рамките на 30 дни.</p>
           </section>
 
           <section>
@@ -50,7 +53,7 @@ export default function PrivacyPage({ params }: { params: { locale: string } }) 
 
           <section>
             <h2 className="font-serif text-xl text-iron mb-3">Контакт</h2>
-            <p>За въпроси относно поверителността: <a href="mailto:hello@alpewear.com" className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">hello@alpewear.com</a></p>
+            <p>За въпроси относно поверителността: <a href={`mailto:${EMAILS.hello}`} className="text-iron hover:text-gold transition-colors underline underline-offset-4 decoration-gold/50">{EMAILS.hello}</a></p>
           </section>
         </div>
       </section>

@@ -4,14 +4,16 @@ import type { Locale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
 import { isLocale } from '@/lib/i18n/config'
 import { translate } from '@/lib/i18n/translations'
+import { EMAILS, SITE_URL } from '@/lib/brand'
+import { deliveryAmount } from '@/lib/checkout-delivery'
 
-export const siteUrl = 'https://www.alpewear.com'
+export const siteUrl = SITE_URL
 
 export const defaultSeo = {
-  siteName: 'ALPÉ',
-  title: 'ALPÉ - Очила за синя светлина',
+  siteName: 'AMPÉ',
+  title: 'AMPÉ - Очила за синя светлина',
   description:
-    'ALPÉ очила за синя и зелена светлина с EU сертифицирани стъкла, UV400 защита и безплатна доставка над 50 евро.',
+    'AMPÉ очила за синя и зелена светлина с EU сертифицирани стъкла, UV400 защита и безплатна доставка за 2 или повече чифта.',
   locale: 'bg_BG',
 }
 
@@ -46,7 +48,8 @@ export const merchantReturnPolicy = {
   returnFees: 'https://schema.org/FreeReturn',
 }
 
-export function offerShippingDetails(price: number) {
+/** Bulgarian shipping for a pair count. One pair pays the flat fee; two or more are free. */
+export function offerShippingDetails(pairs: number) {
   return {
     '@type': 'OfferShippingDetails',
     shippingDestination: {
@@ -55,7 +58,7 @@ export function offerShippingDetails(price: number) {
     },
     shippingRate: {
       '@type': 'MonetaryAmount',
-      value: price >= 50 ? 0 : 4.99,
+      value: deliveryAmount(pairs),
       currency: 'EUR',
     },
     deliveryTime: {
@@ -76,8 +79,8 @@ export const organizationJsonLd = {
   '@id': organizationId,
   name: defaultSeo.siteName,
   url: siteUrl,
-  logo: absoluteUrl('/images/logo.png'),
-  email: 'hello@alpewear.com',
+  logo: absoluteUrl('/brand/ampe-wordmark-black-512.png'),
+  email: EMAILS.hello,
   hasMerchantReturnPolicy: merchantReturnPolicy,
   sameAs: [
     'https://www.instagram.com/alpe.wear/',
@@ -138,9 +141,9 @@ export function createPageMetadata({
       description,
       images: [
         {
-          url: absoluteUrl('/images/logo.png'),
-          width: 512,
-          height: 512,
+          url: absoluteUrl('/og-image.png'),
+          width: 1200,
+          height: 630,
           alt: defaultSeo.siteName,
         },
       ],
@@ -149,7 +152,7 @@ export function createPageMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: [absoluteUrl('/images/logo.png')],
+      images: [absoluteUrl('/twitter-card.png')],
     },
   }
 }

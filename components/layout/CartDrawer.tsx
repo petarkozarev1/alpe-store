@@ -5,12 +5,11 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
-import { countPairs, priceForPairs } from '@/lib/pricing'
+import { countPairs } from '@/lib/pricing'
+import { usePairPrice } from '@/components/pricing/PricingProvider'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
-
-const FREE_SHIPPING_THRESHOLD = 50
 
 const certItems = [
   {
@@ -89,11 +88,10 @@ export default function CartDrawer() {
   }, [isDrawerOpen])
 
   const naiveSum = getSubtotal()
-  // Auto bundle price by total pairs — same rule as checkout, however pairs were added.
-  const subtotal = priceForPairs(countPairs(items))
+  const pairs = countPairs(items)
+  const subtotal = usePairPrice(pairs)
   const bundleSaving = +Math.max(0, naiveSum - subtotal).toFixed(2)
-  const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)
-  const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0)
+  const shippingProgress = pairs >= 2 ? 100 : pairs === 1 ? 50 : 0
 
   return (
     <AnimatePresence>
@@ -258,9 +256,9 @@ export default function CartDrawer() {
                   <div className="bg-[#E8F4EC] rounded-xl px-4 py-3">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-sans text-xs text-iron">
-                        {remaining > 0
-                          ? (locale === 'en' ? `Add €${remaining.toFixed(0)} for free delivery` : `Добави €${remaining.toFixed(0)} за безплатна доставка`)
-                          : t('Получаваш безплатна доставка!')}
+                        {pairs >= 2
+                          ? t('Получаваш безплатна доставка!')
+                          : (locale === 'en' ? 'Add another pair for free delivery' : 'Добави още 1 чифт за безплатна доставка')}
                       </span>
                       <span className="font-sans text-xs font-semibold text-iron">
                         {Math.round(shippingProgress)}%

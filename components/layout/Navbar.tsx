@@ -9,12 +9,20 @@ import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher'
 import { localizedPath } from '@/lib/i18n/routing'
+import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
+import FormerlyLine from '@/components/layout/FormerlyLine'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
   const locale = useLocale()
   const t = useTranslations()
+  const pricing = usePricingSnapshot()
+  const announcement = pricing.promo
+    ? (locale === 'en'
+      ? `Code ${pricing.promo.code}: 15% off one pair (€${pricing.promo.singlePairPrice.toFixed(2)}). Two pairs €${pricing.double.toFixed(2)} · free delivery on 2+ pairs`
+      : `Код ${pricing.promo.code}: −15% за 1 чифт (€${pricing.promo.singlePairPrice.toFixed(2)}). Два чифта €${pricing.double.toFixed(2)} · безплатна доставка за 2+ чифта`)
+    : t('Безплатна доставка за 2 или повече чифта')
 
   function navHref(href: string) {
     const base = href.startsWith('#') && pathname !== '/' && pathname !== '/en' ? '/' + href : href
@@ -30,27 +38,19 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full">
       {/* Announcement ticker */}
-      <style>{`
-        @keyframes glide {
-          0%   { transform: translateX(100vw); }
-          100% { transform: translateX(-100%); }
-        }
-        .ticker-glide {
-          animation: glide 18s linear infinite;
-        }
-      `}</style>
-      <div className="w-full bg-onyx overflow-hidden py-2 relative h-8 flex items-center">
-        <span className="ticker-glide absolute whitespace-nowrap font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
-          ✦ {t('Безплатна доставка при поръчка над €50')}
-        </span>
+      <div className="w-full bg-onyx overflow-hidden py-2 px-4 flex items-center justify-center">
+        <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold text-center">
+          ✦ {announcement}
+        </p>
       </div>
-      <div className="w-full bg-[#B8906A] border-b border-stone/30">
-      <div className="max-w-content mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+      <div className="w-full bg-[#B28C6C] border-b border-stone/30">
+      <div className="max-w-content mx-auto px-6 md:px-10 min-h-16 py-2 flex items-center justify-between">
 
         {/* Logo */}
         <div className="flex-1">
-          <Link href={localizedPath('/', locale)} className="font-serif text-xl text-linen tracking-widest">
-            {siteConfig.brand}
+          <Link href={localizedPath('/', locale)} className="inline-flex flex-col">
+            <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
+            <FormerlyLine locale={locale} className="font-sans text-[9px] tracking-wide text-linen/80 mt-0.5" />
           </Link>
         </div>
 

@@ -3,50 +3,42 @@ import { isLocale } from '@/lib/i18n/config'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import Link from 'next/link'
 import { createLocalizedPageMetadata } from '@/lib/seo'
+import { getPricingSnapshot } from '@/lib/sale'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
   title: 'Цени',
-  description: 'Прозрачни цени без изненади. Очила за синя и зелена светлина ALPÉ от €44.99.',
+  description: 'Прозрачни цени без изненади. Очила за синя и зелена светлина AMPÉ от €59.99.',
   path: '/pricing',
   })
 }
 
-const tiers = [
-  {
-    name: '1 чифт',
-    price: '€44.99',
-    originalPrice: null,
-    saving: null,
-    badge: null,
-    description: 'Един чифт ALPÉ очила по твой избор — дневни или вечерни стъкла.',
-    features: ['Избор: дневни или вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина'],
-    highlight: false,
-  },
-  {
-    name: '2 чифта',
-    price: '€66.99',
-    originalPrice: '€89.98',
-    saving: '€23',
-    badge: 'Най-популярни',
-    description: 'Дневни + вечерни стъкла. Пълна защита от сутринта до лягане.',
-    features: ['Дневни + вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Спестяваш €23'],
-    highlight: true,
-  },
-  {
-    name: '3 чифта',
-    price: '€89.99',
-    originalPrice: '€134.97',
-    saving: '€45',
-    badge: 'Най-изгодно',
-    description: 'За цялото семейство или офис. Максимална защита на най-добра цена.',
-    features: ['3 чифта по избор', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Спестяваш €45'],
-    highlight: false,
-  },
-]
-
 export default function PricingPage({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound()
+  const pricing = getPricingSnapshot()
+  const doubleOnSale = pricing.double < pricing.regularDouble
+  const tiers = [
+    {
+      name: '1 чифт',
+      price: `€${pricing.single.toFixed(2)}`,
+      originalPrice: null as string | null,
+      hint: pricing.promo ? `Код ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}` : null,
+      badge: null as string | null,
+      description: 'Един чифт AMPÉ очила по твой избор — дневни или вечерни стъкла.',
+      features: ['Избор: дневни или вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Доставка €4.99'],
+      highlight: false,
+    },
+    {
+      name: '2 чифта',
+      price: `€${pricing.double.toFixed(2)}`,
+      originalPrice: doubleOnSale ? `€${pricing.regularDouble.toFixed(2)}` : null,
+      hint: doubleOnSale ? 'Вторият чифт на половин цена' : null,
+      badge: 'Най-популярни',
+      description: 'Дневни + вечерни стъкла. Пълна защита от сутринта до лягане.',
+      features: ['Дневни + вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Безплатна доставка'],
+      highlight: true,
+    },
+  ]
   return localizeContent(params.locale, (
     <main className="bg-parchment text-iron min-h-screen">
       <section className="max-w-content mx-auto px-6 md:px-10 pt-32 pb-20">
@@ -55,10 +47,10 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
           Без скрити такси.<br />Без изненади.
         </h1>
         <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-12">
-          Три варианта. Ясни цени. Безплатна доставка над €50.
+          Един чифт или два. Ясни цени. Безплатна доставка за 2 или повече чифта.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-3xl">
           {tiers.map(tier => (
             <div
               key={tier.name}
@@ -76,6 +68,9 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
                 <p className={`font-serif text-4xl ${tier.highlight ? 'text-linen' : 'text-iron'}`}>{tier.price}</p>
                 {tier.originalPrice && (
                   <p className="font-sans text-xs text-stone/65 mt-1">поотделно: {tier.originalPrice}</p>
+                )}
+                {tier.hint && (
+                  <p className={`font-sans text-xs mt-2 ${tier.highlight ? 'text-linen/80' : 'text-iron'}`}>{tier.hint}</p>
                 )}
               </div>
               <p className={`font-sans text-sm leading-relaxed ${tier.highlight ? 'text-linen/80' : 'text-stone'}`}>
@@ -103,7 +98,7 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
         </div>
 
         <p className="font-sans text-xs text-stone/70 text-center">
-          Безплатна доставка над €50 · EU сертифицирани стъкла
+          Безплатна доставка за 2+ чифта · EU сертифицирани стъкла
         </p>
       </section>
     </main>

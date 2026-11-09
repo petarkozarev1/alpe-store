@@ -5,8 +5,9 @@ import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
-import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
-import { getPromo, promoDiscount } from '@/lib/promo'
+import { countPairs, naiveSubtotal } from '@/lib/pricing'
+import { applyPromo, promoErrorMessage } from '@/lib/promo'
+import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { deliveryAmount, internationalFee, isBulgaria } from '@/lib/checkout-delivery'
 import { translate } from '@/lib/i18n/translations'
 
@@ -32,6 +33,7 @@ interface Shipping { firstName: string; lastName: string; phone: string; city: s
 
 export default function CheckoutPageClient() {
   const locale = useLocale()
+  const pricing = usePricingSnapshot()
   const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
   const { items } = useCartStore()
 
@@ -77,9 +79,9 @@ export default function CheckoutPageClient() {
 
   const totalPairs = countPairs(items)
   const subtotal = naiveSubtotal(items)
-  const bundlePrice = priceForPairs(totalPairs)
+  const bundlePrice = usePairPrice(totalPairs)
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
-  const promo = promoDiscount(bundlePrice, appliedCode)
+  const promo = applyPromo(bundlePrice, appliedCode, { pairs: totalPairs, snapshot: pricing })
   const shipping_ = deliveryAmount(totalPairs)
   const intlFee = deliveryType === 'address' ? internationalFee(shipping.country) : 0
   const domestic = deliveryType === 'office' || isBulgaria(shipping.country)
@@ -104,9 +106,12 @@ export default function CheckoutPageClient() {
   }, [isCod, deliveryId])
 
   const applyCode = () => {
-    const p = getPromo(codeInput)
-    if (!p) { setCodeError(translate(locale, 'Невалиден код')); return }
-    setAppliedCode(p.code)
+    const result = applyPromo(bundlePrice, codeInput, { pairs: totalPairs, snapshot: pricing })
+    if (!result.code) {
+      setCodeError(promoErrorMessage(result.reason ?? 'unknown', locale))
+      return
+    }
+    setAppliedCode(result.code)
     setCodeError('')
   }
   const removeCode = () => { setAppliedCode(null); setCodeInput(''); setCodeError('') }
@@ -211,6 +216,9 @@ export default function CheckoutPageClient() {
       isCod={isCod} codEligible={codEligible}
       visibleDelivery={visibleDelivery} delivery={delivery}
       subtotal={subtotal} bundleSaving={bundleSaving} promo={promo}
+      saleHint={pricing.promo ? (locale === 'en'
+        ? `${pricing.promo.code} is ${pricing.promo.percent}% off one pair only (€${pricing.promo.singlePairPrice.toFixed(2)}).`
+        : `${pricing.promo.code} е −${pricing.promo.percent}% само за 1 чифт (€${pricing.promo.singlePairPrice.toFixed(2)}).`) : null}
       shipping_={shipping_} intlFee={intlFee} total={total}
     />
   )

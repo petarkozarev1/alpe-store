@@ -8,6 +8,7 @@ import GallerySection from '@/components/landing/GallerySection'
 import FaqSection from '@/components/landing/FaqSection'
 import FinalCtaSection from '@/components/landing/FinalCtaSection'
 import NewsletterSection from '@/components/landing/NewsletterSection'
+import BusinessSection from '@/components/layout/BusinessSection'
 import { createLocalizedPageMetadata, defaultSeo } from '@/lib/seo'
 import { getLandingContent } from '@/lib/data/content'
 import { isLocale } from '@/lib/i18n/config'
@@ -53,6 +54,7 @@ export default function Home({ params }: { params: { locale: string } }) {
       <GallerySection locale={locale} />
       <TestimonialSection locale={locale} />
       <FinalCtaSection locale={locale} />
+      <BusinessSection locale={locale} />
       <NewsletterSection locale={locale} />
     </>
   )

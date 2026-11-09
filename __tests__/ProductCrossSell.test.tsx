@@ -12,12 +12,12 @@ test('links the complementary product and the preselected Daily + Evening bundle
 
   render(<ComplementaryProductCard product={evening} />)
 
-  expect(screen.getByRole('heading', { name: 'ALPÉ Evening' })).toBeInTheDocument()
+  expect(screen.getByRole('heading', { name: 'AMPÉ Evening' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: /вземи daily \+ evening/i })).toHaveAttribute(
     'href',
     '/shop?bundle=daily-evening',
   )
-  expect(screen.getByRole('link', { name: /разгледай alpé evening/i })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: /разгледай ampé evening/i })).toHaveAttribute(
     'href',
     '/product/alpe-evening',
   )

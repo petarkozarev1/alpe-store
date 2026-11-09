@@ -4,7 +4,7 @@ const codModel: OrderEmailModel = {
   orderRef: 'cod-1748567640-AX72',
   paymentMethod: 'cod',
   customerFirstName: 'Иван',
-  productRows: [{ label: 'ALPÉ', sublabel: '🟠 Вечер · 2 чифта', amount: 66.99 }],
+  productRows: [{ label: 'AMPÉ', sublabel: '🟠 Вечер · 2 чифта', amount: 66.99 }],
   subtotal: 66.99,
   discount: { code: 'WELCOME10', amount: 6.7 },
   shippingLabel: 'Спиди',
@@ -17,7 +17,7 @@ const codModel: OrderEmailModel = {
 describe('buildOrderEmailHtml', () => {
   it('renders product rows, discount, COD fee and total', () => {
     const html = buildOrderEmailHtml(codModel)
-    expect(html).toContain('ALPÉ')
+    expect(html).toContain('AMPÉ')
     expect(html).toContain('🟠 Вечер · 2 чифта')
     expect(html).toContain('WELCOME10')
     expect(html).toContain('−€6.70')

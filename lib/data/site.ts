@@ -1,7 +1,7 @@
 import type { SiteConfig } from '@/lib/types'
 
 export const siteConfig: SiteConfig = {
-  brand: 'ALPÉ',
+  brand: 'AMPÉ',
   tagline: 'Работи цял ден. Спи цяла нощ.',
   nav: [
     { label: 'Доказано', href: '/certifications' },
@@ -23,6 +23,7 @@ export const siteConfig: SiteConfig = {
         title: 'КОМПАНИЯ',
         links: [
           { label: 'Нашата история', href: '/about' },
+          { label: 'За бизнеса', href: '/#business' },
           { label: 'Науката', href: '/science' },
           { label: 'Сертификати', href: '/certifications' },
         ],
@@ -40,6 +41,6 @@ export const siteConfig: SiteConfig = {
       { label: 'Политика за поверителност', href: '/privacy' },
       { label: 'Общи условия', href: '/terms' },
     ],
-    copyright: '© 2026 ALPÉ. Всички права запазени.',
+    copyright: '© 2026 AMPÉ. Всички права запазени.',
   },
 }

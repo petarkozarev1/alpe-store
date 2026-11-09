@@ -1,5 +1,5 @@
 export type Lens = 'evening' | 'daily'
-export type BundleCount = 1 | 2 | 3
+export type BundleCount = 1 | 2
 
 export interface ShopSelection {
   lens: Lens

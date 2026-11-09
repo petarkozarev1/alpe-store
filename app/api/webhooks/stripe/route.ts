@@ -4,6 +4,7 @@ import { notifyAlert } from '@/lib/alerts'
 import { getRequiredEnv, getStripe } from '@/lib/stripe'
 import { writeOrderToNotionWithRetry, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
+import { SITE_URL } from '@/lib/brand'
 
 export async function POST(req: Request) {
   const body = await req.text()
@@ -101,20 +102,23 @@ export async function POST(req: Request) {
     value: total,
     currency: 'EUR',
     orderId: session.id,
-    contentIds: lineItems.data.map(i => i.description ?? 'ALPÉ'),
+    contentIds: lineItems.data.map(i => i.description ?? 'AMPÉ'),
     numItems: lineItems.data.reduce((sum, i) => sum + (i.quantity ?? 1), 0),
     eventId: `purchase-${session.id}`,
-    sourceUrl: 'https://alpewear.com/checkout/success',
+    sourceUrl: `${SITE_URL}/checkout/success`,
     eventTime: session.created,
   }, { orderRef: session.id, email: customerEmail, total })
 
-  const shippingAmount = Number(meta.shippingAmount ?? '0') || 0
+  const shippingAmount = (Number(meta.shippingAmount ?? '0') || 0) + (Number(meta.internationalFee ?? '0') || 0)
   const subtotal = Number(meta.subtotal ?? '0') || (total - shippingAmount)
   const discountAmount = Number(meta.discountAmount ?? '0') || 0
-  const productLineItems = shippingAmount > 0 ? lineItems.data.slice(0, -1) : lineItems.data
+  const productLineItems = lineItems.data.filter(li => {
+    const description = li.description ?? ''
+    return !description.startsWith('Доставка') && !description.startsWith('Международна')
+  })
   const productRows: OrderEmailRow[] = productLineItems.map(li => {
-    const [label, sublabel] = (li.description ?? 'ALPÉ').split(' — ')
-    return { label, sublabel, amount: (li.amount_total ?? 0) / 100 }
+    const [label, sublabel] = (li.description ?? 'AMPÉ').split(' — ')
+    return { label, sublabel, amount: (li.amount_subtotal ?? li.amount_total ?? 0) / 100 }
   })
   const emailModel: OrderEmailModel = {
     locale: meta.locale === 'en' ? 'en' : 'bg',
