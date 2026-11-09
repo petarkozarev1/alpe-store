@@ -70,6 +70,10 @@ export function displayedPairs(item: { variantId?: string; quantity: number }): 
   return linePairs(item) ?? (Number.isInteger(item.quantity) && item.quantity > 0 ? item.quantity : 0)
 }
 
+export function displayedPairTotal(items: Array<{ variantId?: string; quantity: number }>): number {
+  return items.reduce((sum, item) => sum + displayedPairs(item), 0)
+}
+
 export function pairCountLabel(pairs: number, locale: 'bg' | 'en'): string {
   if (locale === 'en') return `${pairs} ${pairs === 1 ? 'pair' : 'pairs'}`
   return `${pairs} чифт${pairs === 1 ? '' : 'а'}`

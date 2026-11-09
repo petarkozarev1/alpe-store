@@ -60,7 +60,7 @@ const certItems = [
 export default function CartDrawer() {
   const locale = useLocale()
   const t = useTranslations()
-  const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, checkoutLocked, getSubtotal } = useCartStore()
+  const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, checkoutLocked, pairLimit, getSubtotal } = useCartStore()
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -129,7 +129,7 @@ export default function CartDrawer() {
                   {t('Количка')}
                 </h2>
                 <span className="w-5 h-5 rounded-full bg-onyx text-linen text-[10px] font-sans font-medium flex items-center justify-center">
-                  {items.reduce((s, i) => s + i.quantity, 0)}
+                  {items.reduce((s, i) => s + displayedPairs(i), 0)}
                 </span>
               </div>
               <button
@@ -209,7 +209,7 @@ export default function CartDrawer() {
                           <button
                             className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors disabled:opacity-40"
                             aria-label={t('Увеличи количеството')}
-                            disabled={checkoutLocked || pairs >= 10}
+                            disabled={checkoutLocked}
                             onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}
                           >
                             +
@@ -296,6 +296,9 @@ export default function CartDrawer() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="px-6 pt-3 pb-6 border-t border-stone/20 flex flex-col gap-3 flex-shrink-0">
+                {pairLimit === 'cap' && (
+                  <p role="alert" className="font-sans text-sm text-red-700">{t('Може да поръчате до 10 чифта.')}</p>
+                )}
                 {bundleSaving > 0 && (
                   <div className="flex items-center justify-between font-sans text-xs">
                     <span className="text-green-700 font-semibold">{t('Отстъпка за комплект')}</span>

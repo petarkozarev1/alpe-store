@@ -10,6 +10,7 @@ import { applyPromo, promoErrorMessage } from '@/lib/promo'
 import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { deliveryAmount, internationalFee, isBulgaria } from '@/lib/checkout-delivery'
 import { translate } from '@/lib/i18n/translations'
+import { checkoutSessionSignature } from '@/lib/checkout-session'
 
 const COD_FEE = 1.0
 const BGN_RATE = 1.95583
@@ -96,13 +97,17 @@ export default function CheckoutPageClient() {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
   }, [paymentMethod, codEligible])
 
-  const sessionSignature = JSON.stringify({
-    lines: items.map(item => [item.productId, item.variantId, item.quantity, item.price]),
+  const sessionSignature = checkoutSessionSignature({
+    items,
     appliedCode,
     deliveryType,
     deliveryId,
     country: shipping.country,
     paymentMethod,
+    name: `${shipping.firstName} ${shipping.lastName}`.trim(),
+    phone: shipping.phone,
+    street: shipping.address,
+    office: officeLocation,
   })
   const signedFor = useRef<string | null>(null)
   useEffect(() => {

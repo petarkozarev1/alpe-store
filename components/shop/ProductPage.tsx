@@ -69,6 +69,7 @@ export default function ProductPage({
   const ctaRef = useRef<HTMLDivElement>(null)
   const addToCart = useCartStore(s => s.addItem)
   const openDrawer = useCartStore(s => s.openDrawer)
+  const pairLimit = useCartStore(s => s.pairLimit)
 
   useEffect(() => {
     if (!ctaRef.current) return
@@ -113,7 +114,7 @@ export default function ProductPage({
   function handleAddToCart() {
     if (EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening'))) return
     const d = lensData[lens]
-    addToCart({
+    const added = addToCart({
       productId: `AMPÉ-${lens}`,
       variantId: `AMPÉ-${slots.join('-')}-bundle-${bundle}`,
       name: d.name,
@@ -125,6 +126,7 @@ export default function ProductPage({
       image: d.images[0].src,
       slug: 'AMPÉ-glasses',
     })
+    if (!added) return
     fireTrackedEvent('AddToCart', {
       data: {
         content_name: d.name,
@@ -261,7 +263,7 @@ export default function ProductPage({
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
                       <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`}</span>
-                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
+                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#1A1A1A' }}>Най-популярни</span>}
                     </div>
                     <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : 'Защита за целия ден'}</div>
                     {n === 1 && pricing.promo && (
@@ -341,6 +343,7 @@ export default function ProductPage({
               >
                 {EVENING_OUT_OF_STOCK && (lens === 'evening' || slots.includes('evening')) ? 'Изчерпано' : `Добави в количката — €${price} →`}
               </button>
+              {pairLimit === 'cap' && <p role="alert" style={{ textAlign: 'center', fontSize: 13, color: '#8C2F1B', marginTop: 10 }}>Може да поръчате до 10 чифта.</p>}
             </div>
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
@@ -355,7 +358,7 @@ export default function ProductPage({
 
           {/* Cert strip */}
           <div style={{ border: '1px solid rgba(28,15,10,0.1)', borderRadius: 10, padding: '14px 16px', margin: '16px 0 0', background: '#fff8f2' }}>
-            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.4)', marginBottom: 12 }}>Сертифицирани и тествани стъкла</p>
+            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: '#4A3024', marginBottom: 12 }}>Сертифицирани и тествани стъкла</p>
             <div className="product-cert-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 8 }}>
               {[
                 { title: 'BS EN ISO\n12312-1', sub: 'EU оптична безопасност', icon: '☆' },

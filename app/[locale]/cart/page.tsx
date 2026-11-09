@@ -13,7 +13,7 @@ import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 
 export default function CartPage() {
   const locale = useLocale()
-  const { items, removeItem, setLinePairs, checkoutLocked } = useCartStore()
+  const { items, removeItem, setLinePairs, checkoutLocked, pairLimit } = useCartStore()
   const pairCount = countPairs(items)
   const bundleTotal = usePairPrice(pairCount)
   const separateTotal = regularPriceForPairs(pairCount)
@@ -47,7 +47,7 @@ export default function CartPage() {
               <button
                 className="w-8 h-8 flex items-center justify-center hover:bg-iron disabled:opacity-40"
                 aria-label="Increase quantity"
-                disabled={checkoutLocked || pairCount >= 10}
+                disabled={checkoutLocked}
                 onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}
               >+</button>
             </div>
@@ -60,6 +60,7 @@ export default function CartPage() {
           </div>
         ))}
       </div>
+      {pairLimit === 'cap' && <p role="alert" className="text-sm text-red-700 mb-4">Може да поръчате до 10 чифта.</p>}
       <div className="flex justify-between items-center pt-4">
         <span className="text-xl font-bold">
           Общо: {separateTotal > bundleTotal + 0.001 && <span className="text-iron font-normal text-base mr-2">поотделно: €{separateTotal.toFixed(2)}</span>}€{bundleTotal.toFixed(2)}

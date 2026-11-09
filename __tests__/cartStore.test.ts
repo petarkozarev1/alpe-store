@@ -14,7 +14,7 @@ const mockItem = {
 }
 
 beforeEach(() => {
-  useCartStore.setState({ items: [], isDrawerOpen: false })
+  useCartStore.setState({ items: [], isDrawerOpen: false, pairLimit: null })
 })
 
 test('addItem adds a new item', () => {
@@ -53,6 +53,37 @@ test('setLinePairs keeps the label on the real pair count', () => {
   expect(result.current.items[0].variantLabel).toContain('2 чифта')
   expect(result.current.items[0].quantity).toBe(1)
   expect(result.current.getItemCount()).toBe(2)
+})
+
+test('refuses an 11th pair instead of dropping it', () => {
+  const { result } = renderHook(() => useCartStore())
+  const pair = {
+    ...mockItem,
+    variantId: 'AMPÉ-daily-bundle-1',
+    variantLabel: '🟡 За всеки ден · 1 чифт',
+    price: 59.99,
+  }
+  act(() => result.current.addItem(pair))
+  const line = result.current.items[0]
+  act(() => {
+    expect(result.current.setLinePairs(line.productId, line.variantId, 10)).toBe(true)
+  })
+  const kept = result.current.items[0].variantId
+  let added = true
+  act(() => {
+    added = result.current.addItem(pair)
+  })
+  expect(added).toBe(false)
+  expect(result.current.pairLimit).toBe('cap')
+  expect(result.current.getItemCount()).toBe(10)
+  expect(result.current.items[0].variantId).toBe(kept)
+
+  let raised = true
+  act(() => {
+    raised = result.current.setLinePairs(result.current.items[0].productId, result.current.items[0].variantId, 11)
+  })
+  expect(raised).toBe(false)
+  expect(result.current.getItemCount()).toBe(10)
 })
 
 test('addItem increments quantity for existing item', () => {

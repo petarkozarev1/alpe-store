@@ -437,6 +437,7 @@ export const englishTranslations: Record<string, string> = {
   'ПОДКРЕПА': 'SUPPORT',
   'КОМПАНИЯ': 'COMPANY',
   'За бизнеса': 'For business',
+  'Може да поръчате до 10 чифта.': 'You can order up to 10 pairs.',
   'ПОДДРЪЖКА': 'SUPPORT',
   'Науката': 'Science',
   'Сертификати': 'Certifications',

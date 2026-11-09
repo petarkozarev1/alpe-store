@@ -11,6 +11,7 @@ import LanguageSwitcher from '@/components/i18n/LanguageSwitcher'
 import { localizedPath } from '@/lib/i18n/routing'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import FormerlyLine from '@/components/layout/FormerlyLine'
+import { displayedPairs } from '@/lib/order-lines'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -33,7 +34,7 @@ export default function Navbar() {
     fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: location }, ctaLocation: location })
   }
   const { items, openDrawer } = useCartStore()
-  const itemCount = items.reduce((s, i) => s + i.quantity, 0)
+  const itemCount = items.reduce((s, i) => s + displayedPairs(i), 0)
 
   return (
     <header className="sticky top-0 z-50 w-full">
