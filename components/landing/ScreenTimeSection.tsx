@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
 const POINTS = {
-  bg: ['По-малко парене след дълъг ден на лаптоп', 'Вечерният чифт преди сън', 'Лека рамка, която не притиска'],
-  en: ['Less burning after a long day on a laptop', 'The Evening pair before sleep', 'A light frame that does not pinch'],
+  bg: ['По-малко парене след дълъг ден на лаптоп', 'Вечерният чифт идва с новата наличност', 'Лека рамка, която не притиска'],
+  en: ['Less burning after a long day on a laptop', 'The Evening pair arrives with the new stock', 'A light frame that does not pinch'],
 }
 
 export default function ScreenTimeSection({ locale = 'bg' }: { locale?: string }) {

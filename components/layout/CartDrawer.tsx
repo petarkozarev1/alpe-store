@@ -138,7 +138,7 @@ export default function CartDrawer() {
               <button
                 onClick={closeDrawer}
                 aria-label={t('Затвори количката')}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-stone hover:bg-stone/10 hover:text-onyx transition-all duration-150 text-xl leading-none"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-xl leading-none text-stone transition-all duration-150 hover:bg-stone/10 hover:text-onyx"
               >
                 ×
               </button>
@@ -192,7 +192,7 @@ export default function CartDrawer() {
                           aria-label={t('Количество')}
                         >
                           <button
-                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors disabled:opacity-40"
+                            className="flex h-11 w-11 items-center justify-center text-sm text-onyx transition-colors hover:bg-stone/10 disabled:opacity-40"
                             aria-label={t('Намали количеството')}
                             disabled={checkoutLocked}
                             onClick={() => {
@@ -210,7 +210,7 @@ export default function CartDrawer() {
                             {displayedPairs(item)}
                           </span>
                           <button
-                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors disabled:opacity-40"
+                            className="flex h-11 w-11 items-center justify-center text-sm text-onyx transition-colors hover:bg-stone/10 disabled:opacity-40"
                             aria-label={t('Увеличи количеството')}
                             disabled={checkoutLocked}
                             onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}

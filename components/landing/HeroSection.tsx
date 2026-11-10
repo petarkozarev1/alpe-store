@@ -125,7 +125,7 @@ export default function HeroSection({ locale }: { locale?: string }) {
           <button
             type="button"
             onClick={() => addPairs(1)}
-            className="mt-3 block font-sans text-sm font-medium text-linen/80 underline underline-offset-4"
+            className="mt-3 inline-flex min-h-11 items-center font-sans text-sm font-medium text-linen/80 underline underline-offset-4"
           >
             {offer.secondary}
           </button>
@@ -138,7 +138,7 @@ export default function HeroSection({ locale }: { locale?: string }) {
             ))}
           </ul>
           {stickyCta && (
-            <div className="fixed inset-x-0 bottom-0 z-40 border-t border-iron/10 bg-parchment p-3 md:hidden">
+            <div className="fixed inset-x-0 z-40 border-t border-iron/10 bg-parchment p-3 md:hidden" style={{ bottom: 'var(--cookie-banner-offset, 0px)' }}>
               <button type="button" onClick={() => addPairs(2)} className="w-full rounded-full bg-onyx py-4 font-sans text-sm font-semibold text-linen">
                 {en ? 'Get 2 pairs' : 'Вземи 2 чифта'} · €{pricing.double.toFixed(2)}
               </button>

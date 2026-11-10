@@ -10,7 +10,7 @@ import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
 import { StripePayForm } from './StripePayForm'
 import { PayTrust } from './PayTrust'
-import { DRAFT_REVIEWS, reviewProductLabel } from '@/lib/reviews'
+import { DRAFT_REVIEWS, REVIEWS_APPROVED, reviewProductLabel, reviewsArePublic } from '@/lib/reviews'
 import ProofClips from '@/components/proof/ProofClips'
 
 export function CheckoutSummary(p: any) {
@@ -56,12 +56,15 @@ export function CheckoutSummary(p: any) {
               <hr className={showLines ? 'border-stone/15 mb-4' : 'hidden'} />
               <div className={showLines ? 'mb-4 flex items-start gap-3' : 'hidden'}>
                 <ProofClips locale={locale} />
-                <figure className="min-w-0 flex-1 rounded-xl bg-parchment px-3 py-3">
-                  <blockquote className="font-serif text-sm italic text-iron">{en ? DRAFT_REVIEWS[0].en : DRAFT_REVIEWS[0].bg}</blockquote>
-                  <figcaption className="mt-1 font-sans text-[11px] text-stone">
-                    {DRAFT_REVIEWS[0].name} · {DRAFT_REVIEWS[0].city} · {reviewProductLabel(DRAFT_REVIEWS[0].product, en ? 'en' : 'bg')}
-                  </figcaption>
-                </figure>
+                {reviewsArePublic() && (
+                  <figure className="min-w-0 flex-1 rounded-xl bg-parchment px-3 py-3">
+                    {!REVIEWS_APPROVED && <span className="font-sans text-[10px] font-bold uppercase tracking-[0.14em] text-gold">DRAFT</span>}
+                    <blockquote className="font-serif text-sm italic text-iron">{en ? DRAFT_REVIEWS[0].en : DRAFT_REVIEWS[0].bg}</blockquote>
+                    <figcaption className="mt-1 font-sans text-[11px] text-stone">
+                      {DRAFT_REVIEWS[0].name} · {DRAFT_REVIEWS[0].city} · {reviewProductLabel(DRAFT_REVIEWS[0].product, en ? 'en' : 'bg')}
+                    </figcaption>
+                  </figure>
+                )}
               </div>
               {showLines && appliedCode ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
@@ -140,7 +143,7 @@ export function CheckoutSummary(p: any) {
                   </button>
                   {!mobile && <PayTrust locale={locale} />}
                   {mobile && (
-                    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-stone/15 bg-parchment p-3">
+                    <div className="fixed inset-x-0 z-40 border-t border-stone/15 bg-parchment p-3" style={{ bottom: 'var(--cookie-banner-offset, 0px)' }}>
                       <button type="submit" disabled={loading || !items.length} className="min-h-12 w-full rounded-full bg-onyx font-sans text-sm font-semibold text-linen disabled:opacity-60">
                         {loading ? (en ? 'Preparing…' : 'Подготвяме…') : (isCod ? (en ? 'Order with cash on delivery' : 'Поръчай с наложен платеж') : (en ? 'Continue to payment' : 'Продължи към плащане'))}
                       </button>

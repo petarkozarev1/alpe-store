@@ -151,7 +151,7 @@ export function pairOfferCopy(snapshot: PricingSnapshot, locale: 'bg' | 'en') {
   const off = snapshot.promo.singlePairPrice.toFixed(2)
   const eyebrow = snapshot.saleId === 'christmas'
     ? (locale === 'en' ? 'Christmas' : 'Коледа')
-    : 'Black November'
+    : (locale === 'en' ? 'Black November' : 'Черен ноември')
   return {
     eyebrow,
     primary,

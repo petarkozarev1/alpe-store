@@ -181,6 +181,7 @@ export default function ProductPage({
               <button
                 onClick={() => !(EVENING_OUT_OF_STOCK) && handleLens('evening')}
                 disabled={EVENING_OUT_OF_STOCK}
+                aria-disabled={EVENING_OUT_OF_STOCK}
                 style={{ border: 'none', background: lens === 'evening' ? '#FAF0E4' : 'transparent', color: lens === 'evening' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: EVENING_OUT_OF_STOCK ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s', opacity: EVENING_OUT_OF_STOCK ? 0.45 : 1 }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#ff6a00,#c0392b)', display: 'inline-block', flexShrink: 0 }} />
@@ -228,7 +229,10 @@ export default function ProductPage({
             {(['daily', 'evening'] as Lens[]).map(l => (
               <button
                 key={l}
-                onClick={() => !(EVENING_OUT_OF_STOCK && l === 'evening') && handleLens(l)}
+                type="button"
+                disabled={EVENING_OUT_OF_STOCK && l === 'evening'}
+                aria-disabled={EVENING_OUT_OF_STOCK && l === 'evening'}
+                onClick={() => handleLens(l)}
                 style={{ border: `2px solid ${lens === l ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 10, padding: 16, cursor: (EVENING_OUT_OF_STOCK && l === 'evening') ? 'not-allowed' : 'pointer', background: lens === l ? 'rgba(28,15,10,0.05)' : '#fff8f2', transition: 'all 0.2s', textAlign: 'left', boxShadow: lens === l ? '0 0 0 1px #1C0F0A' : 'none' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 5 }}>
@@ -471,12 +475,12 @@ export default function ProductPage({
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>1000+ клиенти носят AMPÉ всеки ден.</p>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на AMPÉ след 14 дни редовно ползване.</p>
           </div>
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
               { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на AMPÉ', delay: '0.2s' },
-              { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
+              { label: 'По-бързо заспиване', pct: 79, desc: 'Вечерният чифт идва с новата наличност и още не може да се поръча.', delay: '0.35s' },
               { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към AMPÉ Daily', delay: '0.5s' },
               { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали AMPÉ на приятел или член на семейството', delay: '0.65s' },
             ].map(s => (
@@ -719,7 +723,7 @@ export default function ProductPage({
         </button>
 
         {/* Mobile bottom bar */}
-        <div className="product-sticky-bar-mobile" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(100%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
+        <div className="product-sticky-bar-mobile" style={{ position: 'fixed', bottom: 'var(--cookie-banner-offset, 0px)', left: 0, right: 0, zIndex: 39, background: '#1C0F0A', color: '#FAF0E4', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, boxShadow: '0 -4px 24px rgba(28,15,10,0.18)', transform: stickyVisible ? 'translateY(0)' : 'translateY(110%)', transition: 'transform 0.35s cubic-bezier(.22,1,.36,1)' }}>
           <div>
             <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 15, fontWeight: 500 }}>{d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em></div>
             <div style={{ fontSize: 11, opacity: 0.55, marginTop: 1 }}>{locale === 'en' ? `${bundle} ${bundle === 1 ? 'pair' : 'pairs'}` : `${bundle} чифт${bundle > 1 ? 'а' : ''}`}</div>

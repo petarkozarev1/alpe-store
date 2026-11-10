@@ -1,6 +1,15 @@
 'use client'
 
-import { DRAFT_REVIEWS, reviewProductLabel, type DraftReview } from '@/lib/reviews'
+import { DRAFT_REVIEWS, REVIEWS_APPROVED, reviewProductLabel, reviewsArePublic, type DraftReview } from '@/lib/reviews'
+
+function DraftTag() {
+  if (REVIEWS_APPROVED) return null
+  return (
+    <span className="ml-2 inline-flex align-middle rounded-full border border-gold/50 px-2 py-0.5 font-sans text-[10px] font-bold uppercase tracking-[0.14em] text-gold">
+      DRAFT
+    </span>
+  )
+}
 
 function Quote({ review, locale }: { review: DraftReview; locale: 'bg' | 'en' }) {
   return (
@@ -18,6 +27,7 @@ function Quote({ review, locale }: { review: DraftReview; locale: 'bg' | 'en' })
 }
 
 export function ReviewQuotes({ locale = 'bg', limit = 3 }: { locale?: string; limit?: number }) {
+  if (!reviewsArePublic()) return null
   const lang = locale === 'en' ? 'en' : 'bg'
   return (
     <div className="grid gap-3">
@@ -29,6 +39,7 @@ export function ReviewQuotes({ locale = 'bg', limit = 3 }: { locale?: string; li
 }
 
 export function ReviewSection({ locale = 'bg' }: { locale?: string }) {
+  if (!reviewsArePublic()) return null
   const lang = locale === 'en' ? 'en' : 'bg'
   return (
     <section className="bg-parchment py-14 md:py-20">
@@ -36,6 +47,7 @@ export function ReviewSection({ locale = 'bg' }: { locale?: string }) {
         <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">1000+</p>
         <h2 className="mt-2 font-serif text-3xl text-iron md:text-4xl">
           {lang === 'en' ? 'What customers say' : 'Какво казват клиентите'}
+          <DraftTag />
         </h2>
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
           {DRAFT_REVIEWS.map(review => (

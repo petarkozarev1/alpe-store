@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { updateGoogleConsent } from '@/lib/googleAnalytics'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
@@ -17,12 +17,30 @@ export default function CookieBanner() {
   const t = useTranslations()
   const [consent, setConsent] = useState<Consent | 'loading'>('loading')
   const [expanded, setExpanded] = useState(false)
+  const bannerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const stored = localStorage.getItem('alpe-cookie-consent') as Consent | null
     if (stored) updateGoogleConsent(stored === 'all')
     setConsent(stored)
   }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+    const el = bannerRef.current
+    if (consent !== null || !el) {
+      root.style.removeProperty('--cookie-banner-offset')
+      return
+    }
+    const apply = () => root.style.setProperty('--cookie-banner-offset', `${el.offsetHeight}px`)
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      root.style.removeProperty('--cookie-banner-offset')
+    }
+  }, [consent, expanded])
 
   function accept() {
     localStorage.setItem('alpe-cookie-consent', 'all')
@@ -41,21 +59,21 @@ export default function CookieBanner() {
 
   return (
     <div
+      ref={bannerRef}
       role="dialog"
       aria-label={t('Съгласие за бисквитки')}
       aria-modal="false"
       style={{
         position: 'fixed',
-        bottom: 20,
-        left: '50%',
-        transform: 'translateX(-50%)',
+        bottom: 0,
+        left: 0,
+        right: 0,
         zIndex: 9999,
-        width: 'min(560px, calc(100vw - 32px))',
         background: '#1C0F0A',
         color: '#EDE4D6',
-        borderRadius: 12,
-        padding: '14px 18px',
-        boxShadow: '0 6px 32px rgba(28,15,10,0.4)',
+        borderRadius: '16px 16px 0 0',
+        padding: '12px 16px calc(12px + env(safe-area-inset-bottom))',
+        boxShadow: '0 -8px 32px rgba(28,15,10,0.28)',
         fontFamily: 'var(--font-raleway), sans-serif',
       }}
     >
@@ -74,13 +92,13 @@ export default function CookieBanner() {
         <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
           <button
             onClick={rejectOptional}
-            style={{ background: 'transparent', color: 'rgba(237,228,214,0.65)', border: '1px solid rgba(237,228,214,0.2)', borderRadius: 6, padding: '7px 14px', fontSize: 11, fontWeight: 500, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ background: 'transparent', color: 'rgba(237,228,214,0.65)', border: '1px solid rgba(237,228,214,0.2)', borderRadius: 6, minHeight: 44, padding: '10px 14px', fontSize: 12, fontWeight: 500, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             {t('Само необходимите')}
           </button>
           <button
             onClick={accept}
-            style={{ background: '#C4A266', color: '#1C0F0A', border: 'none', borderRadius: 6, padding: '7px 14px', fontSize: 11, fontWeight: 700, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ background: '#C4A266', color: '#1C0F0A', border: 'none', borderRadius: 6, minHeight: 44, padding: '10px 14px', fontSize: 12, fontWeight: 700, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             {t('Приемам всички')}
           </button>

@@ -4,33 +4,46 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { heroContent } from '@/lib/data/content'
 
+type TileName = 'iliyana' | 'creator' | 'customer' | 'geri' | 'kaloyan' | 'home'
+
 type Tile =
-  | { kind: 'talk'; name: string; src: string; poster: string }
-  | { kind: 'loop'; name: string; src: string; poster: string }
-  | { kind: 'photo'; name: string; src: string; alt: string }
+  | { kind: 'talk'; name: TileName; src: string; poster: string }
+  | { kind: 'loop'; name: TileName; src: string; poster: string }
+  | { kind: 'photo'; name: TileName | 'selfie' | 'brand'; src: string; alt: string }
 
 const TILES: Tile[] = [
-  { kind: 'talk', name: 'Илияна', src: '/media/iliyana-testimonial.mp4', poster: '/media/iliyana-poster.jpg' },
-  { kind: 'talk', name: 'Creator review', src: '/media/circadian-creator.mp4', poster: '/media/circadian-creator-poster.jpg' },
-  { kind: 'talk', name: 'Клиент', src: '/media/changed-my-life.mp4', poster: '/media/changed-my-life-poster.jpg' },
-  { kind: 'talk', name: 'Гери', src: '/media/geri-kitchen.mp4', poster: '/media/geri-kitchen-poster.jpg' },
-  { kind: 'talk', name: 'Гери', src: '/media/geri-sofa.mp4', poster: '/media/geri-sofa-poster.jpg' },
-  { kind: 'loop', name: 'Гери', src: '/media/geri-broll.mp4', poster: '/media/geri-broll-poster.jpg' },
-  { kind: 'talk', name: 'Калоян', src: '/media/kaloyan-ugc.mp4', poster: '/media/kaloyan-poster.jpg' },
-  { kind: 'photo', name: 'Вкъщи', src: '/media/lifestyle-sofa.jpg', alt: 'Жена с жълтия чифт AMPÉ на дивана' },
-  { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-01.jpg', alt: 'Селфи с жълтия чифт AMPÉ' },
-  { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-02.jpg', alt: 'Селфи с дневния чифт AMPÉ' },
-  { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-03.jpg', alt: 'Селфи с жълтите стъкла AMPÉ' },
-  { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-04.jpg', alt: 'Селфи с чифт AMPÉ' },
+  { kind: 'talk', name: 'iliyana', src: '/media/iliyana-testimonial.mp4', poster: '/media/iliyana-poster.jpg' },
+  { kind: 'talk', name: 'creator', src: '/media/circadian-creator.mp4', poster: '/media/circadian-creator-poster.jpg' },
+  { kind: 'talk', name: 'customer', src: '/media/changed-my-life.mp4', poster: '/media/changed-my-life-poster.jpg' },
+  { kind: 'talk', name: 'geri', src: '/media/geri-kitchen.mp4', poster: '/media/geri-kitchen-poster.jpg' },
+  { kind: 'talk', name: 'geri', src: '/media/geri-sofa.mp4', poster: '/media/geri-sofa-poster.jpg' },
+  { kind: 'loop', name: 'geri', src: '/media/geri-broll.mp4', poster: '/media/geri-broll-poster.jpg' },
+  { kind: 'talk', name: 'kaloyan', src: '/media/kaloyan-ugc.mp4', poster: '/media/kaloyan-poster.jpg' },
+  { kind: 'photo', name: 'home', src: '/media/lifestyle-sofa.jpg', alt: 'Жена с жълтия чифт AMPÉ на дивана' },
+  { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-01.jpg', alt: 'Селфи с жълтия чифт AMPÉ' },
+  { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-02.jpg', alt: 'Селфи с дневния чифт AMPÉ' },
+  { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-03.jpg', alt: 'Селфи с жълтите стъкла AMPÉ' },
+  { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-04.jpg', alt: 'Селфи с чифт AMPÉ' },
   ...heroContent.heroFaceImages.map(face => ({
     kind: 'photo' as const,
-    name: 'AMPÉ',
+    name: 'brand' as const,
     src: face.src,
     alt: face.alt,
   })),
 ]
 
-function LoopTile({ tile }: { tile: Extract<Tile, { kind: 'loop' }> }) {
+function tileLabel(name: Tile['name'], en: boolean) {
+  if (name === 'iliyana') return en ? 'Iliyana' : 'Илияна'
+  if (name === 'creator') return en ? 'Creator review' : 'Отзив от създател'
+  if (name === 'customer') return en ? 'Customer' : 'Клиент'
+  if (name === 'geri') return en ? 'Geri' : 'Гери'
+  if (name === 'kaloyan') return en ? 'Kaloyan' : 'Калоян'
+  if (name === 'home') return en ? 'At home' : 'Вкъщи'
+  if (name === 'selfie') return en ? 'Selfie' : 'Селфи'
+  return 'AMPÉ'
+}
+
+function LoopTile({ tile, label }: { tile: Extract<Tile, { kind: 'loop' }>; label: string }) {
   const ref = useRef<HTMLVideoElement>(null)
   useEffect(() => {
     const el = ref.current
@@ -51,13 +64,13 @@ function LoopTile({ tile }: { tile: Extract<Tile, { kind: 'loop' }> }) {
       loop
       playsInline
       preload="none"
-      aria-label={tile.name}
+      aria-label={label}
       className="absolute inset-0 h-full w-full object-cover"
     />
   )
 }
 
-function TalkTile({ tile }: { tile: Extract<Tile, { kind: 'talk' }> }) {
+function TalkTile({ tile, playLabel }: { tile: Extract<Tile, { kind: 'talk' }>; playLabel: string }) {
   const [playing, setPlaying] = useState(false)
   const ref = useRef<HTMLVideoElement>(null)
 
@@ -70,7 +83,7 @@ function TalkTile({ tile }: { tile: Extract<Tile, { kind: 'talk' }> }) {
   }
 
   return (
-    <button type="button" onClick={play} className="absolute inset-0 text-left" aria-label={`Пусни видеото на ${tile.name}`}>
+    <button type="button" onClick={play} className="absolute inset-0 text-left" aria-label={playLabel}>
       <video
         ref={ref}
         src={tile.src}
@@ -113,7 +126,9 @@ export default function UgcRail({ locale = 'bg' }: { locale?: string }) {
         ref={scroller}
         className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:px-10 [&::-webkit-scrollbar]:hidden"
       >
-        {TILES.map(tile => (
+        {TILES.map(tile => {
+          const name = tileLabel(tile.name, en)
+          return (
           <article
             key={`${tile.kind}-${tile.src}`}
             className="relative aspect-[9/16] w-[42vw] max-w-[210px] shrink-0 snap-start overflow-hidden rounded-2xl bg-onyx"
@@ -121,15 +136,16 @@ export default function UgcRail({ locale = 'bg' }: { locale?: string }) {
             {tile.kind === 'photo' ? (
               <Image src={tile.src} alt={tile.alt} fill sizes="210px" className="object-cover" />
             ) : tile.kind === 'loop' ? (
-              <LoopTile tile={tile} />
+              <LoopTile tile={tile} label={name} />
             ) : (
-              <TalkTile tile={tile} />
+              <TalkTile tile={tile} playLabel={en ? `Play ${name}` : `Пусни видеото на ${name}`} />
             )}
             <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-onyx/75 to-transparent px-3 pb-3 pt-8 font-sans text-sm font-medium text-linen">
-              {tile.name}
+              {name}
             </span>
           </article>
-        ))}
+          )
+        })}
       </div>
     </section>
   )

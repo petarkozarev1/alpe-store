@@ -3,6 +3,15 @@
  * Do not present these as a counted review total. The only customer-count claim on the site is 1000+.
  */
 
+/** Flip to true only after the owner approves real customer reviews for production. */
+export const REVIEWS_APPROVED = false
+
+/** Unapproved quotes stay on preview and local builds. Production must not render them. */
+export function reviewsArePublic(env: string | undefined = process.env.VERCEL_ENV): boolean {
+  if (REVIEWS_APPROVED) return true
+  return env !== 'production'
+}
+
 export type ReviewProduct = 'day' | 'evening' | 'both'
 
 export interface DraftReview {

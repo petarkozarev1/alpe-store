@@ -409,6 +409,7 @@ export const englishTranslations: Record<string, string> = {
   'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на AMPÉ': 'reported less eye strain during their first days wearing AMPÉ',
   'По-бързо заспиване': 'Faster wind-down',
   'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening': 'reported falling asleep faster during their first week with Evening lenses',
+  'Вечерният чифт идва с новата наличност и още не може да се поръча.': 'The Evening pair is arriving with new stock and cannot be ordered yet.',
   'По-малко главоболия': 'Fewer headaches',
   'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към AMPÉ Daily': 'reported fewer end-of-day screen-related headaches after switching to AMPÉ Daily',
   'Биха препоръчали': 'Would recommend',
