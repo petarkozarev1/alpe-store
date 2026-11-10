@@ -30,7 +30,7 @@ function LanguageSwitcherInner({ variant }: { variant: 'link' | 'toggle' }) {
         aria-checked={locale === 'en'}
         aria-label={label}
         onClick={() => rememberLocale(target)}
-        className="inline-flex h-11 w-14 items-center justify-center rounded-full border border-linen font-sans text-[11px] font-semibold uppercase tracking-widest text-linen hover:text-parchment"
+        className="inline-flex h-11 w-11 items-center justify-center bg-transparent font-sans text-[11px] font-bold uppercase tracking-widest text-linen hover:text-parchment"
       >
         {locale}
       </a>
@@ -54,7 +54,7 @@ function LanguageSwitcherInner({ variant }: { variant: 'link' | 'toggle' }) {
 
 export default function LanguageSwitcher({ variant = 'link' }: { variant?: 'link' | 'toggle' }) {
   const fallback = variant === 'toggle'
-    ? <span aria-hidden="true" className="inline-block h-11 w-14" />
+    ? <span aria-hidden="true" className="inline-block h-11 w-11" />
     : <span className="font-sans text-[11px] font-semibold uppercase tracking-widest text-linen/60">—</span>
   return <Suspense fallback={fallback}><LanguageSwitcherInner variant={variant} /></Suspense>
 }

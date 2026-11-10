@@ -36,6 +36,7 @@ test('the mobile language control is one switch that flips to English', () => {
   expect(toggle).toHaveAttribute('aria-checked', 'false')
   expect(toggle).toHaveAttribute('href', '/en')
   expect(toggle).toHaveTextContent('bg')
+  expect(toggle.className).not.toMatch(/border|rounded|bg-linen/)
   expect(screen.queryByRole('link', { name: 'en' })).not.toBeInTheDocument()
 })
 
