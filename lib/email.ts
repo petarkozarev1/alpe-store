@@ -30,14 +30,14 @@ export function buildOrderEmailHtml(m: OrderEmailModel): string {
   const copy = en ? {
     free: 'Free', cod: 'Cash on delivery', codDetail: '— pay in cash on delivery',
     card: 'Card', cardDetail: '— paid online', accepted: 'Order confirmed!',
-    thanks: `Thank you, ${escapeHtml(m.customerFirstName)}. We received your order and are preparing it.<br/>Dispatch within 24 hours · delivery in 1–3 business days.`,
+    thanks: `Thank you, ${escapeHtml(m.customerFirstName)}. We received your order and are preparing it.<br/>We ship within 48 hours · delivery in 1–3 business days.`,
     orderNumber: 'Order number', yourOrder: 'Your order', subtotal: 'Subtotal', discount: 'Discount',
     delivery: 'Delivery', total: 'Total', paymentMethod: 'Payment method', deliveryTo: 'Deliver to',
     questions: 'Questions about your order? Email us at', footer: `${BRAND_NAME} · Blue- and green-light filtering glasses`,
   } : {
     free: 'Безплатна', cod: 'Наложен платеж', codDetail: '— плащаш в брой при доставка',
     card: 'Карта', cardDetail: '— платено онлайн', accepted: 'Поръчката е приета!',
-    thanks: `Благодарим ти, ${escapeHtml(m.customerFirstName)}. Получихме поръчката ти и я подготвяме.<br/>Изпращаме до 24 часа · доставка 1–3 работни дни.`,
+    thanks: `Благодарим ти, ${escapeHtml(m.customerFirstName)}. Получихме поръчката ти и я подготвяме.<br/>Изпращаме до 48 часа · доставка 1–3 работни дни.`,
     orderNumber: 'Номер на поръчка', yourOrder: 'Твоята поръчка', subtotal: 'Междинна сума', discount: 'Отстъпка',
     delivery: 'Доставка', total: 'Общо', paymentMethod: 'Начин на плащане', deliveryTo: 'Доставка до',
     questions: 'Въпроси по поръчката? Пиши ни на', footer: `${BRAND_NAME} · Очила за блокиране на синя и зелена светлина`,

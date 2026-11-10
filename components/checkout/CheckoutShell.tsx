@@ -1,6 +1,8 @@
 'use client'
+import Image from 'next/image'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { COD_FEE, courierBadge, isBulgaria } from '@/lib/checkout-delivery'
+import { FACE_AVATARS } from '@/lib/proof-media'
 import { CheckoutSummary } from './CheckoutSummary'
 
 export function CheckoutShell(p: any) {
@@ -16,7 +18,20 @@ export function CheckoutShell(p: any) {
   return localizeContent(locale, (
     <div className="min-h-screen bg-parchment">
       <div className="border-b border-stone/20 bg-parchment">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <Image src="/brand/ampe-wordmark-black.svg" alt="AMPÉ" width={92} height={24} className="h-6 w-auto" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-stone/20 bg-white px-2.5 py-1">
+              <span className="flex -space-x-1.5">
+                {FACE_AVATARS.map(face => (
+                  <Image key={face.src} src={face.src} alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-full border border-white object-cover" />
+                ))}
+              </span>
+              <span className="font-sans text-[11px] text-iron">
+                <span className="text-gold">★★★★★</span> {en ? '1,000+ customers' : '1000+ клиенти'}
+              </span>
+            </span>
+          </div>
           <div className="flex items-center gap-3 text-sm font-sans">
             <span className="flex items-center gap-1.5 text-stone/50">
               <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs">✓</span>
@@ -35,13 +50,13 @@ export function CheckoutShell(p: any) {
           <div className="flex flex-col gap-6">
             <div>
               <h1 className="font-serif text-5xl font-bold text-onyx">Плащане.</h1>
-              <p className="font-sans text-sm text-stone mt-2">Попълни данните си — изпращаме до 24 часа.</p>
+              <p className="font-sans text-sm text-stone mt-2">Попълни данните си — изпращаме до 48 часа.</p>
             </div>
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="flex items-center justify-between mb-5">
                 <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">01.</span>Начин на плащане</span>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className={`grid gap-3 ${codEligible ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
                 <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
                   <input type="radio" name="payment" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="accent-onyx" />
                   <div className="flex-1">

@@ -8,6 +8,9 @@ import { localizedPath } from '@/lib/i18n/routing'
 import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
 import { StripePayForm } from './StripePayForm'
+import { PayTrust } from './PayTrust'
+import { DRAFT_REVIEWS, reviewProductLabel } from '@/lib/reviews'
+import ProofClips from '@/components/proof/ProofClips'
 
 export function CheckoutSummary(p: any) {
   const {
@@ -39,6 +42,15 @@ export function CheckoutSummary(p: any) {
                 ))}
               </div>
               <hr className="border-stone/15 mb-4" />
+              <div className="mb-4 flex items-start gap-3">
+                <ProofClips locale={locale} />
+                <figure className="min-w-0 flex-1 rounded-xl bg-parchment px-3 py-3">
+                  <blockquote className="font-serif text-sm italic text-iron">{en ? DRAFT_REVIEWS[0].en : DRAFT_REVIEWS[0].bg}</blockquote>
+                  <figcaption className="mt-1 font-sans text-[11px] text-stone">
+                    {DRAFT_REVIEWS[0].name} · {DRAFT_REVIEWS[0].city} · {reviewProductLabel(DRAFT_REVIEWS[0].product, en ? 'en' : 'bg')}
+                  </figcaption>
+                </figure>
+              </div>
               {appliedCode ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
                   <span className="font-sans text-xs font-semibold text-green-700">{appliedCode}{' · '}{promo.percent}{en ? '% off applied' : '% отстъпка приложена'}</span>
@@ -106,7 +118,7 @@ export function CheckoutSummary(p: any) {
                     <button type="button" onClick={() => setClientSecret(null)} className="font-sans text-xs text-stone hover:text-onyx transition-colors">{en ? '← Back' : '← Назад'}</button>
                   </div>
                   <CheckoutElementsProvider stripe={getStripeClient()} options={{ clientSecret, elementsOptions: { appearance: { theme: 'flat', variables: { colorPrimary: '#2D0E04', borderRadius: '12px', fontFamily: 'Raleway, sans-serif' } } } }}>
-                    <StripePayForm total={total} formatBGN={formatBGN} />
+                    <StripePayForm total={total} formatBGN={formatBGN} locale={locale} />
                   </CheckoutElementsProvider>
                 </div>
               ) : (
@@ -114,6 +126,7 @@ export function CheckoutSummary(p: any) {
                   <button type="submit" disabled={loading || !items.length} className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                     {loading ? (en ? 'PREPARING PAYMENT...' : 'ПОДГОТВЯМЕ ПЛАЩАНЕТО...') : (isCod ? (en ? 'ORDER WITH CASH ON DELIVERY' : 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ') : (en ? 'CONTINUE TO PAYMENT' : 'ПРОДЪЛЖИ КЪМ ПЛАЩАНЕ'))}
                   </button>
+                  <PayTrust locale={locale} />
                   <p className="font-sans text-[11px] text-stone/50 text-center mt-3">
                     {en ? 'By confirming, you accept the ' : 'Като потвърдиш, приемаш '}
                     <Link href={localizedPath('/terms', locale)} className="underline hover:text-stone">{en ? 'Terms of use' : 'Условията за ползване'}</Link>

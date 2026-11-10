@@ -7,11 +7,12 @@ import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { countPairs } from '@/lib/pricing'
 import { displayedPairs } from '@/lib/order-lines'
-import { regularPriceForPairs } from '@/lib/sale'
-import { usePairPrice } from '@/components/pricing/PricingProvider'
+import { pairOfferCopy, regularPriceForPairs } from '@/lib/sale'
+import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
+import ProofClips from '@/components/proof/ProofClips'
 
 const certItems = [
   {
@@ -60,7 +61,7 @@ const certItems = [
 export default function CartDrawer() {
   const locale = useLocale()
   const t = useTranslations()
-  const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, checkoutLocked, pairLimit, getSubtotal } = useCartStore()
+  const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, addItem, checkoutLocked, pairLimit, getSubtotal } = useCartStore()
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -89,8 +90,10 @@ export default function CartDrawer() {
     } catch { /* never break UI */ }
   }, [isDrawerOpen])
 
+  const pricing = usePricingSnapshot()
   const naiveSum = getSubtotal()
   const pairs = countPairs(items)
+  const offer = pairOfferCopy(pricing, locale === 'en' ? 'en' : 'bg')
   const separateTotal = regularPriceForPairs(pairs)
   const subtotal = usePairPrice(pairs)
   const bundleSaving = +Math.max(0, naiveSum - subtotal).toFixed(2)
@@ -260,11 +263,11 @@ export default function CartDrawer() {
                 {/* Shipping progress bar */}
                 <div className="px-5 pb-4">
                   <div className="bg-[#E8F4EC] rounded-xl px-4 py-3">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 gap-3">
                       <span className="font-sans text-xs text-iron">
                         {pairs >= 2
                           ? t('Получаваш безплатна доставка!')
-                          : (locale === 'en' ? 'Add another pair for free delivery' : 'Добави още 1 чифт за безплатна доставка')}
+                          : offer.cartGap}
                       </span>
                       <span className="font-sans text-xs font-semibold text-iron">
                         {Math.round(shippingProgress)}%
@@ -275,6 +278,34 @@ export default function CartDrawer() {
                         className="h-full bg-[#4CAF50] rounded-full transition-all duration-500"
                         style={{ width: `${shippingProgress}%` }}
                       />
+                    </div>
+                    {pairs === 1 && (
+                      <button
+                        type="button"
+                        disabled={checkoutLocked}
+                        onClick={() => {
+                          const line = items[0]
+                          const lenses = line ? displayedPairs(line) : 0
+                          const daily = line?.variantId?.includes('daily') && !line.variantId.includes('evening')
+                          if (line && daily) setLinePairs(line.productId, line.variantId, lenses + 1)
+                          else addItem({
+                            productId: 'AMPÉ-daily',
+                            variantId: 'AMPÉ-daily-bundle-1',
+                            name: 'AMPÉ',
+                            variantLabel: locale === 'en' ? 'Daily · 1 pair' : 'За всеки ден · 1 чифт',
+                            price: pricing.single,
+                            quantity: 1,
+                            image: '/images/shop/shop-daily-1.png',
+                            slug: 'AMPÉ-glasses',
+                          })
+                        }}
+                        className="mt-3 w-full rounded-full bg-onyx py-2.5 font-sans text-xs font-bold text-linen disabled:opacity-40"
+                      >
+                        {locale === 'en' ? 'Add a second pair' : 'Добави втори чифт'}
+                      </button>
+                    )}
+                    <div className="mt-3">
+                      <ProofClips locale={locale} />
                     </div>
                   </div>
                 </div>

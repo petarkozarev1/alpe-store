@@ -134,6 +134,36 @@ export function getPricingSnapshot(now: Date = new Date()): PricingSnapshot {
   }
 }
 
+export function pairOfferCopy(snapshot: PricingSnapshot, locale: 'bg' | 'en') {
+  const double = snapshot.double.toFixed(2)
+  const single = snapshot.single.toFixed(2)
+  const primary = locale === 'en' ? `Get 2 pairs for €${double}` : `Вземи 2 чифта за €${double}`
+  if (!snapshot.promo) {
+    return {
+      eyebrow: locale === 'en' ? 'Two pairs' : 'Два чифта',
+      primary,
+      secondary: locale === 'en' ? `Just 1 pair · €${single}` : `Само 1 чифт · €${single}`,
+      cartGap: locale === 'en'
+        ? `Add 1 more pair for free delivery · 2 pairs €${double}`
+        : `Добави още 1 чифт за безплатна доставка и цена €${double}`,
+    }
+  }
+  const off = snapshot.promo.singlePairPrice.toFixed(2)
+  const eyebrow = snapshot.saleId === 'christmas'
+    ? (locale === 'en' ? 'Christmas' : 'Коледа')
+    : 'Black November'
+  return {
+    eyebrow,
+    primary,
+    secondary: locale === 'en'
+      ? `1 pair €${single} · code ${snapshot.promo.code} → €${off}`
+      : `1 чифт €${single} · код ${snapshot.promo.code} → €${off}`,
+    cartGap: locale === 'en'
+      ? `Add 1 more pair for free delivery and the €${double} pair price`
+      : `Добави още 1 чифт за безплатна доставка и цена €${double}`,
+  }
+}
+
 /** Cheapest total for N pairs using only 1-pair and 2-pair packs. There is no 3-pair pack. */
 export function priceFromPacks(pairs: number, single: number, double: number): number {
   if (pairs <= 0) return 0

@@ -15,21 +15,22 @@ jest.mock('@/components/ui/Button', () => function MockButton({ label }: { label
   return <button>{label}</button>
 })
 
-test('uses the new lightweight-loading hero preview and respects reduced motion', () => {
+test('uses the product film as a lightweight hero loop and respects reduced motion', () => {
   const { container } = render(<HeroSection />)
   const video = container.querySelector('video')
 
-  expect(video).toHaveAttribute('src', '/videos/alpe-hero-web.mp4')
+  expect(video).toHaveAttribute('src', '/media/product-film.mp4')
+  expect(video).toHaveAttribute('poster', '/media/product-film-poster.jpg')
   expect(video).toHaveAttribute('preload', 'metadata')
   expect(video).toHaveClass('motion-reduce:hidden')
   expect(video).toHaveClass('absolute', 'inset-0', 'object-cover')
   expect(video).toHaveClass('object-[68%_center]', 'md:object-center')
   expect(video).not.toHaveClass('object-contain')
-  expect(container.querySelector('[data-testid="hero-content"]')).toHaveClass(
-    'min-h-[calc(100svh-97px)]',
-  )
+  expect(container.querySelector('section')).toHaveClass('min-h-[calc(100svh-97px)]')
   expect(container.querySelectorAll('video')).toHaveLength(1)
-  expect(statSync(path.join(process.cwd(), 'public/videos/alpe-hero-web.mp4')).size).toBeLessThan(2 * 1024 * 1024)
+  expect(screen.getByText('1000+ клиенти')).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: /2 чифта/ })).toBeInTheDocument()
+  expect(statSync(path.join(process.cwd(), 'public/media/product-film.mp4')).size).toBeLessThan(2 * 1024 * 1024)
 })
 
 test('does not show a standalone ALPE label over the hero video', () => {

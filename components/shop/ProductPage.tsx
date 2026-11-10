@@ -13,6 +13,8 @@ import {
   type ShopSelection,
 } from '@/lib/shop-selection'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
+import UgcRail from '@/components/proof/UgcRail'
+import { ReviewQuotes } from '@/components/proof/ReviewQuotes'
 
 type Tab = 'description' | 'science' | 'reviews'
 
@@ -345,6 +347,9 @@ export default function ProductPage({
               </button>
               {pairLimit === 'cap' && <p role="alert" style={{ textAlign: 'center', fontSize: 13, color: '#8C2F1B', marginTop: 10 }}>Може да поръчате до 10 чифта.</p>}
             </div>
+            <div style={{ marginTop: 16 }}>
+              <ReviewQuotes locale={locale} limit={3} />
+            </div>
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: '#4A3024', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
@@ -451,25 +456,14 @@ export default function ProductPage({
 
             {tab === 'reviews' && (
               <div style={{ padding: '28px 0' }}>
-                <div className="product-reviews-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  {[
-                    { text: '„Тези очила оправиха съня ми буквално за 4 дни. Оранжевите лещи преди лягане вече са задължителни."', author: 'Лена К.', location: 'София' },
-                    { text: '„Очите ми вече не ме болят след 17:00 ч. Не осъзнавах колко зле е станало, докато AMPÉ не го оправи."', author: 'Елена М.', location: 'Пловдив' },
-                    { text: '„Бях скептичен. След три седмици спя по-добре, отколкото през последните години. Струва си всеки цент."', author: 'Георги Т.', location: 'Варна' },
-                    { text: '„Взех два чифта – един за работа и един за вкъщи. Гениално."', author: 'Мария С.', location: 'Бургас' },
-                  ].map((r, i) => (
-                    <div key={i} style={{ background: '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 10, padding: '22px 20px' }}>
-                      <div style={{ color: '#C49A6C', fontSize: 13, letterSpacing: 1, marginBottom: 10 }}>★★★★★</div>
-                      <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 15, fontStyle: 'italic', lineHeight: 1.65, color: '#1C0F0A', marginBottom: 12 }}>{r.text}</div>
-                      <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)' }}><strong style={{ color: '#1C0F0A', fontWeight: 500 }}>{r.author}</strong> · verified buyer · {r.location}</div>
-                    </div>
-                  ))}
-                </div>
+                <ReviewQuotes locale={locale} limit={8} />
               </div>
             )}
           </div>
         </div>
       </div>
+
+      <UgcRail locale={locale} />
 
       {/* Outcome stats */}
       <section className="product-stats-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
@@ -477,7 +471,7 @@ export default function ProductPage({
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
             <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
             <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на AMPÉ след 14 дни редовно ползване.</p>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>1000+ клиенти носят AMPÉ всеки ден.</p>
           </div>
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[

@@ -1,4 +1,7 @@
 import HeroSection from '@/components/landing/HeroSection'
+import UgcRail from '@/components/proof/UgcRail'
+import ScreenTimeSection from '@/components/landing/ScreenTimeSection'
+import { ReviewSection } from '@/components/proof/ReviewQuotes'
 import CertStrip from '@/components/landing/CertStrip'
 import IngredientsSection from '@/components/landing/IngredientsSection'
 import HowItWorksSection from '@/components/landing/HowItWorksSection'
@@ -46,12 +49,15 @@ export default function Home({ params }: { params: { locale: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <HeroSection locale={locale} />
+      <UgcRail locale={locale} />
+      <ScreenTimeSection locale={locale} />
       <CertStrip locale={locale} />
       <IngredientsSection locale={locale} />
       <HowItWorksSection locale={locale} />
       <ComparisonSection locale={locale} />
       <FaqSection locale={locale} />
       <GallerySection locale={locale} />
+      <ReviewSection locale={locale} />
       <TestimonialSection locale={locale} />
       <FinalCtaSection locale={locale} />
       <BusinessSection locale={locale} />
