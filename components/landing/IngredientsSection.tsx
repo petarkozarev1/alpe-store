@@ -10,7 +10,7 @@ import { localizedPath } from '@/lib/i18n/routing'
 export default function IngredientsSection({ locale }: { locale: Locale }) {
   const { ingredientsContent, ingredients } = getLandingContent(locale)
   return (
-    <section id="ingredients" className="w-full bg-iron py-24 text-linen">
+    <section id="ingredients" className="w-full bg-onyx py-24 text-linen">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         {/* Header */}
@@ -35,7 +35,7 @@ export default function IngredientsSection({ locale }: { locale: Locale }) {
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <h3 className="text-xl font-bold text-linen">{ingredientsContent.sectionTitle}</h3>
-            <Button label={ingredientsContent.cta} href={localizedPath('/shop', locale)} variant="primary" className="font-bold self-start sm:self-auto" />
+            <Button label={ingredientsContent.cta} href={localizedPath('/shop', locale)} variant="outlined-white" className="font-bold self-start sm:self-auto" />
           </div>
 
           <div className="flex flex-col">
@@ -49,12 +49,12 @@ export default function IngredientsSection({ locale }: { locale: Locale }) {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-5 gap-1.5 sm:gap-6">
                   <div className="flex items-center gap-4 min-w-0">
-                    <span className="w-8 h-8 rounded-full border border-gold flex items-center justify-center text-sm font-medium flex-shrink-0 text-linen">
+                    <span className="w-8 h-8 rounded-full border border-gold flex items-center justify-center text-sm font-medium flex-shrink-0 text-gold">
                       {ingredient.number}
                     </span>
                     <span className="font-medium text-linen">{ingredient.name}</span>
                     {ingredient.badge && (
-                      <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-linen border border-gold rounded px-1.5 py-0.5 flex-shrink-0">{ingredient.badge}</span>
+                      <span className="font-sans text-[9px] font-semibold tracking-widest uppercase text-gold border border-gold/50 rounded px-1.5 py-0.5 flex-shrink-0">{ingredient.badge}</span>
                     )}
                   </div>
                   <span className="text-linen/80 text-sm sm:text-right sm:max-w-md pl-12 sm:pl-0">{ingredient.description}</span>
