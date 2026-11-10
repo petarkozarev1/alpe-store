@@ -12,7 +12,7 @@ export const BRAND_NAME = 'AMPÉ'
 export const FORMER_BRAND_NAME = 'ALPÉ'
 
 /** Set to false to remove every "formerly ALPÉ" line. */
-export const SHOW_FORMERLY_ALPE = true
+export const SHOW_FORMERLY_ALPE = false
 
 /** One-line domain switch. Keep the www production origin until the owner moves DNS. */
 export const SITE_URL = 'https://www.alpewear.com'
