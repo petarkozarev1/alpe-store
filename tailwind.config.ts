@@ -18,7 +18,7 @@ const config: Config = {
         // Warm background scale — light → medium
         cream:    '#FFFBF5',
         ivory:    '#FFF6EC',
-        parchment:'#F8F1E1',
+        parchment:'#FFF0E0',
         peach:    '#FFE4CC',
         sand:     '#F5DFC5',
       },

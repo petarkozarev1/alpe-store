@@ -150,7 +150,7 @@ export default function ProductPage({
   const saving = bundle > 1 && pricing.double < pricing.regularDouble ? +(pricing.regularDouble - pricing.double).toFixed(2) : 0
 
   return localizeContent(locale, (
-    <div style={{ background: '#F8F1E1', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
+    <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
       {/* Breadcrumb */}
       <div className="product-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.8)', letterSpacing: '0.06em' }}>
@@ -268,7 +268,7 @@ export default function ProductPage({
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
                       <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`}</span>
-                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#1A1A1A' }}>Най-популярни</span>}
+                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
                     </div>
                     <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : 'Защита за целия ден'}</div>
                     {n === 1 && pricing.promo && (

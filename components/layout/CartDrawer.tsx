@@ -12,8 +12,6 @@ import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingPr
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
-import ProofClips from '@/components/proof/ProofClips'
-
 const certItems = [
   {
     label: 'ISO 12312- 1',
@@ -299,9 +297,6 @@ export default function CartDrawer() {
                         {locale === 'en' ? 'Add a second pair' : 'Добави втори чифт'}
                       </button>
                     )}
-                    <div className="mt-3">
-                      <ProofClips locale={locale} />
-                    </div>
                   </div>
                 </div>
 

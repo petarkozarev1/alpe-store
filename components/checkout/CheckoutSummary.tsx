@@ -10,14 +10,11 @@ import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
 import { StripePayForm } from './StripePayForm'
 import { PayTrust } from './PayTrust'
-import { DRAFT_REVIEWS, REVIEWS_APPROVED, reviewProductLabel, reviewsArePublic } from '@/lib/reviews'
-import ProofClips from '@/components/proof/ProofClips'
-
 export function CheckoutSummary(p: any) {
   const {
     locale, formatBGN, items, codeInput, setCodeInput, appliedCode, codeError,
     applyCode, removeCode, loading, error, clientSecret, setClientSecret,
-    isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total, saleHint,
+    isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total,
   } = p
   const en = locale === 'en'
   const deliveryLabel = deliveryType === 'address' ? (en ? 'To an address' : 'До адрес') : delivery.label
@@ -54,18 +51,6 @@ export function CheckoutSummary(p: any) {
                 ))}
               </div>
               <hr className={showLines ? 'border-stone/15 mb-4' : 'hidden'} />
-              <div className={showLines ? 'mb-4 flex items-start gap-3' : 'hidden'}>
-                <ProofClips locale={locale} />
-                {reviewsArePublic() && (
-                  <figure className="min-w-0 flex-1 rounded-xl bg-parchment px-3 py-3">
-                    {!REVIEWS_APPROVED && <span className="font-sans text-[10px] font-bold uppercase tracking-[0.14em] text-gold">DRAFT</span>}
-                    <blockquote className="font-serif text-sm italic text-iron">{en ? DRAFT_REVIEWS[0].en : DRAFT_REVIEWS[0].bg}</blockquote>
-                    <figcaption className="mt-1 font-sans text-[11px] text-stone">
-                      {DRAFT_REVIEWS[0].name} · {DRAFT_REVIEWS[0].city} · {reviewProductLabel(DRAFT_REVIEWS[0].product, en ? 'en' : 'bg')}
-                    </figcaption>
-                  </figure>
-                )}
-              </div>
               {showLines && appliedCode ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-4">
                   <span className="font-sans text-xs font-semibold text-green-700">{appliedCode}{' · '}{promo.percent}{en ? '% off applied' : '% отстъпка приложена'}</span>
@@ -84,7 +69,6 @@ export function CheckoutSummary(p: any) {
                 </div>
               ) : null}
               {showLines && codeError && <p className="font-sans text-xs text-red-600 mb-3">{codeError}</p>}
-              {showLines && saleHint && !appliedCode && <p className="font-sans text-xs text-stone mb-3">{saleHint}</p>}
               <hr className={showLines ? 'border-stone/15 mb-4' : 'hidden'} />
               <div className={showLines ? 'flex flex-col gap-2.5 font-sans text-sm' : 'hidden'}>
                 <div className="flex justify-between text-stone">

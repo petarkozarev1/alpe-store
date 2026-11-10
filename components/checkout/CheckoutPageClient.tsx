@@ -250,9 +250,6 @@ export default function CheckoutPageClient() {
       isCod={isCod} codEligible={codEligible}
       visibleDelivery={visibleDelivery} delivery={delivery}
       subtotal={subtotal} bundleSaving={bundleSaving} promo={promo}
-      saleHint={pricing.promo ? (locale === 'en'
-        ? `${pricing.promo.code} is ${pricing.promo.percent}% off one pair only (€${pricing.promo.singlePairPrice.toFixed(2)}).`
-        : `${pricing.promo.code} е −${pricing.promo.percent}% само за 1 чифт (€${pricing.promo.singlePairPrice.toFixed(2)}).`) : null}
       shipping_={shipping_} intlFee={intlFee} total={total}
     />
   )

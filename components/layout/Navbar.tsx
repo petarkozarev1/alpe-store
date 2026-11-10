@@ -37,7 +37,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full">
       <SaleMarquee text={announcement} />
-      <div className="w-full bg-[#B28C6C] border-b border-stone/30">
+      <div className="w-full bg-[#B8906A] border-b border-stone/30">
       <div className="relative max-w-content mx-auto px-2 md:px-10 min-h-16 flex items-center">
 
         <div className="md:hidden relative z-10 flex items-center">

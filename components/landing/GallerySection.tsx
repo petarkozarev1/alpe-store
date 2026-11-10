@@ -28,56 +28,53 @@ export default function GallerySection({ locale }: { locale: Locale }) {
         {galleryContent.headline}
       </motion.h2>
 
-      {/* Carousel constrained to content width */}
-      <div className="max-w-content mx-auto px-6 md:px-10">
-        <div className="relative overflow-hidden">
-          {/* Blur edges */}
-          <div
-            aria-hidden="true"
-            className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-            style={{
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)',
-              maskImage: 'linear-gradient(to right, black 30%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, black 30%, transparent 100%)',
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-            style={{
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)',
-              maskImage: 'linear-gradient(to left, black 30%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, black 30%, transparent 100%)',
-            }}
-          />
+      {/* Four sharp cards on desktop, two on a phone, with a blurred partial card at each edge */}
+      <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden md:left-auto md:mx-auto md:w-[1112px] md:translate-x-0">
+        {/* Blur edges */}
+        <div
+          aria-hidden="true"
+          className="absolute left-0 top-0 bottom-0 z-10 w-9 pointer-events-none md:w-24"
+          style={{
+            backdropFilter: 'blur(5px)',
+            WebkitBackdropFilter: 'blur(5px)',
+            maskImage: 'linear-gradient(to right, black 30%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, black 30%, transparent 100%)',
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute right-0 top-0 bottom-0 z-10 w-9 pointer-events-none md:w-24"
+          style={{
+            backdropFilter: 'blur(5px)',
+            WebkitBackdropFilter: 'blur(5px)',
+            maskImage: 'linear-gradient(to left, black 30%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to left, black 30%, transparent 100%)',
+          }}
+        />
 
-          <motion.div
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 28, ease: 'linear', repeat: Infinity }}
-            className="flex gap-4 w-max"
-          >
-            {[...images, ...images].map((img, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 rounded-2xl border-[3px] border-white p-[3px] shadow-sm"
-                style={{ width: 174 }}
-              >
-                <div className="relative w-full rounded-xl overflow-hidden" style={{ height: 226 }}>
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    sizes="174px"
-                    className="object-cover"
-                    style={{ objectPosition: img.position }}
-                  />
-                </div>
+        <motion.div
+          animate={{ x: ['0%', '-50%'] }}
+          transition={{ duration: 28, ease: 'linear', repeat: Infinity }}
+          className="flex gap-4 w-max"
+        >
+          {[...images, ...images].map((img, i) => (
+            <div
+              key={i}
+              className="w-[calc((100vw-104px)/2)] flex-shrink-0 rounded-2xl border-[3px] border-white p-[3px] shadow-sm md:w-[210px]"
+            >
+              <div className="relative h-[calc((100vw-104px)*272/420)] w-full overflow-hidden rounded-xl md:h-[272px]">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(min-width: 768px) 210px, 50vw"
+                  className="object-cover"
+                  style={{ objectPosition: img.position }}
+                />
               </div>
-            ))}
-          </motion.div>
-        </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
 
       <div className="flex justify-center mt-12">
