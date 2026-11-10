@@ -49,10 +49,14 @@ test('the order button stays on desktop and the cream wordmark is shared', () =>
   expect(screen.getAllByRole('link', { name: 'Switch to English' })).toHaveLength(1)
   const marks = screen.getAllByRole('link', { name: 'AMPÉ' })
   expect(marks).toHaveLength(2)
+  const desktop = marks.find(mark => !mark.className.includes('md:hidden'))
+  const mobile = marks.find(mark => mark.className.includes('md:hidden'))
+  expect(desktop?.className).toContain('text-[23px]')
+  expect(desktop?.className).toContain('leading-[28px]')
+  expect(mobile?.className).toContain('text-[24px]')
+  expect(mobile?.className).toContain('leading-[29px]')
   for (const mark of marks) {
     expect(mark.className).toContain('font-serif')
-    expect(mark.className).toContain('text-[22.04px]')
-    expect(mark.className).toContain('leading-[28px]')
     expect(mark.className).toContain('text-linen')
     expect(mark.className).toContain('tracking-widest')
   }

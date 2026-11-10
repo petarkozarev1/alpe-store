@@ -17,7 +17,7 @@ export default function Footer() {
 
           {/* Brand + description */}
           <div className="flex flex-col gap-4">
-            <Link href={localizedPath('/', locale)} className="font-serif text-[22.04px] leading-[28px] text-linen tracking-widest">
+            <Link href={localizedPath('/', locale)} className="font-serif text-[23px] leading-[28px] text-linen tracking-widest">
               {siteConfig.brand}
             </Link>
             <FormerlyLine locale={locale} className="font-sans text-[10px] text-linen" />
