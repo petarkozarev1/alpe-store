@@ -24,13 +24,13 @@ export default function ScreenTimeSection({ locale = 'bg' }: { locale?: string }
   }, [])
 
   return (
-    <section className="relative isolate overflow-hidden bg-onyx text-linen">
+    <section className="relative isolate min-h-[32rem] overflow-hidden bg-onyx text-linen md:min-h-[40rem]">
       <Image
         src="/media/laptop-lifestyle-poster.jpg"
         alt=""
         fill
         sizes="100vw"
-        className="object-cover"
+        className="object-cover object-[78%_30%] md:object-[70%_18%]"
       />
       <video
         ref={ref}
@@ -41,9 +41,9 @@ export default function ScreenTimeSection({ locale = 'bg' }: { locale?: string }
         playsInline
         preload="none"
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+        className="absolute inset-0 h-full w-full object-cover object-[78%_30%] motion-reduce:hidden md:object-[70%_18%]"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-onyx/80 via-onyx/55 to-onyx/25" />
+      <div className="absolute inset-0 bg-gradient-to-r from-onyx/85 via-onyx/55 to-onyx/15" />
       <div className="relative z-10 mx-auto max-w-content px-6 py-16 md:px-10 md:py-24">
         <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">
           {en ? 'Screen time' : 'Време пред екрана'}

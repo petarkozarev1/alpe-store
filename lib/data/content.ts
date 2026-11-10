@@ -61,13 +61,13 @@ export const steps: StepItem[] = [
     number: 1,
     title: 'Сложи ги',
     description: 'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Очите ви ще усетят разликата веднага. По-малко напрежение, повече спокойствие.',
-    image: '/images/step1wear.png',
+    image: '/images/how-it-works-selfie.jpg',
   },
   {
     number: 2,
     title: 'Филтрирай',
     description: 'Лещите филтрират синята и зелената светлина цял ден — без пауза, без умора.',
-    image: '/images/step2filter.png',
+    image: '/images/how-it-works-filter.jpg',
   },
   {
     number: 3,
