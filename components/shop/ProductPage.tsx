@@ -14,6 +14,7 @@ import {
 } from '@/lib/shop-selection'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { ReviewQuotes } from '@/components/proof/ReviewQuotes'
+import BusinessSection from '@/components/layout/BusinessSection'
 
 type Tab = 'description' | 'science' | 'reviews'
 
@@ -465,6 +466,8 @@ export default function ProductPage({
           </div>
         </div>
       </div>
+
+      <BusinessSection locale={locale} />
 
       {/* Outcome stats */}
       <section className="product-stats-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
