@@ -26,31 +26,39 @@ function renderNav(locale: 'bg' | 'en' = 'bg') {
   )
 }
 
-test('mobile language toggle shows both locales and the menu does not', () => {
+test('the mobile language control is one switch that flips to English', () => {
   render(
     <LocaleProvider locale="bg">
       <LanguageSwitcher variant="toggle" />
     </LocaleProvider>,
   )
-  const group = screen.getByRole('group', { name: 'Език' })
-  expect(group).toHaveTextContent('bg')
-  expect(group).toHaveTextContent('en')
-  expect(screen.getByRole('link', { name: 'bg' })).toHaveAttribute('aria-current', 'true')
-  expect(screen.getByRole('link', { name: 'en' })).toHaveAttribute('href', '/en')
+  const toggle = screen.getByRole('switch', { name: 'Език: български. Превключи на английски' })
+  expect(toggle).toHaveAttribute('aria-checked', 'false')
+  expect(toggle).toHaveAttribute('href', '/en')
+  expect(toggle).toHaveTextContent('bg')
+  expect(screen.queryByRole('link', { name: 'en' })).not.toBeInTheDocument()
 })
 
-test('the order button stays on desktop and the language toggle sits on the mobile bar', () => {
+test('the order button stays on desktop and the cream wordmark is shared', () => {
   renderNav()
   const orders = screen.getAllByRole('link', { name: 'Поръчай сега' })
   expect(orders).toHaveLength(1)
   expect(orders[0].parentElement?.className).toContain('hidden')
-  expect(screen.getByRole('group', { name: 'Език' })).toBeInTheDocument()
+  expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'false')
   expect(screen.getAllByRole('link', { name: 'Switch to English' })).toHaveLength(1)
+  const marks = screen.getAllByRole('img', { name: 'AMPÉ' })
+  expect(marks).toHaveLength(2)
+  for (const mark of marks) {
+    expect(mark).toHaveAttribute('src', '/brand/ampe-wordmark-cream-on-transparent.svg')
+  }
 })
 
-test('english keeps a single desktop shop button and marks EN current', () => {
+test('english keeps a single desktop shop button and checks the language switch', () => {
   renderNav('en')
-  expect(screen.getByRole('link', { name: 'en' })).toHaveAttribute('aria-current', 'true')
+  const toggle = screen.getByRole('switch', { name: 'Language: English. Switch to Bulgarian' })
+  expect(toggle).toHaveAttribute('aria-checked', 'true')
+  expect(toggle).toHaveAttribute('href', '/')
+  expect(toggle).toHaveTextContent('en')
   expect(screen.getAllByRole('link', { name: 'Shop now' })).toHaveLength(1)
   expect(screen.getAllByRole('link', { name: 'Switch to Bulgarian' })).toHaveLength(1)
 })

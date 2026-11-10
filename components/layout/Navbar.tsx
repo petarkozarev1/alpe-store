@@ -55,7 +55,7 @@ export default function Navbar() {
           href={localizedPath('/', locale)}
           className="md:hidden absolute left-1/2 top-1/2 z-10 flex min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
         >
-          <img src="/brand/ampe-wordmark-black.svg" alt={siteConfig.brand} className="h-7 w-auto" />
+          <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
         </Link>
 
         {/* Desktop nav */}
@@ -100,7 +100,7 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center ml-5"><LanguageSwitcher /></div>
         <div className="md:hidden relative z-10 ml-auto flex items-center">
-          <button onClick={openDrawer} aria-label={t('Отвори количката')} className="relative flex min-h-11 min-w-11 items-center justify-center text-onyx">
+          <button onClick={openDrawer} aria-label={t('Отвори количката')} className="relative flex min-h-11 min-w-11 items-center justify-center text-linen hover:text-parchment">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
@@ -118,9 +118,9 @@ export default function Navbar() {
             aria-label={t('Меню')}
             aria-expanded={mobileOpen}
           >
-            <span className={`block w-5 h-px bg-onyx transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
-            <span className={`block w-5 h-px bg-onyx transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-            <span className={`block w-5 h-px bg-onyx transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
+            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
+            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
           </button>
         </div>
       </div>
@@ -142,7 +142,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={navHref(link.href)}
-                  className="flex min-h-11 items-center font-sans text-xs uppercase tracking-widest text-onyx"
+                  className="flex min-h-11 items-center font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment"
                   onClick={() => setMobileOpen(false)}
                 >
                   {t(link.label)}

@@ -17,25 +17,23 @@ function LanguageSwitcherInner({ variant }: { variant: 'link' | 'toggle' }) {
   const here = `${pathname}${query ? `?${query}` : ''}`
 
   if (variant === 'toggle') {
+    const target = locale === 'bg' ? 'en' : 'bg'
+    const label = locale === 'bg'
+      ? 'Език: български. Превключи на английски'
+      : 'Language: English. Switch to Bulgarian'
     return (
-      <div role="group" aria-label={locale === 'en' ? 'Language' : 'Език'} className="flex items-center">
-        {(['bg', 'en'] as const).map(code => {
-          const active = code === locale
-          return (
-            <a
-              key={code}
-              href={localizedPath(here, code)}
-              hrefLang={code}
-              lang={code}
-              aria-current={active ? 'true' : undefined}
-              onClick={() => rememberLocale(code)}
-              className={`inline-flex min-h-11 min-w-11 items-center justify-center font-sans text-[11px] font-bold uppercase tracking-widest ${active ? 'text-onyx underline underline-offset-4' : 'text-[#3D2418]'}`}
-            >
-              {code}
-            </a>
-          )
-        })}
-      </div>
+      <a
+        href={localizedPath(here, target)}
+        hrefLang={target}
+        lang={locale}
+        role="switch"
+        aria-checked={locale === 'en'}
+        aria-label={label}
+        onClick={() => rememberLocale(target)}
+        className="inline-flex h-11 w-14 items-center justify-center rounded-full border border-linen font-sans text-[11px] font-semibold uppercase tracking-widest text-linen hover:text-parchment"
+      >
+        {locale}
+      </a>
     )
   }
 
@@ -56,7 +54,7 @@ function LanguageSwitcherInner({ variant }: { variant: 'link' | 'toggle' }) {
 
 export default function LanguageSwitcher({ variant = 'link' }: { variant?: 'link' | 'toggle' }) {
   const fallback = variant === 'toggle'
-    ? <span aria-hidden="true" className="inline-block min-h-11 w-[88px]" />
+    ? <span aria-hidden="true" className="inline-block h-11 w-14" />
     : <span className="font-sans text-[11px] font-semibold uppercase tracking-widest text-linen/60">—</span>
   return <Suspense fallback={fallback}><LanguageSwitcherInner variant={variant} /></Suspense>
 }
