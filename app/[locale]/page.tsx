@@ -47,11 +47,11 @@ export default function Home({ params }: { params: { locale: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <HeroSection locale={locale} />
+      <CertStrip locale={locale} />
       <ScreenTimeSection locale={locale} />
       <HowItWorksSection locale={locale} />
       <ComparisonSection locale={locale} />
       <IngredientsSection locale={locale} />
-      <CertStrip locale={locale} />
       <ReviewSection locale={locale} />
       <FaqSection locale={locale} />
       <GallerySection locale={locale} />

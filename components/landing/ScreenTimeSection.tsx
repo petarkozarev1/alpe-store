@@ -24,27 +24,29 @@ export default function ScreenTimeSection({ locale = 'bg' }: { locale?: string }
   }, [])
 
   return (
-    <section className="relative isolate min-h-[32rem] overflow-hidden bg-onyx text-linen md:min-h-[40rem]">
-      <Image
-        src="/media/laptop-lifestyle-poster.jpg"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover object-[78%_30%] md:object-[70%_18%]"
-      />
-      <video
-        ref={ref}
-        src="/media/laptop-lifestyle.mp4"
-        poster="/media/laptop-lifestyle-poster.jpg"
-        muted
-        loop
-        playsInline
-        preload="none"
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-[78%_30%] motion-reduce:hidden md:object-[70%_18%]"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-onyx/85 via-onyx/55 to-onyx/15" />
-      <div className="relative z-10 mx-auto max-w-content px-6 py-16 md:px-10 md:py-24">
+    <section className="relative isolate min-h-[25rem] overflow-hidden bg-onyx text-linen md:min-h-[30rem]">
+      <div className="absolute inset-y-0 right-0 h-full w-[148%] sm:w-[128%] md:w-[68%]">
+        <Image
+          src="/media/laptop-lifestyle-poster.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-[80%_42%] md:object-[72%_46%]"
+        />
+        <video
+          ref={ref}
+          src="/media/laptop-lifestyle.mp4"
+          poster="/media/laptop-lifestyle-poster.jpg"
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-[80%_42%] motion-reduce:hidden md:object-[72%_46%]"
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-onyx via-onyx/80 to-onyx/10" />
+      <div className="relative z-10 mx-auto max-w-content px-6 py-12 md:px-10 md:py-16">
         <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">
           {en ? 'Screen time' : 'Време пред екрана'}
         </p>
