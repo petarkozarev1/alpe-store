@@ -30,8 +30,6 @@ export const COMPANY = {
   cityLineBg: 'гр. София 1000, р-н Студентски, ул. Мирела Френи № 22Б',
   cityLineEn: '22B Mirela Freni St., Studentski district, Sofia 1000, Bulgaria',
   countryBg: 'България',
-  managersBg: ['Петър Илиев Козарев', 'Александър Александров Поплилов'],
-  managersEn: ['Petar Iliev Kozarev', 'Alexander Alexandrov Poplilov'],
   phone: '0884555077',
   phoneHref: 'tel:+359884555077',
 } as const

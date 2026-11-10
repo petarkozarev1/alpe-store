@@ -15,9 +15,6 @@ export default function SellerDetails({ locale }: { locale: 'bg' | 'en' }) {
         {en ? COMPANY.cityLineEn : `${COMPANY.cityLineBg}, ${COMPANY.countryBg}`}
       </p>
       <p className="font-sans text-sm text-stone leading-relaxed mt-2">
-        {en ? 'Managers' : 'Управители'}: {(en ? COMPANY.managersEn : COMPANY.managersBg).join(', ')}
-      </p>
-      <p className="font-sans text-sm text-stone leading-relaxed mt-2">
         <a href={COMPANY.phoneHref} className="text-iron underline underline-offset-4 decoration-gold/50">{COMPANY.phone}</a>
         {' · '}
         <a href={`mailto:${EMAILS.hello}`} className="text-iron underline underline-offset-4 decoration-gold/50">{EMAILS.hello}</a>
