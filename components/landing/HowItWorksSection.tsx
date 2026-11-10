@@ -64,7 +64,7 @@ export default function HowItWorksSection({ locale }: { locale: Locale }) {
     >
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col md:flex-row gap-16 md:gap-24">
         {/* Left sticky column */}
-        <div className="md:sticky md:top-24 md:self-start flex-shrink-0 md:w-80 flex flex-col gap-8 pt-24 pb-8">
+        <div className="md:sticky md:top-24 md:h-screen md:self-start flex-shrink-0 md:w-80 flex flex-col gap-8 pt-24 pb-8">
           <Badge label={howItWorksContent.badge} />
           <h2 className="text-[clamp(36px,5vw,52px)] font-bold tracking-tight leading-tight whitespace-pre-line text-iron">
             {howItWorksContent.headline}
@@ -81,7 +81,7 @@ export default function HowItWorksSection({ locale }: { locale: Locale }) {
         </div>
 
         {/* Right stacking cards */}
-        <div className="flex-1 pt-24 pb-24">
+        <div className="flex-1 pt-24 pb-24 md:pb-0">
           {steps.map((step, i) => (
             <StepCard key={step.number} step={step} index={i} progress={scrollYProgress} locale={locale} total={steps.length} />
           ))}
