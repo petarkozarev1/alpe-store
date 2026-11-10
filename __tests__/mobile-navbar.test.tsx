@@ -51,7 +51,8 @@ test('the order button stays on desktop and the cream wordmark is shared', () =>
   expect(marks).toHaveLength(2)
   for (const mark of marks) {
     expect(mark.className).toContain('font-serif')
-    expect(mark.className).toContain('text-xl')
+    expect(mark.className).toContain('text-[21.4px]')
+    expect(mark.className).toContain('leading-[28px]')
     expect(mark.className).toContain('text-linen')
     expect(mark.className).toContain('tracking-widest')
   }

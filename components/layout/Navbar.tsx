@@ -46,7 +46,7 @@ export default function Navbar() {
 
         <div className="hidden md:flex flex-1">
           <div className="inline-flex flex-col">
-            <Link href={localizedPath('/', locale)} className="font-serif text-xl text-linen tracking-widest">
+            <Link href={localizedPath('/', locale)} className="font-serif text-[21.4px] leading-[28px] text-linen tracking-widest">
               {siteConfig.brand}
             </Link>
             <FormerlyLine locale={locale} className="font-sans text-[9px] tracking-wide text-[#1A1A1A] mt-0.5" />
@@ -55,7 +55,7 @@ export default function Navbar() {
 
         <Link
           href={localizedPath('/', locale)}
-          className="md:hidden absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-serif text-xl text-linen tracking-widest"
+          className="md:hidden absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-serif text-[21.4px] leading-[28px] text-linen tracking-widest"
         >
           {siteConfig.brand}
         </Link>
