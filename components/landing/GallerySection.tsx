@@ -29,11 +29,11 @@ export default function GallerySection({ locale }: { locale: Locale }) {
       </motion.h2>
 
       {/* Four sharp cards on desktop, two on a phone, with a blurred partial card at each edge */}
-      <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden md:left-auto md:mx-auto md:w-[1112px] md:translate-x-0">
+      <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden md:left-auto md:mx-auto md:w-[min(95vw,1400px)] md:translate-x-0">
         {/* Blur edges */}
         <div
           aria-hidden="true"
-          className="absolute left-0 top-0 bottom-0 z-10 w-9 pointer-events-none md:w-24"
+          className="absolute left-0 top-0 bottom-0 z-10 w-6 pointer-events-none md:w-[max(40px,calc((min(95vw,1400px)-1208px)/2))]"
           style={{
             backdropFilter: 'blur(5px)',
             WebkitBackdropFilter: 'blur(5px)',
@@ -43,7 +43,7 @@ export default function GallerySection({ locale }: { locale: Locale }) {
         />
         <div
           aria-hidden="true"
-          className="absolute right-0 top-0 bottom-0 z-10 w-9 pointer-events-none md:w-24"
+          className="absolute right-0 top-0 bottom-0 z-10 w-6 pointer-events-none md:w-[max(40px,calc((min(95vw,1400px)-1208px)/2))]"
           style={{
             backdropFilter: 'blur(5px)',
             WebkitBackdropFilter: 'blur(5px)',
@@ -60,14 +60,14 @@ export default function GallerySection({ locale }: { locale: Locale }) {
           {[...images, ...images].map((img, i) => (
             <div
               key={i}
-              className="w-[calc((100vw-104px)/2)] flex-shrink-0 rounded-2xl border-[3px] border-white p-[3px] shadow-sm md:w-[210px]"
+              className="w-[calc((100vw-64px)/2)] flex-shrink-0 rounded-2xl border-[3px] border-white p-[3px] shadow-sm md:w-[clamp(210px,calc((min(95vw,1400px)-128px)/4),290px)]"
             >
-              <div className="relative h-[calc((100vw-104px)*272/420)] w-full overflow-hidden rounded-xl md:h-[272px]">
+              <div className="relative h-[calc((100vw-64px)/2*376/290)] w-full overflow-hidden rounded-xl md:h-[clamp(272px,calc((min(95vw,1400px)-128px)/4*376/290),376px)]">
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
-                  sizes="(min-width: 768px) 210px, 50vw"
+                  sizes="(min-width: 768px) 290px, 45vw"
                   className="object-cover"
                   style={{ objectPosition: img.position }}
                 />
