@@ -45,11 +45,11 @@ export default function Home({ params }: { params: { locale: string } }) {
       />
       <HeroSection locale={locale} />
       <CertStrip locale={locale} />
+      <GallerySection locale={locale} />
       <HowItWorksSection locale={locale} />
       <ComparisonSection locale={locale} />
       <IngredientsSection locale={locale} />
       <FaqSection locale={locale} />
-      <GallerySection locale={locale} />
       <FinalCtaSection locale={locale} />
       <NewsletterSection locale={locale} />
     </>
