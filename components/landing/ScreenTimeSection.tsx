@@ -46,7 +46,7 @@ export default function ScreenTimeSection({ locale = 'bg' }: { locale?: string }
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-onyx via-onyx/80 to-onyx/10" />
-      <div className="relative z-10 mx-auto max-w-content px-6 py-12 md:px-10 md:py-16">
+      <div className="relative z-10 mx-auto flex min-h-[25rem] max-w-content flex-col justify-center px-6 md:min-h-[30rem] md:px-10">
         <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">
           {en ? 'Screen time' : 'Време пред екрана'}
         </p>
