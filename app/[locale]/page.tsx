@@ -5,7 +5,6 @@ import HowItWorksSection from '@/components/landing/HowItWorksSection'
 import ComparisonSection from '@/components/landing/ComparisonSection'
 import GallerySection from '@/components/landing/GallerySection'
 import FaqSection from '@/components/landing/FaqSection'
-import FinalCtaSection from '@/components/landing/FinalCtaSection'
 import NewsletterSection from '@/components/landing/NewsletterSection'
 import { createLocalizedPageMetadata, defaultSeo } from '@/lib/seo'
 import { getLandingContent } from '@/lib/data/content'
@@ -50,7 +49,6 @@ export default function Home({ params }: { params: { locale: string } }) {
       <ComparisonSection locale={locale} />
       <IngredientsSection locale={locale} />
       <FaqSection locale={locale} />
-      <FinalCtaSection locale={locale} />
       <NewsletterSection locale={locale} />
     </>
   )
