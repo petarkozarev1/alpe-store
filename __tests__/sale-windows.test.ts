@@ -1,4 +1,4 @@
-import { applyPromo, getPricingSnapshot, priceForPairs, singlePairPromoPrice, sofiaTimestamp } from '@/lib/sale'
+import { applyPromo, getPricingSnapshot, priceForPairs, saleBarMessage, singlePairPromoPrice, sofiaTimestamp } from '@/lib/sale'
 
 /** Europe/Sofia is UTC+2 in November and December 2026 (EET). */
 function sofia(wallClock: string) {
@@ -24,6 +24,8 @@ describe('Sofia sale windows', () => {
     expect(priceForPairs(1, nov15)).toBe(59.99)
     expect(priceForPairs(2, nov15)).toBe(89.99)
     expect(applyPromo(59.99, 'BLACK15', { pairs: 1, now: nov15 })).toMatchObject({ code: 'BLACK15', amount: 9, reason: null })
+    expect(saleBarMessage(pricing, 'bg')).toBe('Код BLACK15: −15% за 1 чифт (€50.99). Два чифта €89.99 · безплатна доставка за 2+ чифта')
+    expect(saleBarMessage(pricing, 'en')).toContain('Code BLACK15')
     expect(applyPromo(89.99, 'BLACK15', { pairs: 2, now: nov15 }).reason).toBe('single-only')
     expect(applyPromo(59.99, 'XMAS15', { pairs: 1, now: nov15 }).reason).toBe('inactive')
   })
@@ -33,6 +35,7 @@ describe('Sofia sale windows', () => {
     expect(pricing.saleId).toBe('christmas')
     expect(pricing.double).toBe(89.99)
     expect(pricing.promo?.code).toBe('XMAS15')
+    expect(saleBarMessage(pricing, 'bg')).toContain('XMAS15')
     expect(applyPromo(59.99, 'XMAS15', { pairs: 1, now: dec1 })).toMatchObject({ code: 'XMAS15', amount: 9, reason: null })
     expect(applyPromo(59.99, 'BLACK15', { pairs: 1, now: dec1 }).reason).toBe('inactive')
     expect(applyPromo(89.99, 'XMAS15', { pairs: 2, now: dec1 }).reason).toBe('single-only')
@@ -49,6 +52,8 @@ describe('Sofia sale windows', () => {
     const pricing = getPricingSnapshot(dec27)
     expect(pricing.saleId).toBeNull()
     expect(pricing.promo).toBeNull()
+    expect(saleBarMessage(pricing, 'bg')).toBe('Безплатна доставка за 2 или повече чифта')
+    expect(saleBarMessage(pricing, 'en')).toBe('Free delivery on 2 or more pairs')
     expect(pricing.single).toBe(59.99)
     expect(pricing.double).toBe(119.98)
     expect(priceForPairs(2, dec27)).toBe(119.98)

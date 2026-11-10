@@ -11,6 +11,8 @@ import LanguageSwitcher from '@/components/i18n/LanguageSwitcher'
 import { localizedPath } from '@/lib/i18n/routing'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import FormerlyLine from '@/components/layout/FormerlyLine'
+import SaleMarquee from '@/components/layout/SaleMarquee'
+import { saleBarMessage } from '@/lib/sale'
 import { displayedPairs } from '@/lib/order-lines'
 
 export default function Navbar() {
@@ -19,11 +21,7 @@ export default function Navbar() {
   const locale = useLocale()
   const t = useTranslations()
   const pricing = usePricingSnapshot()
-  const announcement = pricing.promo
-    ? (locale === 'en'
-      ? `Code ${pricing.promo.code}: 15% off one pair (€${pricing.promo.singlePairPrice.toFixed(2)}). Two pairs €${pricing.double.toFixed(2)} · free delivery on 2+ pairs`
-      : `Код ${pricing.promo.code}: −15% за 1 чифт (€${pricing.promo.singlePairPrice.toFixed(2)}). Два чифта €${pricing.double.toFixed(2)} · безплатна доставка за 2+ чифта`)
-    : t('Безплатна доставка за 2 или повече чифта')
+  const announcement = saleBarMessage(pricing, locale)
 
   function navHref(href: string) {
     const base = href.startsWith('#') && pathname !== '/' && pathname !== '/en' ? '/' + href : href
@@ -38,12 +36,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      {/* Announcement ticker */}
-      <div className="w-full bg-onyx overflow-hidden py-2 px-4 flex items-center justify-center">
-        <p className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold text-center">
-          ✦ {announcement}
-        </p>
-      </div>
+      <SaleMarquee text={announcement} />
       <div className="w-full bg-[#B28C6C] border-b border-stone/30">
       <div className="max-w-content mx-auto px-6 md:px-10 min-h-16 py-2 flex items-center justify-between">
 
