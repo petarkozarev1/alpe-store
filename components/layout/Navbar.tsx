@@ -66,7 +66,7 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={navHref(link.href)}
-              className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors duration-200"
+              className="font-sans text-[12.96px] leading-[16px] uppercase tracking-widest text-linen hover:text-parchment transition-colors duration-200"
             >
               {t(link.label)}
             </Link>
