@@ -7,12 +7,11 @@ import type { Locale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
 
 const images = [
-  { src: '/images/shuffle5.png', alt: 'AMPÉ customer' },
-  { src: '/images/shuffle2.png', alt: 'AMPÉ customer' },
-  { src: '/images/shuffle4.png', alt: 'AMPÉ customer' },
-  { src: '/images/shuffle1.png', alt: 'AMPÉ customer' },
-  { src: '/images/shuffle6.png', alt: 'AMPÉ customer' },
-  { src: '/images/shuffle3.png', alt: 'AMPÉ customer' },
+  { src: '/images/customers/01.jpg', alt: 'AMPÉ customer', position: '46% 32%' },
+  { src: '/images/customers/02.jpg', alt: 'AMPÉ customer', position: '40% 26%' },
+  { src: '/images/customers/03.jpg', alt: 'AMPÉ customer', position: '50% 34%' },
+  { src: '/images/customers/04.jpg', alt: 'AMPÉ customer', position: '50% 46%' },
+  { src: '/images/customers/05.jpg', alt: 'AMPÉ customer', position: '50% 40%' },
 ]
 
 export default function GallerySection({ locale }: { locale: Locale }) {
@@ -63,16 +62,16 @@ export default function GallerySection({ locale }: { locale: Locale }) {
               <div
                 key={i}
                 className="flex-shrink-0 rounded-2xl border-[3px] border-white p-[3px] shadow-sm"
-                style={{ width: 200 }}
+                style={{ width: 174 }}
               >
-                <div className="relative w-full rounded-xl overflow-hidden" style={{ height: 260 }}>
+                <div className="relative w-full rounded-xl overflow-hidden" style={{ height: 226 }}>
                   <Image
                     src={img.src}
                     alt={img.alt}
                     fill
-                    sizes="200px"
+                    sizes="174px"
                     className="object-cover"
-                    style={{ objectPosition: 'center' }}
+                    style={{ objectPosition: img.position }}
                   />
                 </div>
               </div>

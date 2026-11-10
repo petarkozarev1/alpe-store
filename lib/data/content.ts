@@ -112,10 +112,11 @@ export const testimonialContent = {
 export const galleryContent = {
   headline: 'Истинска защита. С AMPÉ.',
   images: [
-    '/images/shuffle1.png',
-    '/images/shuffle2.png',
-    '/images/shuffle4.png',
-    '/images/shuffle5.png',
+    '/images/customers/01.jpg',
+    '/images/customers/02.jpg',
+    '/images/customers/03.jpg',
+    '/images/customers/04.jpg',
+    '/images/customers/05.jpg',
   ],
   cta: 'Намери своя чифт',
 }
