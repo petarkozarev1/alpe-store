@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
+import ScreenTimeSection from '@/components/landing/ScreenTimeSection'
 import { getLandingContent } from '@/lib/data/content'
 import type { Locale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
@@ -26,16 +27,8 @@ export default function IngredientsSection({ locale }: { locale: Locale }) {
           </motion.h2>
         </div>
 
-        {/* Editorial video */}
-        <div className="relative w-full aspect-[16/7] rounded-xl overflow-hidden mb-16">
-          <video
-            src="/videos/ingredients.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+        <div className="relative left-1/2 mb-16 w-screen max-w-none -translate-x-1/2">
+          <ScreenTimeSection locale={locale} />
         </div>
 
         {/* Key ingredients table */}

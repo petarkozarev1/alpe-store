@@ -1,5 +1,4 @@
 import HeroSection from '@/components/landing/HeroSection'
-import ScreenTimeSection from '@/components/landing/ScreenTimeSection'
 import { ReviewSection } from '@/components/proof/ReviewQuotes'
 import CertStrip from '@/components/landing/CertStrip'
 import IngredientsSection from '@/components/landing/IngredientsSection'
@@ -47,7 +46,6 @@ export default function Home({ params }: { params: { locale: string } }) {
       />
       <HeroSection locale={locale} />
       <CertStrip locale={locale} />
-      <ScreenTimeSection locale={locale} />
       <HowItWorksSection locale={locale} />
       <ComparisonSection locale={locale} />
       <IngredientsSection locale={locale} />
