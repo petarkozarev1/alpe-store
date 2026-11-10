@@ -47,10 +47,13 @@ test('the order button stays on desktop and the cream wordmark is shared', () =>
   expect(orders[0].parentElement?.className).toContain('hidden')
   expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'false')
   expect(screen.getAllByRole('link', { name: 'Switch to English' })).toHaveLength(1)
-  const marks = screen.getAllByRole('img', { name: 'AMPÉ' })
+  const marks = screen.getAllByRole('link', { name: 'AMPÉ' })
   expect(marks).toHaveLength(2)
   for (const mark of marks) {
-    expect(mark).toHaveAttribute('src', '/brand/ampe-wordmark-cream-on-transparent.svg')
+    expect(mark.className).toContain('font-serif')
+    expect(mark.className).toContain('text-xl')
+    expect(mark.className).toContain('text-linen')
+    expect(mark.className).toContain('tracking-widest')
   }
 })
 

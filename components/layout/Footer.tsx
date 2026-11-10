@@ -17,8 +17,8 @@ export default function Footer() {
 
           {/* Brand + description */}
           <div className="flex flex-col gap-4">
-            <Link href={localizedPath('/', locale)} className="inline-flex">
-              <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
+            <Link href={localizedPath('/', locale)} className="font-serif text-xl text-linen tracking-widest">
+              {siteConfig.brand}
             </Link>
             <FormerlyLine locale={locale} className="font-sans text-[10px] text-linen" />
             <p className="font-sans text-xs text-linen/60 leading-relaxed max-w-[220px]">

@@ -45,17 +45,19 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex flex-1">
-          <Link href={localizedPath('/', locale)} className="inline-flex flex-col">
-            <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
+          <div className="inline-flex flex-col">
+            <Link href={localizedPath('/', locale)} className="font-serif text-xl text-linen tracking-widest">
+              {siteConfig.brand}
+            </Link>
             <FormerlyLine locale={locale} className="font-sans text-[9px] tracking-wide text-[#1A1A1A] mt-0.5" />
-          </Link>
+          </div>
         </div>
 
         <Link
           href={localizedPath('/', locale)}
-          className="md:hidden absolute left-1/2 top-1/2 z-10 flex min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+          className="md:hidden absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-serif text-xl text-linen tracking-widest"
         >
-          <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
+          {siteConfig.brand}
         </Link>
 
         {/* Desktop nav */}
