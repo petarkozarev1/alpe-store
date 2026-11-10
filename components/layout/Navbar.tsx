@@ -28,8 +28,8 @@ export default function Navbar() {
     return localizedPath(base, locale)
   }
 
-  function trackCtaClick(location: 'navbar_desktop' | 'navbar_mobile') {
-    fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: location }, ctaLocation: location })
+  function trackCtaClick() {
+    fireTrackedEvent('CTAClick', { custom: true, data: { cta_location: 'navbar_desktop' }, ctaLocation: 'navbar_desktop' })
   }
   const { items, openDrawer } = useCartStore()
   const itemCount = items.reduce((s, i) => s + displayedPairs(i), 0)
@@ -38,15 +38,25 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full">
       <SaleMarquee text={announcement} />
       <div className="w-full bg-[#B28C6C] border-b border-stone/30">
-      <div className="max-w-content mx-auto px-6 md:px-10 min-h-16 py-2 flex items-center justify-between">
+      <div className="relative max-w-content mx-auto px-2 md:px-10 min-h-16 flex items-center">
 
-        {/* Logo */}
-        <div className="flex-1">
+        <div className="md:hidden relative z-10 flex items-center">
+          <LanguageSwitcher variant="toggle" />
+        </div>
+
+        <div className="hidden md:flex flex-1">
           <Link href={localizedPath('/', locale)} className="inline-flex flex-col">
             <img src="/brand/ampe-wordmark-cream-on-transparent.svg" alt={siteConfig.brand} className="h-7 w-auto" />
             <FormerlyLine locale={locale} className="font-sans text-[9px] tracking-wide text-[#1A1A1A] mt-0.5" />
           </Link>
         </div>
+
+        <Link
+          href={localizedPath('/', locale)}
+          className="md:hidden absolute left-1/2 top-1/2 z-10 flex min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+        >
+          <img src="/brand/ampe-wordmark-black.svg" alt={siteConfig.brand} className="h-7 w-auto" />
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">
@@ -65,7 +75,7 @@ export default function Navbar() {
         <div className="hidden md:flex flex-1 justify-end items-center gap-6">
           <Link
             href={localizedPath('/shop', locale)}
-            onClick={() => trackCtaClick('navbar_desktop')}
+            onClick={() => trackCtaClick()}
             className="font-sans text-xs font-bold uppercase tracking-widest bg-onyx text-linen px-5 py-2 rounded-full hover:bg-iron transition-colors"
           >
             {t('Поръчай сега')}
@@ -88,30 +98,22 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile: CTA + cart + hamburger */}
         <div className="hidden md:flex items-center ml-5"><LanguageSwitcher /></div>
-        <div className="md:hidden flex items-center gap-4">
-          <Link
-            href={localizedPath('/shop', locale)}
-            onClick={() => trackCtaClick('navbar_mobile')}
-            className="font-sans text-[11px] font-bold uppercase tracking-widest bg-onyx text-linen px-4 py-2 rounded-full hover:bg-iron transition-colors whitespace-nowrap"
-          >
-            {t('Поръчай сега')}
-          </Link>
-          <button onClick={openDrawer} aria-label={t('Отвори количката')} className="relative text-linen hover:text-parchment">
+        <div className="md:hidden relative z-10 ml-auto flex items-center">
+          <button onClick={openDrawer} aria-label={t('Отвори количката')} className="relative flex min-h-11 min-w-11 items-center justify-center text-onyx">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
               <path d="M16 10a4 4 0 01-8 0"/>
             </svg>
             {itemCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gold text-onyx text-[9px] font-sans font-semibold flex items-center justify-center">
+              <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-gold text-onyx text-[9px] font-sans font-semibold flex items-center justify-center">
                 {itemCount}
               </span>
             )}
           </button>
           <button
-            className="flex flex-col gap-1.5 p-1"
+            className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5"
             onClick={() => setMobileOpen(v => !v)}
             aria-label={t('Меню')}
             aria-expanded={mobileOpen}
@@ -135,13 +137,12 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="overflow-hidden md:hidden border-t border-stone/30 bg-[#B8906A]"
           >
-            <div className="flex flex-col px-6 py-6 gap-5">
-              <LanguageSwitcher />
+            <div className="flex flex-col px-4 py-3">
               {siteConfig.nav.map(link => (
                 <Link
                   key={link.label}
                   href={navHref(link.href)}
-                  className="font-sans text-xs uppercase tracking-widest text-linen hover:text-parchment transition-colors"
+                  className="flex min-h-11 items-center font-sans text-xs uppercase tracking-widest text-onyx"
                   onClick={() => setMobileOpen(false)}
                 >
                   {t(link.label)}
