@@ -263,16 +263,11 @@ export default function CartDrawer() {
                 {/* Shipping progress bar */}
                 <div className="px-5 pb-4">
                   <div className="bg-[#E8F4EC] rounded-xl px-4 py-3">
-                    <div className="flex items-center justify-between mb-2 gap-3">
-                      <span className="font-sans text-xs text-iron">
-                        {pairs >= 2
-                          ? t('Получаваш безплатна доставка!')
-                          : offer.cartGap}
-                      </span>
-                      <span className="font-sans text-xs font-semibold text-iron">
-                        {Math.round(shippingProgress)}%
-                      </span>
-                    </div>
+                    <p className="mb-2 break-words font-sans text-xs leading-relaxed text-iron">
+                      {pairs >= 2
+                        ? t('Получаваш безплатна доставка!')
+                        : offer.cartGap}
+                    </p>
                     <div className="h-1.5 bg-white/60 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[#4CAF50] rounded-full transition-all duration-500"
@@ -299,7 +294,7 @@ export default function CartDrawer() {
                             slug: 'AMPÉ-glasses',
                           })
                         }}
-                        className="mt-3 w-full rounded-full bg-onyx py-2.5 font-sans text-xs font-bold text-linen disabled:opacity-40"
+                        className="mt-3 w-full rounded-full border border-onyx/20 py-2.5 font-sans text-xs font-medium text-onyx disabled:opacity-40"
                       >
                         {locale === 'en' ? 'Add a second pair' : 'Добави втори чифт'}
                       </button>

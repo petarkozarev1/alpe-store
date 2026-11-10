@@ -6,7 +6,6 @@ import CertStrip from '@/components/landing/CertStrip'
 import IngredientsSection from '@/components/landing/IngredientsSection'
 import HowItWorksSection from '@/components/landing/HowItWorksSection'
 import ComparisonSection from '@/components/landing/ComparisonSection'
-import TestimonialSection from '@/components/landing/TestimonialSection'
 import GallerySection from '@/components/landing/GallerySection'
 import FaqSection from '@/components/landing/FaqSection'
 import FinalCtaSection from '@/components/landing/FinalCtaSection'
@@ -51,14 +50,13 @@ export default function Home({ params }: { params: { locale: string } }) {
       <HeroSection locale={locale} />
       <UgcRail locale={locale} />
       <ScreenTimeSection locale={locale} />
-      <CertStrip locale={locale} />
-      <IngredientsSection locale={locale} />
       <HowItWorksSection locale={locale} />
       <ComparisonSection locale={locale} />
+      <IngredientsSection locale={locale} />
+      <CertStrip locale={locale} />
+      <ReviewSection locale={locale} />
       <FaqSection locale={locale} />
       <GallerySection locale={locale} />
-      <ReviewSection locale={locale} />
-      <TestimonialSection locale={locale} />
       <FinalCtaSection locale={locale} />
       <BusinessSection locale={locale} />
       <NewsletterSection locale={locale} />

@@ -7,18 +7,17 @@ import { heroContent } from '@/lib/data/content'
 type Tile =
   | { kind: 'talk'; name: string; src: string; poster: string }
   | { kind: 'loop'; name: string; src: string; poster: string }
-  | { kind: 'clip'; name: string; src: string; poster: string }
   | { kind: 'photo'; name: string; src: string; alt: string }
 
 const TILES: Tile[] = [
   { kind: 'talk', name: 'Илияна', src: '/media/iliyana-testimonial.mp4', poster: '/media/iliyana-poster.jpg' },
   { kind: 'talk', name: 'Creator review', src: '/media/circadian-creator.mp4', poster: '/media/circadian-creator-poster.jpg' },
   { kind: 'talk', name: 'Клиент', src: '/media/changed-my-life.mp4', poster: '/media/changed-my-life-poster.jpg' },
-  { kind: 'talk', name: 'Гери · кухня', src: '/media/geri-kitchen.mp4', poster: '/media/geri-kitchen-poster.jpg' },
-  { kind: 'talk', name: 'Гери · диван', src: '/media/geri-sofa.mp4', poster: '/media/geri-sofa-poster.jpg' },
+  { kind: 'talk', name: 'Гери', src: '/media/geri-kitchen.mp4', poster: '/media/geri-kitchen-poster.jpg' },
+  { kind: 'talk', name: 'Гери', src: '/media/geri-sofa.mp4', poster: '/media/geri-sofa-poster.jpg' },
   { kind: 'loop', name: 'Гери', src: '/media/geri-broll.mp4', poster: '/media/geri-broll-poster.jpg' },
+  { kind: 'talk', name: 'Калоян', src: '/media/kaloyan-ugc.mp4', poster: '/media/kaloyan-poster.jpg' },
   { kind: 'photo', name: 'Вкъщи', src: '/media/lifestyle-sofa.jpg', alt: 'Жена с жълтия чифт AMPÉ на дивана' },
-  { kind: 'clip', name: 'Калоян', src: '/media/kaloyan-ugc.mp4', poster: '/media/kaloyan-poster.jpg' },
   { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-01.jpg', alt: 'Селфи с жълтия чифт AMPÉ' },
   { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-02.jpg', alt: 'Селфи с дневния чифт AMPÉ' },
   { kind: 'photo', name: 'Селфи', src: '/media/influencer-selfie-03.jpg', alt: 'Селфи с жълтите стъкла AMPÉ' },
@@ -53,27 +52,25 @@ function LoopTile({ tile }: { tile: Extract<Tile, { kind: 'loop' }> }) {
       playsInline
       preload="none"
       aria-label={tile.name}
-      className="h-full w-full object-cover"
+      className="absolute inset-0 h-full w-full object-cover"
     />
-    <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-onyx/70 to-transparent p-3 font-sans text-sm font-semibold text-linen">{tile.name}</span>
   )
 }
 
-function TalkTile({ tile }: { tile: Extract<Tile, { kind: 'talk' | 'clip' }> }) {
+function TalkTile({ tile }: { tile: Extract<Tile, { kind: 'talk' }> }) {
   const [playing, setPlaying] = useState(false)
   const ref = useRef<HTMLVideoElement>(null)
-  const featured = tile.kind === 'talk'
 
   const play = () => {
     const el = ref.current
     if (!el) return
-    el.muted = !featured
+    el.muted = false
     setPlaying(true)
     el.play().catch(() => undefined)
   }
 
   return (
-    <button type="button" onClick={play} className="relative h-full w-full text-left" aria-label={featured ? `Пусни видеото на ${tile.name}` : tile.name}>
+    <button type="button" onClick={play} className="absolute inset-0 text-left" aria-label={`Пусни видеото на ${tile.name}`}>
       <video
         ref={ref}
         src={tile.src}
@@ -84,10 +81,8 @@ function TalkTile({ tile }: { tile: Extract<Tile, { kind: 'talk' | 'clip' }> }) 
         className="h-full w-full object-cover"
       />
       {!playing && (
-        <span className="absolute inset-0 flex items-end bg-gradient-to-t from-onyx/70 to-transparent p-3">
-          <span className="font-sans text-sm font-semibold text-linen">
-            {featured ? '▶ ' : ''}{tile.name}
-          </span>
+        <span className="absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-linen/95 text-onyx shadow-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
         </span>
       )}
     </button>
@@ -96,29 +91,43 @@ function TalkTile({ tile }: { tile: Extract<Tile, { kind: 'talk' | 'clip' }> }) 
 
 export default function UgcRail({ locale = 'bg' }: { locale?: string }) {
   const en = locale === 'en'
+  const scroller = useRef<HTMLDivElement>(null)
+  const scrollBy = (direction: number) => {
+    const el = scroller.current
+    if (!el) return
+    el.scrollBy({ left: direction * 280, behavior: 'smooth' })
+  }
+
   return (
-    <section aria-label={en ? 'Customer videos and photos' : 'Видеа и снимки от клиенти'} className="bg-parchment py-8 md:py-10">
-      <div className="mx-auto max-w-content px-6 md:px-10">
-        <p className="mb-4 font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-iron">
+    <section aria-label={en ? 'Customer videos and photos' : 'Видеа и снимки от клиенти'} className="bg-parchment py-12 md:py-16">
+      <div className="mx-auto mb-5 flex max-w-content items-end justify-between px-5 md:px-10">
+        <h2 className="font-serif text-2xl font-medium text-iron md:text-3xl">
           {en ? 'Worn by real customers' : 'Носени от реални клиенти'}
-        </p>
+        </h2>
+        <div className="hidden gap-2 md:flex">
+          <button type="button" onClick={() => scrollBy(-1)} aria-label={en ? 'Previous' : 'Назад'} className="flex h-11 w-11 items-center justify-center rounded-full border border-iron/15 text-iron hover:bg-white">‹</button>
+          <button type="button" onClick={() => scrollBy(1)} aria-label={en ? 'Next' : 'Напред'} className="flex h-11 w-11 items-center justify-center rounded-full border border-iron/15 text-iron hover:bg-white">›</button>
+        </div>
       </div>
-      <div className="flex snap-x gap-3 overflow-x-auto px-6 pb-2 md:px-10">
+      <div
+        ref={scroller}
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:px-10 [&::-webkit-scrollbar]:hidden"
+      >
         {TILES.map(tile => (
           <article
             key={`${tile.kind}-${tile.src}`}
-            className={`relative shrink-0 snap-start overflow-hidden rounded-2xl bg-onyx ${tile.kind === 'clip' ? 'h-56 w-36' : 'h-72 w-44'}`}
+            className="relative aspect-[9/16] w-[42vw] max-w-[210px] shrink-0 snap-start overflow-hidden rounded-2xl bg-onyx"
           >
             {tile.kind === 'photo' ? (
-              <>
-                <Image src={tile.src} alt={tile.alt} fill sizes="176px" className="object-cover" />
-                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-onyx/70 to-transparent p-3 font-sans text-xs text-linen">{tile.name}</span>
-              </>
+              <Image src={tile.src} alt={tile.alt} fill sizes="210px" className="object-cover" />
             ) : tile.kind === 'loop' ? (
               <LoopTile tile={tile} />
             ) : (
               <TalkTile tile={tile} />
             )}
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-onyx/75 to-transparent px-3 pb-3 pt-8 font-sans text-sm font-medium text-linen">
+              {tile.name}
+            </span>
           </article>
         ))}
       </div>

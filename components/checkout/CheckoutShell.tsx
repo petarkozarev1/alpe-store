@@ -18,21 +18,21 @@ export function CheckoutShell(p: any) {
   return localizeContent(locale, (
     <div className="min-h-screen bg-parchment">
       <div className="border-b border-stone/20 bg-parchment">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <Image src="/brand/ampe-wordmark-black.svg" alt="AMPÉ" width={92} height={24} className="h-6 w-auto" />
-            <span className="inline-flex items-center gap-2 rounded-full border border-stone/20 bg-white px-2.5 py-1">
+        <div className="max-w-5xl mx-auto flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <Image src="/brand/ampe-wordmark-black.svg" alt="AMPÉ" width={92} height={24} className="h-6 w-auto shrink-0" />
+            <span className="inline-flex min-w-0 items-center gap-2 rounded-full border border-stone/20 bg-white px-2.5 py-1">
               <span className="flex -space-x-1.5">
                 {FACE_AVATARS.map(face => (
                   <Image key={face.src} src={face.src} alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-full border border-white object-cover" />
                 ))}
               </span>
-              <span className="font-sans text-[11px] text-iron">
+              <span className="truncate font-sans text-[11px] text-iron">
                 <span className="text-gold">★★★★★</span> {en ? '1,000+ customers' : '1000+ клиенти'}
               </span>
             </span>
           </div>
-          <div className="flex items-center gap-3 text-sm font-sans">
+          <div className="hidden items-center gap-3 text-sm font-sans sm:flex">
             <span className="flex items-center gap-1.5 text-stone/50">
               <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs">✓</span>
               КОШНИЦА
@@ -46,15 +46,15 @@ export function CheckoutShell(p: any) {
         </div>
       </div>
       <form onSubmit={handleSubmit} noValidate className="clarity-mask">
-        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
-          <div className="flex flex-col gap-6">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-5 py-8 pb-28 lg:grid-cols-[1fr_380px] lg:px-6 lg:py-10 lg:pb-10">
+          <div className="order-2 flex flex-col gap-6 lg:order-1">
             <div>
-              <h1 className="font-serif text-5xl font-bold text-onyx">Плащане.</h1>
-              <p className="font-sans text-sm text-stone mt-2">Попълни данните си — изпращаме до 48 часа.</p>
+              <h1 className="font-serif text-4xl font-medium text-onyx">Плащане.</h1>
+              <p className="mt-2 font-sans text-sm text-stone">Попълни данните си — изпращаме до 48 часа.</p>
             </div>
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
-                <span className="font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">01.</span>Начин на плащане</span>
+            <div className="order-3 rounded-2xl border border-stone/15 bg-white p-5 sm:p-6">
+              <div className="mb-5 flex items-center justify-between">
+                <span className="font-sans text-xs font-semibold uppercase tracking-widest text-stone"><span className="mr-2 text-stone/40">03.</span>Начин на плащане</span>
               </div>
               <div className={`grid gap-3 ${codEligible ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
                 <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-onyx bg-onyx/5' : 'border-stone/20 hover:border-stone/40'}`}>
@@ -75,13 +75,13 @@ export function CheckoutShell(p: any) {
                 )}
               </div>
             </div>
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="mb-5 font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Контакт</div>
+            <div className="order-1 rounded-2xl border border-stone/15 bg-white p-5 sm:p-6">
+              <div className="mb-5 font-sans text-xs font-semibold uppercase tracking-widest text-stone"><span className="mr-2 text-stone/40">01.</span>Контакт</div>
               <input type="email" required placeholder={en ? 'you@example.com' : 'имейл@example.com'} value={contact.email} onChange={e => setContact((prev: any) => ({ ...prev, email: e.target.value }))} onBlur={() => { markTouched('email'); syncPixelUser() }} className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('email', contact.email, isValidEmail))} />
               <ErrorMsg show={!!fieldError('email', contact.email, isValidEmail)} message={fieldError('email', contact.email, isValidEmail)} />
             </div>
-            <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="mb-5 font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">03.</span>Доставка</div>
+            <div className="order-2 rounded-2xl border border-stone/15 bg-white p-5 sm:p-6">
+              <div className="mb-5 font-sans text-xs font-semibold uppercase tracking-widest text-stone"><span className="mr-2 text-stone/40">02.</span>Доставка</div>
               <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -148,7 +148,9 @@ export function CheckoutShell(p: any) {
               </div>
             </div>
           </div>
-          <CheckoutSummary {...p} />
+          <div className="order-1 lg:order-2">
+            <CheckoutSummary {...p} />
+          </div>
         </div>
       </form>
     </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 import { useCartStore } from '@/lib/store/cartStore'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { pairOfferCopy } from '@/lib/sale'
@@ -33,6 +34,18 @@ export default function HeroSection({ locale }: { locale?: string }) {
   const addItem = useCartStore(s => s.addItem)
   const openDrawer = useCartStore(s => s.openDrawer)
   const en = lang === 'en'
+
+  const ctaRef = useRef<HTMLButtonElement>(null)
+  const [stickyCta, setStickyCta] = useState(false)
+  useEffect(() => {
+    const el = ctaRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const observer = new IntersectionObserver(([entry]) => {
+      setStickyCta(!entry.isIntersecting)
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const addPairs = (pairs: number) => {
     addItem(dailyItem(pairs, pairs >= 2 ? pricing.double : pricing.single, lang))
@@ -99,31 +112,38 @@ export default function HeroSection({ locale }: { locale?: string }) {
             {hero.subtext}
           </p>
 
-          <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => addPairs(2)}
-              className="rounded-full bg-linen px-6 py-3.5 font-sans text-sm font-bold text-onyx hover:bg-parchment"
-            >
-              {offer.primary}
-            </button>
-            <button
-              type="button"
-              onClick={() => addPairs(1)}
-              className="rounded-full border border-linen/70 px-6 py-3.5 font-sans text-sm font-semibold text-linen hover:bg-linen/10"
-            >
-              {offer.secondary}
-            </button>
-          </div>
+          <p className="mt-6 font-serif text-4xl font-medium text-linen">€{pricing.double.toFixed(2)}</p>
+          <p className="mt-1 font-sans text-sm text-linen/75">{en ? '2 pairs · free delivery' : '2 чифта · безплатна доставка'}</p>
+          <button
+            ref={ctaRef}
+            type="button"
+            onClick={() => addPairs(2)}
+            className="mt-5 w-full rounded-full bg-linen px-6 py-4 font-sans text-sm font-semibold text-onyx hover:bg-parchment sm:w-auto"
+          >
+            {en ? 'Get 2 pairs' : 'Вземи 2 чифта'}
+          </button>
+          <button
+            type="button"
+            onClick={() => addPairs(1)}
+            className="mt-3 block font-sans text-sm font-medium text-linen/80 underline underline-offset-4"
+          >
+            {offer.secondary}
+          </button>
 
-          <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2">
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {trust.map(item => (
-              <li key={item} className="font-sans text-[12px] leading-snug text-linen/85">
-                <span className="text-gold" aria-hidden="true">✓ </span>
+              <li key={item} className="font-sans text-[12px] font-medium leading-snug text-linen/90">
                 {item}
               </li>
             ))}
           </ul>
+          {stickyCta && (
+            <div className="fixed inset-x-0 bottom-0 z-40 border-t border-iron/10 bg-parchment p-3 md:hidden">
+              <button type="button" onClick={() => addPairs(2)} className="w-full rounded-full bg-onyx py-4 font-sans text-sm font-semibold text-linen">
+                {en ? 'Get 2 pairs' : 'Вземи 2 чифта'} · €{pricing.double.toFixed(2)}
+              </button>
+            </div>
+          )}
         </div>
 
         <figure className="hidden overflow-hidden rounded-2xl border border-linen/20 shadow-2xl md:block">
