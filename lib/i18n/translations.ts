@@ -712,8 +712,6 @@ export const englishTranslations: Record<string, string> = {
   'Не. Очилата не са медицинско изделие и страницата не обещава лечение, профилактика или диагноза.': 'No. The glasses are not a medical device, and this page does not promise treatment, prevention or a diagnosis.',
   'Защо дневните са „до 99%“ и същевременно „65%“?': 'Why do the Daily lenses say both “up to 99%” and “65%”?',
   '85% светлопропускливост и „до 99%“ при 450 nm са лабораторното обобщение. 65% е продуктовото описание на дневния филтър. Без пълната спектрална таблица не ги събираме в едно число.': '85% visible transmission and “up to 99%” at 450 nm are the laboratory summary. 65% is the product description of the Daily filter. Without the full spectral table we do not collapse them into one number.',
-  'Къде е PDF доклат?': 'Where is the PDF report?',
-  'Не е качен. Няма бутон за сваляне, защото файлът липсва в проекта.': 'It is not uploaded. There is no download button, because the file is not in the project.',
   'Дължини': 'Wavelengths',
   'Покрития': 'Coatings',
   'Рамка': 'Frame',
