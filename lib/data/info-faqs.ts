@@ -1,4 +1,4 @@
-export type InfoFaqGroup = 'science' | 'certs' | 'wear' | 'frame' | 'order' | 'warranty'
+export type InfoFaqGroup = 'science' | 'certs' | 'wear' | 'frame' | 'order'
 
 export const infoFaqGroups: { id: InfoFaqGroup | 'all'; label: string }[] = [
   { id: 'all', label: 'Всички' },
@@ -7,7 +7,6 @@ export const infoFaqGroups: { id: InfoFaqGroup | 'all'; label: string }[] = [
   { id: 'wear', label: 'Носене и комфорт' },
   { id: 'frame', label: 'Рамка' },
   { id: 'order', label: 'Поръчка и доставка' },
-  { id: 'warranty', label: 'Гаранция' },
 ]
 
 export const infoFaqs: { group: InfoFaqGroup; question: string; answer: string }[] = [
@@ -70,10 +69,5 @@ export const infoFaqs: { group: InfoFaqGroup; question: string; answer: string }
     group: 'order',
     question: 'Как връщам чифт?',
     answer: 'Имаш 14 календарни дни от получаването, без да посочваш причина. Продуктът трябва да е в оригинална опаковка и без видими повреди. Пратката се връща със Спиди, Еконт или Pigeon — куриера, с който е доставена. Обратната доставка е за наша сметка. Пиши на hello@alpewear.com с номера на поръчката. Поръчката се смята за потвърдена след имейл от нас. Можем да откажем поръчка при изчерпана наличност или грешка в цената.',
-  },
-  {
-    group: 'warranty',
-    question: 'Каква е гаранцията?',
-    answer: '24-месечна законова гаранция срещу производствени дефекти. Не покрива нормално износване или механични повреди, причинени от теб. Важи и при карта, и при наложен платеж.',
   },
 ]
