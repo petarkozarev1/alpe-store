@@ -27,7 +27,7 @@ test('adds a single Daily pair from the video modal and opens the cart', () => {
 })
 
 test('clip 05 starts at 7 seconds and a double pack uses the pair price', () => {
-  render(<ShoppableVideoModal locale="bg" index={4} onClose={() => {}} onIndex={() => {}} />)
+  render(<ShoppableVideoModal locale="bg" index={3} onClose={() => {}} onIndex={() => {}} />)
   expect(document.querySelector('video')?.getAttribute('src')).toBe('/videos/pdp/05.mp4#t=7')
   fireEvent.click(screen.getByRole('radio', { name: /2 чифта/ }))
   fireEvent.click(screen.getByRole('button', { name: /Добави в количката — €89\.99/ }))
