@@ -14,6 +14,7 @@ import {
 } from '@/lib/shop-selection'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { ReviewQuotes } from '@/components/proof/ReviewQuotes'
+import PdpUgcReel from '@/components/product/PdpUgcReel'
 import BusinessSection from '@/components/layout/BusinessSection'
 import LabProofSection from '@/components/shop/LabProofSection'
 import { isEveningPurchasable } from '@/lib/preview-stock'
@@ -354,7 +355,7 @@ export default function ProductPage({
               {pairLimit === 'cap' && <p role="alert" style={{ textAlign: 'center', fontSize: 13, color: '#8C2F1B', marginTop: 10 }}>Може да поръчате до 10 чифта.</p>}
             </div>
             <div style={{ marginTop: 16 }}>
-              <ReviewQuotes locale={locale} limit={3} />
+              <PdpUgcReel locale={locale} />
             </div>
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
