@@ -3,7 +3,7 @@ import { isLocale } from '@/lib/i18n/config'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { createLocalizedPageMetadata } from '@/lib/seo'
 import SellerDetails from '@/components/legal/SellerDetails'
-import { COMPANY, EMAILS } from '@/lib/brand'
+import { EMAILS } from '@/lib/brand'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
@@ -26,9 +26,6 @@ export default function ContactPage({ params }: { params: { locale: string } }) 
           Отговаряме на всеки имейл в рамките на 24 часа в работни дни.
         </p>
         <SellerDetails locale={params.locale} />
-        <p className="font-sans text-sm text-stone mb-10">
-          <a href={COMPANY.phoneHref} className="font-serif text-lg text-iron hover:text-gold">{COMPANY.phone}</a>
-        </p>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl">
           {/* Общи въпроси */}
