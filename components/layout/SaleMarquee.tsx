@@ -60,7 +60,7 @@ export default function SaleMarquee({ text }: { text: string }) {
           setIndex(current => (current + 1) % messages.length)
         }}
       >
-        <span className="font-sans text-[10px] font-bold uppercase leading-none tracking-widest text-gold md:text-[11px]">
+        <span className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
           {message}
         </span>
       </div>
