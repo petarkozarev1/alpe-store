@@ -10,7 +10,7 @@ import { localizedPath } from '@/lib/i18n/routing'
 export default function ComparisonSection({ locale }: { locale: Locale }) {
   const { beforeAfterContent, withoutItems, withItems } = getLandingContent(locale)
   return (
-    <section id="why-AMPÉ" className="w-full bg-parchment py-24">
+    <section id="why-AMPÉ" className="w-full bg-parchment pt-12 pb-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         {/* Header */}

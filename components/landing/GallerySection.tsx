@@ -45,7 +45,7 @@ function VerifiedBadge() {
 export default function GallerySection({ locale }: { locale: Locale }) {
   const { galleryContent } = getLandingContent(locale)
   return (
-    <section className="w-full bg-parchment py-24">
+    <section className="w-full bg-parchment pt-24 pb-12">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
