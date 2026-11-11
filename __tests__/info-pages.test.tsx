@@ -11,9 +11,11 @@ test('keeps the published lab rows on the certifications page', () => {
   expect(screen.getByText('BS EN ISO 12312-1:2013+A1:2015')).toBeInTheDocument()
   expect(screen.getByText('ANSI Z80.3-2015')).toBeInTheDocument()
   expect(screen.getByText('AS/NZS 1067.1:2016')).toBeInTheDocument()
-  expect(screen.getByText('99.21%')).toBeInTheDocument()
+  expect(screen.getAllByText('99.21%').length).toBeGreaterThan(0)
   expect(screen.getAllByText('jx-y8016').length).toBeGreaterThan(0)
   expect(screen.getAllByText('jx-y8008').length).toBeGreaterThan(0)
+  expect(screen.getAllByText(/не са медицинско изделие/i).length).toBeGreaterThan(0)
+  expect(screen.getByRole('link', { name: 'https://pubmed.ncbi.nlm.nih.gov/11487664/' })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/11487664/')
 })
 
 test('keeps both lens product links visible', () => {
