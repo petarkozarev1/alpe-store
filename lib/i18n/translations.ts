@@ -214,8 +214,6 @@ export const englishTranslations: Record<string, string> = {
   'Добави в количката →': 'Add to cart →',
   '✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане': '✓ CE-certified lenses · ✓ Free delivery on 2+ pairs · ✓ Secure payment',
   'Цените са крайни. · Не е медицинско изделие': 'Prices are final. · Not a medical device',
-  'Сертифицирани и тествани стъкла': 'Certified and tested lenses',
-  'Пълна UV защита': 'Full UV protection',
   'Сигурно\nплащане': 'Secure\npayment',
   'Сертифицирани\nпо CE стъкла': 'CE-certified\nlenses',
   '14-дневно\nвръщане': '14-day\nreturns',

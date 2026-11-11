@@ -17,6 +17,7 @@ import { ReviewQuotes } from '@/components/proof/ReviewQuotes'
 import PdpUgcReel from '@/components/product/PdpUgcReel'
 import BusinessSection from '@/components/layout/BusinessSection'
 import LabProofSection from '@/components/shop/LabProofSection'
+import { PaymentMarks } from '@/components/shop/PaymentMarks'
 import { isEveningPurchasable } from '@/lib/preview-stock'
 
 type Tab = 'description' | 'science' | 'reviews'
@@ -360,32 +361,7 @@ export default function ProductPage({
           <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: '#4A3024', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
 
-          {/* Payment icons */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, margin: '12px 0 0', flexWrap: 'wrap' as const }}>
-            {['VISA', 'MC', 'Apple Pay', 'Google Pay', 'Revolut Pay'].map(p => (
-              <div key={p} style={{ padding: '4px 10px', border: '1px solid rgba(28,15,10,0.12)', borderRadius: 4, fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', color: 'rgba(28,15,10,0.35)', background: '#fff8f2' }}>{p}</div>
-            ))}
-          </div>
-
-          {/* Cert strip */}
-          <div style={{ border: '1px solid rgba(28,15,10,0.1)', borderRadius: 10, padding: '14px 16px', margin: '16px 0 0', background: '#fff8f2' }}>
-            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: '#4A3024', marginBottom: 12 }}>Сертифицирани и тествани стъкла</p>
-            <div className="product-cert-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 8 }}>
-              {[
-                { title: 'BS EN ISO\n12312-1', sub: 'EU оптична безопасност', icon: '☆' },
-                { title: 'ANSI\nZ80.3', sub: 'Американски стандарт', icon: '◷' },
-                { title: 'AS/NZS\n1067.1', sub: 'Австралийски стандарт', icon: '◉' },
-                { title: 'UV400\nЗащита', sub: 'Пълна UV защита', icon: '◈' },
-                { title: 'Green Light\n500–560nm', sub: 'Green filter · NEW', icon: '◎' },
-              ].map(c => (
-                <div key={c.title} style={{ textAlign: 'center' }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid rgba(196,154,108,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 6px', color: '#C49A6C', fontSize: 14 }}>{c.icon}</div>
-                  <p style={{ fontSize: 10, fontWeight: 700, color: '#1C0F0A', lineHeight: 1.3, whiteSpace: 'pre-line' }}>{c.title}</p>
-                  <p style={{ fontSize: 9, color: '#C49A6C', marginTop: 3, lineHeight: 1.3 }}>{c.sub}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <PaymentMarks />
 
           {/* Trust row */}
           <div className="product-trust-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, padding: '20px 0', borderTop: '1px solid rgba(28,15,10,0.09)', borderBottom: '1px solid rgba(28,15,10,0.09)', margin: '20px 0' }}>
@@ -758,7 +734,6 @@ export default function ProductPage({
           .product-breadcrumb { padding: 12px 16px 0 !important; }
           .product-gallery-col { position: static !important; }
           .product-grid-inner { padding: 20px 16px 80px !important; gap: 28px !important; }
-          .product-cert-grid { grid-template-columns: repeat(3,1fr) !important; gap: 6px !important; }
           .product-trust-grid { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; padding: 16px 0 !important; }
           .product-tab-row button { padding: 12px 14px !important; font-size: 11px !important; }
           .product-reviews-grid { grid-template-columns: 1fr !important; }
