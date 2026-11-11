@@ -27,7 +27,7 @@ export default function IngredientsSection({ locale }: { locale: Locale }) {
           </motion.h2>
         </div>
 
-        <div className="relative left-1/2 mb-16 w-screen max-w-none -translate-x-1/2">
+        <div className="mb-16">
           <ScreenTimeSection locale={locale} />
         </div>
 

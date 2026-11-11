@@ -24,44 +24,49 @@ export default function ScreenTimeSection({ locale = 'bg' }: { locale?: string }
   }, [])
 
   return (
-    <section className="relative isolate min-h-[25rem] overflow-hidden bg-onyx text-linen md:min-h-[30rem]">
-      <div className="absolute inset-y-0 right-0 h-full w-[148%] sm:w-[128%] md:w-[68%]">
-        <Image
-          src="/media/laptop-lifestyle-poster.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-[80%_42%] md:object-[72%_46%]"
-        />
-        <video
-          ref={ref}
-          src="/media/laptop-lifestyle.mp4"
-          poster="/media/laptop-lifestyle-poster.jpg"
-          muted
-          loop
-          playsInline
-          preload="none"
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover object-[80%_42%] motion-reduce:hidden md:object-[72%_46%]"
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-onyx via-onyx/80 to-onyx/10" />
-      <div className="relative z-10 mx-auto flex min-h-[25rem] max-w-content flex-col justify-center px-6 md:min-h-[30rem] md:px-10">
-        <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">
+    <div className="relative aspect-[16/7] w-full overflow-hidden rounded-xl">
+      <Image
+        src="/media/laptop-lifestyle-poster.jpg"
+        alt=""
+        fill
+        sizes="(min-width: 768px) 1120px, 100vw"
+        className="object-cover object-center"
+      />
+      <video
+        ref={ref}
+        src="/media/laptop-lifestyle.mp4"
+        poster="/media/laptop-lifestyle-poster.jpg"
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover object-center motion-reduce:hidden"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(118deg, rgba(45,14,4,0.70) 0%, rgba(45,14,4,0.40) 30%, rgba(45,14,4,0.08) 52%, transparent 70%)',
+        }}
+      />
+      <div className="absolute left-0 top-0 z-10 max-w-[64%] px-3 pb-1 pt-2 sm:max-w-[56%] sm:p-6 md:max-w-[46%] md:p-8">
+        <p className="font-sans text-[9px] font-bold uppercase tracking-[0.14em] text-gold sm:text-[11px] sm:tracking-[0.16em]">
           {en ? 'Screen time' : 'Време пред екрана'}
         </p>
-        <h2 className="mt-3 max-w-md font-serif text-4xl leading-tight text-linen md:text-5xl">
+        <h2 className="mt-1 font-serif text-[15px] leading-tight text-cream sm:mt-3 sm:text-3xl md:text-4xl lg:text-5xl">
           {en ? 'Made for hours in front of a screen.' : 'Направени за часовете пред екрана.'}
         </h2>
-        <ul className="mt-6 max-w-sm space-y-2">
+        <ul className="mt-1 space-y-0.5 sm:mt-5 sm:space-y-2">
           {(en ? POINTS.en : POINTS.bg).map(point => (
-            <li key={point} className="font-sans text-sm text-linen/90">
+            <li key={point} className="font-sans text-[10px] leading-snug text-linen sm:text-sm">
               <span className="text-gold" aria-hidden="true">✓ </span>
               {point}
             </li>
           ))}
         </ul>
       </div>
-    </section>
+    </div>
   )
 }
