@@ -46,6 +46,8 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
   const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null)
   const blockClick = useRef(false)
   const [edges, setEdges] = useState({ start: true, end: false })
+  const openRef = useRef<number | null>(null)
+  openRef.current = open
 
   const copy = {
     eyebrow: en ? 'Worn on Instagram' : 'Носят ги в Instagram',
@@ -59,6 +61,32 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     next: en ? 'Next video' : 'Следващо видео',
   }
 
+  function syncPlayback() {
+    const root = scroller.current
+    if (!root || openRef.current != null) return
+    const rootRect = root.getBoundingClientRect()
+    const margin = rootRect.width * 0.35
+    videos.current.forEach((video) => {
+      if (!video) return
+      const clip = pdpUgcClips.find((item) => item.id === video.dataset.clipId)
+      if (!clip) return
+      const rect = video.getBoundingClientRect()
+      const overlap = Math.min(rect.right, rootRect.right) - Math.max(rect.left, rootRect.left)
+      const near = rect.left < rootRect.right + margin && rect.right > rootRect.left - margin
+      if (near && !video.getAttribute('src')) {
+        prepareVideo(video)
+        video.preload = 'metadata'
+        video.src = clipSource(clip)
+      }
+      if (overlap > rect.width * 0.55 && !pausedByUser.current.has(clip.id)) {
+        prepareVideo(video)
+        video.play().catch(() => {})
+      } else if (overlap < rect.width * 0.2) {
+        video.pause()
+      }
+    })
+  }
+
   function measure() {
     const node = scroller.current
     if (!node) return
@@ -67,6 +95,7 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     const offset = max <= 1 ? 0 : (node.scrollLeft / node.scrollWidth) * 100
     setBar({ thumb, offset })
     setEdges({ start: node.scrollLeft <= 2, end: max <= 1 || node.scrollLeft >= max - 2 })
+    syncPlayback()
   }
 
   function prepareVideo(video: HTMLVideoElement) {
@@ -104,28 +133,11 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     const root = scroller.current
     if (!root || typeof IntersectionObserver === 'undefined') return
     const nodes = videos.current.filter((node): node is HTMLVideoElement => Boolean(node))
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target as HTMLVideoElement
-        const id = video.dataset.clipId
-        const clip = pdpUgcClips.find((item) => item.id === id)
-        if (!clip) return
-        const rootRect = root.getBoundingClientRect()
-        const rect = video.getBoundingClientRect()
-        const overlap = Math.min(rect.right, rootRect.right) - Math.max(rect.left, rootRect.left)
-        if ((entry.isIntersecting || overlap > 0) && !video.getAttribute('src')) {
-          prepareVideo(video)
-          video.preload = 'metadata'
-          video.src = clipSource(clip)
-        }
-        if (overlap > rect.width * 0.55 && !pausedByUser.current.has(clip.id)) {
-          prepareVideo(video)
-          video.play().catch(() => {})
-        } else if (overlap < rect.width * 0.2) {
-          video.pause()
-        }
-      })
-    }, { root, rootMargin: '0px 35% 0px 35%', threshold: [0, 0.15, 0.55] })
+    const observer = new IntersectionObserver(() => { syncPlayback() }, {
+      root,
+      rootMargin: '0px 35% 0px 35%',
+      threshold: [0, 0.15, 0.55],
+    })
     nodes.forEach((node) => observer.observe(node))
     measure()
     const onWheel = (event: WheelEvent) => {
@@ -161,8 +173,6 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     const node = scroller.current
     if (!node) return
     drag.current = { x: event.clientX, left: node.scrollLeft, moved: false }
-    node.setPointerCapture(event.pointerId)
-    node.classList.add('is-dragging')
   }
 
   function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
@@ -170,16 +180,24 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     const node = scroller.current
     if (!state || !node) return
     const dx = event.clientX - state.x
-    if (Math.abs(dx) > 5) state.moved = true
+    if (!state.moved && Math.abs(dx) <= 5) return
+    if (!state.moved) {
+      state.moved = true
+      node.classList.add('is-dragging')
+      node.setPointerCapture(event.pointerId)
+    }
     node.scrollLeft = state.left - dx
   }
 
   function onPointerUp(event: React.PointerEvent<HTMLDivElement>) {
     const node = scroller.current
-    if (drag.current?.moved) blockClick.current = true
+    const moved = drag.current?.moved === true
     drag.current = null
     node?.classList.remove('is-dragging')
     if (node?.hasPointerCapture(event.pointerId)) node.releasePointerCapture(event.pointerId)
+    if (!moved) return
+    blockClick.current = true
+    window.setTimeout(() => { blockClick.current = false }, 0)
   }
 
   function openClip(index: number) {
