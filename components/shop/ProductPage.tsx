@@ -25,13 +25,13 @@ const lensData = {
   evening: {
     name: 'AMPÉ',
     nameItalic: 'Evening',
-    tagline: 'Оранжевият филтър, който сигнализира на мозъка ви, че е време да се отпуснете. Блокира 98% от синята и зелената светлина за дълбок, възстановяващ сън. Ефектът започва да се усеща още след първата седмица.',
+    tagline: 'Оранжев филтър за вечерта. Блокира 98% от синята светлина (415–455 nm) и 98% от зелената (500–560 nm).',
     benefitBg: '#fff5eb',
     benefitBorder: 'rgba(196,154,108,0.3)',
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
     benefitText: 'Оптимално да се носят след залез слънце и преди сън.',
     benefitColor: '#7a4e1a',
-    descText: "Лещите AMPÉ Evening са създадени с една цел: сън. Носени след залез слънце и поне 2 часа преди лягане, техният наситено оранжев цвят блокира 98% от синята светлина в диапазона 415–455 nm — дължините на вълните, които най-много потискат мелатонина. След една седмица редовна употреба повечето клиенти споделят, че заспиват по-бързо и се събуждат наистина отпочинали.",
+    descText: "Лещите AMPÉ Evening са за вечерта. Носени след залез и поне 2 часа преди лягане, филтрират 98% от синята светлина в 415–455 nm и 98% от зелената в 500–560 nm. Не са медицинско изделие и не обещаваме по-дълъг сън.",
     images: [
       { src: '/images/shop/shop-evening-1.png', alt: 'AMPÉ Evening очила за синя светлина с оранжеви стъкла' },
       { src: '/images/shop/shop-evening-2.png', alt: 'Оранжеви blue light blocking glasses AMPÉ Evening' },
@@ -47,7 +47,7 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#f9e94e,#e6b800)',
     benefitText: 'Идеални за целодневна работа пред екран.',
     benefitColor: '#7a6200',
-    descText: "Очилата AMPÉ Daily са създадени за продължителна работа пред екрана. Тяхната кехлибарено-жълта оцветка филтрира 65% от синята светлина. Достатъчно, за да намали напрежението в очите и главоболието в края на деня, като същевременно запазва цветовете достатъчно точни за работа с дизайн, редактиране на снимки и видеоразговори. Леки, удобни и подходящи за носене в продължение на 8+ часа.",
+    descText: "Очилата AMPÉ Daily са за продължителна работа пред екрана. Кехлибарено-жълтият филтър спира 65% от синята светлина и пази цветовете достатъчно точни за дизайн, снимки и видеоразговори. Рамката е за носене 8+ часа.",
     images: [
       { src: '/images/shop/shop-daily-1.png', alt: 'AMPÉ Daily очила за компютър с жълти стъкла' },
       { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
@@ -351,7 +351,7 @@ export default function ProductPage({
               <PdpUgcReel locale={locale} />
             </div>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ BS EN ISO 12312-1 · ANSI Z80.3 · AS/NZS 1067.1 · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: '#4A3024', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
 
           <PaymentMarks />
@@ -361,7 +361,7 @@ export default function ProductPage({
             {[
               { icon: '🔒', label: 'Сигурно\nплащане' },
               { icon: '🚚', label: 'Безплатна доставка\nза 2+ чифта' },
-              { icon: 'CE', label: 'Сертифицирани\nпо CE стъкла' },
+              { icon: 'ISO', label: 'BS EN ISO 12312-1\nANSI · AS/NZS' },
               { icon: 'return', label: '14-дневно\nвръщане' },
             ].map(t => (
               <div key={t.label} style={{ textAlign: 'center' }}>
@@ -371,8 +371,8 @@ export default function ProductPage({
                       <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
                       <path d="M3 3v5h5"/>
                     </svg>
-                  ) : t.icon === 'CE' ? (
-                    <span style={{ fontSize: 13, fontWeight: 800, color: '#1C0F0A', lineHeight: 1 }}>CE</span>
+                  ) : t.icon === 'ISO' ? (
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#1C0F0A', lineHeight: 1 }}>ISO</span>
                   ) : (
                     <span style={{ fontSize: 18, lineHeight: 1 }}>{t.icon}</span>
                   )}
@@ -400,17 +400,22 @@ export default function ProductPage({
               <div style={{ padding: '28px 0' }}>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>{d.descText}</p>
                 <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 14, marginTop: 20 }}>
-                  {[
-                    { text: <><strong>98% блокиране на синята светлина</strong> — клинично доказано, че възстановява естественото производство на мелатонин</> },
-                    { text: <><strong>Рамка от кристален ацетат</strong> — лека, с тегло 22 г, достатъчно издръжлива за ежедневна употреба</> },
-                    { text: <><strong>Покритие против надраскване и отблясъци</strong> — лещите остават чисти в продължение на години</> },
-                    { text: <><strong>Блокират синя и зелена светлина (415–560 nm)</strong> — защита с пълен спектър срещу двете дължини на вълната, които нарушават съня и предизвикват напрежение в очите</> },
-                  ].map((f, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                  {(lens === 'evening' ? [
+                    '98% блокиране на синята светлина (415–455 nm) и 98% на зелената (500–560 nm).',
+                    '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка.',
+                    'Устойчиви на драскотини, с антирефлексно покритие.',
+                    'UV400. В лабораторията и двете лещи са 100% UV.',
+                  ] : [
+                    '65% филтър на синята светлина и частичен филтър за зелената.',
+                    '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка.',
+                    'Устойчиви на драскотини, с антирефлексно покритие.',
+                    'UV400. В лабораторията и двете лещи са 100% UV.',
+                  ]).map((text) => (
+                    <div key={text} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                       <div style={{ width: 20, height: 20, background: '#F2E4D0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
                         <svg width="10" height="10" fill="none" stroke="#C49A6C" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>
                       </div>
-                      <div style={{ fontSize: 14, lineHeight: 1.7, color: '#3d2416' }}>{f.text}</div>
+                      <div style={{ fontSize: 14, lineHeight: 1.7, color: '#3d2416' }}>{text}</div>
                     </div>
                   ))}
                 </div>
@@ -419,12 +424,11 @@ export default function ProductPage({
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Синята светлина в диапазона 415–455 nm е основната дължина на вълната, която стимулира супрахиазматичния ядро на мозъка да забави отделянето на мелатонин — като по същество сигнализира на тялото, че все още е ден. Лещите AMPÉ използват прецизно оптично покритие, което действа точно върху този диапазон.</p>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>Лещите Evening (оранжеви) блокират 98% от този диапазон. Лещите Daily (жълти) блокират 65%, като поддържат ползите за циркадния ритъм и същевременно запазват точността на цветовете при работа пред екран.</p>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>В проучване от 2022 г., публикувано в Journal of Sleep Research, очила, блокиращи синята светлина, носени 2 часа преди лягане, подобряват заспиването със средно 18 минути и увеличават общото време за сън с 24 минути.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Изследванията за светлината, не за нашите лещи, сочат силен диапазон 446–477 nm за мелатонина нощем и връх на меланопсина около 479 nm. Пълните източници са на страницата Доказано.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>На продукта Evening пишем 98% в 415–455 nm и 98% зелена светлина в 500–560 nm. На Daily пишем 65% филтър на синята светлина. Лабораторията AHD TMS мери отделни редове: до 99% при 450 nm и 99,21% в 475–650 nm.</p>
                 <div style={{ marginTop: 24, background: '#f5ede4', border: '1.5px solid rgba(196,154,108,0.3)', borderRadius: 12, padding: '20px 22px' }}>
-                  <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Нови изследвания: Зелената светлина също има значение.</strong> Последните проучвания сочат, че зелената светлина в диапазона 500–560 nm също потиска производството на мелатонин, макар и с по-малка сила в сравнение със синята. Лещите AMPÉ Evening са насочени към двата диапазона, като ви осигуряват защита в целия спектър за възстановителен сън.</p>
-                  <p style={{ fontSize: 11, color: 'rgba(196,154,108,0.9)', marginTop: 12 }}>Hattar и др., 2003 · Zhao и др., 2021</p>
+                  <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Зеленото също влиза в сметката.</strong> В началото на един лабораторен тест 555 nm действа колкото 460 nm. Затова вечерните имат отделен ред за 500–560 nm. Не обещаваме по-дълъг сън.</p>
+                  <p style={{ fontSize: 11, color: 'rgba(196,154,108,0.9)', marginTop: 12 }}>Gooley et al., 2010 · PubMed 20463367</p>
                 </div>
               </div>
             )}
@@ -445,16 +449,16 @@ export default function ProductPage({
       <section className="product-stats-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на AMPÉ след 14 дни редовно ползване.</p>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Лабораторията</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Числата, които <em style={{ fontStyle: 'italic', fontWeight: 400 }}>публикуваме.</em></h2>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>От независимия тест AHD TMS и от описанието на продукта. Не са от клиентска анкета.</p>
           </div>
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
-              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на AMPÉ', delay: '0.2s' },
-              { label: 'По-бързо заспиване', pct: 79, desc: 'Вечерният чифт идва с новата наличност и още не може да се поръча.', delay: '0.35s' },
-              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към AMPÉ Daily', delay: '0.5s' },
-              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали AMPÉ на приятел или член на семейството', delay: '0.65s' },
+              { label: 'Дневни, пик 450 nm', pct: 99, desc: 'AHD TMS: до 99% при 450 nm. На продукта дневният филтър е 65%.', delay: '0.2s' },
+              { label: 'Вечерни, 475–650 nm', pct: 99.21, desc: 'AHD TMS: 99,21% в 475–650 nm. На продукта: 98% в 415–455 nm.', delay: '0.35s' },
+              { label: 'UV, и двете лещи', pct: 100, desc: 'AHD TMS: 100% UV, UVA + UVB = 0.00%. На продукта пишем UV400.', delay: '0.5s' },
+              { label: 'Зелена светлина, вечерни', pct: 98, desc: 'На продукта: 98% в 500–560 nm. Дневните са с частичен филтър.', delay: '0.65s' },
             ].map(s => (
               <div key={s.label} style={{ background: '#FAF0E4', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 12, padding: '32px 36px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14 }}>
@@ -475,15 +479,15 @@ export default function ProductPage({
       <section className="product-nights-section" style={{ padding: '80px 48px', background: '#FAF0E4' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с AMPÉ</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Първите ви <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 нощи.</em></h2>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Носене</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Как да ги <em style={{ fontStyle: 'italic', fontWeight: 400 }}>носите.</em></h2>
           </div>
           <div className="product-nights-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
             {[
-              { n: '1', title: 'Днес', body: 'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Очите ви ще усетят разликата веднага.', dark: false },
-              { n: '3', title: 'Ден 3', body: 'Напрежението в очите започва да отшумява. Главоболието, което ви се появяваше около 16:00 ч.? Днес може и да не го забележите.', dark: false },
-              { n: '5', title: 'Ден 5', body: 'Ритъмът на мелатонина ви започва да се възстановява. Заспивате по-бързо — и се събуждате преди алармата, без да се страхувате от нея.', dark: false },
-              { n: '7', title: 'Нощ 7', body: 'Това е нощта, в която повечето клиенти ни изпращат съобщение. Сън, който отново се усеща като сън.', dark: true },
+              { n: '1', title: 'През деня', body: 'Използвайте дневните, докато работите. JX-Y8016 е категория 0 и е подходяща за шофиране.', dark: false },
+              { n: '2', title: 'Вечерта', body: 'Сложете вечерните поне 2 часа преди сън. JX-Y8008 е категория 1. Светофарът е PASS.', dark: false },
+              { n: '3', title: 'Рамката', body: '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка.', dark: false },
+              { n: '14', title: 'Ако не станат', body: 'Имате 14 календарни дни да ги върнете, без да посочвате причина.', dark: true },
             ].map(item => (
               <div key={item.n} style={{ background: item.dark ? '#1C0F0A' : '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', padding: '36px 28px', position: 'relative' }}>
                 <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 52, fontWeight: 300, fontStyle: 'italic', color: item.dark ? 'rgba(250,240,228,0.15)' : 'rgba(196,154,108,0.25)', lineHeight: 1, marginBottom: 20 }}>{item.n}</div>
@@ -513,13 +517,13 @@ export default function ProductPage({
               </thead>
               <tbody>
                 {[
-                  { feature: 'Филтриране на синята светлина', AMPÉ: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', AMPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Лещи със сертификат CE', AMPÉ: '✓', generic: 'Рядко', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Изкривяване на цветовете', AMPÉ: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', AMPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Тегло на рамката', AMPÉ: '22 г кристален ацетат', generic: '35–50 г пластмаса', AMPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Покритие против надраскване', AMPÉ: '✓', generic: 'Не', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Две специално създадени лещи', AMPÉ: '✓', generic: 'Един универсален оттенък', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Филтър за зелена светлина (500–560 nm)', AMPÉ: '✓', generic: '✗ Не е включено', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтриране на синята светлина', AMPÉ: '65% дневни · 98% вечерни', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Стандарти на лещите', AMPÉ: 'ISO · ANSI · AS/NZS', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Изкривяване на цветовете', AMPÉ: 'Лек жълт или оранжев оттенък', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Тегло на рамката', AMPÉ: '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Покритие против надраскване', AMPÉ: '✓', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Две специално създадени лещи', AMPÉ: 'JX-Y8016 и JX-Y8008', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтър за зелена светлина (500–560 nm)', AMPÉ: 'Вечерни 98% · дневни частичен', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
@@ -547,7 +551,7 @@ export default function ProductPage({
               AMPÉ е за хора, които прекарват деня си пред екран.
             </h2>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: 'rgba(28,15,10,0.72)' }}>
-              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, AMPÉ комбинира дневни и вечерни лещи в една ясна система: Daily за работа, фокус и по-малко напрежение в очите, Evening за времето след залез и по-спокоен сън.
+              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, AMPÉ комбинира дневни и вечерни лещи: Daily за работа пред екран, Evening за след залез.
             </p>
           </div>
           <div style={{ display: 'grid', gap: 16 }}>
@@ -557,8 +561,8 @@ export default function ProductPage({
                 body: 'AMPÉ Daily използва прозрачно-жълт филтър за ежедневна работа пред лаптоп, монитор и телефон, без силно изкривяване на цветовете.',
               },
               {
-                title: 'За вечерна защита от синя и зелена светлина',
-                body: 'AMPÉ Evening е създаден за употреба след залез слънце и преди сън, когато ярките екрани най-често пречат на естественото отпускане.',
+                title: 'За вечерта след залез',
+                body: 'AMPÉ Evening е за след залез и поне 2 часа преди сън. Филтрира 98% от синята светлина (415–455 nm) и 98% от зелената (500–560 nm).',
               },
               {
                 title: 'За търсещите качествени blue light glasses',

@@ -4,12 +4,12 @@ import type { Locale } from '@/lib/i18n/config'
 import { localizeValue } from '@/lib/i18n/translations'
 
 export const heroContent = {
-  badge: '✓ EU сертифицирани · ★★★★★ 1000+ доволни клиенти',
+  badge: '✓ Тествани в AHD TMS · UV400',
   headlinePart1: 'Очите ти заслужават почивка.',
   headlinePart2Before: 'Дай им',
   headlinePart2After: 'я.',
-  subtext: 'Блокираме до 99% от синята и зелената светлина за по-малко умора, по-добър сън и повече енергия всеки ден.',
-  cta: 'Защити очите си',
+  subtext: 'Дневните филтрират 65% от синята светлина, вечерните — 98% от синята и зелената. За екрана, не за лечение.',
+  cta: 'Вземи си чифт',
   heroFaceImages: [
     { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
     { src: '/images/hero/person-1-night.png', alt: 'Man wearing AMPÉ Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
@@ -21,14 +21,14 @@ export const heroContent = {
 }
 
 export const benefits: BenefitItem[] = [
-  { id: 'eye-strain', headline: 'Край на умората на очите и главоболието', side: 'right' },
-  { id: 'sleep', headline: 'Спи по-дълбоко. Събуждай се по-свеж.', side: 'left' },
-  { id: 'focus', headline: 'Фокусирай се цял ден', side: 'right' },
+  { id: 'eye-strain', headline: 'За дългия ден пред екрана', side: 'right' },
+  { id: 'sleep', headline: 'За вечерта след залез', side: 'left' },
+  { id: 'focus', headline: 'Цветовете остават достатъчно верни', side: 'right' },
 ]
 
 export const darkCtaContent = {
-  socialProof: '1000+ здрави очи',
-  headline: 'Защити очите си. Живей пълноценно.',
+  socialProof: 'Две лещи. Един ден.',
+  headline: 'За деня пред екрана. И за вечерта.',
   cta: 'Разгледай колекцията',
 }
 
@@ -42,9 +42,9 @@ export const ingredientsContent = {
 }
 
 export const ingredients: Ingredient[] = [
-  { number: 1, name: 'Филтър за синя светлина', description: 'Блокира до 99% от синята светлина — тествано по BS EN ISO 12312-1.' },
-  { number: 2, name: 'Филтър за зелена светлина', description: 'Блокира вредната зелена светлина (500–560nm) — свързана с нарушен сън и умора на очите дори след залез.', badge: 'НОВО' },
-  { number: 3, name: 'UV400 защита', description: 'Пълна защита, вътре и навън.' },
+  { number: 1, name: 'Филтър за синя светлина', description: 'Дневни: до 99% при 450 nm. Вечерни: 99,21% в 475–650 nm. Тест AHD TMS.' },
+  { number: 2, name: 'Филтър за зелена светлина', description: 'Вечерните филтрират 98% от зелената светлина (500–560 nm). Дневните са с частичен филтър.', badge: 'НОВО' },
+  { number: 3, name: 'UV400 защита', description: 'В лабораторията е 100% UV и при двете лещи.' },
   { number: 4, name: 'Устойчиви лещи', description: 'Издържат на ежедневието, без драскотини.' },
   { number: 5, name: 'Лека рамка', description: 'Слагаш и забравяш, че ги има.' },
   { number: 6, name: 'Антирефлексно покритие', description: 'Край на блясъка от екрана и лампите.' },
@@ -53,26 +53,26 @@ export const ingredients: Ingredient[] = [
 export const howItWorksContent = {
   badge: 'Как работи',
   headline: 'Лесно.\nПросто работи.',
-  cta: 'Изпробвайте сами',
+  cta: 'Пробвай ги',
 }
 
 export const steps: StepItem[] = [
   {
     number: 1,
     title: 'Сложи ги',
-    description: 'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Очите ви ще усетят разликата веднага. По-малко напрежение, повече спокойствие.',
+    description: 'Сложи дневните, докато работиш, и вечерните поне 2 часа преди сън. Така ги носим. Не е лекарска схема.',
     image: '/images/how-it-works-selfie.jpg',
   },
   {
     number: 2,
     title: 'Филтрирай',
-    description: 'Лещите филтрират синята и зелената светлина цял ден — без пауза, без умора.',
+    description: 'Дневните филтрират синята светлина, вечерните — синята и зелената. Числата са на страницата за стъклата.',
     image: '/images/how-it-works-filter.jpg',
   },
   {
     number: 3,
     title: 'Почини си',
-    description: 'Тялото усеща, че денят е към края си. Заспиваш по-лесно, спиш по-дълбоко.',
+    description: 'Вечерните се слагат поне 2 часа преди сън. Не обещаваме по-дълъг сън.',
     image: '/images/how-it-works-rest.jpg',
   },
 ]
@@ -90,16 +90,16 @@ export const withoutItems: string[] = [
   'Въртиш се в леглото до полунощ',
   'Не можеш да се съсредоточиш',
   'Сухи, зачервени очи',
-  'Зелената светлина нарушава съня дори след залез',
+  'Екран и след залез',
 ]
 
 export const withItems: string[] = [
-  'Очите са спокойни през целия ден',
-  'Без главоболие след работа',
-  'Заспиваш, когато легнеш',
-  'Фокусът се връща',
-  'Очите се отпускат',
-  'Пълна защита — синя и зелена светлина (415–560nm)',
+  'Дневни лещи за работа пред екрана',
+  '65% филтър на синята светлина',
+  'Вечерни лещи след залез',
+  'Лек жълт или оранжев оттенък',
+  'Антирефлексно покритие',
+  'Вечерните: 98% синя (415–455 nm) и 98% зелена (500–560 nm)',
 ]
 
 export const testimonialContent = {
@@ -110,7 +110,7 @@ export const testimonialContent = {
 }
 
 export const galleryContent = {
-  headline: 'Истинска защита. С AMPÉ.',
+  headline: 'Всеки ден. С AMPÉ.',
   images: [
     '/images/customers/01.jpg',
     '/images/customers/02.jpg',
@@ -124,7 +124,7 @@ export const galleryContent = {
 export const faqs: FaqItem[] = [
   {
     question: 'Наистина ли работят тези очила?',
-    answer: 'Да. Лещите на AMPÉ са тествани по BS EN ISO 12312-1:2013+A1:2015 и блокират до 99% от синята и зелената светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на 1-2 седмици.',
+    answer: 'Лабораторията AHD TMS мери филтъра: до 99% при 450 nm на дневните и 99,21% в 475–650 nm на вечерните. На продукта пишем 65% и 98%. Очилата не са медицинско изделие.',
   },
   {
     question: 'Може ли да ги нося цял ден?',
@@ -142,16 +142,16 @@ export const faqs: FaqItem[] = [
 
 export const faqSectionContent = {
   badge: 'Често задавани въпроси',
-  headline: 'Всичко, което трябва да\nзнаете за AMPÉ',
+  headline: 'Всичко, което трябва да\nзнаеш за AMPÉ',
   cta: 'Поръчай сега',
 }
 
 export const finalCtaContent = {
   badge: 'Вземи своя чифт',
-  headline: 'Защити очите си.\nЖивей оптимално.',
+  headline: 'За деня и за вечерта.',
   cta: 'Вземи своя чифт',
   image: '/images/final-cta.png',
-  subtext: 'BS EN ISO 12312-1 сертифицирани · Безплатна доставка за 2+ чифта · 1000+ доволни клиенти',
+  subtext: 'BS EN ISO 12312-1 · ANSI Z80.3 · AS/NZS 1067.1 · Безплатна доставка за 2+ чифта',
 }
 
 export function getLandingContent(locale: Locale) {

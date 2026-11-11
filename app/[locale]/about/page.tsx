@@ -8,7 +8,7 @@ import FormerlyLine from '@/components/layout/FormerlyLine'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
   title: 'Нашата история',
-  description: 'AMPÉ е основана от хора, които познават умората от екрана. Научете повече за нашата мисия.',
+  description: 'AMPÉ е основана от хора, които познават умората от екрана. Научи повече за нашата мисия.',
   path: '/about',
   })
 }
@@ -34,15 +34,14 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
             което реално работи с EU сертификати, не с маркетинг.
           </p>
           <p>
-            Днес над 1000 клиенти в България носят AMPÉ всеки ден. Голяма част от тях ни пишат,
-            че за пръв път от години заспиват без проблем. Това е причината да продължаваме и да се подобряваме.
+            {'Днес над 1000 клиенти в България носят AMPÉ всеки ден. Продължаваме, за да стоят числата от лабораторията на една ръка разстояние.'}
           </p>
 
           <div className="grid grid-cols-3 gap-6 mt-6">
             {[
               { num: '1000+', label: 'доволни клиенти' },
               { num: 'EU', label: 'сертифицирани стъкла' },
-              { num: '99%', label: 'блокиране на синя светлина' },
+              { num: 'до 99%', label: 'при 450 nm, дневни' },
             ].map(s => (
               <div key={s.label} className="text-center">
                 <p className="font-serif text-3xl text-iron">{s.num}</p>

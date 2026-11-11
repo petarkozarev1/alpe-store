@@ -132,7 +132,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <div>
               <h2 className="font-serif text-4xl">{t('22 г кристален ацетат')}</h2>
               <p className="mt-3 font-sans text-sm leading-relaxed text-stone">
-                {t('Кристален ацетат, 22 грама. Осезаемо по-лека от обикновена пластмасова рамка. Рамката е за носене 8+ часа.')}
+                {t('22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка. Рамката е за носене 8+ часа.')}
               </p>
             </div>
           </section>
