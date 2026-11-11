@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import type { Locale } from '@/lib/i18n/config'
 import { translate } from '@/lib/i18n/translations'
-import { MAX_PAIRS, variantIdFor } from '@/lib/order-lines'
+import { variantIdFor } from '@/lib/order-lines'
 import { isEveningPurchasable } from '@/lib/preview-stock'
 import { priceForPairs, regularPriceForPairs } from '@/lib/sale'
 import type { BundleCount, Lens } from '@/lib/shop-selection'
@@ -60,19 +60,16 @@ export default function ShoppableVideoModal({
   const [lens, setLens] = useState<Lens>('daily')
   const [bundle, setBundle] = useState<BundleCount>(1)
   const [slots, setSlots] = useState<Lens[]>(['daily'])
-  const [quantity, setQuantity] = useState(1)
   const [thumb, setThumb] = useState(0)
   const eveningBlocked = !isEveningPurchasable()
   const addItem = useCartStore(state => state.addItem)
   const openDrawer = useCartStore(state => state.openDrawer)
   const pairLimit = useCartStore(state => state.pairLimit)
   const clip = index == null ? null : pdpUgcClips[index]
-  const pairs = bundle * quantity
-  const price = priceForPairs(pairs)
-  const compare = regularPriceForPairs(pairs)
+  const price = priceForPairs(slots.length)
+  const compare = regularPriceForPairs(slots.length)
   const showCompare = compare - price > 0.009
   const blocked = eveningBlocked && slots.includes('evening')
-  const maxQty = Math.max(1, Math.floor(MAX_PAIRS / bundle))
   const gallery = images[slots[0] ?? lens]
   const motionTime = reduced ? 0 : 0.35
 
@@ -127,12 +124,11 @@ export default function ShoppableVideoModal({
   function chooseBundle(next: BundleCount) {
     setBundle(next)
     setSlots(Array(next).fill(lens) as Lens[])
-    setQuantity(current => Math.min(current, Math.max(1, Math.floor(MAX_PAIRS / next))))
   }
 
   function addToCart() {
     if (!clip || blocked) return
-    const lenses = Array.from({ length: quantity }, () => slots).flat()
+    const lenses = slots
     const added = addItem({
       productId: `AMPÉ-${lens}`,
       variantId: variantIdFor(lenses),
@@ -357,15 +353,6 @@ export default function ShoppableVideoModal({
                   ))}
                 </div>
               )}
-
-              <div className="mt-4 flex items-center justify-between">
-                <span className="font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-stone">{t('Количество')}</span>
-                <div className="flex items-center gap-2">
-                  <button type="button" aria-label={t('Намали количеството')} disabled={quantity <= 1} onClick={() => setQuantity(current => Math.max(1, current - 1))} className="flex h-9 w-9 items-center justify-center rounded-full border border-iron/20 bg-cream font-sans text-lg disabled:opacity-40">−</button>
-                  <span className="w-6 text-center font-sans text-sm" aria-live="polite">{quantity}</span>
-                  <button type="button" aria-label={t('Увеличи количеството')} disabled={quantity >= maxQty} onClick={() => setQuantity(current => Math.min(maxQty, current + 1))} className="flex h-9 w-9 items-center justify-center rounded-full border border-iron/20 bg-cream font-sans text-lg disabled:opacity-40">+</button>
-                </div>
-              </div>
 
               </div>
               <div className="shrink-0 border-t border-iron/10 bg-parchment px-4 py-3 md:px-5">
