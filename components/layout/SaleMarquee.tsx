@@ -47,7 +47,7 @@ export default function SaleMarquee({ text }: { text: string }) {
 
   return (
     <div
-      className={ready ? 'sale-marquee is-ready w-full bg-onyx overflow-hidden py-2' : 'sale-marquee w-full bg-onyx overflow-hidden py-2'}
+      className={ready ? 'sale-marquee is-ready flex h-[26px] w-full items-center overflow-hidden bg-onyx md:h-[30px]' : 'sale-marquee flex h-[26px] w-full items-center overflow-hidden bg-onyx md:h-[30px]'}
       role="region"
       aria-label={text}
     >
@@ -60,7 +60,7 @@ export default function SaleMarquee({ text }: { text: string }) {
           setIndex(current => (current + 1) % messages.length)
         }}
       >
-        <span className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
+        <span className="font-sans text-[10px] font-bold uppercase leading-none tracking-widest text-gold md:text-[11px]">
           {message}
         </span>
       </div>
@@ -95,6 +95,12 @@ export default function SaleMarquee({ text }: { text: string }) {
           100% { opacity: 0; }
         }
         @media (prefers-reduced-motion: reduce) {
+          .sale-marquee {
+            height: auto;
+            min-height: 26px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+          }
           .sale-marquee-line,
           .sale-marquee.is-ready .sale-marquee-line {
             animation-name: sale-fade;

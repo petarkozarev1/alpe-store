@@ -26,7 +26,8 @@ test('uses the new lightweight-loading hero preview and respects reduced motion'
   expect(video).toHaveClass('object-[68%_center]', 'md:object-center')
   expect(video).not.toHaveClass('object-contain')
   expect(container.querySelector('[data-testid="hero-content"]')).toHaveClass(
-    'min-h-[calc(100svh-97px)]',
+    'min-h-[calc(100svh-91px)]',
+    'md:min-h-[calc(100svh-95px)]',
   )
   expect(container.querySelectorAll('video')).toHaveLength(1)
   expect(statSync(path.join(process.cwd(), 'public/videos/alpe-hero-web.mp4')).size).toBeLessThan(2 * 1024 * 1024)

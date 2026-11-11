@@ -160,7 +160,7 @@ export default function ProductPage({
       <div className="product-grid-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
 
         {/* LEFT: Gallery */}
-        <div className="product-gallery-col" style={{ position: 'sticky', top: 133, alignSelf: 'start' }}>
+        <div className="product-gallery-col" style={{ position: 'sticky', top: 123, alignSelf: 'start' }}>
           {/* Main image */}
           <div className="product-gallery-main" style={{ width: '100%', aspectRatio: '16/10', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
             <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className={thumbIdx[lens] === 1 ? 'object-contain' : 'object-cover'} quality={85} />
@@ -709,12 +709,12 @@ export default function ProductPage({
       <style>{`
         .product-sticky-bar-mobile { display: none !important; }
 
-        @media (min-width: 961px) and (max-height: 859px) and (min-height: 821px) {
+        @media (min-width: 961px) and (max-height: 844px) and (min-height: 821px) {
           .product-gallery-col { position: static !important; }
         }
 
         @media (min-width: 961px) and (max-height: 820px) {
-          .product-gallery-col { top: 113px !important; }
+          .product-gallery-col { top: 103px !important; }
           .product-grid-inner { padding-top: 8px !important; }
           .product-gallery-main { height: 248px !important; aspect-ratio: auto !important; margin-bottom: 8px !important; }
           .product-gallery-thumbs { gap: 8px !important; }
@@ -724,7 +724,7 @@ export default function ProductPage({
           .product-gallery-copy > p { margin-bottom: 10px !important; }
         }
 
-        @media (min-width: 961px) and (max-height: 740px) {
+        @media (min-width: 961px) and (max-height: 728px) {
           .product-gallery-col { position: static !important; }
         }
 
