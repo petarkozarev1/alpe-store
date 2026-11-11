@@ -43,6 +43,9 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState<number | null>(null)
   const touchX = useRef<number | null>(null)
   const swiped = useRef(false)
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null)
+  const blockClick = useRef(false)
+  const [edges, setEdges] = useState({ start: true, end: false })
 
   const copy = {
     eyebrow: en ? 'Worn on Instagram' : 'Носят ги в Instagram',
@@ -63,6 +66,21 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     const max = node.scrollWidth - node.clientWidth
     const offset = max <= 1 ? 0 : (node.scrollLeft / node.scrollWidth) * 100
     setBar({ thumb, offset })
+    setEdges({ start: node.scrollLeft <= 2, end: max <= 1 || node.scrollLeft >= max - 2 })
+  }
+
+  function prepareVideo(video: HTMLVideoElement) {
+    video.defaultMuted = true
+    video.muted = true
+    video.setAttribute('muted', '')
+    video.playsInline = true
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', 'true')
+  }
+
+  function attachVideo(node: HTMLVideoElement | null, index: number) {
+    videos.current[index] = node
+    if (node) prepareVideo(node)
   }
 
   function resumeVisible() {
@@ -75,7 +93,10 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
       const rect = video.getBoundingClientRect()
       const rootRect = root.getBoundingClientRect()
       const overlap = Math.min(rect.right, rootRect.right) - Math.max(rect.left, rootRect.left)
-      if (overlap > rect.width * 0.55) video.play().catch(() => {})
+      if (overlap > rect.width * 0.55) {
+        prepareVideo(video)
+        video.play().catch(() => {})
+      }
     })
   }
 
@@ -89,21 +110,85 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
         const id = video.dataset.clipId
         const clip = pdpUgcClips.find((item) => item.id === id)
         if (!clip) return
-        if (entry.intersectionRatio >= 0.15 && !video.getAttribute('src')) {
+        const rootRect = root.getBoundingClientRect()
+        const rect = video.getBoundingClientRect()
+        const overlap = Math.min(rect.right, rootRect.right) - Math.max(rect.left, rootRect.left)
+        if ((entry.isIntersecting || overlap > 0) && !video.getAttribute('src')) {
+          prepareVideo(video)
           video.preload = 'metadata'
           video.src = clipSource(clip)
         }
-        if (entry.intersectionRatio >= 0.55 && !pausedByUser.current.has(clip.id)) {
+        if (overlap > rect.width * 0.55 && !pausedByUser.current.has(clip.id)) {
+          prepareVideo(video)
           video.play().catch(() => {})
-        } else if (entry.intersectionRatio < 0.2) {
+        } else if (overlap < rect.width * 0.2) {
           video.pause()
         }
       })
-    }, { root, threshold: [0.15, 0.55] })
+    }, { root, rootMargin: '0px 35% 0px 35%', threshold: [0, 0.15, 0.55] })
     nodes.forEach((node) => observer.observe(node))
     measure()
-    return () => observer.disconnect()
+    const onWheel = (event: WheelEvent) => {
+      const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY)
+      const delta = horizontal ? event.deltaX : event.shiftKey ? event.deltaY : 0
+      if (!delta) return
+      const max = root.scrollWidth - root.clientWidth
+      if (max <= 1) return
+      const next = Math.min(max, Math.max(0, root.scrollLeft + delta))
+      if (next === root.scrollLeft) return
+      event.preventDefault()
+      root.scrollLeft = next
+    }
+    root.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('resize', measure)
+    return () => {
+      observer.disconnect()
+      root.removeEventListener('wheel', onWheel)
+      window.removeEventListener('resize', measure)
+    }
   }, [])
+
+  function scrollCards(direction: -1 | 1) {
+    const node = scroller.current
+    const card = node?.querySelector<HTMLElement>('.pdp-ugc-card')
+    if (!node || !card) return
+    node.scrollBy({ left: direction * (card.offsetWidth + 10), behavior: 'smooth' })
+  }
+
+  function onPointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== 'mouse' || event.button !== 0) return
+    if ((event.target as HTMLElement).closest('[data-reel-control]')) return
+    const node = scroller.current
+    if (!node) return
+    drag.current = { x: event.clientX, left: node.scrollLeft, moved: false }
+    node.setPointerCapture(event.pointerId)
+    node.classList.add('is-dragging')
+  }
+
+  function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    const state = drag.current
+    const node = scroller.current
+    if (!state || !node) return
+    const dx = event.clientX - state.x
+    if (Math.abs(dx) > 5) state.moved = true
+    node.scrollLeft = state.left - dx
+  }
+
+  function onPointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    const node = scroller.current
+    if (drag.current?.moved) blockClick.current = true
+    drag.current = null
+    node?.classList.remove('is-dragging')
+    if (node?.hasPointerCapture(event.pointerId)) node.releasePointerCapture(event.pointerId)
+  }
+
+  function openClip(index: number) {
+    if (blockClick.current) {
+      blockClick.current = false
+      return
+    }
+    setOpen(index)
+  }
 
   useEffect(() => {
     if (open == null) {
@@ -130,6 +215,7 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     if (!video) return
     if (video.paused) {
       pausedByUser.current.delete(clip.id)
+      prepareVideo(video)
       if (!video.getAttribute('src')) {
         video.preload = 'metadata'
         video.src = clipSource(clip)
@@ -163,10 +249,15 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
   return (
     <section aria-label={copy.eyebrow}>
       <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">{copy.eyebrow}</p>
+      <div className="relative mt-3">
       <div
         ref={scroller}
         onScroll={measure}
-        className="pdp-ugc-row mt-3 flex gap-2.5 overflow-x-auto overscroll-x-contain"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        className="pdp-ugc-row flex gap-2.5 overflow-x-auto overscroll-x-contain"
       >
         {pdpUgcClips.map((clip, index) => {
           const isPlaying = playing[clip.id] === true
@@ -174,17 +265,24 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
           return (
             <article
               key={clip.id}
-              className="pdp-ugc-card relative shrink-0 snap-start overflow-hidden rounded-[18px] bg-onyx bg-cover bg-center"
-              style={{ backgroundImage: `url(${clip.poster})` }}
+              className="pdp-ugc-card relative shrink-0 snap-start overflow-hidden rounded-[18px] bg-onyx"
             >
-              <button
-                type="button"
-                className="absolute inset-0 z-[1]"
+              <img src={clip.poster} alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+              <div
+                role="button"
+                tabIndex={0}
                 aria-label={`${copy.open} ${index + 1}`}
-                onClick={() => setOpen(index)}
+                className="absolute inset-0 z-[1]"
+                onClick={() => openClip(index)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    openClip(index)
+                  }
+                }}
               />
               <video
-                ref={(node) => { videos.current[index] = node }}
+                ref={(node) => attachVideo(node, index)}
                 data-clip-id={clip.id}
                 poster={clip.poster}
                 muted
@@ -193,30 +291,43 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
                 preload="none"
                 width={540}
                 height={960}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="pointer-events-none absolute inset-0 z-[1] h-full w-full bg-transparent object-cover opacity-0"
                 onLoadedMetadata={(event) => applyStart(event.currentTarget, clip)}
+                onLoadedData={(event) => { event.currentTarget.style.opacity = '1' }}
                 onEnded={(event) => {
                   if (clip.startAt == null) return
+                  prepareVideo(event.currentTarget)
                   event.currentTarget.currentTime = clip.startAt
                   event.currentTarget.play().catch(() => {})
                 }}
-                onPlay={() => setPlaying((current) => ({ ...current, [clip.id]: true }))}
+                onPlay={(event) => {
+                  applyStart(event.currentTarget, clip)
+                  setPlaying((current) => ({ ...current, [clip.id]: true }))
+                }}
                 onPause={() => setPlaying((current) => ({ ...current, [clip.id]: false }))}
               />
               <div className="absolute bottom-2 left-2 right-2 z-[2] flex items-center justify-between">
                 <button
                   type="button"
+                  data-reel-control
                   aria-label={isPlaying ? copy.pause : copy.play}
-                  onClick={() => togglePlay(clip, index)}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    togglePlay(clip, index)
+                  }}
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-onyx/75 text-linen"
                 >
                   <Icon name={isPlaying ? 'pause' : 'play'} />
                 </button>
                 <button
                   type="button"
+                  data-reel-control
                   aria-label={isMuted ? copy.unmute : copy.mute}
                   aria-pressed={!isMuted}
-                  onClick={() => toggleMute(clip, index)}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    toggleMute(clip, index)
+                  }}
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-onyx/75 text-linen"
                 >
                   <Icon name={isMuted ? 'muted' : 'sound'} />
@@ -226,12 +337,31 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
           )
         })}
       </div>
+      {!edges.start && (
+        <button type="button" data-reel-control aria-label={copy.prev} onClick={() => scrollCards(-1)} className="absolute left-2 top-1/2 z-[3] hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-onyx/80 text-linen md:flex">
+          <Icon name="prev" />
+        </button>
+      )}
+      {!edges.end && (
+        <button type="button" data-reel-control aria-label={copy.next} onClick={() => scrollCards(1)} className="absolute right-2 top-1/2 z-[3] hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-onyx/80 text-linen md:flex">
+          <Icon name="next" />
+        </button>
+      )}
+      </div>
       <div className="relative mt-3 h-0.5 overflow-hidden rounded-full bg-iron/15" aria-hidden="true">
         <div className="absolute top-0 h-full rounded-full bg-gold" style={{ width: `${bar.thumb}%`, left: `${bar.offset}%` }} />
       </div>
       <style>{`
-        .pdp-ugc-row { scrollbar-width: none; scroll-snap-type: x mandatory; }
+        .pdp-ugc-row {
+          scrollbar-width: none;
+          scroll-snap-type: x mandatory;
+          touch-action: pan-x pan-y;
+          cursor: grab;
+          -webkit-overflow-scrolling: touch;
+        }
+        .pdp-ugc-row.is-dragging { scroll-snap-type: none; cursor: grabbing; }
         .pdp-ugc-row::-webkit-scrollbar { display: none; }
+        .pdp-ugc-card, .pdp-ugc-card * { touch-action: pan-x pan-y; }
         .pdp-ugc-card {
           width: calc((100% - 10px) / 1.6);
           aspect-ratio: 9 / 16;
