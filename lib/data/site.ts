@@ -23,7 +23,6 @@ export const siteConfig: SiteConfig = {
         title: 'КОМПАНИЯ',
         links: [
           { label: 'Нашата история', href: '/about' },
-          { label: 'За бизнеса', href: '/shop#business' },
           { label: 'Науката', href: '/science' },
           { label: 'Сертификати', href: '/certifications' },
         ],
