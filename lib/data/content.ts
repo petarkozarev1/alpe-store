@@ -73,7 +73,7 @@ export const steps: StepItem[] = [
     number: 3,
     title: 'Почини си',
     description: 'Тялото усеща, че денят е към края си. Заспиваш по-лесно, спиш по-дълбоко.',
-    image: '/images/step3restnew.png',
+    image: '/images/how-it-works-rest.jpg',
   },
 ]
 
