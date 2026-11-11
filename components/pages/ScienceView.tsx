@@ -188,7 +188,6 @@ function Pathway({ label, nodes }: { label: string; nodes: string[] }) {
           )
         })}
       </svg>
-      <figcaption className="px-2 pb-2 font-sans text-xs text-linen/80">{label}</figcaption>
     </figure>
   )
 }
