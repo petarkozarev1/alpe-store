@@ -236,14 +236,13 @@ export default function ProductPage({
                 disabled={EVENING_OUT_OF_STOCK && l === 'evening'}
                 aria-disabled={EVENING_OUT_OF_STOCK && l === 'evening'}
                 onClick={() => handleLens(l)}
-                style={{ border: `2px solid ${lens === l ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 10, padding: 16, cursor: (EVENING_OUT_OF_STOCK && l === 'evening') ? 'not-allowed' : 'pointer', background: lens === l ? 'rgba(28,15,10,0.05)' : '#fff8f2', transition: 'all 0.2s', textAlign: 'left', boxShadow: lens === l ? '0 0 0 1px #1C0F0A' : 'none' }}
+                style={{ border: `2px solid ${lens === l ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 10, padding: '10px 12px', cursor: (EVENING_OUT_OF_STOCK && l === 'evening') ? 'not-allowed' : 'pointer', background: lens === l ? 'rgba(28,15,10,0.05)' : '#fff8f2', transition: 'all 0.2s', textAlign: 'left', boxShadow: lens === l ? '0 0 0 1px #1C0F0A' : 'none' }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 5 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 2 }}>
                   <span style={{ width: 12, height: 12, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', flexShrink: 0, display: 'inline-block' }} />
                   <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Вечер' : 'За всеки ден'}</span>
                 </div>
                 <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' as const, padding: '2px 8px', borderRadius: 100, marginTop: 8, display: 'inline-block', background: l === 'evening' ? '#fff0e6' : '#fffbe0', color: l === 'evening' ? '#a04000' : '#806000' }}>{l === 'evening' ? '98% блокиране на синята и зелената светлина' : '65% филтър на синята светлина и частичен зелен филтър'}</div>
                 {l === 'evening' && EVENING_OUT_OF_STOCK && (
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#8a6a3a', background: 'rgba(196,154,108,0.12)', border: '1px solid rgba(196,154,108,0.35)', borderRadius: 100, padding: '2px 8px' }}>
                     <span>🌙</span> Временно изчерпано
