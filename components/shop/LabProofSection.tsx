@@ -6,13 +6,6 @@ import Link from 'next/link'
 import type { Locale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
 
-const slides = [
-  '/images/customers/02.jpg',
-  '/images/customers/05.jpg',
-  '/images/how-it-works-selfie.jpg',
-  '/images/customers/03.jpg',
-]
-
 type Stat = {
   title: string
   caption: string
@@ -109,40 +102,17 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
   return (
     <section id="lab-proof" className="relative isolate overflow-hidden py-20 text-cream md:py-24">
       <div aria-hidden="true" className="absolute inset-0">
-        {slides.map((src, index) => (
-          <div key={src} className="lab-proof-slide absolute inset-0" style={{ animationDelay: `${index * 7}s` }}>
-            <Image
-              src={src}
-              alt=""
-              fill
-              sizes="100vw"
-              quality={85}
-              className="lab-proof-zoom object-cover"
-              style={{ objectPosition: 'center 30%' }}
-            />
-          </div>
-        ))}
+        <Image
+          src="/images/proof-hero-boat.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={75}
+          className="object-cover object-[42%_35%]"
+        />
         <div className="absolute inset-0 bg-gradient-to-br from-onyx/90 via-onyx/75 to-iron/80" />
       </div>
-
-      <style>{`
-        .lab-proof-slide { opacity: 0; animation: lab-proof-fade 28s infinite; }
-        .lab-proof-zoom { animation: lab-proof-zoom 28s ease-in-out infinite alternate; }
-        @keyframes lab-proof-fade {
-          0%, 22% { opacity: 1; }
-          30%, 92% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-        @keyframes lab-proof-zoom {
-          from { transform: scale(1.04); }
-          to { transform: scale(1.14); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .lab-proof-slide { animation: none; opacity: 0; }
-          .lab-proof-slide:first-child { opacity: 1; }
-          .lab-proof-zoom { animation: none; transform: none; }
-        }
-      `}</style>
 
       <div className="relative z-[1] mx-auto max-w-content px-6 md:px-10">
         <h2 className="mx-auto max-w-3xl text-center font-serif text-[clamp(32px,4.4vw,56px)] font-medium leading-tight text-cream">
