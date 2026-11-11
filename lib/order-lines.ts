@@ -7,6 +7,7 @@
  */
 import type { CartItem } from '@/lib/types'
 import { products } from '@/lib/data/products'
+import { isEveningPurchasable } from '@/lib/preview-stock'
 import { priceForPairs } from '@/lib/sale'
 
 export const MAX_PAIRS = 10
@@ -14,9 +15,9 @@ export const MAX_PAIRS = 10
 const BARE_DAILY = new Set(['daily', 'alpe-daily', 'AMPÉ-daily'])
 
 export function inStockLensIds(): Set<string> {
-  return new Set(
-    products.flatMap(product => product.variants.filter(variant => variant.inStock).map(variant => variant.id.toLowerCase())),
-  )
+  const ids = products.flatMap(product => product.variants.filter(variant => variant.inStock).map(variant => variant.id.toLowerCase()))
+  if (isEveningPurchasable() && !ids.includes('evening')) ids.push('evening')
+  return new Set(ids)
 }
 
 /** Lenses in one unit of a variant. `null` when the id is not a real pack. */

@@ -16,6 +16,7 @@ import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { ReviewQuotes } from '@/components/proof/ReviewQuotes'
 import BusinessSection from '@/components/layout/BusinessSection'
 import LabProofSection from '@/components/shop/LabProofSection'
+import { isEveningPurchasable } from '@/lib/preview-stock'
 
 type Tab = 'description' | 'science' | 'reviews'
 
@@ -54,7 +55,7 @@ const lensData = {
   },
 }
 
-const EVENING_OUT_OF_STOCK = true // temporary until restock
+const EVENING_OUT_OF_STOCK = !isEveningPurchasable()
 
 export default function ProductPage({
   initialSelection = getInitialShopSelection(),

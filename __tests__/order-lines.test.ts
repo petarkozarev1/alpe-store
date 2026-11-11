@@ -30,11 +30,32 @@ describe('order lines', () => {
     expect(orderRejection([line('AMPÉ-daily-bundle-1', 11)], 'bg')).toMatch(/10/)
   })
 
-  it('allows Daily packs and rejects Evening', () => {
+  it('allows Daily packs and rejects Evening on production', () => {
+    const previous = process.env.VERCEL_ENV
+    const previousPublic = process.env.NEXT_PUBLIC_VERCEL_ENV
+    process.env.VERCEL_ENV = 'production'
+    process.env.NEXT_PUBLIC_VERCEL_ENV = 'production'
     expect(orderRejection([line('AMPÉ-daily-daily-bundle-2', 1)], 'bg')).toBeNull()
     expect(orderRejection([line('daily', 1)], 'bg')).toBeNull()
     expect(orderRejection([line('AMPÉ-evening-bundle-1', 1)], 'bg')).toMatch(/Evening|изчерпан/)
     expect(orderRejection([line('AMPÉ-daily-evening-bundle-2', 1)], 'en')).toMatch(/out of stock/)
+    if (previous === undefined) delete process.env.VERCEL_ENV
+    else process.env.VERCEL_ENV = previous
+    if (previousPublic === undefined) delete process.env.NEXT_PUBLIC_VERCEL_ENV
+    else process.env.NEXT_PUBLIC_VERCEL_ENV = previousPublic
+  })
+
+  it('allows Evening outside production', () => {
+    const previous = process.env.VERCEL_ENV
+    const previousPublic = process.env.NEXT_PUBLIC_VERCEL_ENV
+    process.env.VERCEL_ENV = 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV = 'preview'
+    expect(orderRejection([line('AMPÉ-evening-bundle-1', 1)], 'bg')).toBeNull()
+    expect(orderRejection([line('AMPÉ-daily-evening-bundle-2', 1)], 'en')).toBeNull()
+    if (previous === undefined) delete process.env.VERCEL_ENV
+    else process.env.VERCEL_ENV = previous
+    if (previousPublic === undefined) delete process.env.NEXT_PUBLIC_VERCEL_ENV
+    else process.env.NEXT_PUBLIC_VERCEL_ENV = previousPublic
   })
 
   it('rewrites a repeated pack so the label matches the pairs', () => {
