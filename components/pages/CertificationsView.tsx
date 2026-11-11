@@ -138,17 +138,18 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
         <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-content flex-col justify-end px-6 pb-14 md:px-10">
           <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Официална документация')}</p>
           <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
-            {t('Измерени лещи.')}<br />{t('Не медицинско изделие.')}
+            {t('Измерени лещи.')}<br />{t('Доказани резултати.')}
           </h1>
           <p className="mt-5 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
             {t('Лещите JX-Y8016 (дневни, жълти) и JX-Y8008 (вечерни, оранжеви) са тествани от независимата лаборатория AHD TMS. Числата по-долу са това публикувано обобщение. Изследванията за светлина и сън са за други условия и други лещи.')}
           </p>
           <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
             <HeroStat value={100} suffix="%" label={t('UV, и двете лещи')} />
-            <HeroStat value={99} prefix={`${t('до')} `} suffix="%" label={t('Дневни, пик 450 nm')} />
+            <HeroStat value={99} prefix={t('до')} suffix="%" label={t('Дневни, пик 450 nm')} />
             <HeroStat value={99.21} decimals={2} suffix="%" label={t('Вечерни, 475–650 nm')} />
             <HeroStat value={22} suffix={t(' г')} label={t('Рамка, кристален ацетат')} />
           </dl>
+          <p className="mt-4 max-w-3xl font-sans text-xs leading-relaxed text-linen/75">{t('Очилата AMPÉ не са медицинско изделие.')}</p>
         </div>
       </section>
 
@@ -414,8 +415,9 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
 function HeroStat({ value, suffix, prefix = '', label, decimals = 0 }: { value: number; suffix: string; prefix?: string; label: string; decimals?: number }) {
   return (
     <div className="rounded-2xl border border-linen/25 bg-onyx/50 px-3 py-3 backdrop-blur-sm">
+      {prefix ? <p className="font-sans text-[11px] leading-none text-linen/80">{prefix}</p> : null}
       <dt className="font-serif text-3xl text-linen">
-        {prefix}<CountUp value={value} decimals={decimals} />{suffix}
+        <CountUp value={value} decimals={decimals} />{suffix}
       </dt>
       <dd className="mt-1 font-sans text-[11px] leading-snug text-linen/75">{label}</dd>
     </div>
