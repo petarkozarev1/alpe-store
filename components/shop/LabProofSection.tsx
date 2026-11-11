@@ -19,6 +19,7 @@ type Stat = {
   value: number
   decimals: number
   prefix: string
+  suffix: string
 }
 
 function statsFor(locale: Locale): Stat[] {
@@ -30,6 +31,7 @@ function statsFor(locale: Locale): Stat[] {
       value: 100,
       decimals: 0,
       prefix: '',
+      suffix: '%',
     },
     {
       title: en ? 'Blue light' : 'Синя светлина',
@@ -37,13 +39,15 @@ function statsFor(locale: Locale): Stat[] {
       value: 99,
       decimals: 0,
       prefix: en ? 'up to ' : 'до ',
+      suffix: '%',
     },
     {
-      title: en ? 'Blue-green light' : 'Синьо-зелена',
-      caption: en ? 'Evening lenses, 475–650nm' : 'Вечерни лещи, 475–650nm',
-      value: 99.21,
-      decimals: 2,
+      title: en ? 'Featherlight' : 'Супер олекотени',
+      caption: en ? 'Crystal acetate, not uncomfortable plastic' : 'Кристален ацетат, не неудобна пластмаса',
+      value: 22,
+      decimals: 0,
       prefix: '',
+      suffix: en ? ' g' : ' г',
     },
     {
       title: en ? 'Light transmission' : 'Светлопропускливост',
@@ -51,11 +55,12 @@ function statsFor(locale: Locale): Stat[] {
       value: 85,
       decimals: 0,
       prefix: '',
+      suffix: '%',
     },
   ]
 }
 
-function CountUp({ value, decimals, prefix }: { value: number; decimals: number; prefix: string }) {
+function CountUp({ value, decimals, prefix, suffix }: { value: number; decimals: number; prefix: string; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null)
   const [shown, setShown] = useState(value)
   useEffect(() => {
@@ -94,7 +99,7 @@ function CountUp({ value, decimals, prefix }: { value: number; decimals: number;
       cancelAnimationFrame(frame)
     }
   }, [value])
-  const text = `${prefix}${shown.toFixed(decimals)}%`
+  const text = `${prefix}${shown.toFixed(decimals)}${suffix}`
   return <span ref={ref}>{text}</span>
 }
 
@@ -165,7 +170,7 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
             >
               <h3 className="font-serif text-lg italic leading-tight text-linen md:text-xl">{stat.title}</h3>
               <p className="mt-3 font-serif text-[clamp(32px,4vw,52px)] font-medium leading-none text-gold">
-                <CountUp value={stat.value} decimals={stat.decimals} prefix={stat.prefix} />
+                <CountUp value={stat.value} decimals={stat.decimals} prefix={stat.prefix} suffix={stat.suffix} />
               </p>
               <p className="mt-3 font-sans text-xs leading-snug text-linen/75">{stat.caption}</p>
             </article>
@@ -174,8 +179,8 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
 
         <p className="mx-auto mt-8 max-w-2xl text-center font-sans text-[11px] leading-relaxed text-linen/75">
           {en
-            ? 'Results from independent laboratory testing (AHD TMS) of JX-Y8016 and JX-Y8008 lenses.'
-            : 'Резултати от независимо лабораторно тестване (AHD TMS) на лещи JX-Y8016 и JX-Y8008.'}
+            ? 'Lab figures: independent testing (AHD TMS) of JX-Y8016 and JX-Y8008 lenses.'
+            : 'Лабораторните числа: независимо тестване (AHD TMS) на лещи JX-Y8016 и JX-Y8008.'}
         </p>
       </div>
     </section>
