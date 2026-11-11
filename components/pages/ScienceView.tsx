@@ -40,7 +40,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
   return (
     <main className="bg-parchment text-iron">
       <section id="nachalo" className="relative min-h-[70vh] overflow-hidden">
-        <Image src="/images/how-it-works-selfie.jpg" alt={t('Клиент с очила AMPÉ')} fill priority sizes="100vw" className="object-cover object-[center_30%]" />
+        <Image src="/images/science-hero.jpg" alt={t('Жълти лещи AMPÉ в ръка')} fill priority sizes="100vw" quality={75} className="object-cover object-[38%_center] md:object-[center_100%]" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
           <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Как работи')}</p>

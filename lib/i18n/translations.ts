@@ -598,6 +598,7 @@ export const englishTranslations: Record<string, string> = {
   'Чифт AMPÉ Evening с оранжеви стъкла': 'AMPÉ Evening pair with orange lenses',
   'Илюстрация на диапазоните от редовете по-горе. Не е отделно измерване.': 'A diagram of the ranges in the rows above. It is not a separate measurement.',
   'Клиент с очила AMPÉ': 'Customer wearing AMPÉ glasses',
+  'Жълти лещи AMPÉ в ръка': 'Yellow AMPÉ lenses held in a hand',
   '1000+ доволни клиенти': '1,000+ happy customers',
   'Ден или вечер': 'Day or evening',
   'Премести плъзгача от дневни към вечерни лещи': 'Move the slider from Daily to Evening lenses',
