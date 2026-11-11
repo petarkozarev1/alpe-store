@@ -942,6 +942,9 @@ export const englishTranslations: Record<string, string> = {
   'Дневни и вечерни лещи. Жълти за деня, оранжеви за вечерта. Числата от лабораторията са на страницата.': 'Daily and Evening lenses. Yellow for the day, orange for the evening. The lab numbers are on the page.',
   'Как светлината стига до окото и какво филтрират лещите AMPÉ.': 'How light reaches the eye, and what the AMPÉ lenses filter.',
   'Кратки отговори за лещите, теста, носенето и поръчката.': 'Short answers on the lenses, the test, wearing them, and the order.',
+  '22 г кристален ацетат. Осезаемо по-лека от обикновена пластмасова рамка. Точни ширина, мост и рамо няма на страницата.': '22 g of crystal acetate. Noticeably lighter than a typical plastic frame. Exact width, bridge and temple length are not on the page.',
+  'Кристален ацетат, 22 грама. Осезаемо по-лека от обикновена пластмасова рамка. Леки са за цял ден.': 'Crystal acetate, 22 grams. Noticeably lighter than a typical plastic frame. Light enough for a full day.',
+  'Кристален ацетат, 22 грама. Осезаемо по-лека от обикновена пластмасова рамка. Рамката е за носене 8+ часа.': 'Crystal acetate, 22 grams. Noticeably lighter than a typical plastic frame. The frame is made for 8+ hours of wear.',
 }
 
 export function hasEnglishTranslation(source: string) {

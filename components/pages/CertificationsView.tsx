@@ -310,7 +310,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
               </div>
               <div>
                 <h3 className="font-serif text-3xl">{t('22 г кристален ацетат')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Кристален ацетат, 22 грама. Обикновената пластмасова рамка често е 35–50 г. Леки са за цял ден.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Кристален ацетат, 22 грама. Осезаемо по-лека от обикновена пластмасова рамка. Леки са за цял ден.')}</p>
               </div>
             </div>
           </section>
