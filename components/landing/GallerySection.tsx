@@ -6,13 +6,41 @@ import { getLandingContent } from '@/lib/data/content'
 import type { Locale } from '@/lib/i18n/config'
 import { localizedPath } from '@/lib/i18n/routing'
 
-const images = [
-  { src: '/images/customers/01.jpg', alt: 'AMPÉ customer', position: '46% 32%' },
-  { src: '/images/customers/02.jpg', alt: 'AMPÉ customer', position: '40% 26%' },
-  { src: '/images/customers/03.jpg', alt: 'AMPÉ customer', position: '50% 34%' },
-  { src: '/images/customers/04.jpg', alt: 'AMPÉ customer', position: '50% 50%' },
-  { src: '/images/customers/05.jpg', alt: 'AMPÉ customer', position: '50% 40%' },
+type GalleryCard = {
+  src: string
+  alt: string
+  position: string
+  handle: string
+  verified?: boolean
+}
+
+const images: GalleryCard[] = [
+  { src: '/images/customers/01.jpg', alt: 'AMPÉ customer', position: '46% 32%', handle: 'iliyana_ddimitrova' },
+  { src: '/images/customers/02.jpg', alt: 'AMPÉ customer', position: '40% 26%', handle: 'borislava_blagoeva', verified: true },
+  { src: '/images/customers/06.jpg', alt: 'AMPÉ customer', position: '50% 45%', handle: 'kaloyanbachev' },
+  { src: '/images/customers/03.jpg', alt: 'AMPÉ customer', position: '50% 34%', handle: 'mylifeasteaa' },
+  { src: '/images/customers/04.jpg', alt: 'AMPÉ customer', position: '50% 50%', handle: 'a.sia.aa' },
+  { src: '/images/customers/05.jpg', alt: 'AMPÉ customer', position: '50% 40%', handle: 'slaviargirova' },
 ]
+
+function IgMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none" stroke="currentColor" strokeWidth="1.7">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function VerifiedBadge() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 shrink-0">
+      <circle cx="12" cy="12" r="12" fill="#0095F6" />
+      <path d="M7.2 12.3l3.1 3.1 6.5-6.8" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 
 export default function GallerySection({ locale }: { locale: Locale }) {
   const { galleryContent } = getLandingContent(locale)
@@ -54,7 +82,7 @@ export default function GallerySection({ locale }: { locale: Locale }) {
 
         <motion.div
           animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 28, ease: 'linear', repeat: Infinity }}
+          transition={{ duration: 33.6, ease: 'linear', repeat: Infinity }}
           className="flex gap-4 w-max"
         >
           {[...images, ...images].map((img, i) => (
@@ -71,6 +99,17 @@ export default function GallerySection({ locale }: { locale: Locale }) {
                   className="object-cover"
                   style={{ objectPosition: img.position }}
                 />
+                <a
+                  href={`https://instagram.com/${img.handle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Профил в Instagram: @${img.handle}`}
+                  className="absolute bottom-2.5 left-2.5 z-[2] flex max-w-[calc(100%-1.25rem)] items-center gap-1.5 rounded-full bg-cream/75 px-2.5 py-1 backdrop-blur-md"
+                >
+                  <IgMark className="h-3 w-3 shrink-0 text-onyx" />
+                  <span className="truncate font-sans text-[11px] font-medium text-onyx">@{img.handle}</span>
+                  {img.verified ? <VerifiedBadge /> : null}
+                </a>
               </div>
             </div>
           ))}
