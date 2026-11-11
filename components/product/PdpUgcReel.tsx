@@ -50,7 +50,7 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
   openRef.current = open
 
   const copy = {
-    eyebrow: en ? 'Worn on Instagram' : 'Носят ги в Instagram',
+    eyebrow: en ? 'Worn every day' : 'Ползват ги ежедневно',
     open: en ? 'Open video' : 'Отвори видеото',
     play: en ? 'Play' : 'Пусни',
     pause: en ? 'Pause' : 'Пауза',
