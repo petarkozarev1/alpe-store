@@ -15,6 +15,7 @@ import {
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { ReviewQuotes } from '@/components/proof/ReviewQuotes'
 import BusinessSection from '@/components/layout/BusinessSection'
+import LabProofSection from '@/components/shop/LabProofSection'
 
 type Tab = 'description' | 'science' | 'reviews'
 
@@ -467,6 +468,7 @@ export default function ProductPage({
         </div>
       </div>
 
+      <LabProofSection locale={locale} />
       <BusinessSection locale={locale} />
 
       {/* Outcome stats */}
