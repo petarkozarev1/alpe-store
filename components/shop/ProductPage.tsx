@@ -157,7 +157,7 @@ export default function ProductPage({
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
       {/* Main product grid */}
-      <div className="product-grid-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '8px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
+      <div className="product-grid-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
 
         {/* LEFT: Gallery */}
         <div className="product-gallery-col" style={{ position: 'sticky', top: 80 }}>
