@@ -53,7 +53,7 @@ export default function CookieBanner() {
         width: 'min(560px, calc(100vw - 32px))',
         background: '#1C0F0A',
         color: '#EDE4D6',
-        borderRadius: 12,
+        borderRadius: 24,
         padding: '14px 18px',
         boxShadow: '0 6px 32px rgba(28,15,10,0.4)',
         fontFamily: 'var(--font-raleway), sans-serif',
@@ -74,13 +74,13 @@ export default function CookieBanner() {
         <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
           <button
             onClick={rejectOptional}
-            style={{ background: 'transparent', color: 'rgba(237,228,214,0.65)', border: '1px solid rgba(237,228,214,0.2)', borderRadius: 6, padding: '7px 14px', fontSize: 11, fontWeight: 500, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ background: 'transparent', color: 'rgba(237,228,214,0.65)', border: '1px solid rgba(237,228,214,0.2)', borderRadius: 9999, padding: '7px 14px', fontSize: 11, fontWeight: 500, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             {t('Само необходимите')}
           </button>
           <button
             onClick={accept}
-            style={{ background: '#C4A266', color: '#1C0F0A', border: 'none', borderRadius: 6, padding: '7px 14px', fontSize: 11, fontWeight: 700, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ background: '#C4A266', color: '#1C0F0A', border: 'none', borderRadius: 9999, padding: '7px 14px', fontSize: 11, fontWeight: 700, fontFamily: 'var(--font-raleway)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             {t('Приемам всички')}
           </button>

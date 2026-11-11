@@ -104,7 +104,7 @@ export default function ProductPage({ params }: { params: { locale: string; slug
         : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
       hasMerchantReturnPolicy: merchantReturnPolicy,
-      shippingDetails: offerShippingDetails(product.price),
+      shippingDetails: offerShippingDetails(1),
     },
   }
 

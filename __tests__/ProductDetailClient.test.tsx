@@ -15,9 +15,11 @@ test('shows only real Daily product information with euro pricing and no size or
 
   render(<ProductDetailClient product={product} />)
 
-  expect(screen.getByText('€44.99')).toBeInTheDocument()
+  expect(screen.getByText('€59.99')).toBeInTheDocument()
   expect(screen.getByText(/65% филтър на синята светлина/)).toBeInTheDocument()
   expect(screen.getAllByText(/UV400 защита/).length).toBeGreaterThan(0)
+  expect(screen.getByText('Ползват ги ежедневно')).toBeInTheDocument()
+  expect(screen.queryByText(/Мария/)).not.toBeInTheDocument()
   expect(screen.queryByText('Size')).not.toBeInTheDocument()
   expect(screen.queryByText('Black')).not.toBeInTheDocument()
   expect(screen.queryByText('Tortoise')).not.toBeInTheDocument()

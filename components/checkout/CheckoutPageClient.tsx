@@ -1,14 +1,16 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CheckoutShell } from './CheckoutShell'
 import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 import { useCartStore } from '@/lib/store/cartStore'
 import { setPixelUser } from '@/components/analytics/MetaPixel'
-import { countPairs, priceForPairs, naiveSubtotal } from '@/lib/pricing'
-import { getPromo, promoDiscount } from '@/lib/promo'
+import { countPairs, naiveSubtotal } from '@/lib/pricing'
+import { applyPromo, promoErrorMessage } from '@/lib/promo'
+import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { deliveryAmount, internationalFee, isBulgaria } from '@/lib/checkout-delivery'
 import { translate } from '@/lib/i18n/translations'
+import { checkoutSessionSignature } from '@/lib/checkout-session'
 
 const COD_FEE = 1.0
 const BGN_RATE = 1.95583
@@ -32,8 +34,9 @@ interface Shipping { firstName: string; lastName: string; phone: string; city: s
 
 export default function CheckoutPageClient() {
   const locale = useLocale()
+  const pricing = usePricingSnapshot()
   const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
-  const { items } = useCartStore()
+  const { items, setCheckoutLocked } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '' })
   const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: locale === 'en' ? 'Bulgaria' : 'България', note: '' })
@@ -77,9 +80,9 @@ export default function CheckoutPageClient() {
 
   const totalPairs = countPairs(items)
   const subtotal = naiveSubtotal(items)
-  const bundlePrice = priceForPairs(totalPairs)
+  const bundlePrice = usePairPrice(totalPairs)
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
-  const promo = promoDiscount(bundlePrice, appliedCode)
+  const promo = applyPromo(bundlePrice, appliedCode, { pairs: totalPairs, snapshot: pricing })
   const shipping_ = deliveryAmount(totalPairs)
   const intlFee = deliveryType === 'address' ? internationalFee(shipping.country) : 0
   const domestic = deliveryType === 'office' || isBulgaria(shipping.country)
@@ -94,6 +97,38 @@ export default function CheckoutPageClient() {
     if (paymentMethod === 'cod' && !codEligible) setPaymentMethod('card')
   }, [paymentMethod, codEligible])
 
+  const sessionSignature = checkoutSessionSignature({
+    items,
+    appliedCode,
+    deliveryType,
+    deliveryId,
+    country: shipping.country,
+    paymentMethod,
+    name: `${shipping.firstName} ${shipping.lastName}`.trim(),
+    phone: shipping.phone,
+    street: shipping.address,
+    office: officeLocation,
+  })
+  const signedFor = useRef<string | null>(null)
+  useEffect(() => {
+    if (!clientSecret) {
+      signedFor.current = null
+      setCheckoutLocked(false)
+      return
+    }
+    if (signedFor.current === null) {
+      signedFor.current = sessionSignature
+      return
+    }
+    if (signedFor.current !== sessionSignature) {
+      signedFor.current = null
+      setClientSecret(null)
+      setCheckoutLocked(false)
+    }
+  }, [clientSecret, sessionSignature, setCheckoutLocked])
+
+  useEffect(() => () => setCheckoutLocked(false), [setCheckoutLocked])
+
   useEffect(() => {
     if (!isCod) return
     const allowed = DELIVERY.filter(d => d.availableOnCod).map(d => d.id)
@@ -104,9 +139,12 @@ export default function CheckoutPageClient() {
   }, [isCod, deliveryId])
 
   const applyCode = () => {
-    const p = getPromo(codeInput)
-    if (!p) { setCodeError(translate(locale, 'Невалиден код')); return }
-    setAppliedCode(p.code)
+    const result = applyPromo(bundlePrice, codeInput, { pairs: totalPairs, snapshot: pricing })
+    if (!result.code) {
+      setCodeError(promoErrorMessage(result.reason ?? 'unknown', locale))
+      return
+    }
+    setAppliedCode(result.code)
     setCodeError('')
   }
   const removeCode = () => { setAppliedCode(null); setCodeInput(''); setCodeError('') }
@@ -183,6 +221,7 @@ export default function CheckoutPageClient() {
       const data = await res.json()
       if (!res.ok || !data.clientSecret) throw new Error(data.error ?? translate(locale, 'Грешка'))
       setClientSecret(data.clientSecret)
+      setCheckoutLocked(true)
       setLoading(false)
     } catch (err) {
       setError(err instanceof Error ? err.message : translate(locale, 'Грешка при плащане'))

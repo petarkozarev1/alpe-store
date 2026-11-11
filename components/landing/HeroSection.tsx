@@ -15,7 +15,7 @@ const fadeUp = (delay = 0) => ({
 export default function HeroSection({ locale }: { locale: Locale }) {
   const { heroContent } = getLandingContent(locale)
   return (
-    <section className="relative min-h-[calc(100svh-97px)] w-full overflow-hidden bg-onyx text-center text-linen">
+    <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
         className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] motion-reduce:hidden md:object-center"
         src="/videos/alpe-hero-web.mp4"
@@ -32,7 +32,7 @@ export default function HeroSection({ locale }: { locale: Locale }) {
 
       <div
         data-testid="hero-content"
-        className="relative z-20 mx-auto flex min-h-[calc(100svh-97px)] max-w-5xl flex-col items-center justify-center px-6 py-10 md:px-10 md:py-14"
+        className="relative z-20 mx-auto flex min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] max-w-5xl flex-col items-center justify-center px-6 py-10 md:px-10 md:py-14"
       >
         <motion.h1
           {...fadeUp(0)}

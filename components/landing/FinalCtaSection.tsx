@@ -28,7 +28,7 @@ export default function FinalCtaSection({ locale }: { locale: Locale }) {
         <div className="relative mt-12 w-full max-w-4xl aspect-[16/9] overflow-hidden rounded-[2.5rem]">
           <Image
             src="/images/finalcta.png"
-            alt="Couple wearing ALPÉ glasses"
+            alt="Couple wearing AMPÉ glasses"
             fill
             sizes="(min-width: 768px) 896px, 100vw"
             className="object-cover"

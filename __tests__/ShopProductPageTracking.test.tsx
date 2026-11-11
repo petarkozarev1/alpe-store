@@ -34,15 +34,15 @@ test('tracks ViewContent when the shop product page renders', async () => {
   await waitFor(() => {
     expect(mockFireTrackedEvent).toHaveBeenCalledWith('ViewContent', {
       data: {
-        content_name: 'ALPÉ Glasses',
-        content_ids: ['ALPÉ-glasses'],
+        content_name: 'AMPÉ Glasses',
+        content_ids: ['AMPÉ-glasses'],
         content_type: 'product',
-        value: 44.99,
+        value: 59.99,
         currency: 'EUR',
       },
-      value: 44.99,
+      value: 59.99,
       currency: 'EUR',
-      contentIds: ['ALPÉ-glasses'],
+      contentIds: ['AMPÉ-glasses'],
     })
   })
 })
@@ -51,19 +51,19 @@ test('tracks AddToCart and opens the drawer from the shop CTA', async () => {
   render(<ProductPage />)
 
   mockFireTrackedEvent.mockClear()
-  fireEvent.click(screen.getByRole('button', { name: 'Добави в количката — €44.99 →' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Добави в количката — €59.99 →' }))
 
   expect(mockFireTrackedEvent).toHaveBeenCalledWith('AddToCart', {
     data: {
-      content_name: 'ALPÉ',
-      content_ids: ['ALPÉ-evening'],
+      content_name: 'AMPÉ',
+      content_ids: ['AMPÉ-daily'],
       content_type: 'product',
-      value: 44.99,
+      value: 59.99,
       currency: 'EUR',
     },
-    value: 44.99,
+    value: 59.99,
     currency: 'EUR',
-    contentIds: ['ALPÉ-evening'],
+    contentIds: ['AMPÉ-daily'],
     numItems: 1,
   })
   expect(useCartStore.getState().isDrawerOpen).toBe(true)

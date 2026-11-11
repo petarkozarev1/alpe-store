@@ -10,7 +10,7 @@ const base: OrderRecord = {
   orderRef: 'cod-1-AX', paymentMethod: 'cod', name: 'Иван Иванов', email: 'i@x.bg',
   phone: '0888', city: 'София', address: 'ул. 1', postalCode: '1000',
   deliveryMethod: 'Спиди', courier: 'Спиди', officeLocation: 'офис 1', courierNote: '',
-  itemsText: 'ALPÉ — 🟠 Вечер · 2 чифта x1', total: 61.29,
+  itemsText: 'AMPÉ — 🟠 Вечер · 2 чифта x1', total: 61.29,
 }
 
 describe('writeOrderToNotion', () => {
@@ -67,7 +67,7 @@ describe('writePromoOrderToNotion', () => {
     await writePromoOrderToNotion({
       promoCode: 'ILIYANA10',
       total: 66.99,
-      itemsText: 'ALPÉ Evening x1',
+      itemsText: 'AMPÉ Evening x1',
       orderRef: 'cod-iliyana',
     })
 
@@ -81,7 +81,7 @@ describe('writePromoOrderToNotion', () => {
     await writePromoOrderToNotion({
       promoCode: 'ALETEA10',
       total: 66.99,
-      itemsText: 'ALPÉ Evening x1',
+      itemsText: 'AMPÉ Evening x1',
       orderRef: 'cod-aletea',
     })
 

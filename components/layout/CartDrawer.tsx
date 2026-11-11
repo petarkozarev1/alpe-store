@@ -5,13 +5,13 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
-import { countPairs, priceForPairs } from '@/lib/pricing'
+import { countPairs } from '@/lib/pricing'
+import { displayedPairs } from '@/lib/order-lines'
+import { pairOfferCopy, regularPriceForPairs } from '@/lib/sale'
+import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
-
-const FREE_SHIPPING_THRESHOLD = 50
-
 const certItems = [
   {
     label: 'ISO 12312- 1',
@@ -59,7 +59,7 @@ const certItems = [
 export default function CartDrawer() {
   const locale = useLocale()
   const t = useTranslations()
-  const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, getSubtotal } = useCartStore()
+  const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, addItem, checkoutLocked, pairLimit, getSubtotal } = useCartStore()
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -88,12 +88,14 @@ export default function CartDrawer() {
     } catch { /* never break UI */ }
   }, [isDrawerOpen])
 
+  const pricing = usePricingSnapshot()
   const naiveSum = getSubtotal()
-  // Auto bundle price by total pairs — same rule as checkout, however pairs were added.
-  const subtotal = priceForPairs(countPairs(items))
+  const pairs = countPairs(items)
+  const offer = pairOfferCopy(pricing, locale === 'en' ? 'en' : 'bg')
+  const separateTotal = regularPriceForPairs(pairs)
+  const subtotal = usePairPrice(pairs)
   const bundleSaving = +Math.max(0, naiveSum - subtotal).toFixed(2)
-  const shippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)
-  const remaining = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0)
+  const shippingProgress = pairs >= 2 ? 100 : pairs === 1 ? 50 : 0
 
   return (
     <AnimatePresence>
@@ -128,13 +130,13 @@ export default function CartDrawer() {
                   {t('Количка')}
                 </h2>
                 <span className="w-5 h-5 rounded-full bg-onyx text-linen text-[10px] font-sans font-medium flex items-center justify-center">
-                  {items.reduce((s, i) => s + i.quantity, 0)}
+                  {items.reduce((s, i) => s + displayedPairs(i), 0)}
                 </span>
               </div>
               <button
                 onClick={closeDrawer}
                 aria-label={t('Затвори количката')}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-stone hover:bg-stone/10 hover:text-onyx transition-all duration-150 text-xl leading-none"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-xl leading-none text-stone transition-all duration-150 hover:bg-stone/10 hover:text-onyx"
               >
                 ×
               </button>
@@ -188,13 +190,14 @@ export default function CartDrawer() {
                           aria-label={t('Количество')}
                         >
                           <button
-                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors"
+                            className="flex h-11 w-11 items-center justify-center text-sm text-onyx transition-colors hover:bg-stone/10 disabled:opacity-40"
                             aria-label={t('Намали количеството')}
-                            onClick={() =>
-                              item.quantity > 1
-                                ? updateQuantity(item.productId, item.variantId, item.quantity - 1)
-                                : removeItem(item.productId, item.variantId)
-                            }
+                            disabled={checkoutLocked}
+                            onClick={() => {
+                              const current = displayedPairs(item)
+                              if (current > 1) setLinePairs(item.productId, item.variantId, current - 1)
+                              else removeItem(item.productId, item.variantId)
+                            }}
                           >
                             −
                           </button>
@@ -202,20 +205,21 @@ export default function CartDrawer() {
                             className="w-8 text-center font-sans text-sm font-medium text-onyx"
                             aria-live="polite"
                           >
-                            {item.quantity}
+                            {displayedPairs(item)}
                           </span>
                           <button
-                            className="w-8 h-8 flex items-center justify-center text-sm text-onyx hover:bg-stone/10 transition-colors"
+                            className="flex h-11 w-11 items-center justify-center text-sm text-onyx transition-colors hover:bg-stone/10 disabled:opacity-40"
                             aria-label={t('Увеличи количеството')}
-                            onClick={() => updateQuantity(item.productId, item.variantId, item.quantity + 1)}
+                            disabled={checkoutLocked}
+                            onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}
                           >
                             +
                           </button>
                         </div>
                         <div className="flex flex-col items-end gap-0.5">
-                          {item.originalPrice && (
-                            <span className="font-sans text-xs text-stone/50 line-through">
-                              €{(item.originalPrice * item.quantity).toFixed(2)}
+                          {regularPriceForPairs(displayedPairs(item)) > item.price * item.quantity + 0.001 && (
+                            <span className="font-sans text-xs text-iron">
+                              {locale === 'en' ? 'Separately' : 'поотделно'}: €{regularPriceForPairs(displayedPairs(item)).toFixed(2)}
                             </span>
                           )}
                           <p className="font-serif text-[17px] font-medium text-onyx">
@@ -235,8 +239,9 @@ export default function CartDrawer() {
                     {/* Remove */}
                     <button
                       onClick={() => removeItem(item.productId, item.variantId)}
+                      disabled={checkoutLocked}
                       aria-label={locale === 'en' ? `Remove ${item.name} from cart` : `Премахни ${item.name} от количката`}
-                      className="text-stone/40 hover:text-red-500 transition-colors mt-0.5 flex-shrink-0"
+                      className="text-stone/40 hover:text-red-500 transition-colors mt-0.5 flex-shrink-0 disabled:opacity-40"
                     >
                       <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24">
                         <polyline points="3 6 5 6 21 6"/>
@@ -256,22 +261,42 @@ export default function CartDrawer() {
                 {/* Shipping progress bar */}
                 <div className="px-5 pb-4">
                   <div className="bg-[#E8F4EC] rounded-xl px-4 py-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-sans text-xs text-iron">
-                        {remaining > 0
-                          ? (locale === 'en' ? `Add €${remaining.toFixed(0)} for free delivery` : `Добави €${remaining.toFixed(0)} за безплатна доставка`)
-                          : t('Получаваш безплатна доставка!')}
-                      </span>
-                      <span className="font-sans text-xs font-semibold text-iron">
-                        {Math.round(shippingProgress)}%
-                      </span>
-                    </div>
+                    <p className="mb-2 break-words font-sans text-xs leading-relaxed text-iron">
+                      {pairs >= 2
+                        ? t('Получаваш безплатна доставка!')
+                        : offer.cartGap}
+                    </p>
                     <div className="h-1.5 bg-white/60 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[#4CAF50] rounded-full transition-all duration-500"
                         style={{ width: `${shippingProgress}%` }}
                       />
                     </div>
+                    {pairs === 1 && (
+                      <button
+                        type="button"
+                        disabled={checkoutLocked}
+                        onClick={() => {
+                          const line = items[0]
+                          const lenses = line ? displayedPairs(line) : 0
+                          const daily = line?.variantId?.includes('daily') && !line.variantId.includes('evening')
+                          if (line && daily) setLinePairs(line.productId, line.variantId, lenses + 1)
+                          else addItem({
+                            productId: 'AMPÉ-daily',
+                            variantId: 'AMPÉ-daily-bundle-1',
+                            name: 'AMPÉ',
+                            variantLabel: locale === 'en' ? 'Daily · 1 pair' : 'За всеки ден · 1 чифт',
+                            price: pricing.single,
+                            quantity: 1,
+                            image: '/images/shop/shop-daily-1.png',
+                            slug: 'AMPÉ-glasses',
+                          })
+                        }}
+                        className="mt-3 w-full rounded-full border border-onyx/20 py-2.5 font-sans text-xs font-medium text-onyx disabled:opacity-40"
+                      >
+                        {locale === 'en' ? 'Add a second pair' : 'Добави втори чифт'}
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -292,6 +317,9 @@ export default function CartDrawer() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="px-6 pt-3 pb-6 border-t border-stone/20 flex flex-col gap-3 flex-shrink-0">
+                {pairLimit === 'cap' && (
+                  <p role="alert" className="font-sans text-sm text-red-700">{t('Може да поръчате до 10 чифта.')}</p>
+                )}
                 {bundleSaving > 0 && (
                   <div className="flex items-center justify-between font-sans text-xs">
                     <span className="text-green-700 font-semibold">{t('Отстъпка за комплект')}</span>
@@ -301,7 +329,7 @@ export default function CartDrawer() {
                 <div className="flex items-baseline justify-between">
                   <span className="font-sans text-sm text-stone">{t('Общо')}</span>
                   <span className="font-serif text-2xl font-medium text-onyx">
-                    {bundleSaving > 0 && <span className="font-sans text-sm text-stone/50 line-through mr-2">€{naiveSum.toFixed(2)}</span>}
+                    {separateTotal > subtotal + 0.001 && <span className="font-sans text-sm text-iron mr-2">{locale === 'en' ? 'Separately' : 'поотделно'}: €{separateTotal.toFixed(2)}</span>}
                     €{subtotal.toFixed(2)}
                   </span>
                 </div>

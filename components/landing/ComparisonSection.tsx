@@ -10,7 +10,7 @@ import { localizedPath } from '@/lib/i18n/routing'
 export default function ComparisonSection({ locale }: { locale: Locale }) {
   const { beforeAfterContent, withoutItems, withItems } = getLandingContent(locale)
   return (
-    <section id="why-ALPÉ" className="w-full bg-parchment py-24">
+    <section id="why-AMPÉ" className="w-full bg-parchment pt-12 pb-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
 
         {/* Header */}
@@ -37,9 +37,9 @@ export default function ComparisonSection({ locale }: { locale: Locale }) {
 
         {/* Comparison cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
-          {/* Without ALPÉ */}
+          {/* Without AMPÉ */}
           <div className="bg-iron rounded-2xl p-8">
-            <h3 className="text-2xl font-semibold text-linen mb-6 text-center">{locale === 'en' ? 'Without ALPÉ' : 'Без ALPÉ'}</h3>
+            <h3 className="text-2xl font-semibold text-linen mb-6 text-center">{locale === 'en' ? 'Without AMPÉ' : 'Без AMPÉ'}</h3>
             <ul className="flex flex-col gap-4">
               {withoutItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-stone">
@@ -52,9 +52,9 @@ export default function ComparisonSection({ locale }: { locale: Locale }) {
             </ul>
           </div>
 
-          {/* With ALPÉ */}
+          {/* With AMPÉ */}
           <div className="bg-onyx rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-linen mb-6 text-center">{locale === 'en' ? 'With ALPÉ' : 'С ALPÉ'}</h3>
+            <h3 className="text-2xl font-bold text-linen mb-6 text-center">{locale === 'en' ? 'With AMPÉ' : 'С AMPÉ'}</h3>
             <ul className="flex flex-col gap-4">
               {withItems.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 font-medium text-linen">

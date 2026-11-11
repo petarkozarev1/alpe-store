@@ -2,11 +2,13 @@ import { notFound } from 'next/navigation'
 import { isLocale } from '@/lib/i18n/config'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { createLocalizedPageMetadata } from '@/lib/seo'
+import SellerDetails from '@/components/legal/SellerDetails'
+import { EMAILS } from '@/lib/brand'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
   title: 'Контакт',
-  description: 'Свържете се с ALPÉ. Отговаряме в рамките на 24 часа.',
+  description: 'Свържете се с AMPÉ. Отговаряме в рамките на 24 часа.',
   path: '/contact',
   })
 }
@@ -20,16 +22,17 @@ export default function ContactPage({ params }: { params: { locale: string } }) 
         <h1 className="font-serif text-4xl md:text-5xl text-iron mt-4 mb-6 leading-tight">
           Пишете ни.
         </h1>
-        <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-16">
+        <p className="font-sans text-base text-stone max-w-xl leading-relaxed mb-8">
           Отговаряме на всеки имейл в рамките на 24 часа в работни дни.
         </p>
+        <SellerDetails locale={params.locale} />
 
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl">
           {/* Общи въпроси */}
           <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Общи въпроси</span>
-            <a href="mailto:hello@alpewear.com" className="font-serif text-lg text-iron hover:text-gold transition-colors">
-              hello@alpewear.com
+            <a href={`mailto:${EMAILS.hello}`} className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              {EMAILS.hello}
             </a>
             <p className="font-sans text-xs text-stone">Въпроси за продуктите, поръчки, доставка.</p>
           </div>
@@ -37,8 +40,8 @@ export default function ContactPage({ params }: { params: { locale: string } }) 
           {/* Поддръжка */}
           <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Поддръжка</span>
-            <a href="mailto:support@alpewear.com" className="font-serif text-lg text-iron hover:text-gold transition-colors">
-              support@alpewear.com
+            <a href={`mailto:${EMAILS.support}`} className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              {EMAILS.support}
             </a>
             <p className="font-sans text-xs text-stone">Проблем с поръчка или доставка.</p>
           </div>
@@ -77,8 +80,8 @@ export default function ContactPage({ params }: { params: { locale: string } }) 
           {/* Връщане */}
           <div className="border border-iron/20 rounded-2xl p-6 flex flex-col gap-3">
             <span className="font-sans text-[10px] uppercase tracking-widest text-stone/60">Връщане</span>
-            <a href="mailto:returns@alpewear.com" className="font-serif text-lg text-iron hover:text-gold transition-colors">
-              returns@alpewear.com
+            <a href={`mailto:${EMAILS.returns}`} className="font-serif text-lg text-iron hover:text-gold transition-colors">
+              {EMAILS.returns}
             </a>
             <p className="font-sans text-xs text-stone">Заявка за връщане на продукт.</p>
           </div>

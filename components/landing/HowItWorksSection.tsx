@@ -27,7 +27,13 @@ function StepCard({ step, index, progress, locale, total }: { step: Step; index:
           alt={step.title}
           fill
           sizes="(min-width: 1024px) 60vw, 100vw"
-          className="object-cover"
+          className={
+            step.number === 1
+              ? 'object-cover object-[center_28%]'
+              : step.number === 2
+                ? 'object-cover object-[62%_18%]'
+                : 'object-cover object-[center_60%]'
+          }
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#2D0E04]/80 via-transparent to-transparent" />
         <div className="absolute bottom-0 left-0 p-6">
@@ -54,11 +60,11 @@ export default function HowItWorksSection({ locale }: { locale: Locale }) {
     <section
       ref={sectionRef}
       id="how-it-works"
-      className="w-full bg-parchment text-iron"
+      className="w-full -mb-[7.5vh] bg-parchment text-iron"
     >
       <div className="max-w-content mx-auto px-6 md:px-10 flex flex-col md:flex-row gap-16 md:gap-24">
         {/* Left sticky column */}
-        <div className="md:sticky md:top-24 md:self-start flex-shrink-0 md:w-80 flex flex-col gap-8 pt-24 pb-8">
+        <div className="md:sticky md:top-24 md:h-screen md:self-start flex-shrink-0 md:w-80 flex flex-col gap-8 pt-12 pb-8">
           <Badge label={howItWorksContent.badge} />
           <h2 className="text-[clamp(36px,5vw,52px)] font-bold tracking-tight leading-tight whitespace-pre-line text-iron">
             {howItWorksContent.headline}
@@ -75,7 +81,7 @@ export default function HowItWorksSection({ locale }: { locale: Locale }) {
         </div>
 
         {/* Right stacking cards */}
-        <div className="flex-1 pt-24 pb-24">
+        <div className="flex-1 pt-12 pb-12 md:pb-0">
           {steps.map((step, i) => (
             <StepCard key={step.number} step={step} index={i} progress={scrollYProgress} locale={locale} total={steps.length} />
           ))}

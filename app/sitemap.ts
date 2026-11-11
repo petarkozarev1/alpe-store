@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       languages: {
         'bg-BG': absoluteUrl(localizedPath(route, 'bg')),
         en: absoluteUrl(localizedPath(route, 'en')),
+        'x-default': absoluteUrl(localizedPath(route, 'bg')),
       },
     },
   })))

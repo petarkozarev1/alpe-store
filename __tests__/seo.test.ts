@@ -61,7 +61,8 @@ describe('SEO route configuration', () => {
     ]))
     expect(urls.every((url) => url.startsWith('https://www.alpewear.com'))).toBe(true)
     expect(entries.every((entry) => entry.lastModified instanceof Date)).toBe(true)
-    expect(entries.every((entry) => entry.lastModified?.toISOString() === '2026-07-21T00:00:00.000Z')).toBe(true)
+    expect(entries.every((entry) => new Date(entry.lastModified ?? 0).toISOString() === '2026-11-09T00:00:00.000Z')).toBe(true)
+    expect(entries.every((entry) => entry.alternates?.languages?.['x-default'] === entry.alternates?.languages?.['bg-BG'])).toBe(true)
   })
 
   it('lets crawlers read noindex pages while blocking private endpoints', () => {
@@ -78,25 +79,25 @@ describe('SEO route configuration', () => {
   it('creates unbranded child titles with self-referencing canonicals', () => {
     const metadata = createPageMetadata({
       title: 'Нашата история',
-      description: 'Историята на ALPÉ.',
+      description: 'Историята на AMPÉ.',
       path: '/about',
     })
 
     expect(metadata.title).toBe('Нашата история')
-    expect(metadata.description).toBe('Историята на ALPÉ.')
+    expect(metadata.description).toBe('Историята на AMPÉ.')
     expect(metadata.alternates).toEqual({
       canonical: '/about',
       languages: { 'bg-BG': '/about', en: '/en/about', 'x-default': '/about' },
     })
-    expect(String(metadata.title)).not.toContain('| ALPÉ')
+    expect(String(metadata.title)).not.toContain('| AMPÉ')
     expect(metadata.openGraph).toEqual(expect.objectContaining({
       title: 'Нашата история',
-      description: 'Историята на ALPÉ.',
+      description: 'Историята на AMPÉ.',
       url: 'https://www.alpewear.com/about',
     }))
     expect(metadata.twitter).toEqual(expect.objectContaining({
       title: 'Нашата история',
-      description: 'Историята на ALPÉ.',
+      description: 'Историята на AMPÉ.',
     }))
   })
 
@@ -128,17 +129,17 @@ describe('SEO route configuration', () => {
   })
 
   it('describes paid and free Bulgarian shipping without inventing a carrier', () => {
-    expect(offerShippingDetails(44.99).shippingRate).toEqual({
+    expect(offerShippingDetails(1).shippingRate).toEqual({
       '@type': 'MonetaryAmount',
       value: 4.99,
       currency: 'EUR',
     })
-    expect(offerShippingDetails(66.99).shippingRate).toEqual({
+    expect(offerShippingDetails(2).shippingRate).toEqual({
       '@type': 'MonetaryAmount',
       value: 0,
       currency: 'EUR',
     })
-    expect(offerShippingDetails(44.99).shippingDestination).toEqual({
+    expect(offerShippingDetails(1).shippingDestination).toEqual({
       '@type': 'DefinedRegion',
       addressCountry: 'BG',
     })

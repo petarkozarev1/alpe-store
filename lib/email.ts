@@ -1,9 +1,10 @@
 import { Resend } from 'resend'
+import { BRAND_NAME, EMAILS, SITE_URL } from '@/lib/brand'
 
 const BGN_RATE = 1.95583
 const fmtEUR = (n: number) => `€${n.toFixed(2)}`
 const fmtBGN = (n: number, locale: 'bg' | 'en' = 'bg') => `${(n * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
-const LOGO_URL = 'https://www.alpewear.com/images/logo.png'
+const LOGO_URL = `${SITE_URL}/brand/ampe-wordmark-cream-on-transparent-512.png`
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 }[char]!))
@@ -29,17 +30,17 @@ export function buildOrderEmailHtml(m: OrderEmailModel): string {
   const copy = en ? {
     free: 'Free', cod: 'Cash on delivery', codDetail: '— pay in cash on delivery',
     card: 'Card', cardDetail: '— paid online', accepted: 'Order confirmed!',
-    thanks: `Thank you, ${escapeHtml(m.customerFirstName)}. We received your order and are preparing it.<br/>Dispatch within 24 hours · delivery in 1–3 business days.`,
+    thanks: `Thank you, ${escapeHtml(m.customerFirstName)}. We received your order and are preparing it.<br/>We ship within 48 hours · delivery in 1–3 business days.`,
     orderNumber: 'Order number', yourOrder: 'Your order', subtotal: 'Subtotal', discount: 'Discount',
     delivery: 'Delivery', total: 'Total', paymentMethod: 'Payment method', deliveryTo: 'Deliver to',
-    questions: 'Questions about your order? Email us at', footer: 'ALPÉ · Blue- and green-light filtering glasses',
+    questions: 'Questions about your order? Email us at', footer: `${BRAND_NAME} · Blue- and green-light filtering glasses`,
   } : {
     free: 'Безплатна', cod: 'Наложен платеж', codDetail: '— плащаш в брой при доставка',
     card: 'Карта', cardDetail: '— платено онлайн', accepted: 'Поръчката е приета!',
-    thanks: `Благодарим ти, ${escapeHtml(m.customerFirstName)}. Получихме поръчката ти и я подготвяме.<br/>Изпращаме до 24 часа · доставка 1–3 работни дни.`,
+    thanks: `Благодарим ти, ${escapeHtml(m.customerFirstName)}. Получихме поръчката ти и я подготвяме.<br/>Изпращаме до 48 часа · доставка 1–3 работни дни.`,
     orderNumber: 'Номер на поръчка', yourOrder: 'Твоята поръчка', subtotal: 'Междинна сума', discount: 'Отстъпка',
     delivery: 'Доставка', total: 'Общо', paymentMethod: 'Начин на плащане', deliveryTo: 'Доставка до',
-    questions: 'Въпроси по поръчката? Пиши ни на', footer: 'ALPÉ · Очила за блокиране на синя и зелена светлина',
+    questions: 'Въпроси по поръчката? Пиши ни на', footer: `${BRAND_NAME} · Очила за блокиране на синя и зелена светлина`,
   }
   const productRows = m.productRows.map(r => `
     <tr>
@@ -66,7 +67,7 @@ export function buildOrderEmailHtml(m: OrderEmailModel): string {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FFF0E0; padding:32px 12px;"><tr><td align="center">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:#FFFBF5; border-radius:16px; overflow:hidden; border:1px solid rgba(155,123,104,0.18);">
   <tr><td style="background-color:#2D0E04; padding:24px 32px; text-align:center;">
-    <img src="${LOGO_URL}" alt="ALPÉ" height="34" style="height:34px; display:inline-block;"/>
+    <img src="${LOGO_URL}" alt="${BRAND_NAME}" height="34" style="height:34px; display:inline-block;"/>
   </td></tr>
   <tr><td style="padding:36px 32px 8px 32px; text-align:center;">
     <div style="width:56px; height:56px; line-height:56px; border-radius:50%; background-color:#EDE4D6; color:#C4A266; font-size:28px; margin:0 auto 16px auto;">&#10003;</div>
@@ -104,10 +105,10 @@ export function buildOrderEmailHtml(m: OrderEmailModel): string {
     </td></tr></table>
   </td></tr>
   <tr><td style="padding:24px 32px; text-align:center;">
-    <p style="font-size:13px; color:#9B7B68; line-height:1.6; margin:0;">${copy.questions}<br/><a href="mailto:hello@alpewear.com" style="color:#7C3018; text-decoration:underline;">hello@alpewear.com</a></p>
+    <p style="font-size:13px; color:#9B7B68; line-height:1.6; margin:0;">${copy.questions}<br/><a href="mailto:${EMAILS.hello}" style="color:#7C3018; text-decoration:underline;">${EMAILS.hello}</a></p>
   </td></tr>
   <tr><td style="background-color:#2D0E04; padding:24px 32px; text-align:center;">
-    <p style="font-size:12px; color:rgba(237,228,214,0.75); line-height:1.7; margin:0;">${copy.footer}<br/><a href="https://www.alpewear.com${en ? '/en' : ''}" style="color:rgba(237,228,214,0.75); text-decoration:underline;">alpewear.com</a></p>
+    <p style="font-size:12px; color:rgba(237,228,214,0.75); line-height:1.7; margin:0;">${copy.footer}<br/><a href="${SITE_URL}${en ? '/en' : ''}" style="color:rgba(237,228,214,0.75); text-decoration:underline;">${SITE_URL.replace(/^https?:\/\/(www\.)?/, '')}</a></p>
     <p style="font-size:11px; color:rgba(237,228,214,0.45); margin:12px 0 0 0;">Screen All Day. Sleep All Night.</p>
   </td></tr>
 </table></td></tr></table></body></html>`
@@ -118,7 +119,7 @@ export async function sendOrderConfirmation(to: string, model: OrderEmailModel):
   if (!apiKey) { console.warn('[EMAIL] RESEND_API_KEY not set — skipping'); return }
   const resend = new Resend(apiKey)
   const { error } = await resend.emails.send({
-    from: 'ALPÉ <hello@alpewear.com>',
+    from: `${BRAND_NAME} <${EMAILS.hello}>`,
     to,
     subject: `${model.locale === 'en' ? 'Your order is confirmed' : 'Поръчката ти е приета'} — ${model.orderRef}`,
     html: buildOrderEmailHtml(model),

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { useCartStore } from '@/lib/store/cartStore'
+import { variantIdFor } from '@/lib/order-lines'
 import type { Product, Variant } from '@/lib/types'
 
 interface AddToCartButtonProps {
@@ -19,7 +20,9 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
   const handleAdd = () => {
     addItem({
       productId: product.id,
-      variantId: selectedVariant.id,
+      variantId: selectedVariant.id === 'daily' || selectedVariant.id === 'evening'
+        ? variantIdFor([selectedVariant.id])
+        : selectedVariant.id,
       name: product.name,
       variantLabel: selectedVariant.label,
       price: product.price,

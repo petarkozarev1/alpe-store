@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import type { Product } from '@/lib/types'
 import AddToCartButton from './AddToCartButton'
+import PdpUgcReel from './PdpUgcReel'
 
 export default function ProductDetailClient({ product }: { product: Product }) {
   const selectedVariant = product.variants.find((variant) => variant.inStock) ?? product.variants[0]
@@ -57,6 +58,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
       <p className="text-stone text-sm leading-relaxed">{product.description}</p>
 
       <AddToCartButton product={product} selectedVariant={selectedVariant} />
+      <PdpUgcReel locale={locale} />
     </div>
   ))
 }

@@ -64,7 +64,7 @@ export default function NewsletterSection({ locale }: { locale: Locale }) {
         )}
 
         <p className="font-sans text-[11px] text-stone/50">
-          {t('С абонамента давате съгласие за получаване на маркетингови имейли от ALPÉ. Отпишете се по всяко време с едно кликване. Вижте нашата')}{' '}
+          {t('С абонамента давате съгласие за получаване на маркетингови имейли от AMPÉ. Отпишете се по всяко време с едно кликване. Вижте нашата')}{' '}
           <a href={localizedPath('/privacy', locale)} className="underline underline-offset-2 hover:text-stone transition-colors">{t('Политика за поверителност')}</a>.
         </p>
 
