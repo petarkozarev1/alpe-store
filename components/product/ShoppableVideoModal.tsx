@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import type { Locale } from '@/lib/i18n/config'
@@ -12,17 +13,33 @@ import type { BundleCount, Lens } from '@/lib/shop-selection'
 import { useCartStore } from '@/lib/store/cartStore'
 import { clipSource, pdpUgcClips, type PdpUgcClip } from '@/lib/pdp-ugc'
 
-const images: Record<Lens, { src: string; alt: string }[]> = {
+const images: Record<Lens, { src: string; thumb: string; alt: string }[]> = {
   daily: [
-    { src: '/images/shop/shop-daily-1.png', alt: 'AMPÉ Daily очила за компютър с жълти стъкла' },
-    { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
-    { src: '/images/shop/shop-daily-3.png', alt: 'Кутия AMPÉ Daily blue light glasses за работа пред екран' },
+    { src: '/images/shop/shop-daily-1.png', thumb: '/images/shop/thumbs/shop-daily-1.webp', alt: 'AMPÉ Daily очила за компютър с жълти стъкла' },
+    { src: '/images/shop/shop-daily-2.png', thumb: '/images/shop/thumbs/shop-daily-2.webp', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
+    { src: '/images/shop/shop-daily-3.png', thumb: '/images/shop/thumbs/shop-daily-3.webp', alt: 'Кутия AMPÉ Daily blue light glasses за работа пред екран' },
   ],
   evening: [
-    { src: '/images/shop/shop-evening-1.png', alt: 'AMPÉ Evening очила за синя светлина с оранжеви стъкла' },
-    { src: '/images/shop/shop-evening-2.png', alt: 'Оранжеви blue light blocking glasses AMPÉ Evening' },
-    { src: '/images/shop/shop-evening-3.png', alt: 'Кутия AMPÉ Evening очила против синя светлина' },
+    { src: '/images/shop/shop-evening-1.png', thumb: '/images/shop/thumbs/shop-evening-1.webp', alt: 'AMPÉ Evening очила за синя светлина с оранжеви стъкла' },
+    { src: '/images/shop/shop-evening-2.png', thumb: '/images/shop/thumbs/shop-evening-2.webp', alt: 'Оранжеви blue light blocking glasses AMPÉ Evening' },
+    { src: '/images/shop/shop-evening-3.png', thumb: '/images/shop/thumbs/shop-evening-3.webp', alt: 'Кутия AMPÉ Evening очила против синя светлина' },
   ],
+}
+
+export const shopModalThumbSrcs = Object.values(images).flatMap(group => group.map(image => image.thumb))
+
+export function preloadShopModalThumbs() {
+  if (typeof document === 'undefined') return
+  for (const href of shopModalThumbSrcs) {
+    if (document.head.querySelector(`link[data-shop-thumb="${href}"]`)) continue
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = href
+    link.setAttribute('data-shop-thumb', href)
+    link.fetchPriority = 'high'
+    document.head.appendChild(link)
+  }
 }
 
 function applyStart(video: HTMLVideoElement, clip: PdpUgcClip) {
@@ -275,9 +292,9 @@ export default function ShoppableVideoModal({
                     onClick={() => setThumb(imageIndex)}
                     aria-label={`${t('Снимка')} ${imageIndex + 1}`}
                     aria-pressed={thumb === imageIndex}
-                    className={`relative aspect-[4/3] overflow-hidden rounded-xl bg-sand ${thumb === imageIndex ? 'ring-2 ring-[#B8906A]' : ''}`}
+                    className={`relative aspect-[4/3] overflow-hidden rounded-xl bg-linen ${thumb === imageIndex ? 'ring-2 ring-[#B8906A]' : ''}`}
                   >
-                    <img src={image.src} alt="" className="h-full w-full object-cover" />
+                    <Image src={image.thumb} alt="" fill sizes="120px" priority unoptimized className="object-cover" />
                   </button>
                 ))}
               </div>

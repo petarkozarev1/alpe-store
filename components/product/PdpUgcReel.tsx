@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Locale } from '@/lib/i18n/config'
 import { clipSource, pdpUgcClips, type PdpUgcClip } from '@/lib/pdp-ugc'
-import ShoppableVideoModal from '@/components/product/ShoppableVideoModal'
+import ShoppableVideoModal, { preloadShopModalThumbs } from '@/components/product/ShoppableVideoModal'
 
 function Icon({ name }: { name: 'play' | 'pause' | 'muted' | 'sound' | 'close' | 'prev' | 'next' }) {
   const common = { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none', 'aria-hidden': true as const }
@@ -208,6 +208,22 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
   }
 
   useEffect(() => {
+    const node = scroller.current
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      preloadShopModalThumbs()
+      return
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        preloadShopModalThumbs()
+        observer.disconnect()
+      }
+    }, { rootMargin: '240px' })
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
     if (open == null) {
       resumeVisible()
       return
@@ -281,6 +297,8 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
             <article
               key={clip.id}
               className="pdp-ugc-card relative shrink-0 snap-start overflow-hidden rounded-[18px] bg-onyx"
+              onPointerEnter={preloadShopModalThumbs}
+              onPointerDown={preloadShopModalThumbs}
             >
               <img src={clip.poster} alt="" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
               <div
