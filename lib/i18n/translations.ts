@@ -515,6 +515,7 @@ export const englishTranslations: Record<string, string> = {
   'Какво казват клиентите': 'What customers say',
   'Работя по 10 часа на ден пред компютър. След като започнах да нося AMPÉ, главоболието изчезна за няколко дни. Сега заспивам веднага щом легна.': 'I work at a computer for ten hours a day. A few days after I started wearing AMPÉ, my headaches disappeared. Now I fall asleep as soon as I go to bed.',
   'Александър М., София': 'Alexander M., Sofia',
+  'Калоян Б., София': 'Kaloyan B., Sofia',
   'Истинска защита. С AMPÉ.': 'Real protection. With AMPÉ.',
   'Намери своя чифт': 'Find your pair',
   'Наистина ли работят тези очила?': 'Do these glasses really work?',

@@ -134,12 +134,12 @@ export default function ScienceView({ locale }: { locale: Locale }) {
             </div>
             <blockquote className="mt-6 grid items-center gap-6 rounded-[28px] border border-iron/15 p-5 md:grid-cols-[180px_1fr]">
               <div className="relative h-40 overflow-hidden rounded-2xl">
-                <Image src="/images/customers/02.jpg" alt={t(testimonialContent.author)} fill sizes="180px" className="object-cover" />
+                <Image src="/images/customers/06.jpg" alt={t('Калоян Б., София')} fill sizes="180px" className="object-cover object-[center_40%]" />
               </div>
               <div>
                 <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Един клиент, не проучване')}</p>
                 <p className="mt-2 font-serif text-2xl leading-snug">„{t(testimonialContent.quote)}“</p>
-                <footer className="mt-2 font-sans text-sm text-stone">{t(testimonialContent.author)}</footer>
+                <footer className="mt-2 font-sans text-sm text-stone">{t('Калоян Б., София')}</footer>
               </div>
             </blockquote>
           </section>
