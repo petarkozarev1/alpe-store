@@ -298,16 +298,18 @@ export default function ShoppableVideoModal({
                   </button>
                 ))}
               </div>
-              <h2 id="shoppable-video-title" className="mt-4 font-serif text-3xl leading-none">
-                AMPÉ <em className="font-normal">{lens === 'evening' ? 'Evening' : 'Daily'}</em>
-              </h2>
-              <p className="mt-2 flex items-baseline gap-2 font-serif text-2xl">
-                <span>€{price.toFixed(2)}</span>
-                {showCompare && <span className="font-sans text-sm text-stone line-through">€{compare.toFixed(2)}</span>}
-              </p>
+              <div className="mt-4 flex items-baseline justify-between gap-3">
+                <h2 id="shoppable-video-title" className="font-serif text-3xl leading-none">
+                  AMPÉ <em className="font-normal">{lens === 'evening' ? 'Evening' : 'Daily'}</em>
+                </h2>
+                <p className="flex shrink-0 items-baseline gap-2 font-serif text-2xl">
+                  <span>€{price.toFixed(2)}</span>
+                  {showCompare && <span className="font-sans text-sm text-stone line-through">€{compare.toFixed(2)}</span>}
+                </p>
+              </div>
 
-              <p className="mt-4 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-stone">{t('Изберете очилата')}</p>
-              <div className="mt-2 grid grid-cols-2 gap-2">
+              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-stone md:mt-6">{t('Изберете очилата')}</p>
+              <div className="mt-2.5 grid grid-cols-2 gap-2 md:mt-3">
                 {(['daily', 'evening'] as Lens[]).map(option => {
                   const disabled = option === 'evening' && eveningBlocked
                   const selected = lens === option
@@ -328,8 +330,8 @@ export default function ShoppableVideoModal({
                 })}
               </div>
 
-              <p className="mt-4 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-stone">{t('Колко чифта?')}</p>
-              <div role="radiogroup" aria-label={t('Колко чифта?')} className="mt-2 grid grid-cols-2 gap-2">
+              <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-stone md:mt-6">{t('Колко чифта?')}</p>
+              <div role="radiogroup" aria-label={t('Колко чифта?')} className="mt-2.5 grid grid-cols-2 gap-2 md:mt-3">
                 {([1, 2] as const).map(count => (
                   <button
                     key={count}
@@ -347,7 +349,7 @@ export default function ShoppableVideoModal({
               </div>
 
               {bundle > 1 && (
-                <div className="mt-3 space-y-2">
+                <div className="mt-4 space-y-2.5 md:mt-5 md:space-y-3">
                   {slots.map((slot, slotIndex) => (
                     <div key={slotIndex} className="flex items-center gap-2">
                       <span className="w-14 font-sans text-xs text-stone">{t('Чифт')} {slotIndex + 1}</span>
@@ -372,7 +374,7 @@ export default function ShoppableVideoModal({
               )}
 
               </div>
-              <div className="shrink-0 border-t border-iron/10 bg-parchment px-4 py-3 md:px-5">
+              <div className="shrink-0 border-t border-iron/10 bg-parchment px-4 py-3.5 md:px-5 md:py-4">
               <button
                 type="button"
                 onClick={addToCart}
