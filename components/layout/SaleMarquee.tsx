@@ -1,74 +1,115 @@
-const COPIES = 6
+'use client'
+
+import { useLayoutEffect, useState } from 'react'
 
 /**
- * Seamless sale bar. Two identical groups scroll by exactly half the track,
- * so the loop has no gap. The phrase is repeated so each group is wider than
- * a desktop viewport.
+ * One announcement at a time. Each message travels its full width, including
+ * when it is shorter than the bar, and the next one starts only after it has
+ * left. Speed matches the previous loop: one copy of the full line took 6s
+ * (six copies crossed in 36s).
  */
 export default function SaleMarquee({ text }: { text: string }) {
-  const phrase = `✦ ${text}`
+  const messages = text.split(' · ').map(part => part.trim()).filter(Boolean).map(part => `✦ ${part}`)
+  const [index, setIndex] = useState(0)
+  const [ready, setReady] = useState(false)
+  const message = messages[index % Math.max(messages.length, 1)] ?? ''
+
+  useLayoutEffect(() => {
+    const track = document.querySelector<HTMLElement>('.sale-marquee')
+    const item = track?.querySelector<HTMLElement>('.sale-marquee-line')
+    if (!track || !item) return
+    const reduced = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced) {
+      setReady(true)
+      return
+    }
+    const itemWidth = item.scrollWidth
+    const trackWidth = track.clientWidth
+    if (itemWidth <= 0 || trackWidth <= 0) return
+    const sample = item.cloneNode(true) as HTMLElement
+    sample.style.animation = 'none'
+    sample.style.transform = 'none'
+    sample.style.position = 'absolute'
+    sample.style.visibility = 'hidden'
+    const sampleLabel = sample.querySelector('span')
+    if (sampleLabel) sampleLabel.textContent = `✦ ${text}`
+    track.appendChild(sample)
+    const sampleWidth = sample.scrollWidth
+    sample.remove()
+    const speed = Math.max(sampleWidth, itemWidth) / 6
+    const distance = trackWidth + itemWidth
+    item.style.setProperty('--sale-from', `${trackWidth}px`)
+    item.style.setProperty('--sale-to', `${-itemWidth}px`)
+    item.style.setProperty('--sale-duration', `${distance / speed}s`)
+    setReady(true)
+  }, [index, text])
+
   return (
-    <div className="sale-marquee w-full bg-onyx overflow-hidden py-2" role="region" aria-label={text}>
-      <div className="sale-marquee-track" aria-hidden="true">
-        {[0, 1].map(group => (
-          <div key={group} className={group === 0 ? 'sale-marquee-group' : 'sale-marquee-group sale-marquee-group-copy'}>
-            {Array.from({ length: COPIES }, (_, index) => (
-              <span
-                key={index}
-                className={index === 0
-                  ? 'sale-marquee-item font-sans text-[11px] font-bold uppercase tracking-widest text-gold'
-                  : 'sale-marquee-item sale-marquee-item-repeat font-sans text-[11px] font-bold uppercase tracking-widest text-gold'}
-              >
-                {phrase}
-              </span>
-            ))}
-          </div>
-        ))}
+    <div
+      className={ready ? 'sale-marquee is-ready w-full bg-onyx overflow-hidden py-2' : 'sale-marquee w-full bg-onyx overflow-hidden py-2'}
+      role="region"
+      aria-label={text}
+    >
+      <div
+        key={message}
+        className="sale-marquee-line"
+        onAnimationEnd={(event) => {
+          if (event.target !== event.currentTarget || messages.length === 0) return
+          setReady(false)
+          setIndex(current => (current + 1) % messages.length)
+        }}
+      >
+        <span className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
+          {message}
+        </span>
       </div>
       <style>{`
-        .sale-marquee-track {
-          display: flex;
-          width: max-content;
-          animation: sale-marquee 36s linear infinite;
-        }
-        .sale-marquee-group {
-          display: flex;
-          flex: none;
-          align-items: center;
-          min-width: 100%;
-        }
-        .sale-marquee-item {
+        .sale-marquee-line {
+          display: inline-block;
           white-space: nowrap;
           padding: 0 2.5rem;
+          animation-name: sale-pass;
+          animation-timing-function: linear;
+          animation-fill-mode: forwards;
+          animation-duration: var(--sale-duration, 14s);
+          animation-play-state: paused;
+          transform: translate3d(var(--sale-from, 100vw), 0, 0);
+          will-change: transform;
         }
-        .sale-marquee:hover .sale-marquee-track,
-        .sale-marquee:focus-within .sale-marquee-track {
+        .sale-marquee.is-ready .sale-marquee-line {
+          animation-play-state: running;
+        }
+        .sale-marquee:hover .sale-marquee-line,
+        .sale-marquee:focus-within .sale-marquee-line {
           animation-play-state: paused;
         }
-        @keyframes sale-marquee {
-          from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(-50%, 0, 0); }
+        @keyframes sale-pass {
+          from { transform: translate3d(var(--sale-from, 100vw), 0, 0); }
+          to { transform: translate3d(var(--sale-to, -100%), 0, 0); }
+        }
+        @keyframes sale-fade {
+          0% { opacity: 0; }
+          15% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { opacity: 0; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .sale-marquee-track {
-            animation: none;
+          .sale-marquee-line,
+          .sale-marquee.is-ready .sale-marquee-line {
+            animation-name: sale-fade;
+            animation-duration: 4.8s;
+            animation-timing-function: ease-in-out;
+            animation-play-state: running;
             transform: none;
-            width: 100%;
-            justify-content: center;
-          }
-          .sale-marquee-group {
-            min-width: 0;
-            width: 100%;
-            justify-content: center;
-          }
-          .sale-marquee-group-copy,
-          .sale-marquee-item-repeat {
-            display: none;
-          }
-          .sale-marquee-item {
-            white-space: normal;
+            display: block;
             text-align: center;
+            white-space: normal;
             padding: 0 1rem;
+          }
+          .sale-marquee:hover .sale-marquee-line,
+          .sale-marquee:focus-within .sale-marquee-line {
+            animation-play-state: paused;
           }
         }
       `}</style>
