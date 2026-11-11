@@ -3,217 +3,252 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import CompareSlider from '@/components/info/CompareSlider'
-import LazyVideo from '@/components/info/LazyVideo'
+import SectionNav from '@/components/info/SectionNav'
 import { translate } from '@/lib/i18n/translations'
 import { localizedPath } from '@/lib/i18n/routing'
 import type { Locale } from '@/lib/i18n/config'
 
-const dayPoints = [
-  '65% блокиране на синя светлина',
-  'Частичен филтър за зелена светлина',
-  'Антирефлексно покритие',
-  'UV400 защита',
-  'Устойчиви на драскотини',
-]
-
-const eveningPoints = [
-  '98% блокиране на синя светлина',
-  '98% блокиране на зелена светлина (500–560nm)',
-  'Максимален мелатонинов ефект',
-  'UV400 защита',
-  'Лека рамка',
+const nav = [
+  { id: 'duljini', label: 'Дължини' },
+  { id: 'laboratoria', label: 'Лаборатория' },
+  { id: 'pokritia', label: 'Покрития' },
+  { id: 'ramka', label: 'Рамка' },
+  { id: 'sravnenie', label: 'Сравнение' },
+  { id: 'koga', label: 'Кога' },
 ]
 
 export default function LensesView({ locale }: { locale: Locale }) {
   const t = (value: string) => translate(locale, value)
   const href = (path: string) => localizedPath(path, locale)
-  const [mix, setMix] = useState(12)
-  const evening = mix >= 50
-  const points = evening ? eveningPoints : dayPoints
+  const [evening, setEvening] = useState(false)
 
   return (
     <main className="bg-parchment text-iron">
-      <section className="mx-auto grid max-w-content items-center gap-10 px-6 pb-8 pt-28 md:px-10 lg:grid-cols-[1.1fr_0.9fr]">
-        <div>
-          <p className="font-sans text-xs uppercase tracking-widest text-stone">{t('✓ EU сертифицирана технология')}</p>
-          <h1 className="mt-4 font-serif text-5xl leading-tight text-iron md:text-6xl">
-            {t('Стъклата, които правят')}<br />{t('разликата.')}
+      <section id="stakla" className="relative min-h-[70vh] overflow-hidden">
+        <Image
+          src={evening ? '/images/shop/shop-evening-1.png' : '/images/shop/shop-daily-1.png'}
+          alt={evening ? t('Чифт AMPÉ Evening с оранжеви стъкла') : t('Чифт AMPÉ Daily с жълти стъкла')}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_55%]"
+        />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/10" />
+        <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
+          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две лещи, два кода')}</p>
+          <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
+            JX-Y8016<br />JX-Y8008
           </h1>
-          <p className="mt-5 max-w-xl font-sans text-base leading-relaxed text-stone">
-            {t('Не всички очила за синя светлина са еднакви. Лещите на AMPÉ са тествани и сертифицирани в ЕС — не просто маркетинг.')}
+          <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
+            {t('Жълтите дневни и оранжевите вечерни лещи са отделни модели. Лабораторните редове на AHD TMS и продуктовото описание не се сливат в едно число. Очилата не са медицинско изделие.')}
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {['UV400 защита', 'Антирефлексно покритие', 'Лека рамка'].map((chip) => (
-              <span key={chip} className="rounded-full border border-iron/20 px-3 py-1 font-sans text-xs text-iron">{t(chip)}</span>
-            ))}
-          </div>
-        </div>
-        <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-[32px] bg-sand">
-          <Image
-            key={evening ? 'evening' : 'day'}
-            src={evening ? '/images/shop/shop-evening-1.png' : '/images/shop/shop-daily-1.png'}
-            alt={evening ? t('Чифт AMPÉ Evening с оранжеви стъкла') : t('Чифт AMPÉ Daily с жълти стъкла')}
-            fill
-            priority
-            sizes="(min-width: 1024px) 40vw, 90vw"
-            className="object-cover"
-          />
-        </div>
-      </section>
-
-      <section id="izbor" className="mx-auto max-w-content px-6 py-12 md:px-10">
-        <div className="rounded-[32px] border border-iron/15 bg-cream p-5 md:p-8">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Ден или вечер')}</p>
-              <h2 className="mt-2 font-serif text-4xl text-iron">{evening ? t('Вечерни стъкла') : t('Дневни стъкла')}</h2>
-            </div>
-            <div className="flex rounded-full bg-sand p-1" role="group" aria-label={t('Ден или вечер')}>
-              <button type="button" aria-pressed={!evening} onClick={() => setMix(12)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'text-iron' : 'bg-onyx text-linen'}`}>{t('Ден')}</button>
-              <button type="button" aria-pressed={evening} onClick={() => setMix(88)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-onyx text-linen' : 'text-iron'}`}>{t('Вечер')}</button>
-            </div>
-          </div>
-          <label className="mt-6 block">
-            <span className="sr-only">{t('Премести плъзгача от дневни към вечерни лещи')}</span>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={mix}
-              onChange={(event) => setMix(Number(event.target.value))}
-              aria-valuetext={evening ? t('Вечерни стъкла') : t('Дневни стъкла')}
-              className="w-full accent-iron"
-              style={{ background: 'linear-gradient(90deg, #F3D48A, #E07A2F)' }}
-            />
-          </label>
-          <p className="mt-2 font-sans text-xs text-stone">{t('Плъзгачът сменя дневните и вечерните лещи. Не е лабораторна скала.')}</p>
-          <div className="mt-6 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-            <div>
-              <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{evening ? t('За вечерта') : t('За работния ден')}</p>
-              {evening && <p className="mt-3 inline-flex rounded-full bg-gold/30 px-3 py-1 font-sans text-[10px] uppercase tracking-widest text-iron">Restocking</p>}
-              <p className="mt-4 font-sans text-base leading-relaxed text-iron">
-                {evening
-                  ? t('По-силен оранжев филтър. Блокират 98% от синята и зелената светлина. Тялото ти знае, че е края на деня и заспиваш без усилие.')
-                  : t('Лек жълтеникав оттенък, почти незабележим. Блокират 65% от синята и зелената светлина. Достатъчно, за да не болят очите до 17:00.')}
-              </p>
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {points.map((point) => (
-                  <li key={point} className="rounded-full bg-sand px-3 py-1 font-sans text-xs text-iron">✓ {t(point)}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="relative h-56 overflow-hidden rounded-3xl" style={{ background: evening ? '#7C3018' : '#F5DFC5' }}>
-              <div className="absolute inset-x-8 top-1/2 h-16 -translate-y-1/2 rounded-full" style={{ background: evening ? '#E07A2F' : '#F3D48A', opacity: 0.9 }} />
-              <p className={`absolute bottom-4 left-4 font-serif text-5xl ${evening ? 'text-linen' : 'text-iron'}`}>{evening ? '98%' : '65%'}</p>
-            </div>
-          </div>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link href={href('/product/alpe-daily')} className="font-sans text-sm font-semibold text-iron underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Daily →')}</Link>
-            <Link href={href('/product/alpe-evening')} className="font-sans text-sm font-semibold text-iron underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Evening →')}</Link>
+            <button type="button" aria-pressed={!evening} onClick={() => setEvening(false)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen/20 text-linen' : 'bg-linen text-onyx'}`}>{t('Дневни лещи')}</button>
+            <button type="button" aria-pressed={evening} onClick={() => setEvening(true)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen text-onyx' : 'bg-linen/20 text-linen'}`}>{t('Вечерни лещи')}</button>
           </div>
         </div>
       </section>
 
-      <section id="sravnenie" className="mx-auto max-w-content px-6 py-8 md:px-10">
-        <h2 className="font-serif text-4xl">{t('Две специално създадени лещи')}</h2>
-        <div className="mt-6 overflow-x-auto">
-          <table className="w-full min-w-[560px] border-collapse text-left">
-            <caption className="sr-only">{t('Сравнение на дневни и вечерни стъкла')}</caption>
-            <thead>
-              <tr className="border-b border-iron/20">
-                <th className="py-3 font-sans text-xs font-medium text-stone">{t('Показател')}</th>
-                <th className="py-3 font-sans text-xs font-medium text-iron">{t('Дневни стъкла')}</th>
-                <th className="py-3 font-sans text-xs font-medium text-iron">{t('Вечерни стъкла')}</th>
-              </tr>
-            </thead>
-            <tbody className="font-sans text-sm">
-              <tr className="border-b border-iron/10">
-                <th className="py-4 font-medium">{t('Синя светлина')}</th>
-                <td>{t('65% блокиране на синя светлина')}</td>
-                <td>{t('98% блокиране на синя светлина')}</td>
-              </tr>
-              <tr className="border-b border-iron/10">
-                <th className="py-4 font-medium">{t('Зелена светлина')}</th>
-                <td>{t('Частичен филтър за зелена светлина')}</td>
-                <td>{t('98% блокиране на зелена светлина (500–560nm)')}</td>
-              </tr>
-              <tr className="border-b border-iron/10">
-                <th className="py-4 font-medium">{t('Оттенък')}</th>
-                <td>{t('Почти прозрачни — лек жълтеникав оттенък')}</td>
-                <td>{t('Оранжев филтър — блокира синьо-зелената светлина')}</td>
-              </tr>
-              <tr>
-                <th className="py-4 font-medium">UV</th>
-                <td>{t('UV400 защита')}</td>
-                <td>{t('UV400 защита')}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <div className="mx-auto max-w-content px-6 py-14 md:px-10 lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-12">
+        <SectionNav locale={locale} label="Секции на страницата" items={nav} />
+        <div className="min-w-0 space-y-20">
+          <section id="duljini" className="scroll-mt-32">
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво филтрира всяка леща')}</p>
+            <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Публикувани диапазони, не нова крива')}</h2>
+            <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
+              <article className="rounded-[28px] border border-iron/15 bg-cream p-5">
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">JX-Y8016 · {t('Дневни лещи')}</p>
+                <h3 className="mt-2 font-serif text-3xl">{t('Жълти, почти прозрачни')}</h3>
+                <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-stone">
+                  <li>{t('Лаборатория: до 99% при пика от 450 nm. Видима светлопропускливост 85%. Категория 0.')}</li>
+                  <li>{t('Продуктова страница: 65% блокиране на синя светлина и частичен филтър за зелена светлина.')}</li>
+                  <li>{t('Изследванията сочат връх на меланопсина около 479 nm и силен диапазон 446–477 nm при хора. Това не е измерване на тази леща.')}</li>
+                </ul>
+              </article>
+              <article className="rounded-[28px] bg-iron p-5 text-linen">
+                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">JX-Y8008 · {t('Вечерни лещи')}</p>
+                <h3 className="mt-2 font-serif text-3xl">{t('Оранжев филтър')}</h3>
+                <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-linen/80">
+                  <li>{t('Лаборатория: 99.21% в 475–650 nm. Видима светлопропускливост 54%. Категория 1.')}</li>
+                  <li>{t('Продуктова страница: 98% блокиране на синя светлина в 415–455 nm и 98% блокиране на зелена светлина (500–560nm).')}</li>
+                  <li>{t('При лабораторна светлина 555 nm също потиска мелатонина в началото на облъчването. Затова зеленият ред е отделен.')}</li>
+                </ul>
+              </article>
+            </div>
+            <LensSpectrum caption={t('Скала 380–700 nm. Защрихованите ленти са публикуваните диапазони, не спектър от уреда.')} />
+            <p className="mt-3 font-sans text-xs text-stone">
+              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Пълните изследвания и ограниченията са на страницата Доказано.')}</Link>
+            </p>
+          </section>
 
-      <section className="bg-[#B8906A] py-16 text-linen">
-        <div className="mx-auto grid max-w-content gap-8 px-6 md:px-10 lg:grid-cols-2">
-          <div className="relative min-h-[420px] overflow-hidden rounded-[28px]">
-            <LazyVideo src="/videos/pdp/01.mp4" poster="/videos/pdp/01.jpg" label={t('Клиент с очила AMPÉ')} />
-          </div>
-          <div className="flex flex-col justify-center">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-linen/75">{t('Как работи')}</p>
-            <h2 className="mt-3 whitespace-pre-line font-serif text-5xl">{t('Лесно.\nПросто работи.')}</h2>
-            <ol className="mt-8 space-y-6">
+          <section id="laboratoria" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Само редовете от AHD TMS')}</h2>
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              <Bars
+                title={t('Дневни лещи')}
+                code="jx-y8016"
+                rows={[
+                  { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85 },
+                  { label: t('UV блокиране'), text: '100%', width: 100 },
+                  { label: t('Синя светлина'), text: t('до 99%'), width: 99 },
+                ]}
+              />
+              <Bars
+                title={t('Вечерни лещи')}
+                code="jx-y8008"
+                dark
+                rows={[
+                  { label: t('Светлопропускливост (Tv)'), text: '54%', width: 54 },
+                  { label: t('UV блокиране'), text: '100%', width: 100 },
+                  { label: t('Синя светлина (475–650nm)'), text: '99.21%', width: 99.21 },
+                ]}
+              />
+            </div>
+            <p className="mt-4 font-sans text-sm leading-relaxed text-stone">
+              {t('И двете лещи: UVA + UVB = 0.00%. Разпознаване на светофар: PASS. Пълният PDF не е качен в сайта.')}
+            </p>
+          </section>
+
+          <section id="pokritia" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Покрития и UV400')}</h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
               {[
-                ['01', 'Сложи ги', 'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Очите ви ще усетят разликата веднага. По-малко напрежение, повече спокойствие.'],
-                ['02', 'Филтрирай', 'Лещите филтрират синята и зелената светлина цял ден — без пауза, без умора.'],
-                ['03', 'Почини си', 'Тялото усеща, че денят е към края си. Заспиваш по-лесно, спиш по-дълбоко.'],
-              ].map(([n, title, body]) => (
-                <li key={n} className="grid grid-cols-[auto_1fr] gap-4">
-                  <span className="font-serif text-2xl text-gold">{n}</span>
+                ['UV400', t('Продуктовата страница означава защитата като UV400. Лабораторният ред е 100% UV и при двете лещи.')],
+                [t('Антирефлексно покритие'), t('Описано за дневните лещи: намалява блясъка от екрана и лампите. Не е ред в таблицата на AHD TMS.')],
+                [t('Устойчиви на драскотини'), t('Продуктовото описание казва, че лещите издържат на ежедневието. Няма публикуван тест за твърдост.')],
+              ].map(([title, body]) => (
+                <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
+                  <h3 className="font-serif text-2xl">{title}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{body}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="ramka" className="scroll-mt-32 grid items-center gap-6 rounded-[28px] bg-sand/50 p-5 md:grid-cols-[220px_1fr] md:p-8">
+            <div className="relative h-48 overflow-hidden rounded-2xl bg-sand">
+              <Image src="/images/glasses-duo2.png" alt={t('Двойка очила AMPÉ — дневни и вечерни')} fill sizes="220px" className="object-contain" />
+            </div>
+            <div>
+              <h2 className="font-serif text-4xl">{t('22 г кристален ацетат')}</h2>
+              <p className="mt-3 font-sans text-sm leading-relaxed text-stone">
+                {t('Продуктовата страница публикува рамката като кристален ацетат с тегло 22 г и я сравнява с обикновена пластмаса от 35–50 г. Сравнението не е част от лабораторния доклад за лещите. Същата рамка е описана като подходяща за носене 8+ часа.')}
+              </p>
+            </div>
+          </section>
+
+          <section id="sravnenie" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Една до друга')}</h2>
+            <div className="mt-6 overflow-x-auto rounded-[28px] border border-iron/15">
+              <table className="w-full min-w-[640px] border-collapse text-left">
+                <caption className="sr-only">{t('Сравнение на дневни и вечерни стъкла')}</caption>
+                <thead className="bg-sand">
+                  <tr>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Показател')}</th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни лещи')}<span className="mt-1 block font-normal text-stone">jx-y8016</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни лещи')}<span className="mt-1 block font-normal text-stone">jx-y8008</span></th>
+                  </tr>
+                </thead>
+                <tbody className="font-sans text-sm">
+                  {[
+                    [t('Продуктово описание, синя'), t('65% блокиране на синя светлина'), t('98% блокиране на синя светлина')],
+                    [t('Продуктово описание, зелена'), t('Частичен филтър за зелена светлина'), t('98% блокиране на зелена светлина (500–560nm)')],
+                    [t('Лаборатория, синя'), t('до 99%'), '99.21%'],
+                    [t('Лаборатория, Tv'), '85%', '54%'],
+                    [t('Категория'), '0', '1'],
+                    [t('Оттенък'), t('Почти прозрачни — лек жълтеникав оттенък'), t('Оранжев филтър — блокира синьо-зелената светлина')],
+                    ['UV', t('UV400 защита'), t('UV400 защита')],
+                  ].map((row) => (
+                    <tr key={row[0]} className="border-t border-iron/10">
+                      <th className="px-4 py-4 font-medium">{row[0]}</th>
+                      <td className="px-4 py-4">{row[1]}</td>
+                      <td className="px-4 py-4">{row[2]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <Link href={href('/product/alpe-daily')} className="font-sans text-sm underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Daily →')}</Link>
+              <Link href={href('/product/alpe-evening')} className="font-sans text-sm underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Evening →')}</Link>
+            </div>
+          </section>
+
+          <section id="koga" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Кога коя леща')}</h2>
+            <ol className="mt-6 space-y-3">
+              {[
+                [t('През работния ден'), t('Дневните, JX-Y8016. Категория 0 и отбелязани като подходящи за шофиране. Продуктовата страница ги сочи за работа пред екран, включително дизайн и видеоразговори.')],
+                [t('След залез и поне 2 часа преди лягане'), t('Вечерните, JX-Y8008. Категория 1, за вечерна употреба. Светофарът е PASS. Наличността се вижда на продуктовата страница.')],
+              ].map(([title, body], index) => (
+                <li key={title} className="grid grid-cols-[auto_1fr] gap-4 rounded-[24px] bg-sand/40 p-5">
+                  <span className="font-serif text-3xl text-iron">{String(index + 1).padStart(2, '0')}</span>
                   <div>
-                    <h3 className="font-serif text-2xl">{t(title)}</h3>
-                    <p className="mt-1 font-sans text-sm leading-relaxed text-linen/80">{t(body)}</p>
+                    <h3 className="font-serif text-2xl">{title}</h3>
+                    <p className="mt-1 font-sans text-sm leading-relaxed text-stone">{body}</p>
                   </div>
                 </li>
               ))}
             </ol>
-          </div>
+            <p className="mt-4 rounded-2xl border border-gold/50 bg-sand/50 p-4 font-sans text-sm leading-relaxed text-iron">
+              {t('Няма публикуван протокол за почистване, калъф или течност. Публикувано е само, че лещите са устойчиви на драскотини и че рамката е 22 г. Гаранцията е отделно: 24 месеца срещу производствен дефект, без нормално износване.')}
+            </p>
+          </section>
         </div>
-      </section>
-
-      <section id="razlika" className="mx-auto max-w-content px-6 py-16 md:px-10">
-        <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Защо AMPÉ?')}</p>
-        <h2 className="mt-2 whitespace-pre-line font-serif text-4xl md:text-5xl">{t('Умора вчера.\nЯснота днес.')}</h2>
-        <div className="mt-6">
-          <CompareSlider
-            beforeSrc="/images/before.png"
-            afterSrc="/images/after.png"
-            beforeAlt={t('Преди')}
-            afterAlt={t('След')}
-            beforeLabel={t('Преди')}
-            afterLabel={t('След')}
-            label={t('Плъзни, за да сравниш преди и след')}
-          />
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-content gap-10 px-6 pb-20 md:px-10 lg:grid-cols-2">
-        <article className="overflow-hidden rounded-[28px] bg-sand/50">
-          <div className="relative h-64">
-            <Image src="/images/how-it-works-selfie.jpg" alt={t('Клиент с очила AMPÉ')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover object-[center_28%]" />
-          </div>
-          <div className="p-6">
-            <h2 className="font-serif text-3xl">{t('Дневни + вечерни стъкла')}</h2>
-            <p className="mt-3 font-sans text-sm leading-relaxed text-stone">{t('Дневни + вечерни стъкла. Пълна защита от сутринта до лягане.')}</p>
-          </div>
-        </article>
-        <article className="flex flex-col justify-between rounded-[28px] bg-onyx p-8 text-linen">
-          <div>
-            <h2 className="font-serif text-4xl">{t('Вземи си чифт.')}</h2>
-            <p className="mt-4 font-sans text-sm text-linen/75">{t('Безплатна доставка за 2+ чифта')}</p>
-          </div>
-          <Link href={href('/shop')} className="mt-8 inline-block w-fit rounded-full bg-linen px-8 py-3 font-sans text-sm text-onyx">{t('Вземи си чифт →')}</Link>
-        </article>
-      </section>
+      </div>
     </main>
+  )
+}
+
+function Bars({ title, code, rows, dark = false }: { title: string; code: string; dark?: boolean; rows: { label: string; text: string; width: number }[] }) {
+  return (
+    <article className={`rounded-[28px] p-5 ${dark ? 'bg-iron text-linen' : 'border border-iron/15 bg-cream'}`}>
+      <h3 className="font-serif text-2xl">{title}</h3>
+      <p className={`font-sans text-xs ${dark ? 'text-linen/70' : 'text-stone'}`}>{code}</p>
+      <div className="mt-4 space-y-4">
+        {rows.map((row) => (
+          <div key={row.label}>
+            <div className="flex justify-between font-sans text-sm"><span>{row.label}</span><span className="font-serif text-xl">{row.text}</span></div>
+            <div className={`mt-1 h-2 overflow-hidden rounded-full ${dark ? 'bg-linen/20' : 'bg-sand'}`}>
+              <div className={`h-full rounded-full ${dark ? 'bg-gold' : 'bg-iron'}`} style={{ width: `${row.width}%` }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </article>
+  )
+}
+
+function LensSpectrum({ caption }: { caption: string }) {
+  const x = (nm: number) => 16 + ((nm - 380) / 320) * 328
+  const bands = [
+    { from: 446, to: 477, label: '446–477 nm' },
+    { from: 475, to: 650, label: '475–650 nm' },
+    { from: 500, to: 560, label: '500–560 nm' },
+  ]
+  return (
+    <figure className="mt-6 rounded-[28px] border border-iron/15 bg-cream p-4">
+      <svg viewBox="0 0 360 120" role="img" aria-label={caption} className="w-full">
+        <defs>
+          <linearGradient id="lens-spectrum" x1="0" x2="1">
+            <stop offset="0" stopColor="#6B4C9A" />
+            <stop offset="0.22" stopColor="#3D6CB5" />
+            <stop offset="0.4" stopColor="#3E8C4A" />
+            <stop offset="0.62" stopColor="#E0A030" />
+            <stop offset="0.82" stopColor="#C45A2A" />
+            <stop offset="1" stopColor="#8C2F2A" />
+          </linearGradient>
+        </defs>
+        {bands.map((band) => (
+          <rect key={band.label} x={x(band.from)} y="36" width={Math.max(2, x(band.to) - x(band.from))} height="28" rx="4" fill="#2D0E04" opacity="0.18" />
+        ))}
+        <rect x="16" y="44" width="328" height="16" rx="8" fill="url(#lens-spectrum)" />
+        <line x1={x(450)} y1="30" x2={x(450)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
+        <line x1={x(479)} y1="30" x2={x(479)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
+        <text x="16" y="100" fill="#9B7B68" fontSize="11">380 nm</text>
+        <text x="292" y="100" fill="#9B7B68" fontSize="11">700 nm</text>
+      </svg>
+      <figcaption className="font-sans text-xs leading-relaxed text-stone">{caption} 450 nm · 479 nm · 446–477 nm · 475–650 nm · 500–560 nm.</figcaption>
+    </figure>
   )
 }
