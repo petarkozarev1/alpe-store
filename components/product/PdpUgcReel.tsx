@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Locale } from '@/lib/i18n/config'
 import { clipSource, pdpUgcClips, type PdpUgcClip } from '@/lib/pdp-ugc'
+import ShoppableVideoModal from '@/components/product/ShoppableVideoModal'
 
 function Icon({ name }: { name: 'play' | 'pause' | 'muted' | 'sound' | 'close' | 'prev' | 'next' }) {
   const common = { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none', 'aria-hidden': true as const }
@@ -41,8 +42,6 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
   const [playing, setPlaying] = useState<Record<string, boolean>>({})
   const [muted, setMuted] = useState<Record<string, boolean>>({})
   const [open, setOpen] = useState<number | null>(null)
-  const touchX = useRef<number | null>(null)
-  const swiped = useRef(false)
   const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null)
   const blockClick = useRef(false)
   const [edges, setEdges] = useState({ start: true, end: false })
@@ -262,8 +261,6 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
     }
   }
 
-  const active = open == null ? null : pdpUgcClips[open]
-
   return (
     <section aria-label={copy.eyebrow}>
       <p className="font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-gold">{copy.eyebrow}</p>
@@ -389,81 +386,12 @@ export default function PdpUgcReel({ locale }: { locale: Locale }) {
         }
       `}</style>
 
-      {active && (
-        <div
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-onyx/92 px-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label={copy.eyebrow}
-          onClick={() => {
-            if (swiped.current) {
-              swiped.current = false
-              return
-            }
-            setOpen(null)
-          }}
-          onTouchStart={(event) => { touchX.current = event.changedTouches[0]?.clientX ?? null }}
-          onTouchEnd={(event) => {
-            if (touchX.current == null || open == null) return
-            const delta = (event.changedTouches[0]?.clientX ?? touchX.current) - touchX.current
-            if (Math.abs(delta) > 48) {
-              swiped.current = true
-              setOpen((open + (delta < 0 ? 1 : -1) + pdpUgcClips.length) % pdpUgcClips.length)
-            }
-            touchX.current = null
-          }}
-        >
-          <button
-            type="button"
-            aria-label={copy.close}
-            onClick={() => setOpen(null)}
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-linen/15 text-linen"
-          >
-            <Icon name="close" />
-          </button>
-          <button
-            type="button"
-            aria-label={copy.prev}
-            onClick={(event) => {
-              event.stopPropagation()
-              setOpen((open! - 1 + pdpUgcClips.length) % pdpUgcClips.length)
-            }}
-            className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-linen/15 text-linen"
-          >
-            <Icon name="prev" />
-          </button>
-          <video
-            key={active.id}
-            src={clipSource(active)}
-            poster={active.poster}
-            autoPlay
-            playsInline
-            controls
-            loop={active.startAt == null}
-            width={540}
-            height={960}
-            className="h-[min(86vh,860px)] w-auto max-w-full rounded-[18px] bg-onyx object-contain"
-            onClick={(event) => event.stopPropagation()}
-            onLoadedMetadata={(event) => applyStart(event.currentTarget, active)}
-            onEnded={(event) => {
-              if (active.startAt == null) return
-              event.currentTarget.currentTime = active.startAt
-              event.currentTarget.play().catch(() => {})
-            }}
-          />
-          <button
-            type="button"
-            aria-label={copy.next}
-            onClick={(event) => {
-              event.stopPropagation()
-              setOpen((open! + 1) % pdpUgcClips.length)
-            }}
-            className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-linen/15 text-linen"
-          >
-            <Icon name="next" />
-          </button>
-        </div>
-      )}
+      <ShoppableVideoModal
+        locale={locale}
+        index={open}
+        onClose={() => setOpen(null)}
+        onIndex={(next) => setOpen(next)}
+      />
     </section>
   )
 }

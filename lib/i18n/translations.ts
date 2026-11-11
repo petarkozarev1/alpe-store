@@ -810,6 +810,20 @@ export const englishTranslations: Record<string, string> = {
   'Имаш 14 календарни дни от получаването, без да посочваш причина. Продуктът трябва да е в оригинална опаковка и без видими повреди. Пратката се връща със Спиди, Еконт или Pigeon — куриера, с който е доставена. Обратната доставка е за наша сметка. Пиши на hello@alpewear.com с номера на поръчката. Поръчката се смята за потвърдена след имейл от нас. Можем да откажем поръчка при изчерпана наличност или грешка в цената.': 'You have 14 calendar days from delivery, without giving a reason. The product must be in its original packaging and free from visible damage. It goes back with Speedy, Econt or Pigeon — the courier that delivered it. We cover the return delivery. Email hello@alpewear.com with your order number. An order counts as confirmed after our email. We may decline an order if an item is out of stock or a price is wrong.',
   'Каква е гаранцията?': 'What is the guarantee?',
   '24-месечна законова гаранция срещу производствени дефекти. Не покрива нормално износване или механични повреди, причинени от теб. Важи и при карта, и при наложен платеж.': 'A 24-month statutory guarantee against manufacturing defects. It does not cover normal wear or mechanical damage you cause. It applies to both card payment and cash on delivery.',
+  'Видео и поръчка': 'Video and order',
+  'Затвори': 'Close',
+  'Предишно видео': 'Previous video',
+  'Следващо видео': 'Next video',
+  'Със звук': 'Sound on',
+  'Без звук': 'Sound off',
+  'Изберете очилата': 'Choose your glasses',
+  'Жълти · за деня': 'Yellow · for the day',
+  'Оранжеви · за вечерта': 'Orange · for the evening',
+  'Временно изчерпано': 'Temporarily out of stock',
+  'Количество': 'Quantity',
+  'Намали количеството': 'Decrease quantity',
+  'Увеличи количеството': 'Increase quantity',
+  'Снимка': 'Photo',
 }
 
 export function hasEnglishTranslation(source: string) {
