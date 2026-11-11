@@ -190,9 +190,6 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 </li>
               ))}
             </ol>
-            <p className="mt-4 rounded-2xl border border-gold/50 bg-sand/50 p-4 font-sans text-sm leading-relaxed text-iron">
-              {t('Няма публикуван протокол за почистване, калъф или течност. Публикувано е само, че лещите са устойчиви на драскотини и че рамката е 22 г. Гаранцията е отделно: 24 месеца срещу производствен дефект, без нормално износване.')}
-            </p>
           </section>
         </div>
       </div>

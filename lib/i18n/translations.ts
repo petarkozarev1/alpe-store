@@ -744,7 +744,6 @@ export const englishTranslations: Record<string, string> = {
   'Дневните, JX-Y8016. Категория 0 и отбелязани като подходящи за шофиране. Продуктовата страница ги сочи за работа пред екран, включително дизайн и видеоразговори.': 'Daily, JX-Y8016. Category 0, and listed as suitable for driving. The product page points them at screen work, including design and video calls.',
   'След залез и поне 2 часа преди лягане': 'After sunset and for at least 2 hours before bed',
   'Вечерните, JX-Y8008. Категория 1, за вечерна употреба. Светофарът е PASS. Наличността се вижда на продуктовата страница.': 'Evening, JX-Y8008. Category 1, for evening use. The traffic-signal test is a pass. Availability is shown on the product page.',
-  'Няма публикуван протокол за почистване, калъф или течност. Публикувано е само, че лещите са устойчиви на драскотини и че рамката е 22 г. Гаранцията е отделно: 24 месеца срещу производствен дефект, без нормално износване.': 'No cleaning protocol, case or solution is published. The only published points are that the lenses are scratch resistant and that the frame is 22 g. The guarantee is separate: 24 months against a manufacturing defect, not normal wear.',
   'Пътят': 'The path',
   'Лещите': 'The lenses',
   'Какво да очакваш': 'What to expect',
