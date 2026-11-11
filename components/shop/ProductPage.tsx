@@ -383,7 +383,7 @@ export default function ProductPage({
           </div>
 
           {/* Detail tabs */}
-          <div style={{ marginTop: 40, borderTop: '1px solid rgba(28,15,10,0.09)' }}>
+          <div style={{ marginTop: 40 }}>
             <div className="product-tab-row" style={{ display: 'flex', gap: 0 }}>
               {(['description', 'science', 'reviews'] as Tab[]).map(t => (
                 <button
