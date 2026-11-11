@@ -127,12 +127,13 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
     <main className="bg-parchment text-iron">
       <section id="dokaz" className="relative min-h-[78vh] overflow-hidden">
         <Image
-          src="/images/customers/01.jpg"
-          alt={t('Клиент с очила AMPÉ')}
+          src="/images/cert-hero.jpg"
+          alt={t('Жълти лещи AMPÉ върху кутията')}
           fill
           priority
+          quality={75}
           sizes="100vw"
-          className="object-cover object-[center_62%]"
+          className="object-cover object-[30%_center] md:object-[center_72%]"
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/60 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-content flex-col justify-end px-6 pb-14 md:px-10">
