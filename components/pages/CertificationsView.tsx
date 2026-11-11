@@ -137,8 +137,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/60 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-content flex-col justify-end px-6 pb-14 md:px-10">
-          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Лабораторията')}</p>
-          <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
+          <h1 className="max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
             {t('Измерени лещи.')}<br />{t('Доказани резултати.')}
           </h1>
           <p className="mt-5 max-w-2xl font-sans text-base leading-relaxed text-linen/85">

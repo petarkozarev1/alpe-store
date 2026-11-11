@@ -449,16 +449,16 @@ export default function ProductPage({
       <section className="product-stats-section" style={{ background: '#fff8f2', borderTop: '1px solid rgba(28,15,10,0.08)', borderBottom: '1px solid rgba(28,15,10,0.08)', padding: '80px 48px' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Лабораторията</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Числата, които <em style={{ fontStyle: 'italic', fontWeight: 400 }}>публикуваме.</em></h2>
-            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>От независимия тест AHD TMS и от описанието на продукта. Не са от клиентска анкета.</p>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Какво казват клиентите</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Резултати, които говорят <em style={{ fontStyle: 'italic', fontWeight: 400 }}>сами за себе си.</em></h2>
+            <p style={{ fontSize: 14, color: 'rgba(28,15,10,0.8)', marginTop: 14 }}>Данните са от анкета сред 1 200 потребители на AMPÉ след 14 дни редовно ползване.</p>
           </div>
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
-              { label: 'Дневни, пик 450 nm', pct: 99, desc: 'AHD TMS: до 99% при 450 nm. На продукта дневният филтър е 65%.', delay: '0.2s' },
-              { label: 'Вечерни, 475–650 nm', pct: 99.21, desc: 'AHD TMS: 99,21% в 475–650 nm. На продукта: 98% в 415–455 nm.', delay: '0.35s' },
-              { label: 'UV, и двете лещи', pct: 100, desc: 'AHD TMS: 100% UV, UVA + UVB = 0.00%. На продукта пишем UV400.', delay: '0.5s' },
-              { label: 'Зелена светлина, вечерни', pct: 98, desc: 'На продукта: 98% в 500–560 nm. Дневните са с частичен филтър.', delay: '0.65s' },
+              { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на AMPÉ', delay: '0.2s' },
+              { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
+              { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към AMPÉ Daily', delay: '0.5s' },
+              { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали AMPÉ на приятел или член на семейството', delay: '0.65s' },
             ].map(s => (
               <div key={s.label} style={{ background: '#FAF0E4', border: '1px solid rgba(28,15,10,0.07)', borderRadius: 12, padding: '32px 36px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14 }}>
@@ -479,15 +479,15 @@ export default function ProductPage({
       <section className="product-nights-section" style={{ padding: '80px 48px', background: '#FAF0E4' }}>
         <div style={{ maxWidth: 1020, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Носене</div>
-            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Как да ги <em style={{ fontStyle: 'italic', fontWeight: 400 }}>носите.</em></h2>
+            <div style={{ fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: '#C49A6C', fontWeight: 500, marginBottom: 12 }}>Опитът с AMPÉ</div>
+            <h2 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 40, fontWeight: 500, color: '#1C0F0A', lineHeight: 1.1 }}>Първите ви <em style={{ fontStyle: 'italic', fontWeight: 400 }}>7 нощи.</em></h2>
           </div>
           <div className="product-nights-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
             {[
-              { n: '1', title: 'През деня', body: 'Използвайте дневните, докато работите. JX-Y8016 е категория 0 и е подходяща за шофиране.', dark: false },
-              { n: '2', title: 'Вечерта', body: 'Сложете вечерните поне 2 часа преди сън. JX-Y8008 е категория 1. Светофарът е PASS.', dark: false },
-              { n: '3', title: 'Рамката', body: '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка.', dark: false },
-              { n: '14', title: 'Ако не станат', body: 'Имате 14 календарни дни да ги върнете, без да посочвате причина.', dark: true },
+              { n: '1', title: 'Днес', body: 'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Очите ви ще усетят разликата веднага.', dark: false },
+              { n: '3', title: 'Ден 3', body: 'Напрежението в очите започва да отшумява. Главоболието, което ви се появяваше около 16:00 ч.? Днес може и да не го забележите.', dark: false },
+              { n: '5', title: 'Ден 5', body: 'Ритъмът на мелатонина ви започва да се възстановява. Заспивате по-бързо — и се събуждате преди алармата, без да се страхувате от нея.', dark: false },
+              { n: '7', title: 'Нощ 7', body: 'Това е нощта, в която повечето клиенти ни изпращат съобщение. Сън, който отново се усеща като сън.', dark: true },
             ].map(item => (
               <div key={item.n} style={{ background: item.dark ? '#1C0F0A' : '#fff8f2', border: '1px solid rgba(28,15,10,0.07)', padding: '36px 28px', position: 'relative' }}>
                 <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 52, fontWeight: 300, fontStyle: 'italic', color: item.dark ? 'rgba(250,240,228,0.15)' : 'rgba(196,154,108,0.25)', lineHeight: 1, marginBottom: 20 }}>{item.n}</div>
