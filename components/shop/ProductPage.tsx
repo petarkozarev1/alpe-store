@@ -351,7 +351,7 @@ export default function ProductPage({
               <PdpUgcReel locale={locale} />
             </div>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ BS EN ISO 12312-1 · ANSI Z80.3 · AS/NZS 1067.1 · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: '#4A3024', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
 
           <PaymentMarks />
@@ -361,7 +361,7 @@ export default function ProductPage({
             {[
               { icon: '🔒', label: 'Сигурно\nплащане' },
               { icon: '🚚', label: 'Безплатна доставка\nза 2+ чифта' },
-              { icon: 'ISO', label: 'BS EN ISO 12312-1\nANSI · AS/NZS' },
+              { icon: 'CE', label: 'Сертифицирани\nпо CE стъкла' },
               { icon: 'return', label: '14-дневно\nвръщане' },
             ].map(t => (
               <div key={t.label} style={{ textAlign: 'center' }}>
@@ -371,8 +371,8 @@ export default function ProductPage({
                       <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
                       <path d="M3 3v5h5"/>
                     </svg>
-                  ) : t.icon === 'ISO' ? (
-                    <span style={{ fontSize: 11, fontWeight: 800, color: '#1C0F0A', lineHeight: 1 }}>ISO</span>
+                  ) : t.icon === 'CE' ? (
+                    <span style={{ fontSize: 13, fontWeight: 800, color: '#1C0F0A', lineHeight: 1 }}>CE</span>
                   ) : (
                     <span style={{ fontSize: 18, lineHeight: 1 }}>{t.icon}</span>
                   )}
@@ -517,13 +517,13 @@ export default function ProductPage({
               </thead>
               <tbody>
                 {[
-                  { feature: 'Филтриране на синята светлина', AMPÉ: '65% дневни · 98% вечерни', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Стандарти на лещите', AMPÉ: 'ISO · ANSI · AS/NZS', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Изкривяване на цветовете', AMPÉ: 'Лек жълт или оранжев оттенък', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Филтриране на синята светлина', AMPÉ: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Лещи със сертификат CE', AMPÉ: '✓', generic: 'Рядко', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Изкривяване на цветовете', AMPÉ: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', AMPÉColor: undefined as string | undefined, genericMuted: false },
                   { feature: 'Тегло на рамката', AMPÉ: '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Покритие против надраскване', AMPÉ: '✓', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Две специално създадени лещи', AMPÉ: 'JX-Y8016 и JX-Y8008', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Филтър за зелена светлина (500–560 nm)', AMPÉ: 'Вечерни 98% · дневни частичен', generic: '—', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Покритие против надраскване', AMPÉ: '✓', generic: 'Не', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Две специално създадени лещи', AMPÉ: '✓', generic: 'Един универсален оттенък', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтър за зелена светлина (500–560 nm)', AMPÉ: '✓', generic: '✗ Не е включено', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
                     <td style={{ padding: '16px 20px', fontSize: 14, color: '#1C0F0A' }}>{row.feature}</td>
