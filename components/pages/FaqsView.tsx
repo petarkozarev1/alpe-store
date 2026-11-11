@@ -17,17 +17,17 @@ export default function FaqsView({ locale }: { locale: Locale }) {
 
   const livePrice = pricing.promo
     ? `${t('В момента в лентата:')} ${pricing.promo.code}, −${pricing.promo.percent}% ${t('за 1 чифт')} (€${pricing.promo.singlePairPrice.toFixed(2)}). ${t('Два чифта')} €${pricing.double.toFixed(2)}.`
-    : t('В момента няма обявен период с публичен код. Два чифта са €119.98.')
+    : t('Сега няма промо код в лентата. Два чифта са €119.98.')
 
   const shown = infoFaqs.filter((item) => group === 'all' || item.group === group)
 
   return (
     <main className="bg-parchment text-iron">
       <section className="mx-auto max-w-content px-6 pb-6 pt-28 md:px-10">
-        <p className="font-sans text-xs uppercase tracking-widest text-stone">{t('Често задавани въпроси')}</p>
-        <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-tight md:text-6xl">{t('Въпроси, с отговорите от сайта.')}</h1>
+        <p className="font-sans text-xs uppercase tracking-widest text-stone">{t('Въпроси')}</p>
+        <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-tight md:text-6xl">{t('Питай направо.')}</h1>
         <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-stone">
-          {t('Отговорите повтарят публикуваните числа, цени и условия. Очилата не са медицинско изделие.')}
+          {t('Кратки отговори за лещите, теста и поръчката. Очилата не са медицинско изделие.')}
         </p>
         <div className="mt-6 flex flex-wrap gap-4 font-sans text-sm">
           <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Доказано')}</Link>

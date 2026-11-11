@@ -6,7 +6,7 @@ import LensesView from '@/components/pages/LensesView'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Стъкла',
-    description: 'Дневни и вечерни лещи за синя светлина. EU сертифицирани. Блокират до 99% от синята светлина.',
+    description: 'Дневни и вечерни лещи. Жълти за деня, оранжеви за вечерта. Числата от лабораторията са на страницата.',
     path: '/lenses',
   })
 }

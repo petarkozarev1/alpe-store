@@ -35,12 +35,12 @@ export default function LensesView({ locale }: { locale: Locale }) {
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/10" />
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
-          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две лещи, два кода')}</p>
+          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две лещи. Два кода.')}</p>
           <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
             JX-Y8016<br />JX-Y8008
           </h1>
           <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
-            {t('Жълтите дневни и оранжевите вечерни лещи са отделни модели. Лабораторните редове на AHD TMS и продуктовото описание не се сливат в едно число. Очилата не са медицинско изделие.')}
+            {t('Жълтите са за деня, оранжевите за вечерта. Числата от AHD TMS и описанието на продукта стоят едно до друго. Очилата не са медицинско изделие.')}
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             <button type="button" aria-pressed={!evening} onClick={() => setEvening(false)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen/20 text-linen' : 'bg-linen text-onyx'}`}>{t('Дневни лещи')}</button>
@@ -53,36 +53,36 @@ export default function LensesView({ locale }: { locale: Locale }) {
         <SectionNav locale={locale} label="Секции на страницата" items={nav} />
         <div className="min-w-0 space-y-20">
           <section id="duljini" className="scroll-mt-32">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво филтрира всяка леща')}</p>
-            <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Публикувани диапазони, не нова крива')}</h2>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво хваща всяка леща')}</p>
+            <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Диапазоните, които публикуваме')}</h2>
             <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
               <article className="rounded-[28px] border border-iron/15 bg-cream p-5">
                 <p className="font-sans text-[10px] uppercase tracking-widest text-stone">JX-Y8016 · {t('Дневни лещи')}</p>
                 <h3 className="mt-2 font-serif text-3xl">{t('Жълти, почти прозрачни')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-stone">
-                  <li>{t('Лаборатория: до 99% при пика от 450 nm. Видима светлопропускливост 85%. Категория 0.')}</li>
-                  <li>{t('Продуктова страница: 65% блокиране на синя светлина и частичен филтър за зелена светлина.')}</li>
-                  <li>{t('Изследванията сочат връх на меланопсина около 479 nm и силен диапазон 446–477 nm при хора. Това не е измерване на тази леща.')}</li>
+                  <li>{t('Лаборатория: до 99% при пика от 450 nm. Пропуска 85% видима светлина. Категория 0.')}</li>
+                  <li>{t('На продукта: 65% блокиране на синя светлина и частичен филтър за зелена светлина.')}</li>
+                  <li>{t('Изследванията сочат връх на меланопсина около 479 nm и силен диапазон 446–477 nm. Това е за светлината, не за тази леща.')}</li>
                 </ul>
               </article>
               <article className="rounded-[28px] bg-iron p-5 text-linen">
                 <p className="font-sans text-[10px] uppercase tracking-widest text-gold">JX-Y8008 · {t('Вечерни лещи')}</p>
                 <h3 className="mt-2 font-serif text-3xl">{t('Оранжев филтър')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-linen/80">
-                  <li>{t('Лаборатория: 99.21% в 475–650 nm. Видима светлопропускливост 54%. Категория 1.')}</li>
-                  <li>{t('Продуктова страница: 98% блокиране на синя светлина в 415–455 nm и 98% блокиране на зелена светлина (500–560nm).')}</li>
-                  <li>{t('При лабораторна светлина 555 nm също потиска мелатонина в началото на облъчването. Затова зеленият ред е отделен.')}</li>
+                  <li>{t('Лаборатория: 99.21% в 475–650 nm. Пропуска 54% видима светлина. Категория 1.')}</li>
+                  <li>{t('На продукта: 98% блокиране на синя светлина в 415–455 nm и 98% блокиране на зелена светлина (500–560nm).')}</li>
+                  <li>{t('При лабораторна светлина 555 nm също спира мелатонина в началото. Затова зеленият ред е отделен.')}</li>
                 </ul>
               </article>
             </div>
-            <LensSpectrum caption={t('Скала 380–700 nm. Защрихованите ленти са публикуваните диапазони, не спектър от уреда.')} />
+            <LensSpectrum caption={t('Скала 380–700 nm. Лентите са диапазоните, които публикуваме.')} />
             <p className="mt-3 font-sans text-xs text-stone">
-              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Пълните изследвания и ограниченията са на страницата Доказано.')}</Link>
+              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Изследванията са на страницата Доказано.')}</Link>
             </p>
           </section>
 
           <section id="laboratoria" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Само редовете от AHD TMS')}</h2>
+            <h2 className="font-serif text-4xl">{t('Числата от AHD TMS')}</h2>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <Bars
                 title={t('Дневни лещи')}
@@ -105,7 +105,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
               />
             </div>
             <p className="mt-4 font-sans text-sm leading-relaxed text-stone">
-              {t('И двете лещи: UVA + UVB = 0.00%. Разпознаване на светофар: PASS. Пълният PDF не е качен в сайта.')}
+              {t('И двете лещи: UVA + UVB = 0.00%. Светофарът е PASS. Пълните PDF-и не са качени тук.')}
             </p>
           </section>
 
@@ -113,9 +113,9 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Покрития и UV400')}</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {[
-                ['UV400', t('Продуктовата страница означава защитата като UV400. Лабораторният ред е 100% UV и при двете лещи.')],
-                [t('Антирефлексно покритие'), t('Описано за дневните лещи: намалява блясъка от екрана и лампите. Не е ред в таблицата на AHD TMS.')],
-                [t('Устойчиви на драскотини'), t('Продуктовото описание казва, че лещите издържат на ежедневието. Няма публикуван тест за твърдост.')],
+                ['UV400', t('На продукта пишем UV400. В лабораторията е 100% UV и при двете лещи.')],
+                [t('Антирефлексно покритие'), t('Дневните имат антирефлексно покритие. Намалява блясъка от екрана и лампите.')],
+                [t('Устойчиви на драскотини'), t('Лещите са устойчиви на драскотини, за ежедневието.')],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
                   <h3 className="font-serif text-2xl">{title}</h3>
@@ -132,7 +132,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <div>
               <h2 className="font-serif text-4xl">{t('22 г кристален ацетат')}</h2>
               <p className="mt-3 font-sans text-sm leading-relaxed text-stone">
-                {t('Продуктовата страница публикува рамката като кристален ацетат с тегло 22 г и я сравнява с обикновена пластмаса от 35–50 г. Сравнението не е част от лабораторния доклад за лещите. Същата рамка е описана като подходяща за носене 8+ часа.')}
+                {t('Кристален ацетат, 22 грама. Обикновената пластмасова рамка често е 35–50 г. Рамката е за носене 8+ часа.')}
               </p>
             </div>
           </section>
@@ -178,8 +178,8 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Кога коя леща')}</h2>
             <ol className="mt-6 space-y-3">
               {[
-                [t('През работния ден'), t('Дневните, JX-Y8016. Категория 0 и отбелязани като подходящи за шофиране. Продуктовата страница ги сочи за работа пред екран, включително дизайн и видеоразговори.')],
-                [t('След залез и поне 2 часа преди лягане'), t('Вечерните, JX-Y8008. Категория 1, за вечерна употреба. Светофарът е PASS. Наличността се вижда на продуктовата страница.')],
+                [t('През деня'), t('Дневните, JX-Y8016. Категория 0, подходящи за шофиране. За работа пред екран, включително дизайн и видеоразговори.')],
+                [t('След залез'), t('Вечерните, JX-Y8008, поне 2 часа преди сън. Категория 1. Светофарът е PASS. Наличността е на продуктовата страница.')],
               ].map(([title, body], index) => (
                 <li key={title} className="grid grid-cols-[auto_1fr] gap-4 rounded-[24px] bg-sand/40 p-5">
                   <span className="font-serif text-3xl text-iron">{String(index + 1).padStart(2, '0')}</span>

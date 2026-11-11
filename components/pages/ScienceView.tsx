@@ -17,9 +17,9 @@ const nav = [
 ]
 
 const stepCopy = [
-  'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Това е указание за носене, не лекарска схема.',
-  'Дневните са проектирани за публикувания дневен филтър, вечерните — за публикувания вечерен. Числата са на страницата за стъклата.',
-  'Изследванията с други синьо-блокиращи очила са малки и смесени. Не обещаваме по-дълъг сън.',
+  'През деня сложи дневните, докато работиш. Вечерните — поне 2 часа преди сън. Така ги носим. Не е лекарска схема.',
+  'Дневните филтрират дневния диапазон, вечерните — вечерния. Числата са на страницата за стъклата.',
+  'Много хора ги слагат за вечерта пред екрана. Изследванията с други очила са малки и различни. Не обещаваме по-дълъг сън.',
 ]
 
 const sources = [
@@ -43,9 +43,9 @@ export default function ScienceView({ locale }: { locale: Locale }) {
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
           <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Как работи')}</p>
-          <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">{t('Светлина, клетка, филтър.')}</h1>
+          <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">{t('От екрана до вечерта.')}</h1>
           <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
-            {t('Очилата AMPÉ не са медицинско изделие. Страницата описва публикувани изследвания за светлина и как лещите са проектирани да филтрират посочените диапазони. Никое от изследванията не е правено с лещи AMPÉ.')}
+            {t('Лещите са направени да филтрират светлината, която държи мозъка буден вечер. Не са медицинско изделие. Изследванията по-долу са за светлината изобщо, не за нашите лещи.')}
           </p>
         </div>
       </section>
@@ -54,13 +54,13 @@ export default function ScienceView({ locale }: { locale: Locale }) {
         <SectionNav locale={locale} label="Секции на страницата" items={nav} />
         <div className="min-w-0 space-y-20">
           <section id="pat" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl md:text-5xl">{t('От екрана до сигнала за нощ')}</h2>
+            <h2 className="font-serif text-4xl md:text-5xl">{t('Как светлината стига до съня')}</h2>
             <Pathway label={t('Схема: светлина, меланопсин, мелатонин, филтър')} nodes={[t('Светлина'), t('Меланопсин'), t('Мелатонин'), t('Филтър')]} />
             <div className="mt-6 grid gap-4">
               {[
-                ['Светлината', 'Част от ганглийните клетки в ретината носят меланопсин. В клетъчен опит човешкият пигмент достига връх при 479 nm [2]. При хора, с разширени зеници през нощта, най-силният диапазон за потискане на мелатонина е 446–477 nm, с изчислен връх 464 nm [1].'],
-                ['Зеленото също брои', 'В началото на лабораторно облъчване 555 nm потиска мелатонина колкото 460 nm. При по-дълга експозиция късите вълни остават по-силни [3].'],
-                ['Къде се намесва лещата', 'Лещата стои пред окото и е проектирана да намали светлината в публикуваните диапазони. Тя не променя клетката и не е измерена в тези опити.'],
+                ['Светлината', 'В окото има клетки с меланопсин. В лаборатория пигментът реагира най-силно около 479 nm [2]. При хора, нощем, най-силният диапазон за мелатонина е 446–477 nm, с връх около 464 nm [1].'],
+                ['Зеленото също брои', 'В началото на един тест 555 nm действа колкото 460 nm. Колкото по-дълго свети, толкова по-силно остава късовълновото [3].'],
+                ['Къде се намесва лещата', 'Лещата стои пред окото и намалява светлината в диапазоните, които публикуваме. Не променя клетката и не е мерена в тези опити.'],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
                   <h3 className="font-serif text-2xl">{t(title)}</h3>
@@ -71,7 +71,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
           </section>
 
           <section id="leshti" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Две различни намеси')}</h2>
+            <h2 className="font-serif text-4xl">{t('Две лещи, два момента')}</h2>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <article className="overflow-hidden rounded-[28px] bg-sand/40">
                 <div className="relative h-52">
@@ -79,7 +79,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                 </div>
                 <div className="p-5">
                   <h3 className="font-serif text-2xl">JX-Y8016 · {t('Дневни лещи')}</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За работния ден. Лабораторията отчита до 99% при 450 nm и 85% видима светлина. Продуктовата страница описва 65% филтър на синята светлина.')}</p>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За деня пред екрана. Лабораторията мери до 99% при 450 nm и 85% видима светлина. На продукта пишем 65% филтър на синята светлина.')}</p>
                 </div>
               </article>
               <article className="overflow-hidden rounded-[28px] bg-iron text-linen">
@@ -88,7 +88,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                 </div>
                 <div className="p-5">
                   <h3 className="font-serif text-2xl">JX-Y8008 · {t('Вечерни лещи')}</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Лабораторията отчита 99.21% в 475–650 nm и 54% видима светлина. Продуктовата страница описва 98% в 415–455 nm и 98% зелена светлина в 500–560 nm.')}</p>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Лабораторията мери 99.21% в 475–650 nm и 54% видима светлина. На продукта: 98% в 415–455 nm и 98% зелена светлина в 500–560 nm.')}</p>
                 </div>
               </article>
             </div>
@@ -117,9 +117,9 @@ export default function ScienceView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Какво да очакваш')}</h2>
             <div className="mt-6 grid gap-4">
               {[
-                ['Малък опит при симптоми на безсъние', '14 възрастни, кехлибарени срещу прозрачни лещи, 2 часа преди лягане. Субективните оценки и актиграфското време на сън са по-добри с кехлибарените. Лещите в опита не са JX-Y8016 или JX-Y8008 [4].'],
-                ['Здрави възрастни', '20 души, очила от 18:00 до лягане. Субективното заспиване е 21 ± 28 срещу 24 ± 21 минути. Обективното време на сън не се подобрява [5].'],
-                ['Прегледи', 'Систематичен преглед до 2017 г. не намира достатъчно доказателства за по-добър сън, зрение или по-малко умора на очите [6]. Метаанализ от 2025 г. на 3 опита и 49 души не намира значима разлика в актиграфията [7].'],
+                ['Хора със симптоми на безсъние', '14 възрастни, кехлибарени срещу прозрачни лещи, 2 часа преди лягане. Оценките и сънят, мерен с гривна, са по-добри с кехлибарените. Тези лещи не са нашите [4].'],
+                ['Здрави хора', '20 души, очила от 18:00 до лягане. Казват, че заспиват за 21 ± 28 минути срещу 24 ± 21. Сънят, мерен с уред, не става по-дълъг [5].'],
+                ['По-големите прегледи', 'Преглед до 2017 г. не намира достатъчно доказателства за по-добър сън, зрение или по-малко умора на очите [6]. Преглед от 2025 г. на 3 опита и 49 души не намира ясна разлика в гривната за сън [7].'],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] bg-sand/40 p-5">
                   <h3 className="font-serif text-2xl">{t(title)}</h3>
@@ -132,7 +132,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                 <Image src="/images/customers/06.jpg" alt={t('Калоян Б., София')} fill sizes="180px" className="object-cover object-[center_40%]" />
               </div>
               <div>
-                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Един клиент, не проучване')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Калоян, с неговите думи')}</p>
                 <p className="mt-2 font-serif text-2xl leading-snug">„{t(testimonialContent.quote)}“</p>
                 <footer className="mt-2 font-sans text-sm text-stone">{t('Калоян Б., София')}</footer>
               </div>
@@ -150,7 +150,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
               ))}
             </ol>
             <p className="mt-4 font-sans text-sm text-stone">
-              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Лабораторните редове са на страницата Доказано.')}</Link>
+              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Числата от лабораторията са на страницата Доказано.')}</Link>
             </p>
           </section>
         </div>

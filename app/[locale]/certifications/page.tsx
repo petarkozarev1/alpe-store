@@ -6,7 +6,7 @@ import CertificationsView from '@/components/pages/CertificationsView'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Сертификати',
-    description: 'Официални лабораторни тестове на лещите AMPÉ. BS EN ISO 12312-1, ANSI Z80.3, AS/NZS 1067.1 — всички преминати.',
+    description: 'Независим тест на лещите AMPÉ в AHD TMS. 100% UV, измерено блокиране и три стандарта.',
     path: '/certifications',
   })
 }

@@ -28,7 +28,7 @@ test('keeps both lens product links visible', () => {
 
 test('keeps the science facts and the how-it-works steps', () => {
   render(<SciencePage params={{ locale: 'bg' }} />)
-  expect(screen.getByRole('heading', { name: 'От екрана до сигнала за нощ' })).toBeInTheDocument()
+  expect(screen.getByRole('heading', { name: 'Как светлината стига до съня' })).toBeInTheDocument()
   expect(screen.getByRole('heading', { name: 'Сложи ги' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'https://pubmed.ncbi.nlm.nih.gov/11487664/' })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/11487664/')
   expect(screen.queryByText(/до 50%/)).not.toBeInTheDocument()

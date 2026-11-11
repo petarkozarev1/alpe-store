@@ -25,17 +25,17 @@ const standards = [
   {
     code: 'BS EN ISO 12312-1:2013+A1:2015',
     region: 'Европа · Великобритания',
-    what: 'Най-строгият стандарт за очила за синя светлина на EU пазара. Изисква независими лабораторни тестове за светлопропускливост, UV блокиране и разпознаване на светофар.',
+    what: 'Европейският стандарт за очила със светлинен филтър. Гледа колко светлина минава, UV и дали светофарът се разпознава.',
   },
   {
     code: 'ANSI Z80.3-2015',
     region: 'САЩ',
-    what: 'Американски оптичен стандарт, управляван от American National Standards Institute. Тества безопасността и оптичните характеристики на некоригиращи лещи.',
+    what: 'Американският стандарт за лещи без диоптър. Проверява дали са оптически безопасни.',
   },
   {
     code: 'AS/NZS 1067.1:2016',
     region: 'Австралия · Нова Зеландия',
-    what: 'Австралийско-новозеландски стандарт за слънчеви очила и очила за лека защита. Включва строги тестове за UV блокиране и светлопропускливост.',
+    what: 'Стандартът за слънчеви и леки защитни очила в Австралия и Нова Зеландия. Включва UV и светлопропускливост.',
   },
 ]
 
@@ -45,9 +45,9 @@ const studies = [
     authors: 'Brainard et al.',
     year: '2001',
     journal: 'Journal of Neuroscience',
-    people: '72 здрави възрастни (37 жени, 35 мъже), средна възраст 24,5 г.',
-    finding: 'При нощни тестове с разширени зеници монохромната светлина между 446 и 477 nm потиска мелатонина най-силно. Кривата съвпада с опсинов шаблон с връх при 464 nm.',
-    limit: 'Това е лабораторен тест със силна светлина, не измерване на очила AMPÉ и не на обикновен екран вкъщи.',
+    people: '72 здрави възрастни (37 жени, 35 мъже), средно на 24,5 г.',
+    finding: 'Нощем, с разширени зеници, светлината между 446 и 477 nm спира мелатонина най-силно. Върхът на кривата е около 464 nm.',
+    limit: 'Силна лабораторна светлина, не екран вкъщи и не лещи AMPÉ.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/11487664/',
     doi: '10.1523/JNEUROSCI.21-16-06405.2001',
   },
@@ -56,9 +56,9 @@ const studies = [
     authors: 'Bailes and Lucas',
     year: '2013',
     journal: 'Proceedings of the Royal Society B',
-    people: 'Човешки меланопсин, изразен в лабораторни клетки HEK293. Не е изпитване с хора.',
-    finding: 'Спектърът на калциевия отговор достига връх при 479 nm. Това е директно измерване на пигмента, не на готов чифт очила.',
-    limit: 'Клетъчен модел. Не доказва какъв процент от тази светлина спира конкретна леща.',
+    people: 'Човешки меланопсин в лабораторни клетки. Не е тест с хора.',
+    finding: 'Пигментът реагира най-силно при 479 nm. Мерен е самият пигмент, не готов чифт очила.',
+    limit: 'Клетъчен опит. Не казва какъв процент спира конкретна леща.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/23554393/',
     doi: '10.1098/rspb.2012.2987',
   },
@@ -67,9 +67,9 @@ const studies = [
     authors: 'Gooley et al.',
     year: '2010',
     journal: 'Science Translational Medicine',
-    people: 'Здрави млади хора, 18–30 г.: 24 души на 460 nm и 24 души на 555 nm.',
-    finding: 'В началото на облъчването зелената светлина от 555 nm потиска мелатонина колкото синята от 460 nm. При по-дълга експозиция чувствителността към 555 nm спада, а меланопсинът остава основен при дълга и силна светлина.',
-    limit: 'Тяснолентова лабораторна светлина в продължение на 6,5 часа. Не е тест на вечерни лещи.',
+    people: 'Здрави хора на 18–30 г.: 24 на 460 nm и 24 на 555 nm.',
+    finding: 'В началото зеленото при 555 nm спира мелатонина колкото синьото при 460 nm. Колкото по-дълго свети, толкова по-слабо остава зеленото.',
+    limit: 'Тясна лабораторна светлина, 6,5 часа. Не е тест на вечерните лещи.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/20463367/',
     doi: '10.1126/scitranslmed.3000741',
   },
@@ -78,9 +78,9 @@ const studies = [
     authors: 'Shechter et al.',
     year: '2018',
     journal: 'Journal of Psychiatric Research',
-    people: '14 възрастни със симптоми на безсъние. Кръстосан опит: кехлибарени срещу прозрачни лещи, 2 часа преди лягане, 7 нощи.',
-    finding: 'С кехлибарените лещи субективните оценки за сън и актиграфското общо време на сън са по-добри, отколкото с прозрачните. Лещите в опита пропускат около 90% видима светлина и поглъщат около 65% синя светлина — различни числа от лабораторните редове на AMPÉ.',
-    limit: 'Малка група хора със симптоми на безсъние. Резултатът не се пренася автоматично върху лещите JX-Y8016 или JX-Y8008.',
+    people: '14 възрастни със симптоми на безсъние. Кехлибарени срещу прозрачни лещи, 2 часа преди лягане, 7 нощи.',
+    finding: 'С кехлибарените оценките за сън и времето, мерено с гривна, са по-добри. Тези лещи пропускат около 90% видима светлина и поемат около 65% синя. Други числа от нашите.',
+    limit: 'Малка група. Не е тест на JX-Y8016 или JX-Y8008.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/29101797/',
     doi: '10.1016/j.jpsychires.2017.10.015',
   },
@@ -89,9 +89,9 @@ const studies = [
     authors: 'Bigalke et al.',
     year: '2021',
     journal: 'Sleep Health',
-    people: '20 здрави възрастни (11 мъже, 9 жени), средна възраст 32 ± 12 г. Кръстосан опит, очила от 18:00 до лягане.',
-    finding: 'Блокиращите синя светлина очила скъсяват субективното заспиване (21 ± 28 срещу 24 ± 21 минути) и броя на събужданията. Обективното време на сън не се подобрява и клони към по-кратък сън.',
-    limit: 'Здрави доброволци, не клиентска група на AMPÉ. Авторите заключават, че обективният сън не се подобрява.',
+    people: '20 здрави възрастни (11 мъже, 9 жени), средно на 32 ± 12 г. Очила от 18:00 до лягане.',
+    finding: 'Хората казват, че заспиват за 21 ± 28 минути срещу 24 ± 21, и се будят по-малко. Сънят, мерен с уред, не става по-дълъг.',
+    limit: 'Здрави доброволци. Авторите пишат, че измереният сън не се подобрява.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/33707105/',
     doi: '10.1016/j.sleh.2021.02.004',
   },
@@ -100,9 +100,9 @@ const studies = [
     authors: 'Lawrenson, Hull and Downie',
     year: '2017',
     journal: 'Ophthalmic and Physiological Optics',
-    people: 'Систематичен преглед на 3 рандомизирани проучвания с общо 136 участници.',
-    finding: 'Няма достатъчно качествени доказателства, че очилата със синьо-блокиращи лещи подобряват зрението, съня или умората на очите при общата популация, нито че пазят макулата.',
-    limit: 'Прегледът е до април 2017 г. и покрива други лещи, не докладите на AHD TMS.',
+    people: 'Преглед на 3 рандомизирани проучвания, общо 136 души.',
+    finding: 'До 2017 г. няма достатъчно силни доказателства, че синьо-блокиращи очила подобряват зрението, съня или умората на очите, или че пазят макулата.',
+    limit: 'Преглед до април 2017 г. Други лещи, не докладът на AHD TMS.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/29044670/',
     doi: '10.1111/opo.12406',
   },
@@ -111,9 +111,9 @@ const studies = [
     authors: 'Luna-Rangel et al.',
     year: '2025',
     journal: 'Frontiers in Neurology',
-    people: 'Метаанализ на 3 двойно слепи кръстосани опита, общо 49 възрастни, с актиграфия.',
-    finding: 'Разликите в заспиването, общото време на сън, ефективността и нощните будения не са статистически значими. Авторите пишат, че настоящите опити не подкрепят значим обективен ефект.',
-    limit: 'Малък брой опити и различни протоколи. Не включва измерванията на лещите AMPÉ.',
+    people: 'Три двойно слепи опита, общо 49 възрастни, със гривна за сън.',
+    finding: 'Разликите в заспиването, дължината на съня, ефективността и нощните будения не са статистически ясни. Авторите не виждат стабилен измерен ефект.',
+    limit: 'Малко опити и различни условия. Не включва лещите AMPÉ.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/41341515/',
     doi: '10.3389/fneur.2025.1699303',
   },
@@ -137,12 +137,12 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/60 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-content flex-col justify-end px-6 pb-14 md:px-10">
-          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Официална документация')}</p>
+          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Лабораторията')}</p>
           <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
             {t('Измерени лещи.')}<br />{t('Доказани резултати.')}
           </h1>
           <p className="mt-5 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
-            {t('Лещите JX-Y8016 (дневни, жълти) и JX-Y8008 (вечерни, оранжеви) са тествани от независимата лаборатория AHD TMS. Числата по-долу са това публикувано обобщение. Изследванията за светлина и сън са за други условия и други лещи.')}
+            {t('Жълтите дневни (JX-Y8016) и оранжевите вечерни (JX-Y8008) са мерени в независимата лаборатория AHD TMS. Отдолу са числата от теста. Изследванията за светлина и сън са за светлината изобщо, не за нашите лещи.')}
           </p>
           <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
             <HeroStat value={100} suffix="%" label={t('UV, и двете лещи')} />
@@ -150,7 +150,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             <HeroStat value={99.21} decimals={2} suffix="%" label={t('Вечерни, 475–650 nm')} />
             <HeroStat value={22} suffix={t(' г')} label={t('Рамка, кристален ацетат')} />
           </dl>
-          <p className="mt-4 max-w-3xl font-sans text-xs leading-relaxed text-linen/75">{t('Очилата AMPÉ не са медицинско изделие.')}</p>
+          <p className="mt-4 max-w-3xl font-sans text-xs leading-relaxed text-linen/75">{t('Очилата не са медицинско изделие. Направени са да филтрират светлина.')}</p>
         </div>
       </section>
 
@@ -158,22 +158,22 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
         <SectionNav locale={locale} label="Секции на страницата" items={nav} />
         <div className="min-w-0 space-y-20">
           <section id="svetlina" className="scroll-mt-32">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Как светлината стига до тялото')}</p>
-            <h2 className="mt-2 max-w-2xl font-serif text-4xl leading-tight md:text-5xl">{t('Синьото и зеленото не са еднакви. И двете са изследвани.')}</h2>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Светлината и окото')}</p>
+            <h2 className="mt-2 max-w-2xl font-serif text-4xl leading-tight md:text-5xl">{t('Защо филтрираме синьото и зеленото')}</h2>
             <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
               <div className="space-y-4 font-sans text-sm leading-relaxed text-stone">
-                <p>{t('Част от ганглийните клетки в ретината носят пигмента меланопсин и са светлочувствителни сами по себе си. В клетъчен опит човешкият меланопсин достига връх при 479 nm [2]. При хора, с разширени зеници през нощта, най-силният диапазон за потискане на мелатонина е 446–477 nm, с изчислен връх 464 nm [1].')}</p>
-                <p>{t('Зелената светлина също участва. В началото на лабораторно облъчване 555 nm потиска мелатонина колкото 460 nm. При по-дълга експозиция късите вълни остават по-силни [3]. Затова продуктовата страница говори и за 500–560 nm, отделно от лабораторния ред 475–650 nm.')}</p>
+                <p>{t('В окото има клетки с пигмент меланопсин. В лаборатория той реагира най-силно около 479 nm [2]. При хора, нощем, най-силният диапазон за мелатонина е 446–477 nm, с връх около 464 nm [1].')}</p>
+                <p>{t('Зеленото също влиза в сметката. В началото на един тест 555 nm действа колкото 460 nm. Колкото по-дълго свети, толкова по-силно остава късовълновото [3]. Затова при вечерните има и ред за 500–560 nm, отделно от лабораторния 475–650 nm.')}</p>
                 <p className="rounded-2xl border border-gold/50 bg-sand/50 p-4 text-iron">
-                  {t('Очилата AMPÉ не са медицинско изделие. Не лекуват, не предотвратяват и не диагностицират безсъние или друго заболяване. Предназначени са да филтрират светлина в публикуваните диапазони.')}
+                  {t('Очилата не са медицинско изделие. Не лекуват и не поставят диагноза. Направени са да филтрират светлината в тези диапазони.')}
                 </p>
               </div>
               <SpectrumDiagram
-                caption={t('Спектър с отбелязани публикувани диапазони. Не е нова лабораторна крива.')}
+                caption={t('Скала на светлината с нашите диапазони. Не е нова крива от уреда.')}
                 bands={[
                   { from: 446, to: 477, label: t('Brainard, 446–477 nm') },
                   { from: 475, to: 650, label: t('Вечерни, лаборатория 475–650 nm') },
-                  { from: 500, to: 560, label: t('Продуктово описание, зелено 500–560 nm') },
+                  { from: 500, to: 560, label: t('Зелено на продукта, 500–560 nm') },
                 ]}
                 marks={[
                   { nm: 450, label: '450', note: t('Дневни, лаборатория') },
@@ -187,21 +187,21 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
               <article className="rounded-[24px] border border-iron/15 bg-sand/40 p-5">
                 <p className="font-sans text-[10px] uppercase tracking-widest text-stone">JX-Y8016 · {t('Дневни лещи')}</p>
                 <h3 className="mt-2 font-serif text-2xl">{t('Жълти, почти прозрачни')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Лабораторията отчита до 99% при пика от 450 nm и 85% видима светлопропускливост. Продуктовата страница описва същите дневни лещи като филтър на 65% от синята светлина. Двете описания стоят отделно, защото пълната спектрална таблица не е публикувана.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Лабораторията мери до 99% при 450 nm и 85% пропусната видима светлина. На продукта пишем 65% филтър на синята светлина. Държим двете числа отделно, защото описват различно нещо.')}</p>
               </article>
               <article className="rounded-[24px] bg-iron p-5 text-linen">
                 <p className="font-sans text-[10px] uppercase tracking-widest text-gold">JX-Y8008 · {t('Вечерни лещи')}</p>
                 <h3 className="mt-2 font-serif text-2xl">{t('Оранжев филтър')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('Лабораторията отчита 99,21% в 475–650 nm и 54% видима светлопропускливост. Продуктовата страница описва 98% в 415–455 nm и 98% зелена светлина в 500–560 nm. И тези редове остават отделни.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('Лабораторията мери 99,21% в 475–650 nm и 54% пропусната видима светлина. На продукта: 98% в 415–455 nm и 98% зелена светлина в 500–560 nm. И тези редове стоят отделно.')}</p>
               </article>
             </div>
           </section>
 
           <section id="laboratoria" className="scroll-mt-32">
             <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Резултати по леща')}</p>
-            <h2 className="mt-2 font-serif text-4xl">{t('Само редовете от AHD TMS')}</h2>
+            <h2 className="mt-2 font-serif text-4xl">{t('Числата от AHD TMS')}</h2>
             <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">
-              {t('Лабораторен доклад: AHD TMS · Стандарти: BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015, AS/NZS 1067.1:2016')}
+              {t('Докладът е на AHD TMS. Стандартите са BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 и AS/NZS 1067.1:2016.')}
             </p>
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
               <LabBars
@@ -210,7 +210,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 rows={[
                   { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85, note: t('Почти прозрачни') },
                   { label: t('UV блокиране'), text: '100%', width: 100, note: 'UVA + UVB = 0.00%' },
-                  { label: t('Синя светлина'), text: t('до 99%'), width: 99, note: t('Блокира вредния 450nm пик') },
+                  { label: t('Синя светлина'), text: t('до 99%'), width: 99, note: t('При пика от 450 nm') },
                 ]}
               />
               <LabBars
@@ -220,7 +220,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 rows={[
                   { label: t('Светлопропускливост (Tv)'), text: '54%', width: 54, note: t('Видимо оранжев оттенък') },
                   { label: t('UV блокиране'), text: '100%', width: 100, note: 'UVA + UVB = 0.00%' },
-                  { label: t('Синя светлина (475–650nm)'), text: '99.21%', width: 99.21, note: t('Максимална мелатонинова защита') },
+                  { label: t('Синя светлина (475–650nm)'), text: '99.21%', width: 99.21, note: t('В диапазона 475–650 nm') },
                 ]}
               />
             </div>
@@ -238,9 +238,9 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                   {[
                     [t('Светлопропускливост (Tv)'), '85%', t('Почти прозрачни'), '54%', t('Видимо оранжев оттенък')],
                     [t('UV блокиране'), '100%', 'UVA + UVB = 0.00%', '100%', 'UVA + UVB = 0.00%'],
-                    [t('Синя светлина'), t('до 99%'), t('Блокира вредния 450nm пик'), '99.21%', t('Синя светлина (475–650nm)')],
+                    [t('Синя светлина'), t('до 99%'), t('При пика от 450 nm'), '99.21%', t('Синя светлина (475–650nm)')],
                     [t('Филтърна категория'), '0', t('Подходящи за шофиране'), '1', t('За вечерна употреба')],
-                    [t('Разпознаване на светофар'), '✓ PASS', t('Безопасни за употреба на улицата'), '✓ PASS', t('Тествано и преминато')],
+                    [t('Разпознаване на светофар'), '✓ PASS', t('Светофарът се разпознава'), '✓ PASS', t('Също PASS')],
                   ].map((row) => (
                     <tr key={row[0]} className="border-t border-iron/10">
                       <th className="px-4 py-4 font-medium text-iron">{row[0]}</th>
@@ -252,7 +252,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
               </table>
             </div>
             <p className="mt-4 font-sans text-xs leading-relaxed text-stone">
-              {t('Пълните PDF доклади не са качени в сайта. Няма връзка за сваляне, защото файлът не е в проекта. Таблицата повтаря единственото публикувано обобщение.')}
+              {t('Пълните PDF-и не са качени тук. Таблицата е обобщението от лабораторията.')}
             </p>
           </section>
 
@@ -264,18 +264,18 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                   <p className="font-sans text-[10px] uppercase tracking-widest text-gold">{t(standard.region)}</p>
                   <h3 className="mt-3 font-serif text-2xl leading-snug">{standard.code}</h3>
                   <p className="mt-3 font-sans text-sm leading-relaxed text-linen/80">{t(standard.what)}</p>
-                  <p className="mt-4 font-sans text-xs text-linen/70">{t('И двете лещи са отбелязани като преминали този стандарт. Текстът на самия стандарт не е приложен, защото се разпространява от издателя.')}</p>
+                  <p className="mt-4 font-sans text-xs text-linen/70">{t('И двете лещи минават този стандарт.')}</p>
                 </article>
               ))}
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <article className="rounded-[24px] border border-iron/15 p-5">
                 <h3 className="font-serif text-2xl">UV400</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Продуктовата страница означава защитата като UV400. Лабораторният ред за същото е 100% UV, UVA + UVB = 0.00%, и при двете лещи.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('На продукта пишем UV400. В лабораторията същото е 100% UV, UVA + UVB = 0.00%, и при двете лещи.')}</p>
               </article>
               <article className="rounded-[24px] border border-iron/15 p-5">
                 <h3 className="font-serif text-2xl">{t('Зелена светлина')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Продуктовата страница сочи 500–560 nm и описва 98% блокиране на зелената светлина при вечерните лещи и частичен филтър при дневните. Това не е отделен сертификат.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('На вечерните пишем 98% в 500–560 nm, на дневните — частичен филтър. Това е описанието на продукта, не отделен сертификат.')}</p>
               </article>
             </div>
           </section>
@@ -289,7 +289,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 </div>
                 <figcaption className="p-5">
                   <h3 className="font-serif text-2xl">{t('Дневни лещи')} · JX-Y8016</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За работния ден пред екрана. Категория 0 и отбелязани като подходящи за шофиране. Антирефлексно покритие и устойчивост на драскотини са част от продуктовото описание, не от таблицата на AHD TMS.')}</p>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За деня пред екрана. Категория 0 и подходящи за шофиране. Имат антирефлексно покритие и са устойчиви на драскотини.')}</p>
                   <Link href={href('/product/alpe-daily')} className="mt-3 inline-block font-sans text-sm underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Daily →')}</Link>
                 </figcaption>
               </figure>
@@ -299,7 +299,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 </div>
                 <figcaption className="p-5">
                   <h3 className="font-serif text-2xl">{t('Вечерни лещи')} · JX-Y8008</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Категория 1. Разпознаването на светофар е PASS и при тях. По-ниската светлопропускливост от 54% е причината оттенъкът да се вижда.')}</p>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Категория 1, светофарът е PASS. Пропускат 54% от видимата светлина, затова оранжевото се вижда.')}</p>
                   <Link href={href('/product/alpe-evening')} className="mt-3 inline-block font-sans text-sm text-linen underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Evening →')}</Link>
                 </figcaption>
               </figure>
@@ -310,15 +310,15 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
               </div>
               <div>
                 <h3 className="font-serif text-3xl">{t('22 г кристален ацетат')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Продуктовата страница публикува рамката като кристален ацетат с тегло 22 г и я сравнява с обикновена пластмаса от 35–50 г. Сравнението не е част от лабораторния доклад за лещите.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Кристален ацетат, 22 грама. Обикновената пластмасова рамка често е 35–50 г. Леки са за цял ден.')}</p>
               </div>
             </div>
           </section>
 
           <section id="prouchvania" className="scroll-mt-32">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Чужди изследвания')}</p>
-            <h2 className="mt-2 font-serif text-4xl">{t('Какво казват проучванията, и какво не казват')}</h2>
-            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">{t('Никое от тези проучвания не е правено с лещи AMPÉ. Връзките сочат към PubMed, където абстрактът може да се прочете.')}</p>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Изследвания за светлината')}</p>
+            <h2 className="mt-2 font-serif text-4xl">{t('Какво казват изследванията')}</h2>
+            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">{t('Тези трудове са за светлината и за други очила, не за лещите AMPÉ. Връзките водят към PubMed.')}</p>
             <div className="mt-6 grid gap-4">
               {studies.map((study) => (
                 <article key={study.n} className="rounded-[28px] border border-iron/15 bg-cream p-5 md:p-6">
@@ -326,9 +326,9 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                     <h3 className="font-serif text-2xl">[{study.n}] {study.authors}, {study.year}</h3>
                     <p className="font-sans text-xs uppercase tracking-widest text-stone">{study.journal}</p>
                   </div>
-                  <p className="mt-3 font-sans text-sm text-iron"><span className="text-stone">{t('Участници')}: </span>{t(study.people)}</p>
+                  <p className="mt-3 font-sans text-sm text-iron"><span className="text-stone">{t('Хора')}: </span>{t(study.people)}</p>
                   <p className="mt-2 font-sans text-sm leading-relaxed text-iron">{t(study.finding)}</p>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Ограничение')}: {t(study.limit)}</p>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Бележка')}: {t(study.limit)}</p>
                   <p className="mt-3 font-sans text-xs">
                     <a href={study.href} className="underline decoration-gold underline-offset-4" target="_blank" rel="noreferrer">PubMed</a>
                     <span className="text-stone"> · DOI {study.doi}</span>
@@ -342,10 +342,10 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Дневни или вечерни, и кога')}</h2>
             <ol className="mt-6 space-y-4">
               {[
-                ['Сутрин и през работния ден', 'Използвайте дневните очила по време на работа. JX-Y8016 е категория 0 и е отбелязана като подходяща за шофиране.'],
-                ['Поне два часа преди лягане', 'Използвайте вечерните очила поне 2 часа преди лягане. Това е указанието от страницата „Как работи“, не лекарска схема.'],
-                ['Защо вечерните са по-тъмни', 'JX-Y8008 пропуска 54% видима светлина и е категория 1, за вечерна употреба. Светофарът е PASS.'],
-                ['Какво да не очакваш от една нощ', 'Проучванията при здрави възрастни не показват стабилно по-дълъг обективен сън [5, 7]. Малък опит при хора със симптоми на безсъние съобщава по-добри оценки [4].'],
+                ['Сутрин и през деня', 'Сложи дневните, докато работиш. JX-Y8016 е категория 0 и е отбелязана като подходяща за шофиране.'],
+                ['Поне два часа преди лягане', 'Вечерните сложи поне 2 часа преди сън. Така ги носим ние. Не е лекарска схема.'],
+                ['Защо вечерните са по-тъмни', 'JX-Y8008 пропуска 54% видима светлина и е категория 1. За вечер са. Светофарът е PASS.'],
+                ['От една нощ', 'При здрави хора измереният сън не става стабилно по-дълъг [5, 7]. В малка група със симптоми на безсъние оценките са по-добри с други, кехлибарени лещи [4].'],
               ].map(([title, body], index) => (
                 <li key={title} className="grid grid-cols-[auto_1fr] gap-4 rounded-[24px] bg-sand/40 p-5">
                   <span className="font-serif text-3xl text-iron">{String(index + 1).padStart(2, '0')}</span>
@@ -359,16 +359,16 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             <div className="relative mt-6 h-72 overflow-hidden rounded-[28px]">
               <LazyVideo src="/videos/pdp/01.mp4" poster="/videos/pdp/01.jpg" label={t('Клиент с очила AMPÉ')} />
             </div>
-            <p className="mt-2 font-sans text-xs text-stone">{t('Клиентско видео от продуктовата страница. Не е участник в цитираните проучвания.')}</p>
+            <p className="mt-2 font-sans text-xs text-stone">{t('Клип от продуктовата страница. Човекът не участва в изследванията.')}</p>
           </section>
 
           <section id="metod" className="scroll-mt-32 rounded-[28px] bg-[#B8906A] p-6 text-linen md:p-8">
-            <h2 className="font-serif text-4xl">{t('Какво знаем за теста')}</h2>
+            <h2 className="font-serif text-4xl">{t('Как е правен тестът')}</h2>
             <ul className="mt-5 space-y-3 font-sans text-sm leading-relaxed text-linen/90">
-              <li>{t('Лещите са изпратени в независима лаборатория. Името, което сайтът публикува, е AHD TMS.')}</li>
-              <li>{t('Публикувани са два кода: JX-Y8016 за дневните и JX-Y8008 за вечерните.')}</li>
-              <li>{t('Отчетени са светлопропускливост, UV, синя светлина, филтърна категория и разпознаване на светофар, спрямо трите стандарта по-горе.')}</li>
-              <li>{t('Не са публикувани датата, уредът, броят образци и суровият спектрален файл. Затова страницата не чертае крива точка по точка.')}</li>
+              <li>{t('Лещите са пратени в независима лаборатория. Казва се AHD TMS.')}</li>
+              <li>{t('Дневните са JX-Y8016, вечерните са JX-Y8008.')}</li>
+              <li>{t('Мерени са светлопропускливост, UV, синя светлина, категория и светофар, по трите стандарта горе.')}</li>
+              <li>{t('В това обобщение няма дата, уред и суров файл. Затова не чертаем крива точка по точка.')}</li>
             </ul>
           </section>
 
@@ -376,10 +376,10 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Въпроси')}</h2>
             <div className="mt-5 space-y-3">
               {[
-                ['Наистина ли работят тези очила?', 'Лабораторията измерва филтъра. Дали това променя съня ти е отделен въпрос: опитите с други синьо-блокиращи очила са малки и смесени [4–7].'],
-                ['Това лечение на безсъние ли е?', 'Не. Очилата не са медицинско изделие и страницата не обещава лечение, профилактика или диагноза.'],
-                ['Защо дневните са „до 99%“ и същевременно „65%“?', '85% светлопропускливост и „до 99%“ при 450 nm са лабораторното обобщение. 65% е продуктовото описание на дневния филтър. Без пълната спектрална таблица не ги събираме в едно число.'],
-                ['Може ли да ги нося цял ден?', 'Да — за това са направени. Рамката е лека и удобна, така че повечето клиенти забравят, че изобщо ги носят.'],
+                ['Наистина ли работят тези очила?', 'Лабораторията мери филтъра и числата са ясни. Дали сънят ти се променя е друго: опитите с други синьо-блокиращи очила са малки и различни [4–7].'],
+                ['Това лечение на безсъние ли е?', 'Не. Не са медицинско изделие и не заместват лекар.'],
+                ['Защо дневните са „до 99%“ и същевременно „65%“?', '„До 99%“ при 450 nm и 85% пропусната светлина са от лабораторията. 65% е описанието на дневния филтър. Държим ги отделно.'],
+                ['Може ли да ги нося цял ден?', 'Да. За това са. Рамката е 22 г и повечето хора свикват още първия ден.'],
               ].map(([q, a]) => (
                 <details key={q} className="rounded-[24px] border border-iron/15 bg-cream p-5">
                   <summary className="cursor-pointer list-none font-serif text-xl [&::-webkit-details-marker]:hidden">{t(q)}</summary>

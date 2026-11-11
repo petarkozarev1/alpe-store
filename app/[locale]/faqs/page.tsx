@@ -8,7 +8,7 @@ import { localizeValue } from '@/lib/i18n/translations'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Въпроси',
-    description: 'Отговори на най-честите въпроси за очилата AMPÉ за синя светлина.',
+    description: 'Кратки отговори за лещите, теста, носенето и поръчката.',
     path: '/faqs',
   })
 }

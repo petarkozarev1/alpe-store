@@ -6,7 +6,7 @@ import ScienceView from '@/components/pages/ScienceView'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Науката',
-    description: 'Как синята светлина влияе на очите и съня. Научните факти зад AMPÉ.',
+    description: 'Как светлината стига до окото и какво филтрират лещите AMPÉ.',
     path: '/science',
   })
 }
