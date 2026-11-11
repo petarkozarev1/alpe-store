@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import LazyVideo from '@/components/info/LazyVideo'
 import SectionNav from '@/components/info/SectionNav'
 import { steps, testimonialContent } from '@/lib/data/content'
 import { translate } from '@/lib/i18n/translations'
@@ -112,10 +111,6 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                 </li>
               ))}
             </ol>
-            <div className="relative mt-6 h-72 overflow-hidden rounded-[28px]">
-              <LazyVideo src="/videos/pdp/02.mp4" poster="/videos/pdp/02.jpg" label={t('Клиент с очила AMPÉ')} />
-            </div>
-            <p className="mt-2 font-sans text-xs text-stone">{t('Клиентско видео от продуктовата страница. Не е участник в цитираните проучвания.')}</p>
           </section>
 
           <section id="ochakvai" className="scroll-mt-32">
