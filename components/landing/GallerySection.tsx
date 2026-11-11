@@ -10,7 +10,7 @@ const images = [
   { src: '/images/customers/01.jpg', alt: 'AMPÉ customer', position: '46% 32%' },
   { src: '/images/customers/02.jpg', alt: 'AMPÉ customer', position: '40% 26%' },
   { src: '/images/customers/03.jpg', alt: 'AMPÉ customer', position: '50% 34%' },
-  { src: '/images/customers/04.jpg', alt: 'AMPÉ customer', position: '50% 46%' },
+  { src: '/images/customers/04.jpg', alt: 'AMPÉ customer', position: '46% 50%' },
   { src: '/images/customers/05.jpg', alt: 'AMPÉ customer', position: '50% 40%' },
 ]
 
