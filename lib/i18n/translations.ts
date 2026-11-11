@@ -783,8 +783,6 @@ export const englishTranslations: Record<string, string> = {
   'В момента няма обявен период с публичен код. Два чифта са €119.98.': 'There is no announced period with a public code right now. Two pairs are €119.98.',
   'Въпроси, с отговорите от сайта.': 'Questions, with the answers already on the site.',
   'Отговорите повтарят публикуваните числа, цени и условия. Очилата не са медицинско изделие.': 'The answers repeat the published figures, prices and terms. The glasses are not a medical device.',
-  'Търси във въпросите': 'Search the questions',
-  'Няма въпрос с този текст.': 'No question matches that text.',
   'Лещи и наука': 'Lenses and science',
   'Сертификати и безопасност': 'Certificates and safety',
   'Носене и комфорт': 'Wearing and comfort',

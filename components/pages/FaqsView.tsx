@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { infoFaqGroups, infoFaqs } from '@/lib/data/info-faqs'
 import { getPricingSnapshot } from '@/lib/sale'
 import { translate } from '@/lib/i18n/translations'
@@ -12,7 +12,6 @@ export default function FaqsView({ locale }: { locale: Locale }) {
   const t = (value: string) => translate(locale, value)
   const href = (path: string) => localizedPath(path, locale)
   const [group, setGroup] = useState<(typeof infoFaqGroups)[number]['id']>('all')
-  const [query, setQuery] = useState('')
   const [open, setOpen] = useState(infoFaqs[0].question)
   const pricing = getPricingSnapshot()
 
@@ -20,14 +19,7 @@ export default function FaqsView({ locale }: { locale: Locale }) {
     ? `${t('В момента в лентата:')} ${pricing.promo.code}, −${pricing.promo.percent}% ${t('за 1 чифт')} (€${pricing.promo.singlePairPrice.toFixed(2)}). ${t('Два чифта')} €${pricing.double.toFixed(2)}.`
     : t('В момента няма обявен период с публичен код. Два чифта са €119.98.')
 
-  const shown = useMemo(() => {
-    const needle = query.trim().toLowerCase()
-    return infoFaqs.filter((item) => {
-      if (group !== 'all' && item.group !== group) return false
-      if (!needle) return true
-      return `${t(item.question)} ${t(item.answer)}`.toLowerCase().includes(needle)
-    })
-  }, [group, query, locale])
+  const shown = infoFaqs.filter((item) => group === 'all' || item.group === group)
 
   return (
     <main className="bg-parchment text-iron">
@@ -46,16 +38,7 @@ export default function FaqsView({ locale }: { locale: Locale }) {
       </section>
 
       <div className="sticky top-24 z-30 border-y border-iron/10 bg-parchment/95 backdrop-blur">
-        <div className="mx-auto flex max-w-content flex-col gap-3 px-6 py-3 md:px-10">
-          <label className="block">
-            <span className="sr-only">{t('Търси във въпросите')}</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={t('Търси във въпросите')}
-              className="w-full rounded-full border border-iron/20 bg-cream px-4 py-3 font-sans text-sm text-iron outline-none"
-            />
-          </label>
+        <div className="mx-auto flex max-w-content px-6 py-3 md:px-10">
           <div className="flex gap-2 overflow-x-auto" role="tablist" aria-label={t('Филтър на въпросите')}>
             {infoFaqGroups.map((item) => (
               <button
@@ -74,7 +57,6 @@ export default function FaqsView({ locale }: { locale: Locale }) {
       </div>
 
       <section className="mx-auto max-w-content space-y-3 px-6 py-10 md:px-10">
-        {shown.length === 0 && <p className="font-sans text-sm text-stone">{t('Няма въпрос с този текст.')}</p>}
         {shown.map((item) => {
           const expanded = open === item.question
           const answer = item.question.startsWith('Колко струва') ? `${t(item.answer)} ${livePrice}` : t(item.answer)
