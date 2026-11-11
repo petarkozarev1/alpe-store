@@ -32,7 +32,7 @@ function StepCard({ step, index, progress, locale, total }: { step: Step; index:
               ? 'object-cover object-[center_28%]'
               : step.number === 2
                 ? 'object-cover object-[62%_18%]'
-                : 'object-cover object-[center_20%]'
+                : 'object-cover object-[center_60%]'
           }
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#2D0E04]/80 via-transparent to-transparent" />
