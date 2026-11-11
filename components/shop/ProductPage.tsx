@@ -3,7 +3,6 @@ import { useLocale } from '@/components/i18n/LocaleProvider'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import {
@@ -157,20 +156,13 @@ export default function ProductPage({
   return localizeContent(locale, (
     <div style={{ background: '#FAF0E4', color: '#1C0F0A', fontFamily: 'var(--font-raleway), system-ui, sans-serif', fontWeight: 300 }}>
 
-      {/* Breadcrumb */}
-      <div className="product-breadcrumb" style={{ maxWidth: 1280, margin: '0 auto', padding: '18px 48px 0', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'rgba(28,15,10,0.8)', letterSpacing: '0.06em' }}>
-        <Link href="/" style={{ color: 'rgba(28,15,10,0.8)', textDecoration: 'none' }}>Начало</Link>
-        <span style={{ opacity: 0.4 }}>›</span>
-        <span style={{ color: '#1C0F0A' }}>{d.name}</span>
-      </div>
-
       {/* Main product grid */}
-      <div className="product-grid-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
+      <div className="product-grid-inner" style={{ maxWidth: 1280, margin: '0 auto', padding: '8px 48px 100px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'start' }}>
 
         {/* LEFT: Gallery */}
         <div className="product-gallery-col" style={{ position: 'sticky', top: 80 }}>
           {/* Main image */}
-          <div style={{ width: '100%', aspectRatio: '16/10', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
+          <div className="product-gallery-main" style={{ width: '100%', aspectRatio: '16/10', borderRadius: 12, overflow: 'hidden', background: '#f5ede2', position: 'relative', marginBottom: 14 }}>
             <Image src={currentImg.src} alt={currentImg.alt} fill sizes="(min-width:960px) 50vw, 100vw" className={thumbIdx[lens] === 1 ? 'object-contain' : 'object-cover'} quality={85} />
 
             {/* Lens toggle on image */}
@@ -195,7 +187,7 @@ export default function ProductPage({
           </div>
 
           {/* Thumbnails */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+          <div className="product-gallery-thumbs" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
             {d.images.map((img, i) => (
               <button
                 key={i}
@@ -207,7 +199,7 @@ export default function ProductPage({
             ))}
           </div>
 
-          <div className="product-gallery-copy" style={{ marginTop: 28 }}>
+          <div className="product-gallery-copy" style={{ marginTop: 20 }}>
             <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 36, fontWeight: 500, lineHeight: 1.1, color: '#1C0F0A', marginBottom: 10 }}>
               {d.name} <em style={{ fontStyle: 'italic', fontWeight: 400 }}>{d.nameItalic}</em>
             </h1>
@@ -716,9 +708,18 @@ export default function ProductPage({
       <style>{`
         .product-sticky-bar-mobile { display: none !important; }
 
+        @media (min-width: 961px) and (max-height: 820px) {
+          .product-grid-inner { padding-top: 8px !important; }
+          .product-gallery-main { height: 248px !important; aspect-ratio: auto !important; margin-bottom: 8px !important; }
+          .product-gallery-thumbs { gap: 8px !important; }
+          .product-gallery-thumbs > button { height: 88px !important; aspect-ratio: auto !important; }
+          .product-gallery-copy { margin-top: 14px !important; }
+          .product-gallery-copy h1 { margin-bottom: 6px !important; }
+          .product-gallery-copy > p { margin-bottom: 10px !important; }
+        }
+
         @media (max-width:960px) {
-          .product-breadcrumb { padding: 14px 24px 0 !important; }
-          .product-grid-inner { grid-template-columns: 1fr !important; gap: 40px !important; padding: 24px 24px 80px !important; }
+          .product-grid-inner { grid-template-columns: 1fr !important; gap: 40px !important; padding: 16px 24px 80px !important; }
           .product-gallery-col { position: static !important; }
           .product-stats-section { padding: 60px 24px !important; }
           .product-nights-section { padding: 60px 24px !important; }
@@ -731,7 +732,6 @@ export default function ProductPage({
         }
 
         @media (max-width:640px) {
-          .product-breadcrumb { padding: 12px 16px 0 !important; }
           .product-gallery-col { position: static !important; }
           .product-grid-inner { padding: 20px 16px 80px !important; gap: 28px !important; }
           .product-trust-grid { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; padding: 16px 0 !important; }
