@@ -2,191 +2,193 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import LazyVideo from '@/components/info/LazyVideo'
+import SectionNav from '@/components/info/SectionNav'
+import { steps, testimonialContent } from '@/lib/data/content'
 import { translate } from '@/lib/i18n/translations'
 import { localizedPath } from '@/lib/i18n/routing'
 import type { Locale } from '@/lib/i18n/config'
-import { steps, testimonialContent, withoutItems, withItems } from '@/lib/data/content'
 
-const facts = [
-  {
-    title: 'Синята светлина блокира мелатонина',
-    body: 'Мелатонинът е хормонът, който казва на тялото ти "лягай си". Синята светлина от екраните го потиска с до 50% — дори след 20 минути гледане вечерта. Резултатът: лежиш в леглото, но мозъкът ти е буден.',
-    image: '/images/how-it-works-rest.jpg',
-  },
-  {
-    title: 'Очите не са направени за екрани',
-    body: 'Когато гледаш екран, мигаш 3 пъти по-малко от нормалното. Това изсушава очите и причинява умора. Лещите с антирефлексно покритие намаляват тоя стрес значително.',
-    image: '/images/how-it-works-filter.jpg',
-  },
-  {
-    title: 'EU сертификацията е строга',
-    body: 'EU стандартите за оптични филтри (EN ISO 12312) изискват независими лабораторни тестове. Не е достатъчно да напишеш "блокира синя светлина" на кутията — трябва да го докажеш. Лещите на AMPÉ са преминали тези тестове.',
-    image: '/images/glasses-duo.png',
-  },
-  {
-    title: '7 нощи са достатъчни',
-    body: 'Повечето хора усещат разлика в умората на очите още след 3-4 дни. Качеството на съня се подобрява след около седмица.',
-    image: '/images/customers/05.jpg',
-  },
+const nav = [
+  { id: 'pat', label: 'Пътят' },
+  { id: 'leshti', label: 'Лещите' },
+  { id: 'den', label: 'Денят' },
+  { id: 'ochakvai', label: 'Какво да очакваш' },
+  { id: 'iztochnici', label: 'Източници' },
+]
+
+const stepCopy = [
+  'Използвайте дневните очила по време на работа и вечерните поне 2 часа преди лягане. Това е указание за носене, не лекарска схема.',
+  'Дневните са проектирани за публикувания дневен филтър, вечерните — за публикувания вечерен. Числата са на страницата за стъклата.',
+  'Изследванията с други синьо-блокиращи очила са малки и смесени. Не обещаваме по-дълъг сън.',
+]
+
+const sources = [
+  ['Brainard et al., 2001. Journal of Neuroscience.', 'https://pubmed.ncbi.nlm.nih.gov/11487664/', '10.1523/JNEUROSCI.21-16-06405.2001'],
+  ['Bailes and Lucas, 2013. Proceedings of the Royal Society B.', 'https://pubmed.ncbi.nlm.nih.gov/23554393/', '10.1098/rspb.2012.2987'],
+  ['Gooley et al., 2010. Science Translational Medicine.', 'https://pubmed.ncbi.nlm.nih.gov/20463367/', '10.1126/scitranslmed.3000741'],
+  ['Shechter et al., 2018. Journal of Psychiatric Research.', 'https://pubmed.ncbi.nlm.nih.gov/29101797/', '10.1016/j.jpsychires.2017.10.015'],
+  ['Bigalke et al., 2021. Sleep Health.', 'https://pubmed.ncbi.nlm.nih.gov/33707105/', '10.1016/j.sleh.2021.02.004'],
+  ['Lawrenson, Hull and Downie, 2017. Ophthalmic and Physiological Optics.', 'https://pubmed.ncbi.nlm.nih.gov/29044670/', '10.1111/opo.12406'],
+  ['Luna-Rangel et al., 2025. Frontiers in Neurology.', 'https://pubmed.ncbi.nlm.nih.gov/41341515/', '10.3389/fneur.2025.1699303'],
 ]
 
 export default function ScienceView({ locale }: { locale: Locale }) {
   const t = (value: string) => translate(locale, value)
   const href = (path: string) => localizedPath(path, locale)
-  const progress = useReadingProgress()
 
   return (
     <main className="bg-parchment text-iron">
-      <div className="fixed inset-x-0 top-0 z-[60] h-1 bg-sand" aria-hidden="true">
-        <div className="h-full bg-gold" style={{ width: `${progress * 100}%` }} />
-      </div>
-
-      <section className="mx-auto grid max-w-content items-end gap-10 px-6 pb-12 pt-28 md:px-10 lg:grid-cols-[1.1fr_0.7fr]">
-        <div>
-          <p className="font-sans text-xs uppercase tracking-widest text-stone">{t('Науката зад AMPÉ')}</p>
-          <h1 className="mt-4 font-serif text-6xl leading-[0.95] text-iron md:text-7xl">
-            {t('Не е магия.')}<br />{t('Просто физика.')}
-          </h1>
-          <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-stone">
-            {t('Синята светлина е реална. Умората е реална. Решението е просто — ако знаеш как работи.')}
+      <section id="nachalo" className="relative min-h-[70vh] overflow-hidden">
+        <Image src="/images/how-it-works-selfie.jpg" alt={t('Клиент с очила AMPÉ')} fill priority sizes="100vw" className="object-cover object-[center_30%]" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/15" />
+        <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
+          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Как работи')}</p>
+          <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">{t('Светлина, клетка, филтър.')}</h1>
+          <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
+            {t('Очилата AMPÉ не са медицинско изделие. Страницата описва публикувани изследвания за светлина и как лещите са проектирани да филтрират посочените диапазони. Никое от изследванията не е правено с лещи AMPÉ.')}
           </p>
         </div>
-        <div className="relative h-72 overflow-hidden rounded-full">
-          <Image src="/images/how-it-works-selfie.jpg" alt={t('Клиент с очила AMPÉ')} fill priority sizes="40vw" className="object-cover object-[center_28%]" />
-        </div>
       </section>
 
-      <section id="stupki" className="scroll-mt-28 bg-iron py-16 text-linen">
-        <div className="mx-auto max-w-content px-6 md:px-10">
-          <h2 className="whitespace-pre-line font-serif text-5xl">{t('Лесно.\nПросто работи.')}</h2>
-          <ol className="mt-10 grid gap-6 lg:grid-cols-3">
-            {steps.map((step) => (
-              <li key={step.number} className="overflow-hidden rounded-[28px] bg-onyx">
-                <div className="relative h-64">
-                  <Image src={step.image} alt={t(step.title)} fill sizes="(min-width: 1024px) 30vw, 100vw" className="object-cover" />
+      <div className="mx-auto max-w-content px-6 py-14 md:px-10 lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-12">
+        <SectionNav locale={locale} label="Секции на страницата" items={nav} />
+        <div className="min-w-0 space-y-20">
+          <section id="pat" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl md:text-5xl">{t('От екрана до сигнала за нощ')}</h2>
+            <Pathway label={t('Схема: светлина, меланопсин, мелатонин, филтър')} nodes={[t('Светлина'), t('Меланопсин'), t('Мелатонин'), t('Филтър')]} />
+            <div className="mt-6 grid gap-4">
+              {[
+                ['Светлината', 'Част от ганглийните клетки в ретината носят меланопсин. В клетъчен опит човешкият пигмент достига връх при 479 nm [2]. При хора, с разширени зеници през нощта, най-силният диапазон за потискане на мелатонина е 446–477 nm, с изчислен връх 464 nm [1].'],
+                ['Зеленото също брои', 'В началото на лабораторно облъчване 555 nm потиска мелатонина колкото 460 nm. При по-дълга експозиция късите вълни остават по-силни [3].'],
+                ['Къде се намесва лещата', 'Лещата стои пред окото и е проектирана да намали светлината в публикуваните диапазони. Тя не променя клетката и не е измерена в тези опити.'],
+              ].map(([title, body]) => (
+                <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
+                  <h3 className="font-serif text-2xl">{t(title)}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t(body)}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="leshti" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Две различни намеси')}</h2>
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              <article className="overflow-hidden rounded-[28px] bg-sand/40">
+                <div className="relative h-52">
+                  <Image src="/images/shop/shop-daily-1.png" alt={t('Чифт AMPÉ Daily с жълти стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-5">
-                  <p className="font-sans text-[10px] uppercase tracking-widest text-gold">{t('Стъпка')} {step.number}</p>
-                  <h3 className="mt-2 font-serif text-3xl">{t(step.title)}</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t(step.description)}</p>
+                  <h3 className="font-serif text-2xl">JX-Y8016 · {t('Дневни лещи')}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За работния ден. Лабораторията отчита до 99% при 450 nm и 85% видима светлина. Продуктовата страница описва 65% филтър на синята светлина.')}</p>
                 </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section id="shema" className="mx-auto max-w-content px-6 py-16 md:px-10">
-        <div className="grid items-center gap-8 rounded-[32px] bg-sand/50 p-6 md:grid-cols-2 md:p-10">
-          <div>
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Схема')}</p>
-            <h2 className="mt-2 font-serif text-4xl">{t('Екран, филтър, почивка')}</h2>
-            <p className="mt-4 font-sans text-sm leading-relaxed text-stone">{t('Схема за ориентация. Не добавя числа извън текстовете на страницата.')}</p>
-          </div>
-          <FlowDiagram label={t('Схема: екран, филтър, почивка')} nodes={[t('Екран'), t('Филтрирай'), t('Стъкла'), t('Почини си')]} />
-        </div>
-      </section>
-
-      <section id="fakti" className="mx-auto max-w-content space-y-16 px-6 py-8 md:px-10">
-        {facts.slice(0, 3).map((fact, index) => (
-          <article key={fact.title} className="grid items-center gap-8 lg:grid-cols-2">
-            <div className={`relative h-80 overflow-hidden rounded-[28px] ${index % 2 ? 'lg:order-2' : ''}`}>
-              <Image src={fact.image} alt={t(fact.title)} fill sizes="(min-width: 1024px) 45vw, 100vw" className={fact.image.endsWith('.png') ? 'object-contain bg-sand' : 'object-cover'} />
+              </article>
+              <article className="overflow-hidden rounded-[28px] bg-iron text-linen">
+                <div className="relative h-52">
+                  <Image src="/images/shop/shop-evening-1.png" alt={t('Чифт AMPÉ Evening с оранжеви стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+                </div>
+                <div className="p-5">
+                  <h3 className="font-serif text-2xl">JX-Y8008 · {t('Вечерни лещи')}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Лабораторията отчита 99.21% в 475–650 nm и 54% видима светлина. Продуктовата страница описва 98% в 415–455 nm и 98% зелена светлина в 500–560 nm.')}</p>
+                </div>
+              </article>
             </div>
-            <div className={index % 2 ? 'lg:order-1' : ''}>
-              <p className="font-serif text-5xl text-gold/70">0{index + 1}</p>
-              <h2 className="mt-2 font-serif text-4xl">{t(fact.title)}</h2>
-              <p className="mt-4 font-sans text-base leading-relaxed text-stone">{t(fact.body)}</p>
-              {index === 2 && (
-                <Link href={href('/certifications')} className="mt-5 inline-block font-sans text-sm underline decoration-gold underline-offset-4">{t('Доказано')} →</Link>
-              )}
+            <Link href={href('/lenses')} className="mt-4 inline-block font-sans text-sm underline decoration-gold underline-offset-4">{t('Към страницата за стъклата')}</Link>
+          </section>
+
+          <section id="den" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Един ден')}</h2>
+            <ol className="mt-6 grid gap-4 md:grid-cols-3">
+              {steps.map((step, index) => (
+                <li key={step.title} className="overflow-hidden rounded-[28px] border border-iron/15 bg-cream">
+                  <div className="relative h-44">
+                    <Image src={step.image} alt={t(step.title)} fill sizes="(min-width: 768px) 30vw, 100vw" className="object-cover" />
+                  </div>
+                  <div className="p-5">
+                    <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Стъпка')} {step.number}</p>
+                    <h3 className="mt-2 font-serif text-3xl">{t(step.title)}</h3>
+                    <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t(stepCopy[index])}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="relative mt-6 h-72 overflow-hidden rounded-[28px]">
+              <LazyVideo src="/videos/pdp/02.mp4" poster="/videos/pdp/02.jpg" label={t('Клиент с очила AMPÉ')} />
             </div>
-          </article>
-        ))}
-        <aside className="grid gap-6 overflow-hidden rounded-[28px] border-l-4 border-gold bg-sand/60 md:grid-cols-[220px_1fr]">
-          <div className="relative min-h-48">
-            <Image src={facts[3].image} alt={t(facts[3].title)} fill sizes="220px" className="object-cover" />
-          </div>
-          <div className="p-6 md:p-8">
-            <h2 className="font-serif text-3xl">{t(facts[3].title)}</h2>
-            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-iron">{t(facts[3].body)}</p>
-          </div>
-        </aside>
-      </section>
+            <p className="mt-2 font-sans text-xs text-stone">{t('Клиентско видео от продуктовата страница. Не е участник в цитираните проучвания.')}</p>
+          </section>
 
-      <section className="mx-auto grid max-w-content gap-6 px-6 py-12 md:px-10 lg:grid-cols-2">
-        <div className="rounded-[28px] border border-iron/15 p-6">
-            <h2 className="font-serif text-3xl">{t('Умора вчера.')}</h2>
-          <ul className="mt-4 space-y-3">
-            {withoutItems.map((item) => (
-              <li key={item} className="font-sans text-sm text-stone">– {t(item)}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="rounded-[28px] bg-iron p-6 text-linen">
-          <h2 className="font-serif text-3xl">{t('Яснота днес.')}</h2>
-          <ul className="mt-4 space-y-3">
-            {withItems.map((item) => (
-              <li key={item} className="font-sans text-sm text-linen/85">✓ {t(item)}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+          <section id="ochakvai" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Какво да очакваш')}</h2>
+            <div className="mt-6 grid gap-4">
+              {[
+                ['Малък опит при симптоми на безсъние', '14 възрастни, кехлибарени срещу прозрачни лещи, 2 часа преди лягане. Субективните оценки и актиграфското време на сън са по-добри с кехлибарените. Лещите в опита не са JX-Y8016 или JX-Y8008 [4].'],
+                ['Здрави възрастни', '20 души, очила от 18:00 до лягане. Субективното заспиване е 21 ± 28 срещу 24 ± 21 минути. Обективното време на сън не се подобрява [5].'],
+                ['Прегледи', 'Систематичен преглед до 2017 г. не намира достатъчно доказателства за по-добър сън, зрение или по-малко умора на очите [6]. Метаанализ от 2025 г. на 3 опита и 49 души не намира значима разлика в актиграфията [7].'],
+              ].map(([title, body]) => (
+                <article key={title} className="rounded-[24px] bg-sand/40 p-5">
+                  <h3 className="font-serif text-2xl">{t(title)}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t(body)}</p>
+                </article>
+              ))}
+            </div>
+            <blockquote className="mt-6 grid items-center gap-6 rounded-[28px] border border-iron/15 p-5 md:grid-cols-[180px_1fr]">
+              <div className="relative h-40 overflow-hidden rounded-2xl">
+                <Image src="/images/customers/02.jpg" alt={t(testimonialContent.author)} fill sizes="180px" className="object-cover" />
+              </div>
+              <div>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Един клиент, не проучване')}</p>
+                <p className="mt-2 font-serif text-2xl leading-snug">„{t(testimonialContent.quote)}“</p>
+                <footer className="mt-2 font-sans text-sm text-stone">{t(testimonialContent.author)}</footer>
+              </div>
+            </blockquote>
+          </section>
 
-      <section className="mx-auto grid max-w-content items-center gap-8 px-6 py-12 md:px-10 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="relative h-80 overflow-hidden rounded-[28px]">
-          <Image src="/images/customers/02.jpg" alt={t(testimonialContent.author)} fill sizes="40vw" className="object-cover" />
+          <section id="iztochnici" className="scroll-mt-32">
+            <h2 className="font-serif text-4xl">{t('Източници')}</h2>
+            <ol className="mt-5 space-y-3 font-sans text-sm leading-relaxed">
+              {sources.map(([label, url, doi], index) => (
+                <li key={url} className="border-b border-iron/10 pb-3">
+                  [{index + 1}] {label} DOI {doi}.{' '}
+                  <a href={url} className="underline decoration-gold underline-offset-4" target="_blank" rel="noreferrer">{url}</a>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 font-sans text-sm text-stone">
+              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Лабораторните редове са на страницата Доказано.')}</Link>
+            </p>
+          </section>
         </div>
-        <blockquote>
-          <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t(testimonialContent.badge)}</p>
-          <p className="mt-4 font-serif text-3xl leading-snug text-iron">„{t(testimonialContent.quote)}“</p>
-          <footer className="mt-4 font-sans text-sm text-stone">{t(testimonialContent.author)}</footer>
-        </blockquote>
-      </section>
-
-      <section className="mx-auto max-w-content px-6 pb-20 md:px-10">
-        <Link href={href('/shop')} className="inline-block rounded-full bg-onyx px-8 py-3 font-sans text-sm text-linen hover:bg-iron">{t('Вземи си чифт →')}</Link>
-      </section>
+      </div>
+      <style>{`
+        @keyframes path-dash { to { stroke-dashoffset: -24; } }
+        .path-dash { stroke-dasharray: 6 6; animation: path-dash 1.4s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .path-dash { animation: none; }
+        }
+      `}</style>
     </main>
   )
 }
 
-function useReadingProgress() {
-  const [progress, setProgress] = useState(0)
-  useEffect(() => {
-    const onScroll = () => {
-      const root = document.documentElement
-      const max = root.scrollHeight - root.clientHeight
-      setProgress(max > 0 ? root.scrollTop / max : 0)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-  return progress
-}
-
-function FlowDiagram({ label, nodes }: { label: string; nodes: string[] }) {
+function Pathway({ label, nodes }: { label: string; nodes: string[] }) {
   return (
-    <svg viewBox="0 0 760 110" role="img" aria-label={label} className="w-full">
-      {nodes.map((node, index) => {
-        const x = 8 + index * 190
-        return (
-          <g key={node}>
-            <rect x={x} y={27} width="156" height="56" rx="18" fill={index === nodes.length - 1 ? '#7C3018' : '#FFF0E0'} stroke="#7C3018" />
-            <text x={x + 78} y={60} textAnchor="middle" fill={index === nodes.length - 1 ? '#EDE4D6' : '#7C3018'} fontSize="16">{node}</text>
-            {index < nodes.length - 1 && (
-              <path d={`M${x + 156} 55 H${x + 184}`} stroke="#C4A266" strokeWidth="2" markerEnd="url(#flow-arrow)" />
-            )}
-          </g>
-        )
-      })}
-      <defs>
-        <marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-          <path d="M0 0 L8 4 L0 8 Z" fill="#C4A266" />
-        </marker>
-      </defs>
-    </svg>
+    <figure className="mt-6 rounded-[28px] bg-[#B8906A] p-4 text-linen">
+      <svg viewBox="0 0 760 110" role="img" aria-label={label} className="w-full">
+        {nodes.map((node, index) => {
+          const x = 8 + index * 190
+          return (
+            <g key={node}>
+              <rect x={x} y={27} width="150" height="56" rx="18" fill={index === nodes.length - 1 ? '#2D0E04' : '#FFF0E0'} />
+              <text x={x + 75} y={60} textAnchor="middle" fill={index === nodes.length - 1 ? '#EDE4D6' : '#7C3018'} fontSize="16">{node}</text>
+              {index < nodes.length - 1 && (
+                <path className="path-dash" d={`M${x + 150} 55 H${x + 184}`} stroke="#EDE4D6" strokeWidth="2" fill="none" />
+              )}
+            </g>
+          )
+        })}
+      </svg>
+      <figcaption className="px-2 pb-2 font-sans text-xs text-linen/80">{label}</figcaption>
+    </figure>
   )
 }
