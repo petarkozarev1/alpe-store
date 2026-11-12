@@ -1,10 +1,9 @@
 'use client'
 import { useState } from 'react'
-import { ExpressCheckoutElement, PaymentElement, useCheckoutElements } from '@stripe/react-stripe-js/checkout'
+import { PaymentElement, useCheckoutElements } from '@stripe/react-stripe-js/checkout'
 import { useTranslations } from '@/components/i18n/LocaleProvider'
-import { PayTrust } from './PayTrust'
 
-export function StripePayForm({ total, formatBGN, locale = 'bg' }: { total: number; formatBGN: (eur: number) => string; locale?: string }) {
+export function StripePayForm({ total, formatBGN }: { total: number; formatBGN: (eur: number) => string }) {
   const t = useTranslations()
   const result = useCheckoutElements()
   const [paying, setPaying] = useState(false)
@@ -31,7 +30,6 @@ export function StripePayForm({ total, formatBGN, locale = 'bg' }: { total: numb
 
   return (
     <div className="flex flex-col gap-4">
-      <ExpressCheckoutElement onConfirm={() => { void checkout.confirm() }} />
       <PaymentElement />
       {msg && <p className="font-sans text-sm text-red-600">{msg}</p>}
       <button
@@ -46,7 +44,6 @@ export function StripePayForm({ total, formatBGN, locale = 'bg' }: { total: numb
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3 h-3 text-green-600"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
         Сигурно плащане със Stripe · {formatBGN(total)}
       </p>
-      <PayTrust locale={locale} />
     </div>
   )
 }

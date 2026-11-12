@@ -8,7 +8,7 @@ import { setPixelUser } from '@/components/analytics/MetaPixel'
 import { countPairs, naiveSubtotal } from '@/lib/pricing'
 import { applyPromo, promoErrorMessage } from '@/lib/promo'
 import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
-import { deliveryAmount, internationalFee, isBulgaria } from '@/lib/checkout-delivery'
+import { deliveryAmount } from '@/lib/checkout-delivery'
 import { translate } from '@/lib/i18n/translations'
 import { checkoutSessionSignature } from '@/lib/checkout-session'
 
@@ -39,7 +39,14 @@ export default function CheckoutPageClient() {
   const { items, setCheckoutLocked } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '' })
-  const [shipping, setShipping] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: locale === 'en' ? 'Bulgaria' : 'България', note: '' })
+  const countryName = locale === 'en' ? 'Bulgaria' : 'България'
+  const [shipping, setShippingState] = useState<Shipping>({ firstName: '', lastName: '', phone: '', city: '', address: '', postalCode: '', country: countryName, note: '' })
+  const setShipping = (update: Shipping | ((prev: Shipping) => Shipping)) => {
+    setShippingState(prev => {
+      const next = typeof update === 'function' ? update(prev) : update
+      return { ...next, country: countryName }
+    })
+  }
   const [deliveryType, setDeliveryType] = useState<'address' | 'office'>('address')
   const [deliveryId, setDeliveryId] = useState('pigeon')
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card')
@@ -74,7 +81,7 @@ export default function CheckoutPageClient() {
   const syncPixelUser = () => {
     setPixelUser({
       email: contact.email, phone: shipping.phone, firstName: shipping.firstName, lastName: shipping.lastName,
-      city: shipping.city, country: shipping.country, zip: shipping.postalCode,
+      city: shipping.city, country: 'BG', zip: shipping.postalCode,
     }).catch(() => {})
   }
 
@@ -84,9 +91,8 @@ export default function CheckoutPageClient() {
   const bundleSaving = +Math.max(0, subtotal - bundlePrice).toFixed(2)
   const promo = applyPromo(bundlePrice, appliedCode, { pairs: totalPairs, snapshot: pricing })
   const shipping_ = deliveryAmount(totalPairs)
-  const intlFee = deliveryType === 'address' ? internationalFee(shipping.country) : 0
-  const domestic = deliveryType === 'office' || isBulgaria(shipping.country)
-  const codEligible = domestic
+  const intlFee = 0
+  const codEligible = true
   const isCod = paymentMethod === 'cod' && codEligible
   const visibleDelivery = isCod ? DELIVERY.filter(d => d.availableOnCod) : DELIVERY
   const delivery = visibleDelivery.find(d => d.id === deliveryId) ?? visibleDelivery[0]
@@ -102,7 +108,7 @@ export default function CheckoutPageClient() {
     appliedCode,
     deliveryType,
     deliveryId,
-    country: shipping.country,
+    country: 'BG',
     paymentMethod,
     name: `${shipping.firstName} ${shipping.lastName}`.trim(),
     phone: shipping.phone,
@@ -177,7 +183,7 @@ export default function CheckoutPageClient() {
       phone: shipping.phone, city: shipping.city,
       address: deliveryType === 'address' ? shipping.address : officeLocation,
       postalCode: deliveryType === 'address' ? shipping.postalCode : '',
-      country: deliveryType === 'address' ? shipping.country : locale === 'en' ? 'Bulgaria' : 'България',
+      country: 'BG',
       deliveryMethod: deliveryType === 'address' ? (locale === 'en' ? 'To an address' : 'До адрес') : delivery.label,
       courier: deliveryType === 'office' ? delivery.label : '',
       officeLocation: deliveryType === 'office' ? officeLocation : '',
