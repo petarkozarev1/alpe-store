@@ -75,7 +75,10 @@ export default function PairSelector({
             )}
             {n === 2 && (
               <>
-                <span className="ps-tag ps-tag-a">{en ? 'Most popular' : 'Най-популярни'}</span>
+                <span className="ps-tag ps-tag-a ps-tag-split">
+                  <span className="ps-bf">Black Friday</span>
+                  <span>{en ? 'Most popular' : 'Най-популярни'}</span>
+                </span>
                 {two < separate && (
                   <span className="ps-tag ps-tag-b">{en ? 'Second pair at 50% off' : 'Вторият чифт на половин цена'}</span>
                 )}
@@ -145,6 +148,7 @@ const css = `
 .ps-sub {
   font-size: 12px;
   color: rgba(28,15,10,0.8);
+  white-space: nowrap;
 }
 .ps-price {
   display: flex;
@@ -175,24 +179,39 @@ const css = `
   color: #2D0E04;
 }
 .ps-save {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  line-height: 1.375;
+  white-space: nowrap;
   color: #B8906A;
 }
 .ps-tag {
   position: absolute;
   z-index: 1;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1;
   white-space: nowrap;
   background: #B8906A;
   color: #EDE4D6;
   border-radius: 999px;
-  padding: 5px 10px;
+  padding: 6px 12px;
+}
+.ps-tag-split {
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0;
+  overflow: hidden;
+}
+.ps-tag-split > span {
+  padding: 6px 11px;
+}
+.ps-bf {
+  background: #2D0E04;
+  color: #EDE4D6;
 }
 .ps-tag-a {
   top: 0;
