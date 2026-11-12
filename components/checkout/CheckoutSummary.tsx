@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutElementsProvider } from '@stripe/react-stripe-js/checkout'
@@ -9,6 +10,28 @@ import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
 import { StripePayForm } from './StripePayForm'
 
+export const SUMMARY_STICKY_GAP = 24
+const DESKTOP_QUERY = '(min-width: 1024px)'
+
+export function summaryStickyTop({
+  isDesktop,
+  headerHeight,
+  cardHeight,
+  viewportHeight,
+  gap = SUMMARY_STICKY_GAP,
+}: {
+  isDesktop: boolean
+  headerHeight: number
+  cardHeight: number
+  viewportHeight: number
+  gap?: number
+}): number | null {
+  if (!isDesktop || headerHeight <= 0 || cardHeight <= 0 || viewportHeight <= 0) return null
+  const top = headerHeight + gap
+  if (cardHeight + top > viewportHeight) return null
+  return top
+}
+
 export function CheckoutSummary(p: any) {
   const {
     locale, items, codeInput, setCodeInput, appliedCode, codeError,
@@ -17,8 +40,41 @@ export function CheckoutSummary(p: any) {
   } = p
   const en = locale === 'en'
   const deliveryLabel = deliveryType === 'address' ? (en ? 'To an address' : 'До адрес') : delivery.label
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [stickyTop, setStickyTop] = useState<number | null>(null)
+
+  useEffect(() => {
+    const card = cardRef.current
+    const header = document.querySelector('header')
+    const desktop = window.matchMedia(DESKTOP_QUERY)
+    const measure = () => {
+      const next = summaryStickyTop({
+        isDesktop: desktop.matches,
+        headerHeight: header?.getBoundingClientRect().height ?? 0,
+        cardHeight: card?.getBoundingClientRect().height ?? 0,
+        viewportHeight: window.innerHeight,
+      })
+      setStickyTop(prev => (prev === next ? prev : next))
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    if (header) observer.observe(header)
+    if (card) observer.observe(card)
+    window.addEventListener('resize', measure)
+    desktop.addEventListener('change', measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+      desktop.removeEventListener('change', measure)
+    }
+  }, [])
+
   return (
-          <div className="lg:sticky lg:top-6 self-start flex flex-col gap-4">
+          <div
+            ref={cardRef}
+            className={`self-start flex flex-col gap-4${stickyTop != null ? ' lg:sticky' : ''}`}
+            style={stickyTop != null ? { top: stickyTop } : undefined}
+          >
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-serif text-lg font-bold text-onyx">{en ? 'Your order' : 'Твоята поръчка'}</h2>
