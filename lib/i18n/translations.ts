@@ -922,7 +922,6 @@ export const englishTranslations: Record<string, string> = {
   '20 души, очила от 18:00 до лягане. Казват, че заспиват за 21 ± 28 минути срещу 24 ± 21. Сънят, мерен с уред, не става по-дълъг [5].': '20 people, glasses from 6 pm until bed. They say they fall asleep in 21 ± 28 minutes versus 24 ± 21. Sleep measured by a device does not get longer [5].',
   'По-големите прегледи': 'The larger reviews',
   'Преглед до 2017 г. не намира достатъчно доказателства за по-добър сън, зрение или по-малко умора на очите [6]. Преглед от 2025 г. на 3 опита и 49 души не намира ясна разлика в гривната за сън [7].': 'A review through 2017 does not find enough evidence for better sleep, vision or less eye strain [6]. A 2025 review of 3 trials and 49 people does not find a clear difference on the sleep wristband [7].',
-  'Калоян, с неговите думи': 'Kaloyan, in his own words',
   'Числата от лабораторията са на страницата Доказано.': 'The lab numbers are on the Proof page.',
   'Сега няма промо код в лентата. Два чифта са €119.98.': 'There is no promo code in the bar right now. Two pairs are €119.98.',
   'Питай направо.': 'Ask straight.',
