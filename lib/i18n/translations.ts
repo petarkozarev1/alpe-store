@@ -852,7 +852,7 @@ export const englishTranslations: Record<string, string> = {
   'Лабораторията мери до 99% при 450 nm и 85% пропусната видима светлина.': 'The lab measures up to 99% at 450 nm and 85% visible light let through.',
   'Лабораторията мери 99,21% в 475–650 nm и 54% пропусната видима светлина.': 'The lab measures 99.21% across 475–650 nm and 54% visible light let through.',
   'Числата от AHD TMS': 'The numbers from AHD TMS',
-  'Докладът е на AHD TMS. Стандартите са BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 и AS/NZS 1067.1:2016.': 'The report is from AHD TMS. The standards are BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 and AS/NZS 1067.1:2016.',
+  'Докладът е на AHD TMS.': 'The report is from AHD TMS.',
   'При пика от 450 nm': 'At the 450 nm peak',
   'В диапазона 475–650 nm': 'Across 475–650 nm',
   'Светофарът се разпознава': 'The traffic light stays readable',

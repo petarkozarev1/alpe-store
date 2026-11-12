@@ -200,7 +200,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Резултати по пластмасово стъкло')}</p>
             <h2 className="mt-2 font-serif text-4xl">{t('Числата от AHD TMS')}</h2>
             <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">
-              {t('Докладът е на AHD TMS. Стандартите са BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 и AS/NZS 1067.1:2016.')}
+              {t('Докладът е на AHD TMS.')}
             </p>
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
               <LabBars
