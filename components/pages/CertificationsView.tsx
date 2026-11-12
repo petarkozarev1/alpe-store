@@ -141,7 +141,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             {t('Измерени лещи.')}<br />{t('Доказани резултати.')}
           </h1>
           <p className="mt-5 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
-            {t('Жълтите дневни (AMPÉ Daily) и оранжевите вечерни (AMPÉ Evening) са мерени в независимата лаборатория AHD TMS. Отдолу са числата от теста. Изследванията за светлина и сън са за светлината изобщо, не за нашите лещи.')}
+            {t('Жълтите дневни (AMPÉ Daily) и оранжевите вечерни (AMPÉ Evening) са мерени в независимата лаборатория AHD TMS.')}
           </p>
           <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
             <HeroStat value={100} suffix="%" label={t('UV, и двете лещи')} />

@@ -843,7 +843,7 @@ export const englishTranslations: Record<string, string> = {
   'Разликите в заспиването, дължината на съня, ефективността и нощните будения не са статистически ясни. Авторите не виждат стабилен измерен ефект.': 'The differences in falling asleep, sleep length, efficiency and night waking are not statistically clear. The authors do not see a stable measured effect.',
   'Малко опити и различни условия. Не включва лещите AMPÉ.': 'Few trials, and different conditions. It does not include AMPÉ lenses.',
   'Лабораторията': 'The lab',
-  'Жълтите дневни (AMPÉ Daily) и оранжевите вечерни (AMPÉ Evening) са мерени в независимата лаборатория AHD TMS. Отдолу са числата от теста. Изследванията за светлина и сън са за светлината изобщо, не за нашите лещи.': 'The yellow Daily lenses (AMPÉ Daily) and the orange Evening lenses (AMPÉ Evening) were measured at the independent lab AHD TMS. The numbers from that test are below. The light and sleep research is about light in general, not about our lenses.',
+  'Жълтите дневни (AMPÉ Daily) и оранжевите вечерни (AMPÉ Evening) са мерени в независимата лаборатория AHD TMS.': 'The yellow Daily lenses (AMPÉ Daily) and the orange Evening lenses (AMPÉ Evening) were measured at the independent lab AHD TMS.',
   'Очилата не са медицинско изделие. Направени са да филтрират светлина.': 'The glasses are not a medical device. They are made to filter light.',
   'Светлината и окото': 'Light and the eye',
   'Защо филтрираме синьото и зеленото': 'Why we filter blue and green',
