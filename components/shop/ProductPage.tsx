@@ -32,9 +32,9 @@ const lensData = {
     benefitDot: 'linear-gradient(135deg,#ff6a00,#c0392b)',
     benefitText: 'Оптимално да се носят след залез слънце и преди сън.',
     benefitColor: '#7a4e1a',
-    descText: "Лещите AMPÉ Evening са за вечерта. Носени след залез и поне 2 часа преди лягане, филтрират 98% от синята светлина в 415–455 nm и 98% от зелената в 500–560 nm. Не са медицинско изделие и не обещаваме по-дълъг сън.",
+    descText: "Пластмасовите стъкла AMPÉ Evening са за вечерта. Носени след залез и поне 2 часа преди лягане, филтрират 98% от синята светлина в 415–455 nm и 98% от зелената в 500–560 nm. Не са медицинско изделие и не обещаваме по-дълъг сън.",
     images: [
-      { src: '/images/shop/shop-evening-1.png', alt: 'AMPÉ Evening очила за синя светлина с оранжеви стъкла' },
+      { src: '/images/shop/shop-evening-1.png', alt: 'AMPÉ Evening очила за синя светлина с оранжеви пластмасови стъкла' },
       { src: '/images/shop/shop-evening-2.png', alt: 'Оранжеви blue light blocking glasses AMPÉ Evening' },
       { src: '/images/shop/shop-evening-3.png', alt: 'Кутия AMPÉ Evening очила против синя светлина' },
     ],
@@ -42,7 +42,7 @@ const lensData = {
   daily: {
     name: 'AMPÉ',
     nameItalic: 'Daily',
-    tagline: 'Прозрачно-жълти стъкла за целодневна работа пред екрана. Филтрират най-агресивните дължини на вълните, без да изкривяват цветовете, за да можете да работите комфортно от 9:00 до 18:00ч.',
+    tagline: 'Прозрачно-жълти пластмасови стъкла за целодневна работа пред екрана. Филтрират най-агресивните дължини на вълните, без да изкривяват цветовете, за да можете да работите комфортно от 9:00 до 18:00ч.',
     benefitBg: '#fffbe0',
     benefitBorder: 'rgba(200,180,0,0.25)',
     benefitDot: 'linear-gradient(135deg,#f9e94e,#e6b800)',
@@ -50,7 +50,7 @@ const lensData = {
     benefitColor: '#7a6200',
     descText: "Очилата AMPÉ Daily са за продължителна работа пред екрана. Кехлибарено-жълтият филтър спира 65% от синята светлина и пази цветовете достатъчно точни за дизайн, снимки и видеоразговори. Рамката е за носене 8+ часа.",
     images: [
-      { src: '/images/shop/shop-daily-1.png', alt: 'AMPÉ Daily очила за компютър с жълти стъкла' },
+      { src: '/images/shop/shop-daily-1.png', alt: 'AMPÉ Daily очила за компютър с жълти пластмасови стъкла' },
       { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
       { src: '/images/shop/shop-daily-3.png', alt: 'Кутия AMPÉ Daily blue light glasses за работа пред екран' },
     ],
@@ -254,7 +254,7 @@ export default function ProductPage({
           {/* Multi-pair lens slot picker */}
           {bundle > 1 && (
             <div style={{ background: 'rgba(28,15,10,0.03)', borderRadius: 10, padding: 18, marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Изберете стъкла за всеки чифт</div>
+              <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Изберете пластмасови стъкла за всеки чифт</div>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
                 {slots.map((s, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
@@ -311,7 +311,7 @@ export default function ProductPage({
               <PdpUgcReel locale={locale} />
             </div>
           </div>
-          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'rgba(28,15,10,0.8)' }}>✓ Сертифицирани по CE пластмасови стъкла · ✓ Безплатна доставка за 2+ чифта · ✓ Сигурно плащане</p>
           <p style={{ textAlign: 'center', fontSize: 11, color: '#4A3024', marginTop: 6 }}>Цените са крайни. · Не е медицинско изделие</p>
 
           <PaymentMarks />
@@ -321,7 +321,7 @@ export default function ProductPage({
             {[
               { icon: '🔒', label: 'Сигурно\nплащане' },
               { icon: '🚚', label: 'Безплатна доставка\nза 2+ чифта' },
-              { icon: 'CE', label: 'Сертифицирани\nпо CE стъкла' },
+              { icon: 'CE', label: 'Сертифицирани\nпо CE пластмасови стъкла' },
               { icon: 'return', label: '14-дневно\nвръщане' },
             ].map(t => (
               <div key={t.label} style={{ textAlign: 'center' }}>
@@ -364,12 +364,12 @@ export default function ProductPage({
                     '98% блокиране на синята светлина (415–455 nm) и 98% на зелената (500–560 nm).',
                     '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка.',
                     'Устойчиви на драскотини, с антирефлексно покритие.',
-                    'UV400. В лабораторията и двете лещи са 100% UV.',
+                    'UV400. В лабораторията и двете пластмасови стъкла са 100% UV.',
                   ] : [
                     '65% филтър на синята светлина и частичен филтър за зелената.',
                     '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка.',
                     'Устойчиви на драскотини, с антирефлексно покритие.',
-                    'UV400. В лабораторията и двете лещи са 100% UV.',
+                    'UV400. В лабораторията и двете пластмасови стъкла са 100% UV.',
                   ]).map((text) => (
                     <div key={text} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                       <div style={{ width: 20, height: 20, background: '#F2E4D0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
@@ -384,7 +384,7 @@ export default function ProductPage({
 
             {tab === 'science' && (
               <div style={{ padding: '28px 0' }}>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Изследванията за светлината, не за нашите лещи, сочат силен диапазон 446–477 nm за мелатонина нощем и връх на меланопсина около 479 nm. Пълните източници са на страницата Доказано.</p>
+                <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)' }}>Изследванията за светлината, не за нашите пластмасови стъкла, сочат силен диапазон 446–477 nm за мелатонина нощем и връх на меланопсина около 479 nm. Пълните източници са на страницата Доказано.</p>
                 <p style={{ fontSize: 15, lineHeight: 1.85, color: 'rgba(28,15,10,0.8)', marginTop: 16 }}>На продукта Evening пишем 98% в 415–455 nm и 98% зелена светлина в 500–560 nm. На Daily пишем 65% филтър на синята светлина. Лабораторията AHD TMS мери отделни редове: до 99% при 450 nm и 99,21% в 475–650 nm.</p>
                 <div style={{ marginTop: 24, background: '#f5ede4', border: '1.5px solid rgba(196,154,108,0.3)', borderRadius: 12, padding: '20px 22px' }}>
                   <p style={{ fontSize: 14, lineHeight: 1.8, color: 'rgba(28,15,10,0.75)' }}><strong style={{ color: '#1C0F0A' }}>Зеленото също влиза в сметката.</strong> В началото на един лабораторен тест 555 nm действа колкото 460 nm. Затова вечерните имат отделен ред за 500–560 nm. Не обещаваме по-дълъг сън.</p>
@@ -416,7 +416,7 @@ export default function ProductPage({
           <div className="product-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 28 }}>
             {[
               { label: 'По-малко напрежение в очите', pct: 87, desc: 'забелязаха намалено напрежение в очите в рамките на първите 3 дни от носенето на AMPÉ', delay: '0.2s' },
-              { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на лещите Evening', delay: '0.35s' },
+              { label: 'По-бързо заспиване', pct: 79, desc: 'заспаха по-бързо в рамките на първата седмица от използването на пластмасовите стъкла Evening', delay: '0.35s' },
               { label: 'По-малко главоболия', pct: 74, desc: 'съобщиха за по-малко главоболия в края на деня, причинени от екрана, след преминаването към AMPÉ Daily', delay: '0.5s' },
               { label: 'Биха препоръчали', pct: 93, desc: 'биха препоръчали AMPÉ на приятел или член на семейството', delay: '0.65s' },
             ].map(s => (
@@ -477,12 +477,12 @@ export default function ProductPage({
               </thead>
               <tbody>
                 {[
-                  { feature: 'Филтриране на синята светлина', AMPÉ: '65–98% (в зависимост от лещите)', generic: '10–30% (непотвърдено)', AMPÉColor: undefined as string | undefined, genericMuted: false },
-                  { feature: 'Лещи със сертификат CE', AMPÉ: '✓', generic: 'Рядко', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Филтриране на синята светлина', AMPÉ: '65–98% (в зависимост от пластмасовите стъкла)', generic: '10–30% (непотвърдено)', AMPÉColor: undefined as string | undefined, genericMuted: false },
+                  { feature: 'Пластмасови стъкла със сертификат CE', AMPÉ: '✓', generic: 'Рядко', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                   { feature: 'Изкривяване на цветовете', AMPÉ: 'Минимално (прецизно покритие)', generic: 'Силно изкривяване на оттенъка', AMPÉColor: undefined as string | undefined, genericMuted: false },
                   { feature: 'Тегло на рамката', AMPÉ: '22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка', generic: '—', AMPÉColor: undefined as string | undefined, genericMuted: false },
                   { feature: 'Покритие против надраскване', AMPÉ: '✓', generic: 'Не', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
-                  { feature: 'Две специално създадени лещи', AMPÉ: '✓', generic: 'Един универсален оттенък', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
+                  { feature: 'Две специално създадени пластмасови стъкла', AMPÉ: '✓', generic: 'Един универсален оттенък', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                   { feature: 'Филтър за зелена светлина (500–560 nm)', AMPÉ: '✓', generic: '✗ Не е включено', AMPÉColor: '#2d6a3a' as string | undefined, genericMuted: true },
                 ].map((row, i) => (
                   <tr key={row.feature} style={{ borderBottom: '1px solid rgba(28,15,10,0.07)', background: i % 2 === 1 ? '#fff8f2' : 'transparent' }}>
@@ -511,7 +511,7 @@ export default function ProductPage({
               AMPÉ е за хора, които прекарват деня си пред екран.
             </h2>
             <p style={{ fontSize: 15, lineHeight: 1.8, color: 'rgba(28,15,10,0.72)' }}>
-              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, AMPÉ комбинира дневни и вечерни лещи: Daily за работа пред екран, Evening за след залез.
+              Ако търсите очила за синя светлина, очила за компютър или blue light blocking glasses в България, AMPÉ комбинира дневни и вечерни пластмасови стъкла: Daily за работа пред екран, Evening за след залез.
             </p>
           </div>
           <div style={{ display: 'grid', gap: 16 }}>
@@ -620,7 +620,7 @@ export default function ProductPage({
 
           {/* Trust lines */}
           <div style={{ width: '100%', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 8 }}>
-            {['✓ Безплатна доставка за 2+ чифта', '✓ EU сертифицирани стъкла', '✓ 14-дневно връщане'].map(t => (
+            {['✓ Безплатна доставка за 2+ чифта', '✓ EU сертифицирани пластмасови стъкла', '✓ 14-дневно връщане'].map(t => (
               <span key={t} style={{ fontFamily: 'var(--font-raleway)', fontSize: 11, opacity: 0.5, textAlign: 'center' as const }}>{t}</span>
             ))}
           </div>

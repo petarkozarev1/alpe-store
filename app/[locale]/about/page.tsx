@@ -40,7 +40,7 @@ export default function AboutPage({ params }: { params: { locale: string } }) {
           <div className="grid grid-cols-3 gap-6 mt-6">
             {[
               { num: '1000+', label: 'доволни клиенти' },
-              { num: 'EU', label: 'сертифицирани стъкла' },
+              { num: 'EU', label: 'сертифицирани пластмасови стъкла' },
               { num: '99%', label: 'блокиране на синя светлина' },
             ].map(s => (
               <div key={s.label} className="text-center">

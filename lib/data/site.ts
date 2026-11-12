@@ -5,7 +5,7 @@ export const siteConfig: SiteConfig = {
   tagline: 'Работи цял ден. Спи цяла нощ.',
   nav: [
     { label: 'Доказано', href: '/certifications' },
-    { label: 'Стъкла', href: '/lenses' },
+    { label: 'Пластмасови стъкла', href: '/lenses' },
     { label: 'Как работи', href: '/science' },
     { label: 'Въпроси', href: '/faqs' },
   ],
@@ -15,7 +15,7 @@ export const siteConfig: SiteConfig = {
       {
         title: 'ПРОДУКТ',
         links: [
-          { label: 'Стъкла', href: '/lenses' },
+          { label: 'Пластмасови стъкла', href: '/lenses' },
           { label: 'Цени', href: '/pricing' },
         ],
       },

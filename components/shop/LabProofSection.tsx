@@ -20,7 +20,7 @@ function statsFor(locale: Locale): Stat[] {
   return [
     {
       title: en ? 'UV blocking' : 'UV блокиране',
-      caption: en ? 'UVA + UVB on both lenses' : 'UVA + UVB при двете лещи',
+      caption: en ? 'UVA + UVB on both plastic lenses' : 'UVA + UVB при двете пластмасови стъкла',
       value: 100,
       decimals: 0,
       prefix: '',
@@ -28,7 +28,7 @@ function statsFor(locale: Locale): Stat[] {
     },
     {
       title: en ? 'Blue light' : 'Синя светлина',
-      caption: en ? 'Day lenses, the 450nm peak' : 'Дневни лещи, пикът при 450nm',
+      caption: en ? 'Day plastic lenses, the 450nm peak' : 'Дневни пластмасови стъкла, пикът при 450nm',
       value: 99,
       decimals: 0,
       prefix: en ? 'up to ' : 'до ',
@@ -44,7 +44,7 @@ function statsFor(locale: Locale): Stat[] {
     },
     {
       title: en ? 'Light transmission' : 'Светлопропускливост',
-      caption: en ? 'Day lenses, almost clear' : 'Дневни лещи, почти прозрачни',
+      caption: en ? 'Day plastic lenses, almost clear' : 'Дневни пластмасови стъкла, почти прозрачни',
       value: 85,
       decimals: 0,
       prefix: '',
@@ -149,8 +149,8 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
 
         <p className="mx-auto mt-8 max-w-2xl text-center font-sans text-[11px] leading-relaxed text-linen/75">
           {en
-            ? 'Lab figures: independent testing (AHD TMS) of AMPÉ Daily and AMPÉ Evening lenses.'
-            : 'Лабораторните числа: независимо тестване (AHD TMS) на лещи AMPÉ Daily и AMPÉ Evening.'}
+            ? 'Lab figures: independent testing (AHD TMS) of AMPÉ Daily and AMPÉ Evening plastic lenses.'
+            : 'Лабораторните числа: независимо тестване (AHD TMS) на пластмасови стъкла AMPÉ Daily и AMPÉ Evening.'}
         </p>
       </div>
     </section>

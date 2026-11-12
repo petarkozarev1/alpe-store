@@ -15,7 +15,7 @@ const product: Product = {
   id: 'alpe-daily',
   slug: 'alpe-daily',
   name: 'AMPÉ Daily',
-  subtitle: 'Daily lenses',
+  subtitle: 'Daily plastic lenses',
   description: 'Screen glasses',
   facts: ['65% филтър на синята светлина'],
   details: [],

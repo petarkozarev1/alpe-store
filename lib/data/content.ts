@@ -11,12 +11,12 @@ export const heroContent = {
   subtext: 'Блокираме до 99% от синята и зелената светлина за по-малко умора, по-добър сън и повече енергия всеки ден.',
   cta: 'Защити очите си',
   heroFaceImages: [
-    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '50% 25%' },
-    { src: '/images/hero/person-1-night.png', alt: 'Man wearing AMPÉ Night glasses — dark frame, orange lenses',    objectPosition: '50% 25%' },
-    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '45% 25%' },
-    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing AMPÉ Day glasses — clear frame, gold lenses',       objectPosition: '55% 25%' },
-    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow lenses',   objectPosition: '35% 20%' },
-    { src: '/images/hero/person-6-night.png', alt: 'Man wearing AMPÉ Night glasses — clear frame, orange lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-5-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow plastic lenses',   objectPosition: '50% 25%' },
+    { src: '/images/hero/person-1-night.png', alt: 'Man wearing AMPÉ Night glasses — dark frame, orange plastic lenses',    objectPosition: '50% 25%' },
+    { src: '/images/hero/person-4-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow plastic lenses',   objectPosition: '45% 25%' },
+    { src: '/images/hero/person-3-day.png',   alt: 'Man wearing AMPÉ Day glasses — clear frame, gold plastic lenses',       objectPosition: '55% 25%' },
+    { src: '/images/hero/person-2-day.png',   alt: 'Woman wearing AMPÉ Day glasses — clear frame, yellow plastic lenses',   objectPosition: '35% 20%' },
+    { src: '/images/hero/person-6-night.png', alt: 'Man wearing AMPÉ Night glasses — clear frame, orange plastic lenses',   objectPosition: '50% 25%' },
   ],
 }
 
@@ -33,19 +33,19 @@ export const darkCtaContent = {
 }
 
 export const ingredientsContent = {
-  badge: 'Технология на стъклата',
+  badge: 'Технология на пластмасовите стъкла',
   headline: 'Създадено за\n"Дигиталната Ера"',
   editorialImage: '/images/glasses-duo2.png',
-  editorialImageAlt: 'AMPÉ precision lens technology — blue light filter, anti-glare, UV400',
-  sectionTitle: 'Какво има във всяко стъкло?',
-  cta: 'Виж стъклата',
+  editorialImageAlt: 'AMPÉ precision plastic lens technology — blue light filter, anti-glare, UV400',
+  sectionTitle: 'Какво има във всяко пластмасово стъкло?',
+  cta: 'Виж пластмасовите стъкла',
 }
 
 export const ingredients: Ingredient[] = [
   { number: 1, name: 'Филтър за синя светлина', description: 'Блокира до 99% от синята светлина — тествано по BS EN ISO 12312-1.' },
   { number: 2, name: 'Филтър за зелена светлина', description: 'Блокира вредната зелена светлина (500–560nm) — свързана с нарушен сън и умора на очите дори след залез.', badge: 'НОВО' },
   { number: 3, name: 'UV400 защита', description: 'Пълна защита, вътре и навън.' },
-  { number: 4, name: 'Устойчиви лещи', description: 'Издържат на ежедневието, без драскотини.' },
+  { number: 4, name: 'Устойчиви пластмасови стъкла', description: 'Издържат на ежедневието, без драскотини.' },
   { number: 5, name: 'Лека рамка', description: 'Слагаш и забравяш, че ги има.' },
   { number: 6, name: 'Антирефлексно покритие', description: 'Край на блясъка от екрана и лампите.' },
 ]
@@ -66,7 +66,7 @@ export const steps: StepItem[] = [
   {
     number: 2,
     title: 'Филтрирай',
-    description: 'Лещите филтрират синята и зелената светлина цял ден — без пауза, без умора.',
+    description: 'Пластмасовите стъкла филтрират синята и зелената светлина цял ден — без пауза, без умора.',
     image: '/images/how-it-works-filter.jpg',
   },
   {
@@ -124,7 +124,7 @@ export const galleryContent = {
 export const faqs: FaqItem[] = [
   {
     question: 'Наистина ли работят тези очила?',
-    answer: 'Да. Лещите на AMPÉ са тествани по BS EN ISO 12312-1:2013+A1:2015 и блокират до 99% от синята и зелената светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на 1-2 седмици.',
+    answer: 'Да. Пластмасовите стъкла на AMPÉ са тествани по BS EN ISO 12312-1:2013+A1:2015 и блокират до 99% от синята и зелената светлина. Над 1000 клиенти са усетили разлика в умората на очите и качеството на съня — обикновено в рамките на 1-2 седмици.',
   },
   {
     question: 'Може ли да ги нося цял ден?',
@@ -132,7 +132,7 @@ export const faqs: FaqItem[] = [
   },
   {
     question: 'Изкривяват ли цветовете на екрана?',
-    answer: 'Минимално. Дневните лещи имат лек жълтеникав оттенък, вечерните — оранжев. Свикваш за минути и повечето хора дори не го забелязват след малко.',
+    answer: 'Минимално. Дневните пластмасови стъкла имат лек жълтеникав оттенък, вечерните — оранжев. Свикваш за минути и повечето хора дори не го забелязват след малко.',
   },
   {
     question: 'Работят ли с диоптрични стъкла?',

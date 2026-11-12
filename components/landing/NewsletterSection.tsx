@@ -31,7 +31,7 @@ export default function NewsletterSection({ locale }: { locale: Locale }) {
         </span>
 
         <h2 className="font-serif text-[clamp(28px,5vw,52px)] text-linen font-medium leading-tight max-w-2xl">
-          {t('Съвети за сън, ръководство за стъкла и')}{' '}
+          {t('Съвети за сън, ръководство за пластмасови стъкла и')}{' '}
           <em className="text-gold not-italic italic">{t('ранен достъп.')}</em>
         </h2>
 

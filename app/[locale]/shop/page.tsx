@@ -33,7 +33,7 @@ export default function ShopPage({ params, searchParams }: { params: { locale: s
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: t('AMPÉ очила за синя светлина'),
-    description: t('AMPÉ Daily и Evening очила за синя и зелена светлина, очила за компютър и blue light blocking glasses с EU сертифицирани стъкла, UV400 защита и лека рамка за ежедневна употреба.'),
+    description: t('AMPÉ Daily и Evening очила за синя и зелена светлина, очила за компютър и blue light blocking glasses с EU сертифицирани пластмасови стъкла, UV400 защита и лека рамка за ежедневна употреба.'),
     image: [
       absoluteUrl('/images/shop/shop-evening-1.png'),
       absoluteUrl('/images/shop/shop-daily-1.png'),

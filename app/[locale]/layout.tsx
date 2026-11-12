@@ -31,7 +31,7 @@ const raleway = Raleway({
 function rootMetadata(locale: 'bg' | 'en'): Metadata {
   const title = locale === 'en' ? 'AMPÉ - Blue-light glasses' : defaultSeo.title
   const description = locale === 'en'
-    ? 'AMPÉ blue- and green-light glasses with EU-certified lenses, UV400 protection and free delivery on 2 or more pairs.'
+    ? 'AMPÉ blue- and green-light glasses with EU-certified plastic lenses, UV400 protection and free delivery on 2 or more pairs.'
     : defaultSeo.description
   return {
   metadataBase: new URL(siteUrl),

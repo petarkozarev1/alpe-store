@@ -27,7 +27,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
       <section id="stakla" className="relative min-h-[70vh] overflow-hidden">
         <Image
           src={evening ? '/images/shop/shop-evening-1.png' : '/images/shop/shop-daily-1.png'}
-          alt={evening ? t('Чифт AMPÉ Evening с оранжеви стъкла') : t('Чифт AMPÉ Daily с жълти стъкла')}
+          alt={evening ? t('Чифт AMPÉ Evening с оранжеви пластмасови стъкла') : t('Чифт AMPÉ Daily с жълти пластмасови стъкла')}
           fill
           priority
           sizes="100vw"
@@ -35,7 +35,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/10" />
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
-          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две лещи. Два кода.')}</p>
+          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две пластмасови стъкла. Два кода.')}</p>
           <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
             AMPÉ Daily<br />AMPÉ Evening
           </h1>
@@ -43,8 +43,8 @@ export default function LensesView({ locale }: { locale: Locale }) {
             {t('Жълтите са за деня, оранжевите за вечерта. Числата от AHD TMS и описанието на продукта стоят едно до друго. Очилата не са медицинско изделие.')}
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <button type="button" aria-pressed={!evening} onClick={() => setEvening(false)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen/20 text-linen' : 'bg-linen text-onyx'}`}>{t('Дневни лещи')}</button>
-            <button type="button" aria-pressed={evening} onClick={() => setEvening(true)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen text-onyx' : 'bg-linen/20 text-linen'}`}>{t('Вечерни лещи')}</button>
+            <button type="button" aria-pressed={!evening} onClick={() => setEvening(false)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen/20 text-linen' : 'bg-linen text-onyx'}`}>{t('Дневни пластмасови стъкла')}</button>
+            <button type="button" aria-pressed={evening} onClick={() => setEvening(true)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen text-onyx' : 'bg-linen/20 text-linen'}`}>{t('Вечерни пластмасови стъкла')}</button>
           </div>
         </div>
       </section>
@@ -53,20 +53,20 @@ export default function LensesView({ locale }: { locale: Locale }) {
         <SectionNav locale={locale} label="Секции на страницата" items={nav} />
         <div className="min-w-0 space-y-20">
           <section id="duljini" className="scroll-mt-32">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво хваща всяка леща')}</p>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво хваща всяко пластмасово стъкло')}</p>
             <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Диапазоните, които публикуваме')}</h2>
             <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
               <article className="rounded-[28px] border border-iron/15 bg-cream p-5">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни лещи')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни пластмасови стъкла')}</p>
                 <h3 className="mt-2 font-serif text-3xl">{t('Жълти, почти прозрачни')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-stone">
                   <li>{t('Лаборатория: до 99% при пика от 450 nm. Пропуска 85% видима светлина. Категория 0.')}</li>
                   <li>{t('На продукта: 65% блокиране на синя светлина и частичен филтър за зелена светлина.')}</li>
-                  <li>{t('Изследванията сочат връх на меланопсина около 479 nm и силен диапазон 446–477 nm. Това е за светлината, не за тази леща.')}</li>
+                  <li>{t('Изследванията сочат връх на меланопсина около 479 nm и силен диапазон 446–477 nm. Това е за светлината, не за това пластмасово стъкло.')}</li>
                 </ul>
               </article>
               <article className="rounded-[28px] bg-iron p-5 text-linen">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни лещи')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни пластмасови стъкла')}</p>
                 <h3 className="mt-2 font-serif text-3xl">{t('Оранжев филтър')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-linen/80">
                   <li>{t('Лаборатория: 99.21% в 475–650 nm. Пропуска 54% видима светлина. Категория 1.')}</li>
@@ -85,7 +85,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Числата от AHD TMS')}</h2>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <Bars
-                title={t('Дневни лещи')}
+                title={t('Дневни пластмасови стъкла')}
                 code="AMPÉ Daily"
                 rows={[
                   { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85 },
@@ -94,7 +94,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 ]}
               />
               <Bars
-                title={t('Вечерни лещи')}
+                title={t('Вечерни пластмасови стъкла')}
                 code="AMPÉ Evening"
                 dark
                 rows={[
@@ -105,7 +105,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
               />
             </div>
             <p className="mt-4 font-sans text-sm leading-relaxed text-stone">
-              {t('И двете лещи: UVA + UVB = 0.00%. Светофарът е PASS. Пълните PDF-и не са качени тук.')}
+              {t('И двете пластмасови стъкла: UVA + UVB = 0.00%. Светофарът е PASS. Пълните PDF-и не са качени тук.')}
             </p>
           </section>
 
@@ -113,9 +113,9 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Покрития и UV400')}</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {[
-                ['UV400', t('На продукта пишем UV400. В лабораторията е 100% UV и при двете лещи.')],
+                ['UV400', t('На продукта пишем UV400. В лабораторията е 100% UV и при двете пластмасови стъкла.')],
                 [t('Антирефлексно покритие'), t('Дневните имат антирефлексно покритие. Намалява блясъка от екрана и лампите.')],
-                [t('Устойчиви на драскотини'), t('Лещите са устойчиви на драскотини, за ежедневието.')],
+                [t('Устойчиви на драскотини'), t('Пластмасовите стъкла са устойчиви на драскотини, за ежедневието.')],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
                   <h3 className="font-serif text-2xl">{title}</h3>
@@ -141,12 +141,12 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Една до друга')}</h2>
             <div className="mt-6 overflow-x-auto rounded-[28px] border border-iron/15">
               <table className="w-full min-w-[640px] border-collapse text-left">
-                <caption className="sr-only">{t('Сравнение на дневни и вечерни стъкла')}</caption>
+                <caption className="sr-only">{t('Сравнение на дневни и вечерни пластмасови стъкла')}</caption>
                 <thead className="bg-sand">
                   <tr>
                     <th className="px-4 py-4 font-sans text-xs font-medium">{t('Показател')}</th>
-                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни лещи')}<span className="mt-1 block font-normal text-stone">AMPÉ Daily</span></th>
-                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни лещи')}<span className="mt-1 block font-normal text-stone">AMPÉ Evening</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни пластмасови стъкла')}<span className="mt-1 block font-normal text-stone">AMPÉ Daily</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни пластмасови стъкла')}<span className="mt-1 block font-normal text-stone">AMPÉ Evening</span></th>
                   </tr>
                 </thead>
                 <tbody className="font-sans text-sm">
@@ -175,7 +175,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
           </section>
 
           <section id="koga" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Кога коя леща')}</h2>
+            <h2 className="font-serif text-4xl">{t('Кога кое пластмасово стъкло')}</h2>
             <ol className="mt-6 space-y-3">
               {[
                 [t('През деня'), t('Дневните, AMPÉ Daily. Категория 0, подходящи за шофиране. За работа пред екран, включително дизайн и видеоразговори.')],
@@ -227,7 +227,7 @@ function LensSpectrum({ caption }: { caption: string }) {
     <figure className="mt-6 rounded-[28px] border border-iron/15 bg-cream p-4">
       <svg viewBox="0 0 360 120" role="img" aria-label={caption} className="w-full">
         <defs>
-          <linearGradient id="lens-spectrum" x1="0" x2="1">
+          <linearGradient id="plastic lens-spectrum" x1="0" x2="1">
             <stop offset="0" stopColor="#6B4C9A" />
             <stop offset="0.22" stopColor="#3D6CB5" />
             <stop offset="0.4" stopColor="#3E8C4A" />
@@ -239,7 +239,7 @@ function LensSpectrum({ caption }: { caption: string }) {
         {bands.map((band) => (
           <rect key={band.label} x={x(band.from)} y="36" width={Math.max(2, x(band.to) - x(band.from))} height="28" rx="4" fill="#2D0E04" opacity="0.18" />
         ))}
-        <rect x="16" y="44" width="328" height="16" rx="8" fill="url(#lens-spectrum)" />
+        <rect x="16" y="44" width="328" height="16" rx="8" fill="url(#plastic lens-spectrum)" />
         <line x1={x(450)} y1="30" x2={x(450)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
         <line x1={x(479)} y1="30" x2={x(479)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
         <text x="16" y="100" fill="#9B7B68" fontSize="11">380 nm</text>

@@ -15,12 +15,12 @@ import { clipSource, pdpUgcClips, type PdpUgcClip } from '@/lib/pdp-ugc'
 
 const images: Record<Lens, { src: string; thumb: string; alt: string }[]> = {
   daily: [
-    { src: '/images/shop/shop-daily-1.png', thumb: '/images/shop/thumbs/shop-daily-1.webp', alt: 'AMPÉ Daily очила за компютър с жълти стъкла' },
+    { src: '/images/shop/shop-daily-1.png', thumb: '/images/shop/thumbs/shop-daily-1.webp', alt: 'AMPÉ Daily очила за компютър с жълти пластмасови стъкла' },
     { src: '/images/shop/shop-daily-2.png', thumb: '/images/shop/thumbs/shop-daily-2.webp', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
     { src: '/images/shop/shop-daily-3.png', thumb: '/images/shop/thumbs/shop-daily-3.webp', alt: 'Кутия AMPÉ Daily blue light glasses за работа пред екран' },
   ],
   evening: [
-    { src: '/images/shop/shop-evening-1.png', thumb: '/images/shop/thumbs/shop-evening-1.webp', alt: 'AMPÉ Evening очила за синя светлина с оранжеви стъкла' },
+    { src: '/images/shop/shop-evening-1.png', thumb: '/images/shop/thumbs/shop-evening-1.webp', alt: 'AMPÉ Evening очила за синя светлина с оранжеви пластмасови стъкла' },
     { src: '/images/shop/shop-evening-2.png', thumb: '/images/shop/thumbs/shop-evening-2.webp', alt: 'Оранжеви blue light blocking glasses AMPÉ Evening' },
     { src: '/images/shop/shop-evening-3.png', thumb: '/images/shop/thumbs/shop-evening-3.webp', alt: 'Кутия AMPÉ Evening очила против синя светлина' },
   ],

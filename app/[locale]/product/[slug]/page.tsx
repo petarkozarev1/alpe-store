@@ -121,7 +121,7 @@ export default function ProductPage({ params }: { params: { locale: string; slug
       {
         '@type': 'ListItem',
         position: 2,
-        name: locale === 'en' ? 'Lenses' : 'Стъкла',
+        name: locale === 'en' ? 'Plastic lenses' : 'Пластмасови стъкла',
         item: absoluteUrl(localizedPath('/lenses', locale)),
       },
       {
@@ -150,7 +150,7 @@ export default function ProductPage({ params }: { params: { locale: string; slug
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link href={localizedPath('/lenses', locale)} className="transition-colors hover:text-gold">{locale === 'en' ? 'Lenses' : 'Стъкла'}</Link>
+            <Link href={localizedPath('/lenses', locale)} className="transition-colors hover:text-gold">{locale === 'en' ? 'Plastic lenses' : 'Пластмасови стъкла'}</Link>
           </li>
           <li aria-hidden="true">/</li>
           <li aria-current="page" className="text-iron">{product.name}</li>

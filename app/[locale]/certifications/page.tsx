@@ -6,7 +6,7 @@ import CertificationsView from '@/components/pages/CertificationsView'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Сертификати',
-    description: 'Независим тест на лещите AMPÉ в AHD TMS. 100% UV, измерено блокиране и три стандарта.',
+    description: 'Независим тест на пластмасовите стъкла AMPÉ в AHD TMS. 100% UV, измерено блокиране и три стандарта.',
     path: '/certifications',
   })
 }

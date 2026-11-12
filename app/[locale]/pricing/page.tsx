@@ -24,8 +24,8 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
       originalPrice: null as string | null,
       hint: pricing.promo ? `Код ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}` : null,
       badge: null as string | null,
-      description: 'Един чифт AMPÉ очила по твой избор — дневни или вечерни стъкла.',
-      features: ['Избор: дневни или вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Доставка €4.99'],
+      description: 'Един чифт AMPÉ очила по твой избор — дневни или вечерни пластмасови стъкла.',
+      features: ['Избор: дневни или вечерни пластмасови стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Доставка €4.99'],
       highlight: false,
     },
     {
@@ -34,8 +34,8 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
       originalPrice: doubleOnSale ? `€${pricing.regularDouble.toFixed(2)}` : null,
       hint: doubleOnSale ? 'Вторият чифт на половин цена' : null,
       badge: 'Най-популярни',
-      description: 'Дневни + вечерни стъкла. Пълна защита от сутринта до лягане.',
-      features: ['Дневни + вечерни стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Безплатна доставка'],
+      description: 'Дневни + вечерни пластмасови стъкла. Пълна защита от сутринта до лягане.',
+      features: ['Дневни + вечерни пластмасови стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Безплатна доставка'],
       highlight: true,
     },
   ]
@@ -98,7 +98,7 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
         </div>
 
         <p className="font-sans text-xs text-stone/70 text-center">
-          Безплатна доставка за 2+ чифта · EU сертифицирани стъкла
+          Безплатна доставка за 2+ чифта · EU сертифицирани пластмасови стъкла
         </p>
       </section>
     </main>

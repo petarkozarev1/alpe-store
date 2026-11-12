@@ -27,11 +27,11 @@ export default function FaqsView({ locale }: { locale: Locale }) {
         <p className="font-sans text-xs uppercase tracking-widest text-stone">{t('Въпроси')}</p>
         <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-tight md:text-6xl">{t('Питай направо.')}</h1>
         <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-stone">
-          {t('Кратки отговори за лещите, теста и поръчката. Очилата не са медицинско изделие.')}
+          {t('Кратки отговори за пластмасовите стъкла, теста и поръчката. Очилата не са медицинско изделие.')}
         </p>
         <div className="mt-6 flex flex-wrap gap-4 font-sans text-sm">
           <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Доказано')}</Link>
-          <Link href={href('/lenses')} className="underline decoration-gold underline-offset-4">{t('Стъкла')}</Link>
+          <Link href={href('/lenses')} className="underline decoration-gold underline-offset-4">{t('Пластмасови стъкла')}</Link>
           <Link href={href('/terms')} className="underline decoration-gold underline-offset-4">{t('Условия')}</Link>
           <Link href={href('/returns')} className="underline decoration-gold underline-offset-4">{t('Връщане')}</Link>
         </div>

@@ -22,7 +22,7 @@ const TILES: Tile[] = [
   { kind: 'photo', name: 'home', src: '/media/lifestyle-sofa.jpg', alt: 'Жена с жълтия чифт AMPÉ на дивана' },
   { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-01.jpg', alt: 'Селфи с жълтия чифт AMPÉ' },
   { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-02.jpg', alt: 'Селфи с дневния чифт AMPÉ' },
-  { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-03.jpg', alt: 'Селфи с жълтите стъкла AMPÉ' },
+  { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-03.jpg', alt: 'Селфи с жълтите пластмасови стъкла AMPÉ' },
   { kind: 'photo', name: 'selfie', src: '/media/influencer-selfie-04.jpg', alt: 'Селфи с чифт AMPÉ' },
   ...heroContent.heroFaceImages.map(face => ({
     kind: 'photo' as const,

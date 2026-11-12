@@ -58,8 +58,8 @@ export const DRAFT_REVIEWS: DraftReview[] = [
     city: 'Бургас',
     product: 'evening',
     stars: 5,
-    bg: 'Оранжевите стъкла изглеждат силни в началото. След три вечери свикнах и спя по-спокойно.',
-    en: 'The orange lenses look strong at first. After three evenings I got used to them and I sleep more calmly.',
+    bg: 'Оранжевите пластмасови стъкла изглеждат силни в началото. След три вечери свикнах и спя по-спокойно.',
+    en: 'The orange plastic lenses look strong at first. After three evenings I got used to them and I sleep more calmly.',
   },
   {
     id: 'elena-k',

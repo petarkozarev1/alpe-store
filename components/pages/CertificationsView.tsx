@@ -13,7 +13,7 @@ const nav = [
   { id: 'svetlina', label: 'Светлина' },
   { id: 'laboratoria', label: 'Лаборатория' },
   { id: 'sertifikati', label: 'Сертификати' },
-  { id: 'tehnologia', label: 'Лещи и рамка' },
+  { id: 'tehnologia', label: 'Пластмасови стъкла и рамка' },
   { id: 'prouchvania', label: 'Проучвания' },
   { id: 'den', label: 'Денят' },
   { id: 'metod', label: 'Метод' },
@@ -30,7 +30,7 @@ const standards = [
   {
     code: 'ANSI Z80.3-2015',
     region: 'САЩ',
-    what: 'Американският стандарт за лещи без диоптър. Проверява дали са оптически безопасни.',
+    what: 'Американският стандарт за пластмасови стъкла без диоптър. Проверява дали са оптически безопасни.',
   },
   {
     code: 'AS/NZS 1067.1:2016',
@@ -47,7 +47,7 @@ const studies = [
     journal: 'Journal of Neuroscience',
     people: '72 здрави възрастни (37 жени, 35 мъже), средно на 24,5 г.',
     finding: 'Нощем, с разширени зеници, светлината между 446 и 477 nm спира мелатонина най-силно. Върхът на кривата е около 464 nm.',
-    limit: 'Силна лабораторна светлина, не екран вкъщи и не лещи AMPÉ.',
+    limit: 'Силна лабораторна светлина, не екран вкъщи и не пластмасови стъкла AMPÉ.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/11487664/',
     doi: '10.1523/JNEUROSCI.21-16-06405.2001',
   },
@@ -58,7 +58,7 @@ const studies = [
     journal: 'Proceedings of the Royal Society B',
     people: 'Човешки меланопсин в лабораторни клетки. Не е тест с хора.',
     finding: 'Пигментът реагира най-силно при 479 nm. Мерен е самият пигмент, не готов чифт очила.',
-    limit: 'Клетъчен опит. Не казва какъв процент спира конкретна леща.',
+    limit: 'Клетъчен опит. Не казва какъв процент спира конкретно пластмасово стъкло.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/23554393/',
     doi: '10.1098/rspb.2012.2987',
   },
@@ -69,7 +69,7 @@ const studies = [
     journal: 'Science Translational Medicine',
     people: 'Здрави хора на 18–30 г.: 24 на 460 nm и 24 на 555 nm.',
     finding: 'В началото зеленото при 555 nm спира мелатонина колкото синьото при 460 nm. Колкото по-дълго свети, толкова по-слабо остава зеленото.',
-    limit: 'Тясна лабораторна светлина, 6,5 часа. Не е тест на вечерните лещи.',
+    limit: 'Тясна лабораторна светлина, 6,5 часа. Не е тест на вечерните пластмасови стъкла.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/20463367/',
     doi: '10.1126/scitranslmed.3000741',
   },
@@ -78,8 +78,8 @@ const studies = [
     authors: 'Shechter et al.',
     year: '2018',
     journal: 'Journal of Psychiatric Research',
-    people: '14 възрастни със симптоми на безсъние. Кехлибарени срещу прозрачни лещи, 2 часа преди лягане, 7 нощи.',
-    finding: 'С кехлибарените оценките за сън и времето, мерено с гривна, са по-добри. Тези лещи пропускат около 90% видима светлина и поемат около 65% синя. Други числа от нашите.',
+    people: '14 възрастни със симптоми на безсъние. Кехлибарени срещу прозрачни пластмасови стъкла, 2 часа преди лягане, 7 нощи.',
+    finding: 'С кехлибарените оценките за сън и времето, мерено с гривна, са по-добри. Тези пластмасови стъкла пропускат около 90% видима светлина и поемат около 65% синя. Други числа от нашите.',
     limit: 'Малка група. Не е тест на AMPÉ Daily или AMPÉ Evening.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/29101797/',
     doi: '10.1016/j.jpsychires.2017.10.015',
@@ -102,7 +102,7 @@ const studies = [
     journal: 'Ophthalmic and Physiological Optics',
     people: 'Преглед на 3 рандомизирани проучвания, общо 136 души.',
     finding: 'До 2017 г. няма достатъчно силни доказателства, че синьо-блокиращи очила подобряват зрението, съня или умората на очите, или че пазят макулата.',
-    limit: 'Преглед до април 2017 г. Други лещи, не докладът на AHD TMS.',
+    limit: 'Преглед до април 2017 г. Други пластмасови стъкла, не докладът на AHD TMS.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/29044670/',
     doi: '10.1111/opo.12406',
   },
@@ -113,7 +113,7 @@ const studies = [
     journal: 'Frontiers in Neurology',
     people: 'Три двойно слепи опита, общо 49 възрастни, със гривна за сън.',
     finding: 'Разликите в заспиването, дължината на съня, ефективността и нощните будения не са статистически ясни. Авторите не виждат стабилен измерен ефект.',
-    limit: 'Малко опити и различни условия. Не включва лещите AMPÉ.',
+    limit: 'Малко опити и различни условия. Не включва пластмасовите стъкла AMPÉ.',
     href: 'https://pubmed.ncbi.nlm.nih.gov/41341515/',
     doi: '10.3389/fneur.2025.1699303',
   },
@@ -128,7 +128,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
       <section id="dokaz" className="relative min-h-[78vh] overflow-hidden">
         <Image
           src="/images/cert-hero.jpg"
-          alt={t('Жълти лещи AMPÉ върху кутията')}
+          alt={t('Жълти пластмасови стъкла AMPÉ върху кутията')}
           fill
           priority
           quality={75}
@@ -138,13 +138,13 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/60 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-content flex-col justify-end px-6 pb-14 md:px-10">
           <h1 className="max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
-            {t('Измерени лещи.')}<br />{t('Доказани резултати.')}
+            {t('Измерени пластмасови стъкла.')}<br />{t('Доказани резултати.')}
           </h1>
           <p className="mt-5 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
             {t('Жълтите дневни (AMPÉ Daily) и оранжевите вечерни (AMPÉ Evening) са мерени в независимата лаборатория AHD TMS.')}
           </p>
           <dl className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
-            <HeroStat value={100} suffix="%" label={t('UV, и двете лещи')} />
+            <HeroStat value={100} suffix="%" label={t('UV, и двете пластмасови стъкла')} />
             <HeroStat value={99} prefix={t('до')} suffix="%" label={t('Дневни, пик 450 nm')} />
             <HeroStat value={99.21} decimals={2} suffix="%" label={t('Вечерни, 475–650 nm')} />
             <HeroStat value={22} suffix={t(' г')} label={t('Рамка, кристален ацетат')} />
@@ -184,12 +184,12 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             </div>
             <div className="mt-6 grid items-start gap-3 sm:grid-cols-2">
               <article className="h-fit rounded-[24px] border border-iron/15 bg-sand/40 p-3">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни лещи')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни пластмасови стъкла')}</p>
                 <h3 className="mt-2 font-serif text-2xl">{t('Жълти, почти прозрачни')}</h3>
                 <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Лабораторията мери до 99% при 450 nm и 85% пропусната видима светлина.')}</p>
               </article>
               <article className="h-fit rounded-[24px] bg-iron p-3 text-linen">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни лещи')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни пластмасови стъкла')}</p>
                 <h3 className="mt-2 font-serif text-2xl">{t('Оранжев филтър')}</h3>
                 <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('Лабораторията мери 99,21% в 475–650 nm и 54% пропусната видима светлина.')}</p>
               </article>
@@ -197,14 +197,14 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
           </section>
 
           <section id="laboratoria" className="scroll-mt-32">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Резултати по леща')}</p>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Резултати по пластмасово стъкло')}</p>
             <h2 className="mt-2 font-serif text-4xl">{t('Числата от AHD TMS')}</h2>
             <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">
               {t('Докладът е на AHD TMS. Стандартите са BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 и AS/NZS 1067.1:2016.')}
             </p>
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
               <LabBars
-                title={t('Дневни лещи')}
+                title={t('Дневни пластмасови стъкла')}
                 code="AMPÉ Daily"
                 rows={[
                   { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85, note: t('Почти прозрачни') },
@@ -213,7 +213,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 ]}
               />
               <LabBars
-                title={t('Вечерни лещи')}
+                title={t('Вечерни пластмасови стъкла')}
                 code="AMPÉ Evening"
                 dark
                 rows={[
@@ -225,12 +225,12 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
             </div>
             <div className="mt-6 overflow-x-auto rounded-[28px] border border-iron/15">
               <table className="w-full min-w-[640px] border-collapse text-left">
-                <caption className="sr-only">{t('Сравнение на лабораторните редове за дневни и вечерни лещи')}</caption>
+                <caption className="sr-only">{t('Сравнение на лабораторните редове за дневни и вечерни пластмасови стъкла')}</caption>
                 <thead className="bg-sand">
                   <tr>
                     <th className="px-4 py-4 font-sans text-xs font-medium">{t('Показател')}</th>
-                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни лещи')}<span className="mt-1 block font-normal text-stone">AMPÉ Daily</span></th>
-                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни лещи')}<span className="mt-1 block font-normal text-stone">AMPÉ Evening</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни пластмасови стъкла')}<span className="mt-1 block font-normal text-stone">AMPÉ Daily</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни пластмасови стъкла')}<span className="mt-1 block font-normal text-stone">AMPÉ Evening</span></th>
                   </tr>
                 </thead>
                 <tbody className="font-sans text-sm">
@@ -263,14 +263,14 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                   <p className="font-sans text-[10px] uppercase tracking-widest text-gold">{t(standard.region)}</p>
                   <h3 className="mt-3 font-serif text-2xl leading-snug">{standard.code}</h3>
                   <p className="mt-3 font-sans text-sm leading-relaxed text-linen/80">{t(standard.what)}</p>
-                  <p className="mt-4 font-sans text-xs text-linen/70">{t('И двете лещи минават този стандарт.')}</p>
+                  <p className="mt-4 font-sans text-xs text-linen/70">{t('И двете пластмасови стъкла минават този стандарт.')}</p>
                 </article>
               ))}
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <article className="rounded-[24px] border border-iron/15 p-5">
                 <h3 className="font-serif text-2xl">UV400</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('На продукта пишем UV400. В лабораторията същото е 100% UV, UVA + UVB = 0.00%, и при двете лещи.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('На продукта пишем UV400. В лабораторията същото е 100% UV, UVA + UVB = 0.00%, и при двете пластмасови стъкла.')}</p>
               </article>
               <article className="rounded-[24px] border border-iron/15 p-5">
                 <h3 className="font-serif text-2xl">{t('Зелена светлина')}</h3>
@@ -280,24 +280,24 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
           </section>
 
           <section id="tehnologia" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Две лещи, една рамка')}</h2>
+            <h2 className="font-serif text-4xl">{t('Две пластмасови стъкла, една рамка')}</h2>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <figure className="overflow-hidden rounded-[28px] bg-sand/40">
                 <div className="relative h-64">
-                  <Image src="/images/shop/shop-daily-1.png" alt={t('Чифт AMPÉ Daily с жълти стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+                  <Image src="/images/shop/shop-daily-1.png" alt={t('Чифт AMPÉ Daily с жълти пластмасови стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <figcaption className="p-5">
-                  <h3 className="font-serif text-2xl">{t('Дневни лещи')} · AMPÉ Daily</h3>
+                  <h3 className="font-serif text-2xl">{t('Дневни пластмасови стъкла')} · AMPÉ Daily</h3>
                   <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За деня пред екрана. Категория 0 и подходящи за шофиране. Имат антирефлексно покритие и са устойчиви на драскотини.')}</p>
                   <Link href={href('/product/alpe-daily')} className="mt-3 inline-block font-sans text-sm underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Daily →')}</Link>
                 </figcaption>
               </figure>
               <figure className="overflow-hidden rounded-[28px] bg-iron text-linen">
                 <div className="relative h-64">
-                  <Image src="/images/shop/shop-evening-1.png" alt={t('Чифт AMPÉ Evening с оранжеви стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
+                  <Image src="/images/shop/shop-evening-1.png" alt={t('Чифт AMPÉ Evening с оранжеви пластмасови стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <figcaption className="p-5">
-                  <h3 className="font-serif text-2xl">{t('Вечерни лещи')} · AMPÉ Evening</h3>
+                  <h3 className="font-serif text-2xl">{t('Вечерни пластмасови стъкла')} · AMPÉ Evening</h3>
                   <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Категория 1, светофарът е PASS. Пропускат 54% от видимата светлина, затова оранжевото се вижда.')}</p>
                   <Link href={href('/product/alpe-evening')} className="mt-3 inline-block font-sans text-sm text-linen underline decoration-gold underline-offset-4">{t('Разгледай AMPÉ Evening →')}</Link>
                 </figcaption>
@@ -317,7 +317,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
           <section id="prouchvania" className="scroll-mt-32">
             <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Изследвания за светлината')}</p>
             <h2 className="mt-2 font-serif text-4xl">{t('Какво казват изследванията')}</h2>
-            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">{t('Тези трудове са за светлината и за други очила, не за лещите AMPÉ. Връзките водят към PubMed.')}</p>
+            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">{t('Тези трудове са за светлината и за други очила, не за пластмасовите стъкла AMPÉ. Връзките водят към PubMed.')}</p>
             <div className="mt-6 grid gap-4">
               {studies.map((study) => (
                 <article key={study.n} className="rounded-[28px] border border-iron/15 bg-cream p-5 md:p-6">
@@ -344,7 +344,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 ['Сутрин и през деня', 'Сложи дневните, докато работиш. AMPÉ Daily е категория 0 и е отбелязана като подходяща за шофиране.'],
                 ['Поне два часа преди лягане', 'Вечерните сложи поне 2 часа преди сън. Така ги носим ние. Не е лекарска схема.'],
                 ['Защо вечерните са по-тъмни', 'AMPÉ Evening пропуска 54% видима светлина и е категория 1. За вечер са. Светофарът е PASS.'],
-                ['От една нощ', 'При здрави хора измереният сън не става стабилно по-дълъг [5, 7]. В малка група със симптоми на безсъние оценките са по-добри с други, кехлибарени лещи [4].'],
+                ['От една нощ', 'При здрави хора измереният сън не става стабилно по-дълъг [5, 7]. В малка група със симптоми на безсъние оценките са по-добри с други, кехлибарени пластмасови стъкла [4].'],
               ].map(([title, body], index) => (
                 <li key={title} className="grid grid-cols-[auto_1fr] gap-4 rounded-[24px] bg-sand/40 p-5">
                   <span className="font-serif text-3xl text-iron">{String(index + 1).padStart(2, '0')}</span>
@@ -364,7 +364,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
           <section id="metod" className="scroll-mt-32 rounded-[28px] bg-[#B8906A] p-6 text-linen md:p-8">
             <h2 className="font-serif text-4xl">{t('Как е правен тестът')}</h2>
             <ul className="mt-5 space-y-3 font-sans text-sm leading-relaxed text-linen/90">
-              <li>{t('Лещите са пратени в независима лаборатория. Казва се AHD TMS.')}</li>
+              <li>{t('Пластмасовите стъкла са пратени в независима лаборатория. Казва се AHD TMS.')}</li>
               <li>{t('Дневните са AMPÉ Daily, вечерните са AMPÉ Evening.')}</li>
               <li>{t('Мерени са светлопропускливост, UV, синя светлина, категория и светофар, по трите стандарта горе.')}</li>
               <li>{t('В това обобщение няма дата, уред и суров файл. Затова не чертаем крива точка по точка.')}</li>

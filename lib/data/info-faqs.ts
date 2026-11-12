@@ -2,7 +2,7 @@ export type InfoFaqGroup = 'science' | 'certs' | 'wear' | 'frame' | 'order'
 
 export const infoFaqGroups: { id: InfoFaqGroup | 'all'; label: string }[] = [
   { id: 'all', label: 'Всички' },
-  { id: 'science', label: 'Лещи и наука' },
+  { id: 'science', label: 'Пластмасови стъкла и наука' },
   { id: 'certs', label: 'Сертификати и безопасност' },
   { id: 'wear', label: 'Носене и комфорт' },
   { id: 'frame', label: 'Рамка' },
@@ -23,12 +23,12 @@ export const infoFaqs: { group: InfoFaqGroup; question: string; answer: string }
   {
     group: 'science',
     question: 'Изкривяват ли цветовете на екрана?',
-    answer: 'Минимално. Дневните лещи имат лек жълтеникав оттенък, вечерните — оранжев. Свикваш за минути и повечето хора дори не го забелязват след малко.',
+    answer: 'Минимално. Дневните пластмасови стъкла имат лек жълтеникав оттенък, вечерните — оранжев. Свикваш за минути и повечето хора дори не го забелязват след малко.',
   },
   {
     group: 'certs',
-    question: 'Кои стандарти са минали лещите?',
-    answer: 'И двете лещи минават BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 и AS/NZS 1067.1:2016. UV е 100%, UVA + UVB = 0.00%. Светофарът е PASS. Пълните PDF-и не са качени тук.',
+    question: 'Кои стандарти са минали пластмасовите стъкла?',
+    answer: 'И двете пластмасови стъкла минават BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015 и AS/NZS 1067.1:2016. UV е 100%, UVA + UVB = 0.00%. Светофарът е PASS. Пълните PDF-и не са качени тук.',
   },
   {
     group: 'certs',

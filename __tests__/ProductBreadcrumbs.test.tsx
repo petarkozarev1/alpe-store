@@ -18,7 +18,7 @@ test('renders visible and structured breadcrumbs for an indexable product', () =
 
   expect(screen.getByRole('navigation', { name: 'Навигация' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: 'Начало' })).toHaveAttribute('href', '/')
-  expect(screen.getByRole('link', { name: 'Стъкла' })).toHaveAttribute('href', '/lenses')
+  expect(screen.getByRole('link', { name: 'Пластмасови стъкла' })).toHaveAttribute('href', '/lenses')
   expect(screen.getByText('AMPÉ Daily')).toHaveAttribute('aria-current', 'page')
 
   const schemas = Array.from(container.querySelectorAll('script[type="application/ld+json"]'))

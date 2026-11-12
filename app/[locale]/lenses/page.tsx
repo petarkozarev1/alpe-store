@@ -5,8 +5,8 @@ import LensesView from '@/components/pages/LensesView'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
-    title: 'Стъкла',
-    description: 'Дневни и вечерни лещи. Жълти за деня, оранжеви за вечерта. Числата от лабораторията са на страницата.',
+    title: 'Пластмасови стъкла',
+    description: 'Дневни и вечерни пластмасови стъкла. Жълти за деня, оранжеви за вечерта. Числата от лабораторията са на страницата.',
     path: '/lenses',
   })
 }

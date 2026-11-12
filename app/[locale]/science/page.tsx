@@ -6,7 +6,7 @@ import ScienceView from '@/components/pages/ScienceView'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     title: 'Науката',
-    description: 'Как светлината стига до окото и какво филтрират лещите AMPÉ.',
+    description: 'Как светлината стига до окото и какво филтрират пластмасовите стъкла AMPÉ.',
     path: '/science',
   })
 }

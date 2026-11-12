@@ -18,7 +18,7 @@ test('keeps the published lab rows on the certifications page', () => {
   expect(screen.getByRole('link', { name: 'https://pubmed.ncbi.nlm.nih.gov/11487664/' })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/11487664/')
 })
 
-test('keeps both lens product links visible', () => {
+test('keeps both plastic lens product links visible', () => {
   render(<LensesPage params={{ locale: 'bg' }} />)
   expect(screen.getByRole('link', { name: /AMPÉ Daily/i })).toHaveAttribute('href', '/product/alpe-daily')
   expect(screen.getByRole('link', { name: /AMPÉ Evening/i })).toHaveAttribute('href', '/product/alpe-evening')
