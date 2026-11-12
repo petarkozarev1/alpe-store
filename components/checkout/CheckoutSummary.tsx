@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutElementsProvider } from '@stripe/react-stripe-js/checkout'
@@ -9,6 +10,9 @@ import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
 import { StripePayForm } from './StripePayForm'
 
+const DESKTOP_QUERY = '(min-width: 1024px)'
+const SUMMARY_GAP = 24
+
 export function CheckoutSummary(p: any) {
   const {
     locale, items, codeInput, setCodeInput, appliedCode, codeError,
@@ -17,10 +21,59 @@ export function CheckoutSummary(p: any) {
   } = p
   const en = locale === 'en'
   const deliveryLabel = deliveryType === 'address' ? (en ? 'To an address' : 'До адрес') : delivery.label
+  const columnRef = useRef<HTMLDivElement>(null)
+  const slotRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const column = columnRef.current
+    const slot = slotRef.current
+    if (!column || !slot) return
+    const desktop = window.matchMedia(DESKTOP_QUERY)
+    let frame = 0
+    const apply = () => {
+      frame = 0
+      if (!desktop.matches) {
+        column.style.top = ''
+        column.style.left = ''
+        column.style.width = ''
+        column.style.maxHeight = ''
+        return
+      }
+      const header = document.querySelector('header')
+      const headerBottom = header ? header.getBoundingClientRect().bottom : 0
+      const top = Math.max(0, headerBottom) + SUMMARY_GAP
+      const place = slot.getBoundingClientRect()
+      column.style.top = `${top}px`
+      column.style.left = `${place.left}px`
+      column.style.width = `${place.width}px`
+      column.style.maxHeight = `calc(100vh - ${top}px - ${SUMMARY_GAP}px)`
+    }
+    const schedule = () => {
+      if (frame) return
+      frame = requestAnimationFrame(apply)
+    }
+    apply()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    desktop.addEventListener('change', schedule)
+    const header = document.querySelector('header')
+    const observer = new ResizeObserver(schedule)
+    if (header) observer.observe(header)
+    observer.observe(slot)
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+      desktop.removeEventListener('change', schedule)
+      observer.disconnect()
+    }
+  }, [])
+
   return (
-          <div className="self-start flex flex-col gap-4">
+          <div ref={slotRef} className="checkout-summary-slot self-start w-full">
+          <div ref={columnRef} className="checkout-summary flex flex-col gap-4 lg:fixed lg:z-30 lg:overflow-y-auto">
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
-              <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center justify-between mb-5 lg:sticky lg:top-0 lg:z-10 lg:bg-white">
                 <h2 className="font-serif text-lg font-bold text-onyx">{en ? 'Your order' : 'Твоята поръчка'}</h2>
               </div>
               <div className="flex flex-col gap-4 mb-5">
@@ -122,6 +175,7 @@ export function CheckoutSummary(p: any) {
                 </>
               )}
             </div>
+          </div>
           </div>
   )
 }
