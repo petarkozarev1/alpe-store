@@ -149,8 +149,8 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
 
         <p className="mx-auto mt-8 max-w-2xl text-center font-sans text-[11px] leading-relaxed text-linen/75">
           {en
-            ? 'Lab figures: independent testing (AHD TMS) of JX-Y8016 and JX-Y8008 lenses.'
-            : 'Лабораторните числа: независимо тестване (AHD TMS) на лещи JX-Y8016 и JX-Y8008.'}
+            ? 'Lab figures: independent testing (AHD TMS) of AMPÉ Daily and AMPÉ Evening lenses.'
+            : 'Лабораторните числа: независимо тестване (AHD TMS) на лещи AMPÉ Daily и AMPÉ Evening.'}
         </p>
       </div>
     </section>

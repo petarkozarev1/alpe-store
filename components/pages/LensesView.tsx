@@ -37,7 +37,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
           <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две лещи. Два кода.')}</p>
           <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
-            JX-Y8016<br />JX-Y8008
+            AMPÉ Daily<br />AMPÉ Evening
           </h1>
           <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
             {t('Жълтите са за деня, оранжевите за вечерта. Числата от AHD TMS и описанието на продукта стоят едно до друго. Очилата не са медицинско изделие.')}
@@ -57,7 +57,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Диапазоните, които публикуваме')}</h2>
             <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
               <article className="rounded-[28px] border border-iron/15 bg-cream p-5">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">JX-Y8016 · {t('Дневни лещи')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни лещи')}</p>
                 <h3 className="mt-2 font-serif text-3xl">{t('Жълти, почти прозрачни')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-stone">
                   <li>{t('Лаборатория: до 99% при пика от 450 nm. Пропуска 85% видима светлина. Категория 0.')}</li>
@@ -66,7 +66,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 </ul>
               </article>
               <article className="rounded-[28px] bg-iron p-5 text-linen">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">JX-Y8008 · {t('Вечерни лещи')}</p>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни лещи')}</p>
                 <h3 className="mt-2 font-serif text-3xl">{t('Оранжев филтър')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-linen/80">
                   <li>{t('Лаборатория: 99.21% в 475–650 nm. Пропуска 54% видима светлина. Категория 1.')}</li>
@@ -86,7 +86,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <Bars
                 title={t('Дневни лещи')}
-                code="jx-y8016"
+                code="AMPÉ Daily"
                 rows={[
                   { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85 },
                   { label: t('UV блокиране'), text: '100%', width: 100 },
@@ -95,7 +95,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
               />
               <Bars
                 title={t('Вечерни лещи')}
-                code="jx-y8008"
+                code="AMPÉ Evening"
                 dark
                 rows={[
                   { label: t('Светлопропускливост (Tv)'), text: '54%', width: 54 },
@@ -145,8 +145,8 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 <thead className="bg-sand">
                   <tr>
                     <th className="px-4 py-4 font-sans text-xs font-medium">{t('Показател')}</th>
-                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни лещи')}<span className="mt-1 block font-normal text-stone">jx-y8016</span></th>
-                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни лещи')}<span className="mt-1 block font-normal text-stone">jx-y8008</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Дневни лещи')}<span className="mt-1 block font-normal text-stone">AMPÉ Daily</span></th>
+                    <th className="px-4 py-4 font-sans text-xs font-medium">{t('Вечерни лещи')}<span className="mt-1 block font-normal text-stone">AMPÉ Evening</span></th>
                   </tr>
                 </thead>
                 <tbody className="font-sans text-sm">
@@ -178,8 +178,8 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Кога коя леща')}</h2>
             <ol className="mt-6 space-y-3">
               {[
-                [t('През деня'), t('Дневните, JX-Y8016. Категория 0, подходящи за шофиране. За работа пред екран, включително дизайн и видеоразговори.')],
-                [t('След залез'), t('Вечерните, JX-Y8008, поне 2 часа преди сън. Категория 1. Светофарът е PASS. Наличността е на продуктовата страница.')],
+                [t('През деня'), t('Дневните, AMPÉ Daily. Категория 0, подходящи за шофиране. За работа пред екран, включително дизайн и видеоразговори.')],
+                [t('След залез'), t('Вечерните, AMPÉ Evening, поне 2 часа преди сън. Категория 1. Светофарът е PASS. Наличността е на продуктовата страница.')],
               ].map(([title, body], index) => (
                 <li key={title} className="grid grid-cols-[auto_1fr] gap-4 rounded-[24px] bg-sand/40 p-5">
                   <span className="font-serif text-3xl text-iron">{String(index + 1).padStart(2, '0')}</span>

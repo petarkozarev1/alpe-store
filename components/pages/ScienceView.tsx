@@ -78,7 +78,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                   <Image src="/images/shop/shop-daily-1.png" alt={t('Чифт AMPÉ Daily с жълти стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-serif text-2xl">JX-Y8016 · {t('Дневни лещи')}</h3>
+                  <h3 className="font-serif text-2xl">AMPÉ Daily · {t('Дневни лещи')}</h3>
                   <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За деня пред екрана. Лабораторията мери до 99% при 450 nm и 85% видима светлина. На продукта пишем 65% филтър на синята светлина.')}</p>
                 </div>
               </article>
@@ -87,7 +87,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                   <Image src="/images/shop/shop-evening-1.png" alt={t('Чифт AMPÉ Evening с оранжеви стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-serif text-2xl">JX-Y8008 · {t('Вечерни лещи')}</h3>
+                  <h3 className="font-serif text-2xl">AMPÉ Evening · {t('Вечерни лещи')}</h3>
                   <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Лабораторията мери 99.21% в 475–650 nm и 54% видима светлина. На продукта: 98% в 415–455 nm и 98% зелена светлина в 500–560 nm.')}</p>
                 </div>
               </article>
