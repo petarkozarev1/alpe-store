@@ -22,8 +22,6 @@ export default function PairSelector({
   const single = pricing.single
   const two = pricing.double
   const separate = pricing.regularDouble
-  const save = +((separate - two).toFixed(2))
-  const percent = Math.round((save / separate) * 100)
   const promo = pricing.promo
   const promoPrice = promo?.singlePairPrice ?? single
   const promoPercent = promo?.percent ?? 15
@@ -51,6 +49,7 @@ export default function PairSelector({
             <span className="ps-copy">
               <span className="ps-name">{pairLabel(n)}</span>
               <span className="ps-sub">{n === 1 ? (en ? 'Your selected glasses' : 'Избраните от вас очила') : (en ? 'All-day coverage' : 'Защита за целия ден')}</span>
+              {n === 2 && <span className="ps-ship">{en ? 'Free delivery' : '🚚 Безплатна доставка'}</span>}
             </span>
             <span className="ps-price">
               {n === 1 && promo ? (
@@ -64,7 +63,7 @@ export default function PairSelector({
                     <s className="ps-was">{money(separate)}</s>
                     <span className="ps-now">{money(two)}</span>
                   </span>
-                  <span className="ps-save">{en ? `Save ${money(save)} · −${percent}%` : `Спестяваш ${money(save)} · −${percent}%`}</span>
+                  <span className="ps-save"><span className="ps-half">−50%</span><span className="ps-half-note">{en ? 'on the second pair' : 'на втория чифт'}</span></span>
                 </>
               ) : (
                 <span className="ps-now">{money(n === 1 ? single : two)}</span>
@@ -182,12 +181,36 @@ const css = `
   color: #2D0E04;
 }
 .ps-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.ps-half {
+  background: #c0392b;
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.375;
+  line-height: 1.2;
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+.ps-half-note {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(28,15,10,0.8);
+}
+.ps-ship {
+  align-self: flex-start;
+  margin-top: 4px;
+  background: #e8f3ea;
+  color: #3d7a4a;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  border-radius: 999px;
+  padding: 3px 8px;
   white-space: nowrap;
-  color: #B8906A;
 }
 .ps-tag {
   position: absolute;
