@@ -71,7 +71,10 @@ export default function PairSelector({
               )}
             </span>
             {n === 1 && promo && (
-              <span className="ps-tag ps-tag-a">{code} · −{promoPercent}%</span>
+              <span className="ps-tag ps-tag-a ps-tag-split">
+                <span className="ps-bf">Black Friday</span>
+                <span>{code} · −{promoPercent}%</span>
+              </span>
             )}
             {n === 2 && (
               <>
