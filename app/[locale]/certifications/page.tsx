@@ -5,8 +5,8 @@ import CertificationsView from '@/components/pages/CertificationsView'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
-    title: 'Сертификати',
-    description: 'Независим тест на пластмасовите стъкла AMPÉ в AHD TMS. 100% UV, измерено блокиране и три стандарта.',
+    title: 'Доказано',
+    description: 'Какво е измерено в пластмасовите стъкла AMPÉ: 99,29% синя светлина в 380–500 nm и UV400 при Evening, до 99% при 450 nm при Daily.',
     path: '/certifications',
   })
 }
