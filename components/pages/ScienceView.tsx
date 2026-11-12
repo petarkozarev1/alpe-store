@@ -92,7 +92,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                 </div>
               </article>
             </div>
-            <Link href={href('/lenses')} className="mt-4 inline-block font-sans text-sm underline decoration-gold underline-offset-4">{t('Към страницата за пластмасовите стъкла')}</Link>
+            <Link href={href('/lenses')} className="mt-4 inline-block font-sans text-sm underline decoration-gold underline-offset-4">{t('Към За стъклата')}</Link>
           </section>
 
           <section id="den" className="scroll-mt-32">

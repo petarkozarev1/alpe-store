@@ -23,10 +23,13 @@ test('keeps the published lab rows on the certifications page', () => {
 
 test('keeps both plastic lens product links visible', () => {
   render(<LensesPage params={{ locale: 'bg' }} />)
-  expect(screen.getByRole('link', { name: /AMPÉ Daily/i })).toHaveAttribute('href', '/product/alpe-daily')
-  expect(screen.getByRole('link', { name: /AMPÉ Evening/i })).toHaveAttribute('href', '/product/alpe-evening')
-  expect(screen.getByText('65% блокиране на синя светлина')).toBeInTheDocument()
-  expect(screen.getByText('98% блокиране на синя светлина')).toBeInTheDocument()
+  expect(screen.getByRole('link', { name: 'Разгледай AMPÉ Daily →' })).toHaveAttribute('href', '/product/alpe-daily')
+  expect(screen.getByRole('link', { name: 'Разгледай AMPÉ Evening →' })).toHaveAttribute('href', '/product/alpe-evening')
+  expect(screen.getAllByText(/99,29%/).length).toBeGreaterThan(0)
+  expect(screen.queryByText(/99[,.]21%/)).not.toBeInTheDocument()
+  expect(screen.queryByText(/65% блокиране/)).not.toBeInTheDocument()
+  expect(screen.queryByText(/PASS/)).not.toBeInTheDocument()
+  expect(screen.getByText('За стъклата')).toBeInTheDocument()
 })
 
 test('keeps the science facts and the how-it-works steps', () => {

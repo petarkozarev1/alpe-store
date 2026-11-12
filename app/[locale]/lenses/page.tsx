@@ -5,8 +5,8 @@ import LensesView from '@/components/pages/LensesView'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
-    title: 'Пластмасови стъкла',
-    description: 'Дневни и вечерни пластмасови стъкла. Жълти за деня, оранжеви за вечерта. Числата от лабораторията са на страницата.',
+    title: 'За стъклата',
+    description: 'AMPÉ Daily и AMPÉ Evening — жълти пластмасови стъкла за деня пред екрана и оранжеви за вечерта. До 99% при 450 nm през деня, 99,29% синя светлина в 380–500 nm и UV400 вечер.',
     path: '/lenses',
   })
 }

@@ -35,16 +35,16 @@ export default function LensesView({ locale }: { locale: Locale }) {
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/55 to-onyx/10" />
         <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-content flex-col justify-end px-6 pb-12 md:px-10">
-          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Две пластмасови стъкла. Два кода.')}</p>
+          <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('За стъклата')}</p>
           <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
             AMPÉ Daily<br />AMPÉ Evening
           </h1>
           <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
-            {t('Жълтите са за деня, оранжевите за вечерта. Числата от AHD TMS и описанието на продукта стоят едно до друго. Очилата не са медицинско изделие.')}
+            {t('AMPÉ Daily са жълти пластмасови стъкла за деня пред екрана. AMPÉ Evening са оранжеви пластмасови стъкла за вечерта и преди лягане. Лек филтър през деня, силен филтър вечер. Рамката е 22 г кристален ацетат.')}
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
-            <button type="button" aria-pressed={!evening} onClick={() => setEvening(false)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen/20 text-linen' : 'bg-linen text-onyx'}`}>{t('Дневни пластмасови стъкла')}</button>
-            <button type="button" aria-pressed={evening} onClick={() => setEvening(true)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen text-onyx' : 'bg-linen/20 text-linen'}`}>{t('Вечерни пластмасови стъкла')}</button>
+            <button type="button" aria-pressed={!evening} onClick={() => setEvening(false)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen/20 text-linen' : 'bg-linen text-onyx'}`}>{locale === 'en' ? 'For every day' : 'За всеки ден'}</button>
+            <button type="button" aria-pressed={evening} onClick={() => setEvening(true)} className={`rounded-full px-4 py-2 font-sans text-sm ${evening ? 'bg-linen text-onyx' : 'bg-linen/20 text-linen'}`}>{t('За вечер')}</button>
           </div>
         </div>
       </section>
@@ -53,44 +53,55 @@ export default function LensesView({ locale }: { locale: Locale }) {
         <SectionNav locale={locale} label="Секции на страницата" items={nav} />
         <div className="min-w-0 space-y-20">
           <section id="duljini" className="scroll-mt-32">
-            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво хваща всяко пластмасово стъкло')}</p>
-            <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Диапазоните, които публикуваме')}</h2>
+            <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Какво прави всяко пластмасово стъкло')}</p>
+            <h2 className="mt-2 font-serif text-4xl md:text-5xl">{t('Два филтъра, два момента от деня')}</h2>
             <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
               <article className="rounded-[28px] border border-iron/15 bg-cream p-5">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни пластмасови стъкла')}</p>
-                <h3 className="mt-2 font-serif text-3xl">{t('Жълти, почти прозрачни')}</h3>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {locale === 'en' ? 'For every day' : 'За всеки ден'}</p>
+                <h3 className="mt-2 font-serif text-3xl">{t('Жълти пластмасови стъкла')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-stone">
-                  <li>{t('Лаборатория: до 99% при пика от 450 nm. Пропуска 85% видима светлина. Категория 0.')}</li>
-                  <li>{t('На продукта: 65% блокиране на синя светлина и частичен филтър за зелена светлина.')}</li>
-                  <li>{t('Изследванията сочат връх на меланопсина около 479 nm и силен диапазон 446–477 nm. Това е за светлината, не за това пластмасово стъкло.')}</li>
+                  <li>{t('Лек филтър — до 99% при 450 nm. Пропускат 85% видима светлина: лек оттенък за целодневна работа пред екран.')}</li>
+                  <li>{t('Създадени да бъдат по-приятни за очите при дълга работа.')}</li>
                 </ul>
               </article>
               <article className="rounded-[28px] bg-iron p-5 text-linen">
-                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни пластмасови стъкла')}</p>
-                <h3 className="mt-2 font-serif text-3xl">{t('Оранжев филтър')}</h3>
+                <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('За вечер')}</p>
+                <h3 className="mt-2 font-serif text-3xl">{t('Оранжеви пластмасови стъкла')}</h3>
                 <ul className="mt-4 space-y-3 font-sans text-sm leading-relaxed text-linen/80">
-                  <li>{t('Лаборатория: 99.21% в 475–650 nm. Пропуска 54% видима светлина. Категория 1.')}</li>
-                  <li>{t('На продукта: 98% блокиране на синя светлина в 415–455 nm и 98% блокиране на зелена светлина (500–560nm).')}</li>
-                  <li>{t('При лабораторна светлина 555 nm също спира мелатонина в началото. Затова зеленият ред е отделен.')}</li>
+                  <li>{t('Силен филтър: спират 99,29% от синята светлина в 380–500 nm и 100% от UV лъчите (UV400).')}</li>
+                  <li>{t('Пропускат 54% видима светлина, категория 1. Създадени да помогнат за по-спокойна вечерна рутина.')}</li>
                 </ul>
               </article>
             </div>
-            <LensSpectrum caption={t('Скала 380–700 nm. Лентите са диапазоните, които публикуваме.')} />
+            <LensSpectrum
+              caption={t('Диапазонът, в който мерим, и защо има значение.')}
+              bands={[
+                { from: 380, to: 500, label: t('AMPÉ Evening, 380–500 nm') },
+                { from: 446, to: 477, label: t('чувствителност вечер, 446–477 nm') },
+              ]}
+              marks={[
+                { nm: 450, label: '450', note: 'AMPÉ Daily' },
+                { nm: 464, label: '464', note: t('връх в синия диапазон') },
+              ]}
+            />
             <p className="mt-3 font-sans text-xs text-stone">
-              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Изследванията са на страницата Доказано.')}</Link>
+              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Измерванията на AMPÉ Daily и AMPÉ Evening са на страницата Доказано.')}</Link>
             </p>
           </section>
 
           <section id="laboratoria" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Числата от AHD TMS')}</h2>
+            <h2 className="font-serif text-4xl">{t('Измерените числа')}</h2>
+            <p className="mt-3 max-w-2xl font-sans text-sm leading-relaxed text-stone">
+              {t('AMPÉ Evening е мерено по BS EN ISO 12312-1, ANSI Z80.3 и AS/NZS 1067.1. В доклада е отбелязано Measured by AHD TMS. Ето стойностите.')}
+            </p>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <Bars
                 title={t('Дневни пластмасови стъкла')}
                 code="AMPÉ Daily"
                 rows={[
-                  { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85 },
-                  { label: t('UV блокиране'), text: '100%', width: 100 },
-                  { label: t('Синя светлина'), text: t('до 99%'), width: 99 },
+                  { label: t('Светлопропускливост (Tv)'), text: '85%', width: 85, note: t('Почти прозрачни') },
+                  { label: t('Синя светлина'), text: t('до 99%'), width: 99, note: t('При пика от 450 nm') },
+                  { label: t('За какво е'), text: locale === 'en' ? 'For every day' : 'За всеки ден', width: 0, note: t('Целодневна работа пред екран') },
                 ]}
               />
               <Bars
@@ -98,14 +109,14 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 code="AMPÉ Evening"
                 dark
                 rows={[
-                  { label: t('Светлопропускливост (Tv)'), text: '54%', width: 54 },
-                  { label: t('UV блокиране'), text: '100%', width: 100 },
-                  { label: t('Синя светлина (475–650nm)'), text: '99.21%', width: 99.21 },
+                  { label: t('Светлопропускливост (Tv)'), text: '54%', width: 54, note: t('Видим оранжев оттенък') },
+                  { label: t('UV блокиране'), text: '100%', width: 100, note: t('UV400, UVA + UVB = 0,00%') },
+                  { label: t('Синя светлина'), text: t('99,29%'), width: 99.29, note: t('В диапазона 380–500 nm') },
                 ]}
               />
             </div>
             <p className="mt-4 font-sans text-sm leading-relaxed text-stone">
-              {t('И двете пластмасови стъкла: UVA + UVB = 0.00%. Светофарът е PASS. Пълните PDF-и не са качени тук.')}
+              {t('Числата за AMPÉ Evening са от доклада, мерен по трите стандарта. „До 99% при 450 nm“ и 85% са публикуваните стойности за AMPÉ Daily.')}
             </p>
           </section>
 
@@ -113,8 +124,8 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Покрития и UV400')}</h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {[
-                ['UV400', t('На продукта пишем UV400. В лабораторията е 100% UV и при двете пластмасови стъкла.')],
-                [t('Антирефлексно покритие'), t('Дневните имат антирефлексно покритие. Намалява блясъка от екрана и лампите.')],
+                ['UV400', t('AMPÉ Evening спира 100% от UV лъчите (UV400) — UVA + UVB = 0,00% в доклада. Създадени за вечерта, когато се носят и навън, преди лягане.')],
+                [t('Антирефлексно покритие'), t('Дневните пластмасови стъкла имат антирефлексно покритие. Намалява блясъка от екрана и лампите — по-приятно при дълга работа пред екран.')],
                 [t('Устойчиви на драскотини'), t('Пластмасовите стъкла са устойчиви на драскотини, за ежедневието.')],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
@@ -132,7 +143,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
             <div>
               <h2 className="font-serif text-4xl">{t('22 г кристален ацетат')}</h2>
               <p className="mt-3 font-sans text-sm leading-relaxed text-stone">
-                {t('22 г кристален ацетат — осезаемо по-лека от обикновена пластмасова рамка. Рамката е за носене 8+ часа.')}
+                {t('22 г кристален ацетат — осезаемо по-лека от обикновена рамка. Създадена да се носи цял ден, с AMPÉ Daily пред екрана и с AMPÉ Evening вечер.')}
               </p>
             </div>
           </section>
@@ -151,13 +162,12 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 </thead>
                 <tbody className="font-sans text-sm">
                   {[
-                    [t('Продуктово описание, синя'), t('65% блокиране на синя светлина'), t('98% блокиране на синя светлина')],
-                    [t('Продуктово описание, зелена'), t('Частичен филтър за зелена светлина'), t('98% блокиране на зелена светлина (500–560nm)')],
-                    [t('Лаборатория, синя'), t('до 99%'), '99.21%'],
-                    [t('Лаборатория, Tv'), '85%', '54%'],
-                    [t('Категория'), '0', '1'],
-                    [t('Оттенък'), t('Почти прозрачни — лек жълтеникав оттенък'), t('Оранжев филтър — блокира синьо-зелената светлина')],
-                    ['UV', t('UV400 защита'), t('UV400 защита')],
+                    [t('За какво е'), locale === 'en' ? 'For every day, at a screen' : 'За всеки ден, пред екран', t('За вечерта и преди лягане')],
+                    [t('Пластмасови стъкла'), t('Жълти, почти прозрачни'), t('Оранжеви, видим оттенък')],
+                    [t('Синя светлина'), t('до 99% при 450 nm'), t('99,29% в 380–500 nm')],
+                    [t('Светлопропускливост (Tv)'), '85%', '54%'],
+                    ['UV', '—', '100% UV400'],
+                    [t('Филтърна категория'), t('Лек оттенък, за деня'), t('1 — За вечерта, не за пътя')],
                   ].map((row) => (
                     <tr key={row[0]} className="border-t border-iron/10">
                       <th className="px-4 py-4 font-medium">{row[0]}</th>
@@ -175,11 +185,11 @@ export default function LensesView({ locale }: { locale: Locale }) {
           </section>
 
           <section id="koga" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Кога кое пластмасово стъкло')}</h2>
+            <h2 className="font-serif text-4xl">{t('Как се използват')}</h2>
             <ol className="mt-6 space-y-3">
               {[
-                [t('През деня'), t('Дневните, AMPÉ Daily. Категория 0, подходящи за шофиране. За работа пред екран, включително дизайн и видеоразговори.')],
-                [t('След залез'), t('Вечерните, AMPÉ Evening, поне 2 часа преди сън. Категория 1. Светофарът е PASS. Наличността е на продуктовата страница.')],
+                [t('През деня'), t('Използвай AMPÉ Daily, докато работиш пред екрана. Лек жълт филтър, създаден да бъде по-приятен за очите при дълга работа.')],
+                [t('Вечерта'), t('Използвай AMPÉ Evening около 2–3 часа преди лягане. Силен оранжев филтър за вечерта и преди лягане, не за пътя. Много хора го правят като вечерна рутина. Носи ги няколко вечери подред — така се усеща най-добре. Може да помогне за по-спокойна вечер.')],
               ].map(([title, body], index) => (
                 <li key={title} className="grid grid-cols-[auto_1fr] gap-4 rounded-[24px] bg-sand/40 p-5">
                   <span className="font-serif text-3xl text-iron">{String(index + 1).padStart(2, '0')}</span>
@@ -190,6 +200,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
                 </li>
               ))}
             </ol>
+            <p className="mt-4 font-sans text-sm leading-relaxed text-stone">{t('При два чифта доставката е безплатна. Ако не са за теб, имаш 14 дни да ги върнеш.')}</p>
           </section>
         </div>
       </div>
@@ -197,7 +208,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
   )
 }
 
-function Bars({ title, code, rows, dark = false }: { title: string; code: string; dark?: boolean; rows: { label: string; text: string; width: number }[] }) {
+function Bars({ title, code, rows, dark = false }: { title: string; code: string; dark?: boolean; rows: { label: string; text: string; width: number; note?: string }[] }) {
   return (
     <article className={`rounded-[28px] p-5 ${dark ? 'bg-iron text-linen' : 'border border-iron/15 bg-cream'}`}>
       <h3 className="font-serif text-2xl">{title}</h3>
@@ -209,6 +220,7 @@ function Bars({ title, code, rows, dark = false }: { title: string; code: string
             <div className={`mt-1 h-2 overflow-hidden rounded-full ${dark ? 'bg-linen/20' : 'bg-sand'}`}>
               <div className={`h-full rounded-full ${dark ? 'bg-gold' : 'bg-iron'}`} style={{ width: `${row.width}%` }} />
             </div>
+            {row.note ? <p className={`mt-1 font-sans text-xs ${dark ? 'text-linen/70' : 'text-stone'}`}>{row.note}</p> : null}
           </div>
         ))}
       </div>
@@ -216,18 +228,13 @@ function Bars({ title, code, rows, dark = false }: { title: string; code: string
   )
 }
 
-function LensSpectrum({ caption }: { caption: string }) {
+function LensSpectrum({ caption, bands, marks }: { caption: string; bands: { from: number; to: number; label: string }[]; marks: { nm: number; label: string; note: string }[] }) {
   const x = (nm: number) => 16 + ((nm - 380) / 320) * 328
-  const bands = [
-    { from: 446, to: 477, label: '446–477 nm' },
-    { from: 475, to: 650, label: '475–650 nm' },
-    { from: 500, to: 560, label: '500–560 nm' },
-  ]
   return (
     <figure className="mt-6 rounded-[28px] border border-iron/15 bg-cream p-4">
       <svg viewBox="0 0 360 120" role="img" aria-label={caption} className="w-full">
         <defs>
-          <linearGradient id="plastic lens-spectrum" x1="0" x2="1">
+          <linearGradient id="lenses-spectrum" x1="0" x2="1">
             <stop offset="0" stopColor="#6B4C9A" />
             <stop offset="0.22" stopColor="#3D6CB5" />
             <stop offset="0.4" stopColor="#3E8C4A" />
@@ -239,13 +246,18 @@ function LensSpectrum({ caption }: { caption: string }) {
         {bands.map((band) => (
           <rect key={band.label} x={x(band.from)} y="36" width={Math.max(2, x(band.to) - x(band.from))} height="28" rx="4" fill="#2D0E04" opacity="0.18" />
         ))}
-        <rect x="16" y="44" width="328" height="16" rx="8" fill="url(#plastic lens-spectrum)" />
-        <line x1={x(450)} y1="30" x2={x(450)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
-        <line x1={x(479)} y1="30" x2={x(479)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
+        <rect x="16" y="44" width="328" height="16" rx="8" fill="url(#lenses-spectrum)" />
+        {marks.map((mark) => (
+          <line key={mark.label} x1={x(mark.nm)} y1="30" x2={x(mark.nm)} y2="74" stroke="#2D0E04" strokeWidth="1.5" />
+        ))}
         <text x="16" y="100" fill="#9B7B68" fontSize="11">380 nm</text>
         <text x="292" y="100" fill="#9B7B68" fontSize="11">700 nm</text>
       </svg>
-      <figcaption className="font-sans text-xs leading-relaxed text-stone">{caption} 450 nm · 479 nm · 446–477 nm · 475–650 nm · 500–560 nm.</figcaption>
+      <ul className="mt-2 space-y-1 font-sans text-xs text-stone">
+        {bands.map((band) => <li key={band.label}>{band.label}</li>)}
+        {marks.map((mark) => <li key={mark.label}>{mark.label} nm — {mark.note}</li>)}
+      </ul>
+      <figcaption className="mt-2 font-sans text-xs leading-relaxed text-stone">{caption}</figcaption>
     </figure>
   )
 }
