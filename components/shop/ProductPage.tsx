@@ -235,9 +235,9 @@ export default function ProductPage({
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 2 }}>
                   <span style={{ width: 12, height: 12, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', flexShrink: 0, display: 'inline-block' }} />
-                  <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Вечер' : 'За всеки ден'}</span>
+                  <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'За вечер' : 'За всеки ден'}</span>
                 </div>
-                <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4 }}>{l === 'evening' ? 'Оранжеви · За вечерта и преди лягане' : 'Жълти · За целодневна работа пред екран'}</div>
+                <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4 }}>{l === 'evening' ? 'За вечерта и преди лягане' : 'За целодневна работа пред екран'}</div>
                 {l === 'evening' && EVENING_OUT_OF_STOCK && (
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 9, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#8a6a3a', background: 'rgba(196,154,108,0.12)', border: '1px solid rgba(196,154,108,0.35)', borderRadius: 100, padding: '2px 8px' }}>
                     <span>🌙</span> Временно изчерпано
