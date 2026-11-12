@@ -12,6 +12,14 @@ import { notFound } from 'next/navigation'
 import { translate } from '@/lib/i18n/translations'
 import { localizedPath } from '@/lib/i18n/routing'
 import { getPricingSnapshot } from '@/lib/sale'
+import type { PairVariant } from '@/components/dev/EmbeddedPairSelector'
+
+function previewPairVariant(value: string | string[] | undefined): PairVariant | undefined {
+  if (process.env.VERCEL_ENV === 'production') return undefined
+  const raw = Array.isArray(value) ? value[0] : value
+  if (raw === 'E' || raw === 'F' || raw === 'G' || raw === 'H') return raw
+  return undefined
+}
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
@@ -22,7 +30,7 @@ export function generateMetadata({ params }: { params: { locale: string } }) {
   })
 }
 
-export default function ShopPage({ params, searchParams }: { params: { locale: string }; searchParams?: { bundle?: string | string[] } }) {
+export default function ShopPage({ params, searchParams }: { params: { locale: string }; searchParams?: { bundle?: string | string[]; pairVariant?: string | string[] } }) {
   if (!isLocale(params.locale)) notFound()
   const locale = params.locale
   const t = (source: string) => translate(locale, source)
@@ -98,7 +106,7 @@ export default function ShopPage({ params, searchParams }: { params: { locale: s
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <ProductPage initialSelection={initialSelection} />
+      <ProductPage initialSelection={initialSelection} pairVariant={previewPairVariant(searchParams?.pairVariant)} />
     </>
   )
 }

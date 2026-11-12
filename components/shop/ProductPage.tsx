@@ -18,6 +18,10 @@ import BusinessSection from '@/components/layout/BusinessSection'
 import LabProofSection from '@/components/shop/LabProofSection'
 import { PaymentMarks } from '@/components/shop/PaymentMarks'
 import { isEveningPurchasable } from '@/lib/preview-stock'
+import dynamic from 'next/dynamic'
+import type { PairVariant } from '@/components/dev/EmbeddedPairSelector'
+
+const EmbeddedPairSelector = dynamic(() => import('@/components/dev/EmbeddedPairSelector'))
 
 type Tab = 'description' | 'science' | 'reviews'
 
@@ -60,7 +64,8 @@ const EVENING_OUT_OF_STOCK = !isEveningPurchasable()
 
 export default function ProductPage({
   initialSelection = getInitialShopSelection(),
-}: { initialSelection?: ShopSelection } = {}) {
+  pairVariant,
+}: { initialSelection?: ShopSelection; pairVariant?: PairVariant } = {}) {
   const locale = useLocale()
   const pricing = usePricingSnapshot()
   const pairPrice = (n: 1 | 2) => (n === 1 ? pricing.single : pricing.double)
@@ -248,7 +253,10 @@ export default function ProductPage({
 
           {/* Bundle selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
-          <div role="radiogroup" aria-label={locale === 'en' ? 'How many pairs?' : 'Колко чифта?'} style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
+          {pairVariant ? (
+            <EmbeddedPairSelector variant={pairVariant} value={bundle} onChange={handleBundle} />
+          ) : null}
+          {!pairVariant && <div role="radiogroup" aria-label={locale === 'en' ? 'How many pairs?' : 'Колко чифта?'} style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
             {([1, 2] as const).map(n => {
               const pairName = locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`
               return (
@@ -289,7 +297,7 @@ export default function ProductPage({
               </button>
               )
             })}
-          </div>
+          </div>}
 
           {/* Multi-pair lens slot picker */}
           {bundle > 1 && (
