@@ -267,16 +267,6 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 </article>
               ))}
             </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <article className="rounded-[24px] border border-iron/15 p-5">
-                <h3 className="font-serif text-2xl">UV400</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('На продукта пишем UV400. В лабораторията същото е 100% UV, UVA + UVB = 0.00%, и при двете пластмасови стъкла.')}</p>
-              </article>
-              <article className="rounded-[24px] border border-iron/15 p-5">
-                <h3 className="font-serif text-2xl">{t('Зелена светлина')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('На вечерните пишем 98% в 500–560 nm, на дневните — частичен филтър. Това е описанието на продукта, не отделен сертификат.')}</p>
-              </article>
-            </div>
           </section>
 
           <section id="tehnologia" className="scroll-mt-32">

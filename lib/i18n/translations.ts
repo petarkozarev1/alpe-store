@@ -859,8 +859,6 @@ export const englishTranslations: Record<string, string> = {
   'Също PASS': 'Also a pass',
   'Пълните PDF-и не са качени тук. Таблицата е обобщението от лабораторията.': 'The full PDFs are not uploaded here. The table is the summary from the lab.',
   'И двете пластмасови стъкла минават този стандарт.': 'Both plastic lenses pass this standard.',
-  'На продукта пишем UV400. В лабораторията същото е 100% UV, UVA + UVB = 0.00%, и при двете пластмасови стъкла.': 'On the product we write UV400. In the lab that is 100% UV, UVA + UVB = 0.00%, for both plastic lenses.',
-  'На вечерните пишем 98% в 500–560 nm, на дневните — частичен филтър. Това е описанието на продукта, не отделен сертификат.': 'On Evening we write 98% at 500–560 nm, and a partial filter on Daily. That is the product description, not a separate certificate.',
   'За деня пред екрана. Категория 0 и подходящи за шофиране. Имат антирефлексно покритие и са устойчиви на драскотини.': 'For the day in front of a screen. Category 0, and suitable for driving. They have an anti-reflective coating and resist scratches.',
   'За вечерта. Категория 1, светофарът е PASS. Пропускат 54% от видимата светлина, затова оранжевото се вижда.': 'For the evening. Category 1, and the traffic-light test is a pass. They let through 54% of visible light, which is why the orange shows.',
   'Кристален ацетат, 22 грама. Обикновената пластмасова рамка често е 35–50 г. Леки са за цял ден.': 'Crystal acetate, 22 grams. An ordinary plastic frame is often 35–50 g. Light enough for a full day.',
