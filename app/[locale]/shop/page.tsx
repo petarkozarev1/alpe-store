@@ -17,7 +17,7 @@ import type { PairVariant } from '@/components/dev/EmbeddedPairSelector'
 function previewPairVariant(value: string | string[] | undefined): PairVariant | undefined {
   if (process.env.VERCEL_ENV === 'production') return undefined
   const raw = Array.isArray(value) ? value[0] : value
-  if (raw === 'E' || raw === 'F' || raw === 'G' || raw === 'H') return raw
+  if (raw === 'R1' || raw === 'R2' || raw === 'R3') return raw
   return undefined
 }
 
