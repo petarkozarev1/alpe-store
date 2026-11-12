@@ -509,7 +509,7 @@ export const englishTranslations: Record<string, string> = {
   'Очите се отпускат': 'Your eyes can relax',
   'Пълна защита — синя и зелена светлина (415–560nm)': 'Full blue- and green-light protection (415–560 nm)',
   'Какво казват клиентите': 'What customers say',
-  'Работя по 10 часа на ден пред компютър. След като започнах да нося AMPÉ, главоболието изчезна за няколко дни. Сега заспивам веднага щом легна.': 'I work at a computer for ten hours a day. A few days after I started wearing AMPÉ, my headaches disappeared. Now I fall asleep as soon as I go to bed.',
+  'Работя по 10 часа на ден пред различни екрани. След като започнах да нося AMPÉ, главоболието изчезна за няколко дни. Сега заспивам веднага щом легна.': 'I work for ten hours a day in front of different screens. A few days after I started wearing AMPÉ, my headaches disappeared. Now I fall asleep as soon as I go to bed.',
   'Александър М., София': 'Alexander M., Sofia',
   'Калоян Б., София': 'Kaloyan B., Sofia',
   'Истинска защита. С AMPÉ.': 'Real protection. With AMPÉ.',
