@@ -79,7 +79,7 @@ export const steps: StepItem[] = [
 
 export const beforeAfterContent = {
   badge: 'Защо AMPÉ?',
-  headline: 'Умора вчера.\nЯснота днес.',
+  headline: 'Малка промяна.\nВсеки ден.',
   beforeImage: '/images/before.png',
   afterImage: '/images/after.png',
 }
