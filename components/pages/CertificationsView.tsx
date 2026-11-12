@@ -182,16 +182,16 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 ]}
               />
             </div>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <article className="rounded-[24px] border border-iron/15 bg-sand/40 p-5">
+            <div className="mt-6 grid items-start gap-3 sm:grid-cols-2">
+              <article className="h-fit rounded-[24px] border border-iron/15 bg-sand/40 p-3">
                 <p className="font-sans text-[10px] uppercase tracking-widest text-stone">AMPÉ Daily · {t('Дневни лещи')}</p>
                 <h3 className="mt-2 font-serif text-2xl">{t('Жълти, почти прозрачни')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Лабораторията мери до 99% при 450 nm и 85% пропусната видима светлина. На продукта пишем 65% филтър на синята светлина. Държим двете числа отделно, защото описват различно нещо.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Лабораторията мери до 99% при 450 nm и 85% пропусната видима светлина.')}</p>
               </article>
-              <article className="rounded-[24px] bg-iron p-5 text-linen">
+              <article className="h-fit rounded-[24px] bg-iron p-3 text-linen">
                 <p className="font-sans text-[10px] uppercase tracking-widest text-gold">AMPÉ Evening · {t('Вечерни лещи')}</p>
                 <h3 className="mt-2 font-serif text-2xl">{t('Оранжев филтър')}</h3>
-                <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('Лабораторията мери 99,21% в 475–650 nm и 54% пропусната видима светлина. На продукта: 98% в 415–455 nm и 98% зелена светлина в 500–560 nm. И тези редове стоят отделно.')}</p>
+                <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('Лабораторията мери 99,21% в 475–650 nm и 54% пропусната видима светлина.')}</p>
               </article>
             </div>
           </section>
