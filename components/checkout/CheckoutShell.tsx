@@ -63,11 +63,6 @@ export function CheckoutShell(p: any) {
             <div className="bg-white rounded-2xl border border-stone/15 p-6">
               <div className="mb-5 font-sans text-xs font-semibold text-stone uppercase tracking-widest"><span className="text-stone/40 mr-2">02.</span>Доставка</div>
               <div className="flex flex-col gap-4">
-                <div>
-                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">{en ? 'Email' : 'Имейл'}</label>
-                  <input type="email" required placeholder={en ? 'you@example.com' : 'имейл@example.com'} value={contact.email} onChange={e => setContact((prev: any) => ({ ...prev, email: e.target.value }))} onBlur={() => { markTouched('email'); syncPixelUser() }} className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('email', contact.email, isValidEmail))} />
-                  <ErrorMsg show={!!fieldError('email', contact.email, isValidEmail)} message={fieldError('email', contact.email, isValidEmail)} />
-                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Име</label>
@@ -84,6 +79,11 @@ export function CheckoutShell(p: any) {
                   <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">Телефон</label>
                   <input required type="tel" placeholder="+359 88 123 4567" value={shipping.phone} onChange={e => setShipping((prev: any) => ({ ...prev, phone: e.target.value }))} onBlur={() => { markTouched('phone'); syncPixelUser() }} className={fieldClass(shipping.phone, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('phone', shipping.phone, isValidPhone))} />
                   <ErrorMsg show={!!fieldError('phone', shipping.phone, isValidPhone)} message={fieldError('phone', shipping.phone, isValidPhone)} />
+                </div>
+                <div>
+                  <label className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">{en ? 'Email' : 'Имейл'}</label>
+                  <input type="email" required placeholder={en ? 'you@example.com' : 'имейл@example.com'} value={contact.email} onChange={e => setContact((prev: any) => ({ ...prev, email: e.target.value }))} onBlur={() => { markTouched('email'); syncPixelUser() }} className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('email', contact.email, isValidEmail))} />
+                  <ErrorMsg show={!!fieldError('email', contact.email, isValidEmail)} message={fieldError('email', contact.email, isValidEmail)} />
                 </div>
                 <div>
                   <p className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">{en ? 'Country' : 'Държава'}</p>
