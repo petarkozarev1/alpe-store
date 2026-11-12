@@ -5,8 +5,8 @@ import ScienceView from '@/components/pages/ScienceView'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
-    title: 'Науката',
-    description: 'Как светлината стига до окото и какво филтрират пластмасовите стъкла AMPÉ.',
+    title: 'Как работи',
+    description: 'Как синята светлина от екраните влияе вечер и как AMPÉ Daily и AMPÉ Evening филтрират тази светлина.',
     path: '/science',
   })
 }

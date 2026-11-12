@@ -28,8 +28,10 @@ test('keeps both plastic lens product links visible', () => {
 
 test('keeps the science facts and the how-it-works steps', () => {
   render(<SciencePage params={{ locale: 'bg' }} />)
-  expect(screen.getByRole('heading', { name: 'Как светлината стига до съня' })).toBeInTheDocument()
-  expect(screen.getByRole('heading', { name: 'Сложи ги' })).toBeInTheDocument()
+  expect(screen.getByRole('heading', { name: 'Защо синята светлина вечер има значение' })).toBeInTheDocument()
+  expect(screen.getByRole('heading', { name: 'Използвай ги' })).toBeInTheDocument()
+  expect(screen.queryByRole('heading', { name: 'Сложи ги' })).not.toBeInTheDocument()
+  expect(screen.getAllByText(/99,29% от синята светлина/).length).toBeGreaterThan(0)
   expect(screen.getByRole('link', { name: 'https://pubmed.ncbi.nlm.nih.gov/11487664/' })).toHaveAttribute('href', 'https://pubmed.ncbi.nlm.nih.gov/11487664/')
   expect(screen.queryByText(/до 50%/)).not.toBeInTheDocument()
 })

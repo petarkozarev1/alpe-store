@@ -17,9 +17,9 @@ const nav = [
 ]
 
 const stepCopy = [
-  'През деня сложи дневните, докато работиш. Вечерните — поне 2 часа преди сън. Така ги носим. Не е лекарска схема.',
-  'Дневните филтрират дневния диапазон, вечерните — вечерния. Числата са на страницата за пластмасовите стъкла.',
-  'Много хора ги слагат за вечерта пред екрана. Изследванията с други очила са малки и различни. Не обещаваме по-дълъг сън.',
+  'През деня носи AMPÉ Daily, докато работиш пред екрана. Вечерта използвай AMPÉ Evening около 2–3 часа преди лягане.',
+  'Жълтите пластмасови стъкла са лек филтър за деня пред екрана. Оранжевите са силен филтър за вечерта и преди лягане.',
+  'Носи ги няколко вечери подред — така се усеща най-добре. Много хора ги използват като вечерна рутина. Може да помогне за по-спокойна вечер.',
 ]
 
 const sources = [
@@ -45,7 +45,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
           <p className="font-sans text-xs uppercase tracking-widest text-linen/80">{t('Как работи')}</p>
           <h1 className="mt-3 max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">{t('От екрана до вечерта.')}</h1>
           <p className="mt-4 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
-            {t('Пластмасовите стъкла са направени да филтрират светлината, която държи мозъка буден вечер. Не са медицинско изделие. Изследванията по-долу са за светлината изобщо, не за нашите пластмасови стъкла.')}
+            {t('Екраните и лампите вечер излъчват много синя светлина. За тялото този сигнал значи, че още е ден. AMPÉ Daily и AMPÉ Evening са създадени да филтрират тази светлина: жълти пластмасови стъкла за деня пред екрана и оранжеви за вечерта, преди лягане.')}
           </p>
         </div>
       </section>
@@ -54,13 +54,13 @@ export default function ScienceView({ locale }: { locale: Locale }) {
         <SectionNav locale={locale} label="Секции на страницата" items={nav} />
         <div className="min-w-0 space-y-20">
           <section id="pat" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl md:text-5xl">{t('Как светлината стига до съня')}</h2>
-            <Pathway label={t('Схема: светлина, меланопсин, мелатонин, филтър')} nodes={[t('Светлина'), t('Меланопсин'), t('Мелатонин'), t('Филтър')]} />
+            <h2 className="font-serif text-4xl md:text-5xl">{t('Защо синята светлина вечер има значение')}</h2>
+            <Pathway label={t('Схема: светлина, око, сигнал „още е ден“, филтър')} nodes={[t('Светлина'), t('Окото'), t('„Още е ден“'), t('Филтър')]} />
             <div className="mt-6 grid gap-4">
               {[
-                ['Светлината', 'В окото има клетки с меланопсин. В лаборатория пигментът реагира най-силно около 479 nm [2]. При хора, нощем, най-силният диапазон за мелатонина е 446–477 nm, с връх около 464 nm [1].'],
-                ['Зеленото също брои', 'В началото на един тест 555 nm действа колкото 460 nm. Колкото по-дълго свети, толкова по-силно остава късовълновото [3].'],
-                ['Къде се намесва пластмасовото стъкло', 'Пластмасовото стъкло стои пред окото и намалява светлината в диапазоните, които публикуваме. Не променя клетката и не е мерено в тези опити.'],
+                ['Синята светлина вечер', 'През деня синята светлина е естествена — има я в слънцето. Вечерта екраните, телефоните и лампите продължават да я излъчват. Окото приема този сигнал като „още е ден“, точно когато вечерта би трябвало да се успокояваш.'],
+                ['Защо го усещаш', 'Затова след дълга вечер пред екрана много хора се чувстват все още будни, макар да са уморени. Не е въпрос на воля — светлината просто казва на тялото грешния час.'],
+                ['Къде се намесва AMPÉ', 'Пластмасовите стъкла стоят пред окото и филтрират част от тази светлина, преди да стигне до теб. AMPÉ Daily е лек жълт филтър за деня пред екрана. AMPÉ Evening е силен оранжев филтър за вечерта: спира 99,29% от синята светлина в диапазона 380–500 nm и 100% от UV лъчите (UV400).'],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] border border-iron/15 bg-cream p-5">
                   <h3 className="font-serif text-2xl">{t(title)}</h3>
@@ -71,15 +71,15 @@ export default function ScienceView({ locale }: { locale: Locale }) {
           </section>
 
           <section id="leshti" className="scroll-mt-32">
-            <h2 className="font-serif text-4xl">{t('Две пластмасови стъкла, два момента')}</h2>
+            <h2 className="font-serif text-4xl">{t('Два чифта, два момента')}</h2>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <article className="overflow-hidden rounded-[28px] bg-sand/40">
                 <div className="relative h-52">
                   <Image src="/images/shop/shop-daily-1.png" alt={t('Чифт AMPÉ Daily с жълти пластмасови стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-serif text-2xl">AMPÉ Daily · {t('Дневни пластмасови стъкла')}</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('За деня пред екрана. Лабораторията мери до 99% при 450 nm и 85% видима светлина. На продукта пишем 65% филтър на синята светлина.')}</p>
+                  <h3 className="font-serif text-2xl">AMPÉ Daily · {locale === 'en' ? 'For every day' : 'За всеки ден'}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t('Жълти пластмасови стъкла за всеки ден и за целодневна работа пред екран. Лек филтър — до 99% при 450 nm — създаден да бъде по-приятен за очите при дълга работа пред екран. Рамката е 22 г кристален ацетат, за да ги носиш спокойно цял ден.')}</p>
                 </div>
               </article>
               <article className="overflow-hidden rounded-[28px] bg-iron text-linen">
@@ -87,8 +87,8 @@ export default function ScienceView({ locale }: { locale: Locale }) {
                   <Image src="/images/shop/shop-evening-1.png" alt={t('Чифт AMPÉ Evening с оранжеви пластмасови стъкла')} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-serif text-2xl">AMPÉ Evening · {t('Вечерни пластмасови стъкла')}</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('За вечерта. Лабораторията мери 99.21% в 475–650 nm и 54% видима светлина. На продукта: 98% в 415–455 nm и 98% зелена светлина в 500–560 nm.')}</p>
+                  <h3 className="font-serif text-2xl">AMPÉ Evening · {t('За вечер')}</h3>
+                  <p className="mt-2 font-sans text-sm leading-relaxed text-linen/80">{t('Оранжеви пластмасови стъкла за вечерта и преди лягане. Силен филтър: спират 99,29% от синята светлина в 380–500 nm и 100% от UV лъчите (UV400). Категория 1, лек оттенък. Създадени да помогнат за по-спокойна вечерна рутина.')}</p>
                 </div>
               </article>
             </div>
@@ -98,18 +98,21 @@ export default function ScienceView({ locale }: { locale: Locale }) {
           <section id="den" className="scroll-mt-32">
             <h2 className="font-serif text-4xl">{t('Един ден')}</h2>
             <ol className="mt-6 grid gap-4 md:grid-cols-3">
-              {steps.map((step, index) => (
+              {steps.map((step, index) => {
+                const title = index === 0 ? 'Използвай ги' : step.title
+                return (
                 <li key={step.title} className="overflow-hidden rounded-[28px] border border-iron/15 bg-cream">
                   <div className="relative h-44">
-                    <Image src={step.image} alt={t(step.title)} fill sizes="(min-width: 768px) 30vw, 100vw" className="object-cover" />
+                    <Image src={step.image} alt={t(title)} fill sizes="(min-width: 768px) 30vw, 100vw" className="object-cover" />
                   </div>
                   <div className="p-5">
                     <p className="font-sans text-[10px] uppercase tracking-widest text-stone">{t('Стъпка')} {step.number}</p>
-                    <h3 className="mt-2 font-serif text-3xl">{t(step.title)}</h3>
+                    <h3 className="mt-2 font-serif text-3xl">{t(title)}</h3>
                     <p className="mt-2 font-sans text-sm leading-relaxed text-stone">{t(stepCopy[index])}</p>
                   </div>
                 </li>
-              ))}
+                )
+              })}
             </ol>
           </section>
 
@@ -117,9 +120,9 @@ export default function ScienceView({ locale }: { locale: Locale }) {
             <h2 className="font-serif text-4xl">{t('Какво да очакваш')}</h2>
             <div className="mt-6 grid gap-4">
               {[
-                ['Хора със симптоми на безсъние', '14 възрастни, кехлибарени срещу прозрачни пластмасови стъкла, 2 часа преди лягане. Оценките и сънят, мерен с гривна, са по-добри с кехлибарените. Тези пластмасови стъкла не са нашите [4].'],
-                ['Здрави хора', '20 души, очила от 18:00 до лягане. Казват, че заспиват за 21 ± 28 минути срещу 24 ± 21. Сънят, мерен с уред, не става по-дълъг [5].'],
-                ['По-големите прегледи', 'Преглед до 2017 г. не намира достатъчно доказателства за по-добър сън, зрение или по-малко умора на очите [6]. Преглед от 2025 г. на 3 опита и 49 души не намира ясна разлика в гривната за сън [7].'],
+                ['Първите дни', 'Жълтите и оранжевите пластмасови стъкла имат видим оттенък — повечето хора свикват за кратко. Рамката е 22 г кристален ацетат, създадена за носене цял ден.'],
+                ['С няколко вечери', 'Използвай AMPÉ Evening 2–3 часа преди лягане и го прави няколко вечери подред. Много хора усещат по-спокойна вечер, когато това стане рутина. AMPÉ Daily е за деня — по-приятно за очите при дълга работа пред екран.'],
+                ['Ако не са за теб', 'Имаш 14 дни да ги върнеш, без неприятности. При два чифта доставката е безплатна — Daily и Evening заедно покриват целия ден. Очилата не са медицинско изделие; създадени са за комфорт пред екрана и за вечерна рутина.'],
               ].map(([title, body]) => (
                 <article key={title} className="rounded-[24px] bg-sand/40 p-5">
                   <h3 className="font-serif text-2xl">{t(title)}</h3>
@@ -141,6 +144,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
 
           <section id="iztochnici" className="scroll-mt-32">
             <h2 className="font-serif text-4xl">{t('Източници')}</h2>
+            <p className="mt-4 font-sans text-sm leading-relaxed text-stone">{t('Ако искаш да прочетеш повече за това как светлината влияе вечер.')}</p>
             <ol className="mt-5 space-y-3 font-sans text-sm leading-relaxed">
               {sources.map(([label, url, doi], index) => (
                 <li key={url} className="border-b border-iron/10 pb-3">
@@ -150,7 +154,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
               ))}
             </ol>
             <p className="mt-4 font-sans text-sm text-stone">
-              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Числата от лабораторията са на страницата Доказано.')}</Link>
+              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Измерванията на AMPÉ Daily и AMPÉ Evening са на страницата Доказано.')}</Link>
             </p>
           </section>
         </div>
