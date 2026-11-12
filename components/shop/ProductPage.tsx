@@ -18,10 +18,7 @@ import BusinessSection from '@/components/layout/BusinessSection'
 import LabProofSection from '@/components/shop/LabProofSection'
 import { PaymentMarks } from '@/components/shop/PaymentMarks'
 import { isEveningPurchasable } from '@/lib/preview-stock'
-import dynamic from 'next/dynamic'
-import type { PairVariant } from '@/components/dev/EmbeddedPairSelector'
-
-const EmbeddedPairSelector = dynamic(() => import('@/components/dev/EmbeddedPairSelector'))
+import PairSelector from '@/components/shop/PairSelector'
 
 type Tab = 'description' | 'science' | 'reviews'
 
@@ -64,8 +61,7 @@ const EVENING_OUT_OF_STOCK = !isEveningPurchasable()
 
 export default function ProductPage({
   initialSelection = getInitialShopSelection(),
-  pairVariant,
-}: { initialSelection?: ShopSelection; pairVariant?: PairVariant } = {}) {
+}: { initialSelection?: ShopSelection } = {}) {
   const locale = useLocale()
   const pricing = usePricingSnapshot()
   const pairPrice = (n: 1 | 2) => (n === 1 ? pricing.single : pricing.double)
@@ -253,51 +249,7 @@ export default function ProductPage({
 
           {/* Bundle selector */}
           <div style={{ fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase' as const, color: 'rgba(28,15,10,0.8)', fontWeight: 500, marginBottom: 12 }}>Колко чифта?</div>
-          {pairVariant ? (
-            <EmbeddedPairSelector variant={pairVariant} value={bundle} onChange={handleBundle} />
-          ) : null}
-          {!pairVariant && <div role="radiogroup" aria-label={locale === 'en' ? 'How many pairs?' : 'Колко чифта?'} style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, marginBottom: 24 }}>
-            {([1, 2] as const).map(n => {
-              const pairName = locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`
-              return (
-              <button
-                key={n}
-                role="radio"
-                aria-checked={bundle === n}
-                aria-label={`${pairName}, €${pairPrice(n).toFixed(2)}`}
-                onClick={() => handleBundle(n)}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: `1.5px solid ${bundle === n ? '#1C0F0A' : 'rgba(28,15,10,0.1)'}`, borderRadius: 12, padding: '16px 18px', cursor: 'pointer', background: bundle === n ? 'rgba(28,15,10,0.04)' : '#fff8f2', transition: 'all 0.2s', boxShadow: bundle === n ? '0 0 0 1px #1C0F0A' : 'none', textAlign: 'left' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <input type="radio" readOnly checked={bundle === n} tabIndex={-1} aria-hidden="true" style={{ width: 18, height: 18, accentColor: '#1C0F0A', flexShrink: 0 }} />
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const, marginBottom: 3 }}>
-                      <span style={{ fontSize: 15, fontWeight: 500, color: '#1C0F0A' }}>{locale === 'en' ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`}</span>
-                      {n === 2 && <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase' as const, padding: '3px 9px', borderRadius: 4, background: '#C49A6C', color: '#fff8f0' }}>Най-популярни</span>}
-                    </div>
-                    <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', marginTop: 2 }}>{n === 1 ? 'Избраните от вас очила' : 'Защита за целия ден'}</div>
-                    {n === 1 && pricing.promo && (
-                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#fff0e0', color: '#a05a00' }}>
-                        {locale === 'en'
-                          ? `Code ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}`
-                          : `Код ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}`}
-                      </div>
-                    )}
-                    {n === 2 && pricing.double < pricing.regularDouble && (
-                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, padding: '3px 10px', borderRadius: 100, marginTop: 5, display: 'inline-block', background: '#e8f4ec', color: '#2d6a3a' }}>
-                        {locale === 'en' ? 'Second pair at 50% off' : 'Вторият чифт на половин цена'}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 22, fontWeight: 500, color: '#1C0F0A' }}>€{pairPrice(n).toFixed(2)}</div>
-                  {n === 2 && pricing.double < pricing.regularDouble && <div style={{ fontSize: 11, color: '#4A3024', marginTop: 2 }}>поотделно: €{pricing.regularDouble.toFixed(2)}</div>}
-                </div>
-              </button>
-              )
-            })}
-          </div>}
+          <PairSelector value={bundle} onChange={handleBundle} />
 
           {/* Multi-pair lens slot picker */}
           {bundle > 1 && (
