@@ -13,7 +13,6 @@ import { translate } from '@/lib/i18n/translations'
 import { checkoutSessionSignature } from '@/lib/checkout-session'
 
 const COD_FEE = 1.0
-const BGN_RATE = 1.95583
 
 const DELIVERY = [
   { id: 'speedy',  label: 'Спиди',    badge: null as string | null, requiresOffice: true,  officePlaceholder: 'напр. Спиди офис Сердика, бул. Сливница 2, София',       officeLink: 'https://www.speedy.bg/bg/office-search', availableOnCod: true },
@@ -35,7 +34,6 @@ interface Shipping { firstName: string; lastName: string; phone: string; city: s
 export default function CheckoutPageClient() {
   const locale = useLocale()
   const pricing = usePricingSnapshot()
-  const formatBGN = (eur: number) => `${(eur * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
   const { items, setCheckoutLocked } = useCartStore()
 
   const [contact, setContact] = useState<Contact>({ email: '' })
@@ -237,7 +235,7 @@ export default function CheckoutPageClient() {
 
   return (
     <CheckoutShell
-      locale={locale} formatBGN={formatBGN} items={items}
+      locale={locale} items={items}
       contact={contact} setContact={setContact}
       shipping={shipping} setShipping={setShipping}
       deliveryType={deliveryType} setDeliveryType={setDeliveryType}

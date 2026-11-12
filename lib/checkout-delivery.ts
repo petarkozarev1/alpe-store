@@ -1,7 +1,6 @@
 export const DELIVERY_PRICE = 4.99
 export const INTL_FEE = 4.99
 export const COD_FEE = 1.0
-export const BGN_RATE = 1.95583
 export const COD_PREFERRED_COURIER = 'pigeon'
 
 export const DELIVERY = [

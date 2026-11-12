@@ -11,7 +11,7 @@ import { StripePayForm } from './StripePayForm'
 
 export function CheckoutSummary(p: any) {
   const {
-    locale, formatBGN, items, codeInput, setCodeInput, appliedCode, codeError,
+    locale, items, codeInput, setCodeInput, appliedCode, codeError,
     applyCode, removeCode, loading, error, clientSecret, setClientSecret,
     isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total,
   } = p
@@ -61,7 +61,7 @@ export function CheckoutSummary(p: any) {
               <div className="flex flex-col gap-2.5 font-sans text-sm">
                 <div className="flex justify-between text-stone">
                   <span>{en ? 'Subtotal' : 'Междинна сума'}</span>
-                  <span className="text-right">€{subtotal.toFixed(2)} <span className="block text-[11px] text-stone/50">{formatBGN(subtotal)}</span></span>
+                  <span className="text-right">€{subtotal.toFixed(2)}</span>
                 </div>
                 {bundleSaving > 0 && (
                   <div className="flex justify-between text-green-700">
@@ -105,7 +105,7 @@ export function CheckoutSummary(p: any) {
                     <button type="button" onClick={() => setClientSecret(null)} className="font-sans text-xs text-stone hover:text-onyx transition-colors">{en ? '← Back' : '← Назад'}</button>
                   </div>
                   <CheckoutElementsProvider stripe={getStripeClient()} options={{ clientSecret, elementsOptions: { appearance: { theme: 'flat', variables: { colorPrimary: '#2D0E04', borderRadius: '12px', fontFamily: 'Raleway, sans-serif' } } } }}>
-                    <StripePayForm total={total} formatBGN={formatBGN} />
+                    <StripePayForm total={total} />
                   </CheckoutElementsProvider>
                 </div>
               ) : (

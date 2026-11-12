@@ -1,9 +1,7 @@
 import { Resend } from 'resend'
 import { BRAND_NAME, EMAILS, SITE_URL } from '@/lib/brand'
 
-const BGN_RATE = 1.95583
 const fmtEUR = (n: number) => `€${n.toFixed(2)}`
-const fmtBGN = (n: number, locale: 'bg' | 'en' = 'bg') => `${(n * BGN_RATE).toFixed(2)} ${locale === 'en' ? 'BGN' : 'лв.'}`
 const LOGO_URL = `${SITE_URL}/brand/ampe-wordmark-cream-on-transparent-512.png`
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -92,7 +90,7 @@ export function buildOrderEmailHtml(m: OrderEmailModel): string {
       ${m.codFee ? summaryRow(copy.cod, fmtEUR(m.codFee)) : ''}
       <tr>
         <td style="padding:12px 0 0 0; border-top:1px solid rgba(155,123,104,0.25); font-family:Georgia,serif; font-size:18px; font-weight:bold; color:#2D0E04;">${copy.total}</td>
-        <td style="padding:12px 0 0 0; border-top:1px solid rgba(155,123,104,0.25); text-align:right; font-family:Georgia,serif; font-size:18px; font-weight:bold; color:#2D0E04;">${fmtEUR(m.total)} <span style="font-size:12px; color:#9B7B68; font-weight:normal;">EUR</span><br/><span style="font-size:11px; color:#9B7B68; font-weight:normal;">${fmtBGN(m.total, m.locale)}</span></td>
+        <td style="padding:12px 0 0 0; border-top:1px solid rgba(155,123,104,0.25); text-align:right; font-family:Georgia,serif; font-size:18px; font-weight:bold; color:#2D0E04;">${fmtEUR(m.total)}</td>
       </tr>
     </table>
   </td></tr>
