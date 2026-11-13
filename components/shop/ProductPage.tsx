@@ -50,7 +50,7 @@ const lensData = {
     benefitColor: '#7a6200',
     descText: "Очилата AMPÉ Daily са за продължителна работа пред екрана. Кехлибарено-жълтият филтър спира 65% от синята светлина и пази цветовете достатъчно точни за дизайн, снимки и видеоразговори. Рамката е за носене 8+ часа.",
     images: [
-      { src: '/images/shop/shop-daily-1.png', alt: 'AMPÉ Daily очила за компютър с жълти пластмасови стъкла' },
+      { src: '/images/shop/shop-daily-hero.webp', alt: 'AMPÉ Daily очила за компютър с жълти пластмасови стъкла' },
       { src: '/images/shop/shop-daily-2.png', alt: 'Жълти очила за синя светлина AMPÉ Daily' },
       { src: '/images/shop/shop-daily-3.png', alt: 'Кутия AMPÉ Daily blue light glasses за работа пред екран' },
     ],
