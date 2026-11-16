@@ -15,21 +15,6 @@ export function CheckoutShell(p: any) {
   const countryName = en ? 'Bulgaria' : 'България'
   return localizeContent(locale, (
     <div className="min-h-screen bg-parchment">
-      <div className="border-b border-stone/20 bg-parchment">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm font-sans">
-            <span className="flex items-center gap-1.5 text-stone/50">
-              <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs">✓</span>
-              КОШНИЦА
-            </span>
-            <span className="text-stone/30">──</span>
-            <span className="flex items-center gap-1.5 text-onyx font-semibold">
-              <span className="w-6 h-6 rounded-full bg-onyx text-linen flex items-center justify-center text-xs font-bold">2</span>
-              ПЛАЩАНЕ
-            </span>
-          </div>
-        </div>
-      </div>
       <form onSubmit={handleSubmit} noValidate className="clarity-mask">
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 items-start lg:grid-cols-[1fr_380px] gap-10">
           <div className="flex flex-col gap-6">
