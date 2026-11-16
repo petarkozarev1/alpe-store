@@ -70,10 +70,6 @@ export function CheckoutShell(p: any) {
                   <input type="email" required placeholder={en ? 'you@example.com' : 'имейл@example.com'} value={contact.email} onChange={e => setContact((prev: any) => ({ ...prev, email: e.target.value }))} onBlur={() => { markTouched('email'); syncPixelUser() }} className={fieldClass(contact.email, 'w-full border rounded-xl px-4 py-3 text-sm bg-parchment/50 focus:outline-none focus:ring-2', !!fieldError('email', contact.email, isValidEmail))} />
                   <ErrorMsg show={!!fieldError('email', contact.email, isValidEmail)} message={fieldError('email', contact.email, isValidEmail)} />
                 </div>
-                <div>
-                  <p className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">{en ? 'Country' : 'Държава'}</p>
-                  <p aria-readonly="true" className="w-full rounded-xl border border-stone/25 bg-parchment/50 px-4 py-3 font-sans text-sm text-onyx">{countryName}</p>
-                </div>
                 <div className="grid grid-cols-2 gap-2">
                   {(['address', 'office'] as const).map(type => (
                     <button key={type} type="button" onClick={() => { setDeliveryType(type); setOfficeLocation('') }} className={`py-3 px-4 rounded-xl border text-sm font-sans font-semibold ${deliveryType === type ? 'border-onyx bg-onyx text-linen' : 'border-stone/25 text-stone'}`}>
@@ -114,6 +110,10 @@ export function CheckoutShell(p: any) {
                     ))}
                   </div>
                 )}
+                <div>
+                  <p className="block font-sans text-[10px] uppercase tracking-widest text-stone mb-1.5">{en ? 'Country' : 'Държава'}</p>
+                  <p aria-readonly="true" className="w-full rounded-xl border border-stone/25 bg-parchment/50 px-4 py-3 font-sans text-sm text-onyx">{countryName}</p>
+                </div>
               </div>
             </div>
           </div>
