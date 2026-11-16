@@ -206,15 +206,16 @@ export default function ShoppableVideoModal({
             transition={{ duration: motionTime }}
           />
           <motion.div
-            className="relative z-[1] flex h-[100dvh] max-h-full min-h-0 w-full flex-col overflow-hidden bg-onyx md:h-auto md:max-h-[92vh] md:max-w-5xl md:flex-row md:rounded-[28px]"
+            className="relative z-[1] flex h-[100svh] max-h-[100dvh] min-h-0 w-full max-w-full flex-col overflow-x-hidden bg-onyx md:h-auto md:max-h-[92vh] md:max-w-5xl md:flex-row md:overflow-hidden md:rounded-[28px]"
             initial={reduced ? false : { opacity: 0, y: 28, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.98 }}
             transition={{ duration: motionTime, ease: 'easeOut' }}
             onClick={(event) => event.stopPropagation()}
           >
+            <div className="shrink-0 px-3 pt-[max(0.75rem,env(safe-area-inset-top))] md:flex md:min-h-0 md:flex-1 md:p-0">
             <div
-              className="relative mx-3 mt-3 h-[50dvh] max-h-[52%] shrink-0 overflow-hidden rounded-[24px] md:m-0 md:h-auto md:max-h-none md:min-h-0 md:flex-1 md:rounded-none"
+              className="relative h-[min(42svh,calc(100svh-24rem))] max-h-[45svh] w-full overflow-hidden rounded-[24px] md:h-auto md:max-h-none md:min-h-0 md:flex-1 md:rounded-none"
               onPointerDown={(event) => {
                 if ((event.target as HTMLElement).closest('button')) return
                 swipe.current = event.clientX
@@ -245,7 +246,7 @@ export default function ShoppableVideoModal({
                     loop={clip.startAt == null}
                     width={540}
                     height={960}
-                    className="h-full w-full bg-onyx object-cover md:object-contain"
+                    className="h-full w-full bg-onyx object-contain"
                     onLoadedMetadata={(event) => applyStart(event.currentTarget, clip)}
                     onEnded={(event) => {
                       if (clip.startAt == null) return
@@ -269,20 +270,21 @@ export default function ShoppableVideoModal({
                 aria-label={muted ? t('Със звук') : t('Без звук')}
                 aria-pressed={!muted}
                 onClick={() => setMuted(current => !current)}
-                className="absolute left-3 top-16 flex h-11 w-11 items-center justify-center rounded-full bg-onyx/75 text-linen md:bottom-4 md:top-auto"
+                className="absolute bottom-3 left-3 top-auto flex h-11 w-11 items-center justify-center rounded-full bg-onyx/75 text-linen md:bottom-4"
               >
                 <Icon name={muted ? 'muted' : 'sound'} />
               </button>
-              <button type="button" aria-label={t('Предишно видео')} onClick={() => step(-1)} className="absolute left-3 top-1/3 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#B8906A] text-linen md:top-1/2">
+              <button type="button" aria-label={t('Предишно видео')} onClick={() => step(-1)} className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#B8906A] text-linen">
                 <Icon name="prev" />
               </button>
-              <button type="button" aria-label={t('Следващо видео')} onClick={() => step(1)} className="absolute right-3 top-1/3 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#B8906A] text-linen md:top-1/2">
+              <button type="button" aria-label={t('Следващо видео')} onClick={() => step(1)} className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#B8906A] text-linen">
                 <Icon name="next" />
               </button>
             </div>
+            </div>
 
-            <aside className="relative mt-3 flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-[24px] bg-parchment text-iron shadow-[0_-12px_40px_rgba(45,14,4,0.18)] md:mt-0 md:max-h-[92vh] md:w-[360px] md:flex-none md:rounded-none">
-              <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 md:px-5 md:pt-6">
+            <aside className="relative mt-3 flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden rounded-t-[24px] bg-parchment text-iron shadow-[0_-12px_40px_rgba(45,14,4,0.18)] md:mt-0 md:max-h-[92vh] md:w-[360px] md:flex-none md:rounded-none">
+              <div className="min-h-0 w-full min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain px-4 pb-4 pt-4 md:px-5 md:pt-6">
               <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#B8906A]/70 md:hidden" aria-hidden="true" />
               <div className="grid grid-cols-3 gap-2">
                 {gallery.map((image, imageIndex) => (
@@ -298,8 +300,8 @@ export default function ShoppableVideoModal({
                   </button>
                 ))}
               </div>
-              <div className="mt-4 flex items-baseline justify-between gap-3">
-                <h2 id="shoppable-video-title" className="font-serif text-3xl leading-none">
+              <div className="mt-4 flex min-w-0 items-baseline justify-between gap-3">
+                <h2 id="shoppable-video-title" className="min-w-0 font-serif text-3xl leading-none">
                   AMPÉ <em className="font-normal">{lens === 'evening' ? 'Evening' : 'Daily'}</em>
                 </h2>
                 <p className="flex shrink-0 items-baseline gap-2 font-serif text-2xl">
@@ -320,7 +322,7 @@ export default function ShoppableVideoModal({
                       disabled={disabled}
                       aria-pressed={selected}
                       onClick={() => chooseLens(option)}
-                      className={`rounded-2xl border px-3 py-2 text-left font-sans text-sm ${selected ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'} ${disabled ? 'cursor-not-allowed opacity-45' : ''}`}
+                      className={`min-w-0 rounded-2xl border px-3 py-2 text-left font-sans text-sm ${selected ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'} ${disabled ? 'cursor-not-allowed opacity-45' : ''}`}
                     >
                       <span className="block font-serif text-lg">{option === 'evening' ? t('Вечер') : t('За всеки ден')}</span>
                       <span className="block text-xs text-stone">{option === 'evening' ? t('Оранжеви · за вечерта') : t('Жълти · за деня')}</span>
@@ -339,11 +341,11 @@ export default function ShoppableVideoModal({
                     role="radio"
                     aria-checked={bundle === count}
                     onClick={() => chooseBundle(count)}
-                    className={`rounded-2xl border px-3 py-2 text-left font-sans ${bundle === count ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'}`}
+                    className={`min-w-0 rounded-2xl border px-3 py-2 text-left font-sans ${bundle === count ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'}`}
                   >
                     <span className="block text-sm">{count === 1 ? t('1 чифт') : t('2 чифта')}</span>
                     <span className="block font-serif text-xl">€{(count === 1 ? priceForPairs(1) : priceForPairs(2)).toFixed(2)}</span>
-                    {count === 2 && <span className="mt-1 inline-block rounded-full bg-[#B8906A] px-2 py-0.5 text-[10px] uppercase tracking-wider text-linen">{t('Най-популярни')}</span>}
+                    {count === 2 && <span className="mt-1 inline-block max-w-full whitespace-normal rounded-full bg-[#B8906A] px-2 py-0.5 text-[10px] uppercase tracking-wider text-linen">{t('Най-популярни')}</span>}
                   </button>
                 ))}
               </div>
@@ -374,7 +376,7 @@ export default function ShoppableVideoModal({
               )}
 
               </div>
-              <div className="shrink-0 border-t border-iron/10 bg-parchment px-4 pt-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] md:px-5 md:py-4">
+              <div className="sticky bottom-0 z-10 shrink-0 border-t border-iron/10 bg-parchment px-4 pt-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] md:static md:px-5 md:py-4">
               <button
                 type="button"
                 onClick={addToCart}
