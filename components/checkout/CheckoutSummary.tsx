@@ -41,12 +41,19 @@ export function CheckoutSummary(p: any) {
       }
       const header = document.querySelector('header')
       const headerBottom = header ? header.getBoundingClientRect().bottom : 0
-      const top = Math.max(0, headerBottom) + SUMMARY_GAP
+      const headerTop = Math.max(0, headerBottom) + SUMMARY_GAP
       const place = slot.getBoundingClientRect()
+      const grid = slot.parentElement
+      const gridBottom = grid ? grid.getBoundingClientRect().bottom : Number.POSITIVE_INFINITY
+      const footer = document.querySelector('footer')
+      const footerTop = footer ? footer.getBoundingClientRect().top : Number.POSITIVE_INFINITY
+      const limit = Math.min(gridBottom, footerTop - SUMMARY_GAP)
+      column.style.maxHeight = `calc(100vh - ${headerTop}px - ${SUMMARY_GAP}px)`
+      const h = column.getBoundingClientRect().height
+      const top = Math.min(headerTop, limit - h)
       column.style.top = `${top}px`
       column.style.left = `${place.left}px`
       column.style.width = `${place.width}px`
-      column.style.maxHeight = `calc(100vh - ${top}px - ${SUMMARY_GAP}px)`
     }
     const schedule = () => {
       if (frame) return
@@ -60,6 +67,7 @@ export function CheckoutSummary(p: any) {
     const observer = new ResizeObserver(schedule)
     if (header) observer.observe(header)
     observer.observe(slot)
+    observer.observe(column)
     return () => {
       if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('scroll', schedule)
