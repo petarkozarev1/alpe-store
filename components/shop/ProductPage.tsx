@@ -173,7 +173,7 @@ export default function ProductPage({
                 style={{ border: 'none', background: lens === 'daily' ? '#FAF0E4' : 'transparent', color: lens === 'daily' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s' }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
-                За всеки ден
+                Дневни
               </button>
               <button
                 onClick={() => !(EVENING_OUT_OF_STOCK) && handleLens('evening')}
@@ -182,7 +182,7 @@ export default function ProductPage({
                 style={{ border: 'none', background: lens === 'evening' ? '#FAF0E4' : 'transparent', color: lens === 'evening' ? '#1C0F0A' : 'rgba(255,248,240,0.7)', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '9px 20px', borderRadius: 100, cursor: EVENING_OUT_OF_STOCK ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.25s', opacity: EVENING_OUT_OF_STOCK ? 0.45 : 1 }}
               >
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg,#ff6a00,#c0392b)', display: 'inline-block', flexShrink: 0 }} />
-                Вечер
+                Вечерни
               </button>
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function ProductPage({
                           style={{ display: 'inline-flex', alignItems: 'center', gap: 7, border: `1.5px solid ${s === l ? '#1C0F0A' : 'rgba(28,15,10,0.14)'}`, borderRadius: 100, background: s === l ? '#1C0F0A' : eveningDisabled ? 'rgba(28,15,10,0.04)' : '#fff8f2', color: s === l ? '#FAF0E4' : eveningDisabled ? 'rgba(28,15,10,0.35)' : '#1C0F0A', fontFamily: 'var(--font-raleway)', fontSize: 12, fontWeight: 500, padding: '7px 16px', cursor: eveningDisabled ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: eveningDisabled ? 0.55 : 1 }}
                         >
                           <span style={{ width: 9, height: 9, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'inline-block', flexShrink: 0 }} />
-                          {l === 'evening' ? 'Вечер' : 'За всеки ден'}
+                          {l === 'evening' ? 'Вечерни' : 'Дневни'}
                           {eveningDisabled && (
                             <span style={{ fontSize: 9, letterSpacing: '0.04em', marginLeft: 2, opacity: 0.7 }}>🌙</span>
                           )}
@@ -574,7 +574,7 @@ export default function ProductPage({
                   }}
                 >
                   <span style={{ width: 14, height: 14, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'block' }} />
-                  <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const }}>{l === 'evening' ? 'Вечер' : 'За деня'}</span>
+                  <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const }}>{l === 'evening' ? 'Вечерни' : 'Дневни'}</span>
                 </button>
               ))}
             </div>
@@ -598,7 +598,7 @@ export default function ProductPage({
                         }}
                       >
                         <span style={{ width: 10, height: 10, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', display: 'block' }} />
-                        <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{l === 'evening' ? 'Вечер' : 'За деня'}</span>
+                        <span style={{ fontFamily: 'var(--font-raleway)', fontSize: 9, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{l === 'evening' ? 'Вечерни' : 'Дневни'}</span>
                       </button>
                     ))}
                   </div>

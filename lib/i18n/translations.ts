@@ -558,6 +558,8 @@ export const englishTranslations: Record<string, string> = {
   'Кога да ги носиш': 'When to wear them',
   'Използвай AMPÉ Evening след залез слънце и поне 2 часа преди лягане. Оранжевите пластмасови стъкла са насочени към синята и зелената светлина от екраните.': 'Wear AMPÉ Evening after sunset and for at least two hours before bed. The orange plastic lenses target blue and green light from screens.',
   'Вечер': 'Evening',
+  'Дневни': 'Daily',
+  'Вечерни': 'Evening',
   'Вечерен филтър': 'Evening filter',
   'Връщане': 'Returns',
   'Поверителност': 'Privacy',

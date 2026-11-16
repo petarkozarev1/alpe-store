@@ -324,7 +324,7 @@ export default function ShoppableVideoModal({
                       onClick={() => chooseLens(option)}
                       className={`min-w-0 rounded-2xl border px-3 py-2 text-left font-sans text-sm ${selected ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'} ${disabled ? 'cursor-not-allowed opacity-45' : ''}`}
                     >
-                      <span className="block font-serif text-lg">{option === 'evening' ? t('Вечер') : t('За всеки ден')}</span>
+                      <span className="block font-serif text-lg">{option === 'evening' ? t('Вечерни') : t('Дневни')}</span>
                       <span className="block text-xs text-stone">{option === 'evening' ? t('Оранжеви · за вечерта') : t('Жълти · за деня')}</span>
                       {disabled && <span className="mt-1 block text-[10px] uppercase tracking-wider text-stone">{t('Временно изчерпано')}</span>}
                     </button>
@@ -366,7 +366,7 @@ export default function ShoppableVideoModal({
                             onClick={() => setSlots(current => current.map((item, itemIndex) => itemIndex === slotIndex ? option : item))}
                             className={`rounded-full px-3 py-1.5 font-sans text-xs ${slot === option ? 'bg-onyx text-linen' : 'bg-cream text-iron'} ${disabled ? 'cursor-not-allowed opacity-40' : ''}`}
                           >
-                            {option === 'evening' ? t('Вечер') : t('За всеки ден')}
+                            {option === 'evening' ? t('Вечерни') : t('Дневни')}
                           </button>
                         )
                       })}
