@@ -118,12 +118,7 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
         <h2 className="mx-auto max-w-3xl text-center font-serif text-[clamp(32px,4.4vw,56px)] font-medium leading-tight text-cream">
           {en ? 'Lab Tested. Certified to European Standards.' : 'Лабораторно тествани. Сертифицирани по европейски стандарт.'}
         </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-center font-sans text-sm leading-relaxed text-linen/80 md:text-base">
-          {en
-            ? 'Independent laboratory testing to BS EN ISO 12312-1, ANSI Z80.3 and AS/NZS 1067.1, with UV400 protection.'
-            : 'Независимо лабораторно тестване по BS EN ISO 12312-1, ANSI Z80.3 и AS/NZS 1067.1, с UV400 защита.'}
-        </p>
-        <div className="mt-8 text-center">
+        <div className="mt-7 text-center">
           <Link
             href={localizedPath('/certifications', locale)}
             className="inline-flex items-center rounded-full bg-cream px-6 py-3 font-sans text-sm font-semibold text-onyx transition-colors hover:bg-linen"
