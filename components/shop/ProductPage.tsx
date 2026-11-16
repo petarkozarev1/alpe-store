@@ -235,7 +235,7 @@ export default function ProductPage({
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 2 }}>
                   <span style={{ width: 12, height: 12, borderRadius: '50%', background: l === 'evening' ? 'linear-gradient(135deg,#ff6a00,#c0392b)' : 'linear-gradient(135deg,#f9e94e,#e6b800)', flexShrink: 0, display: 'inline-block' }} />
-                  <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'За вечер' : 'За всеки ден'}</span>
+                  <span style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 16, fontWeight: 500, color: '#1C0F0A' }}>{l === 'evening' ? 'Evening' : 'Daily'}</span>
                 </div>
                 <div style={{ fontSize: 12, color: 'rgba(28,15,10,0.8)', lineHeight: 1.4 }}>{l === 'evening' ? 'За вечерта и преди лягане' : 'За целодневна работа пред екран'}</div>
                 {l === 'evening' && EVENING_OUT_OF_STOCK && (
