@@ -189,7 +189,7 @@ export default function ShoppableVideoModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="shoppable-video-title"
-          className="fixed inset-0 z-[80] flex items-end justify-center md:items-center md:p-6"
+          className="fixed inset-0 z-[80] flex items-stretch justify-center md:items-center md:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -206,7 +206,7 @@ export default function ShoppableVideoModal({
             transition={{ duration: motionTime }}
           />
           <motion.div
-            className="relative z-[1] flex h-[100dvh] w-full flex-col overflow-hidden bg-onyx md:h-auto md:max-h-[92vh] md:max-w-5xl md:flex-row md:rounded-[28px]"
+            className="relative z-[1] flex h-[100dvh] max-h-full min-h-0 w-full flex-col overflow-hidden bg-onyx md:h-auto md:max-h-[92vh] md:max-w-5xl md:flex-row md:rounded-[28px]"
             initial={reduced ? false : { opacity: 0, y: 28, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.98 }}
@@ -214,7 +214,7 @@ export default function ShoppableVideoModal({
             onClick={(event) => event.stopPropagation()}
           >
             <div
-              className="relative min-h-0 flex-1"
+              className="relative mx-3 mt-3 h-[50dvh] max-h-[52%] shrink-0 overflow-hidden rounded-[24px] md:m-0 md:h-auto md:max-h-none md:min-h-0 md:flex-1 md:rounded-none"
               onPointerDown={(event) => {
                 if ((event.target as HTMLElement).closest('button')) return
                 swipe.current = event.clientX
@@ -281,7 +281,7 @@ export default function ShoppableVideoModal({
               </button>
             </div>
 
-            <aside className="absolute inset-x-0 bottom-0 flex max-h-[62vh] flex-col rounded-t-[24px] bg-parchment text-iron shadow-[0_-12px_40px_rgba(45,14,4,0.18)] md:static md:max-h-[92vh] md:w-[360px] md:shrink-0 md:rounded-none">
+            <aside className="relative mt-3 flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-[24px] bg-parchment text-iron shadow-[0_-12px_40px_rgba(45,14,4,0.18)] md:mt-0 md:max-h-[92vh] md:w-[360px] md:flex-none md:rounded-none">
               <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 md:px-5 md:pt-6">
               <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-[#B8906A]/70 md:hidden" aria-hidden="true" />
               <div className="grid grid-cols-3 gap-2">
@@ -374,7 +374,7 @@ export default function ShoppableVideoModal({
               )}
 
               </div>
-              <div className="shrink-0 border-t border-iron/10 bg-parchment px-4 py-3.5 md:px-5 md:py-4">
+              <div className="shrink-0 border-t border-iron/10 bg-parchment px-4 pt-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] md:px-5 md:py-4">
               <button
                 type="button"
                 onClick={addToCart}
