@@ -1,8 +1,21 @@
-import { writeOrderToNotion, writePromoOrderToNotion, type OrderRecord } from '@/lib/orders'
+import { writeOrderToNotion, writeOrderToNotionWithRetry, writePromoOrderToNotion, type OrderRecord } from '@/lib/orders'
 
 jest.mock('@notionhq/client', () => {
-  const create = jest.fn().mockResolvedValue({})
-  return { Client: jest.fn(() => ({ pages: { create } })), __create: create }
+  const create = jest.fn().mockResolvedValue({ id: 'page-1' })
+  const update = jest.fn().mockResolvedValue({})
+  const query = jest.fn().mockResolvedValue({ results: [] })
+  const retrieveDataSource = jest.fn().mockRejectedValue(new Error('not a data source'))
+  const retrieveDatabase = jest.fn().mockResolvedValue({ data_sources: [{ id: 'orders-data-source' }] })
+  return {
+    Client: jest.fn(() => ({
+      pages: { create, update },
+      dataSources: { query, retrieve: retrieveDataSource },
+      databases: { retrieve: retrieveDatabase },
+    })),
+    __create: create,
+    __query: query,
+    __retrieveDatabase: retrieveDatabase,
+  }
 })
 jest.mock('@/lib/stripe', () => ({ getRequiredEnv: (k: string) => `env-${k}` }))
 
@@ -86,5 +99,69 @@ describe('writePromoOrderToNotion', () => {
     })
 
     expect(notion.__create.mock.calls[0][0].parent).toEqual({ database_id: 'default-promo-db' })
+  })
+})
+
+describe('writeOrderToNotionWithRetry', () => {
+  beforeEach(() => {
+    jest.useFakeTimers()
+    const notion = require('@notionhq/client')
+    notion.__create.mockReset()
+    notion.__query.mockReset()
+    notion.__query.mockResolvedValue({ results: [] })
+    notion.__retrieveDatabase.mockReset()
+    notion.__retrieveDatabase.mockResolvedValue({ data_sources: [{ id: 'orders-data-source' }] })
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+    jest.restoreAllMocks()
+  })
+
+  it('retries a failed save against the same data source and properties', async () => {
+    const notion = require('@notionhq/client')
+    notion.__create
+      .mockRejectedValueOnce(new Error('timeout talking to Notion'))
+      .mockResolvedValueOnce({ id: 'page-2' })
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const pending = writeOrderToNotionWithRetry(base, 3)
+    await jest.advanceTimersByTimeAsync(500)
+    await pending
+
+    expect(notion.__create).toHaveBeenCalledTimes(2)
+    expect(notion.__create.mock.calls[0][0].parent).toEqual({ database_id: 'env-NOTION_DATABASE_ID' })
+    expect(notion.__create.mock.calls[1][0].parent).toEqual(notion.__create.mock.calls[0][0].parent)
+    const { Date: firstDate, ...firstProps } = notion.__create.mock.calls[0][0].properties
+    const { Date: secondDate, ...secondProps } = notion.__create.mock.calls[1][0].properties
+    expect(secondProps).toEqual(firstProps)
+    expect(firstDate.date.start).toEqual(expect.any(String))
+    expect(secondDate.date.start).toEqual(expect.any(String))
+    expect(notion.__query).toHaveBeenCalledWith({
+      data_source_id: 'orders-data-source',
+      filter: { property: 'Stripe Session', rich_text: { equals: base.orderRef } },
+      page_size: 1,
+    })
+    expect(notion.__retrieveDatabase).toHaveBeenCalledWith({ database_id: 'env-NOTION_DATABASE_ID' })
+  })
+
+  it('logs an error when every attempt fails', async () => {
+    const notion = require('@notionhq/client')
+    notion.__create.mockRejectedValue(new Error('503 service_unavailable'))
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {})
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const pending = writeOrderToNotionWithRetry(base, 2).then(
+      () => { throw new Error('expected the Notion retry to fail') },
+      (err: unknown) => err,
+    )
+    await jest.advanceTimersByTimeAsync(500)
+    const err = await pending
+
+    expect(err).toBeInstanceOf(Error)
+    expect((err as Error).message).toContain('503')
+    expect(notion.__create).toHaveBeenCalledTimes(2)
+    expect(error).toHaveBeenCalledWith(expect.stringContaining(`[NOTION_RETRY] order not saved ref=${base.orderRef}`))
+    expect(error).toHaveBeenCalledWith(expect.stringContaining('503 service_unavailable'))
   })
 })

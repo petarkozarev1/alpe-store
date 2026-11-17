@@ -32,9 +32,21 @@ function notionClient() {
   return new Client({ auth: getRequiredEnv('NOTION_API_KEY') })
 }
 
+async function orderDataSourceId(notion: Client, databaseId: string) {
+  try {
+    await notion.dataSources.retrieve({ data_source_id: databaseId })
+    return databaseId
+  } catch {
+    const database = await notion.databases.retrieve({ database_id: databaseId })
+    if ('data_sources' in database && database.data_sources[0]?.id) return database.data_sources[0].id
+    return databaseId
+  }
+}
+
 async function orderAlreadyInNotion(notion: Client, databaseId: string, orderRef: string) {
-  const found = await notion.databases.query({
-    database_id: databaseId,
+  const dataSourceId = await orderDataSourceId(notion, databaseId)
+  const found = await notion.dataSources.query({
+    data_source_id: dataSourceId,
     filter: { property: 'Stripe Session', rich_text: { equals: orderRef } },
     page_size: 1,
   })
@@ -87,6 +99,10 @@ export async function writeOrderToNotion(order: OrderRecord): Promise<void> {
   }
 }
 
+function notionErrorMessage(err: unknown) {
+  return err instanceof Error ? err.message : String(err)
+}
+
 /** Retry only the Notion row. Does not resend email, Meta, or the Stripe event. */
 export async function writeOrderToNotionWithRetry(order: OrderRecord, attempts = 4): Promise<void> {
   const notion = notionClient()
@@ -94,16 +110,31 @@ export async function writeOrderToNotionWithRetry(order: OrderRecord, attempts =
   let last: unknown
   for (let attempt = 1; attempt <= attempts; attempt++) {
     try {
-      if (attempt > 1 && await orderAlreadyInNotion(notion, databaseId, order.orderRef)) return
+      if (attempt > 1) {
+        try {
+          if (await orderAlreadyInNotion(notion, databaseId, order.orderRef)) {
+            console.warn(`[NOTION_RETRY] ref=${order.orderRef} already in Notion, skipping another create`)
+            return
+          }
+        } catch (lookupErr) {
+          console.warn(`[NOTION_RETRY] ref=${order.orderRef} duplicate check failed, creating again: ${notionErrorMessage(lookupErr)}`)
+        }
+      }
       await writeOrderToNotion(order)
       return
     } catch (err) {
       last = err
-      if (!isTransientNotionError(err) || attempt === attempts) throw err
-      console.warn(`[NOTION_RETRY] ref=${order.orderRef} attempt=${attempt}/${attempts} error=${err instanceof Error ? err.message : err}`)
+      const message = notionErrorMessage(err)
+      const retry = isTransientNotionError(err) && attempt < attempts
+      if (!retry) {
+        console.error(`[NOTION_RETRY] order not saved ref=${order.orderRef} attempt=${attempt}/${attempts} error=${message}`)
+        throw err
+      }
+      console.warn(`[NOTION_RETRY] ref=${order.orderRef} attempt=${attempt}/${attempts} error=${message}`)
       await new Promise(resolve => setTimeout(resolve, 500 * 2 ** (attempt - 1)))
     }
   }
+  console.error(`[NOTION_RETRY] order not saved ref=${order.orderRef} attempt=${attempts}/${attempts} error=${notionErrorMessage(last)}`)
   throw last
 }
 
