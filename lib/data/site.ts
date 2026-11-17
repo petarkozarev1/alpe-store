@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   brand: 'AMPÉ',
   tagline: 'Работи цял ден. Спи цяла нощ.',
   nav: [
-    { label: 'Доказано', href: '/certifications' },
+    { label: 'Доказано', href: '/proof' },
     { label: 'За стъклата', href: '/lenses' },
     { label: 'Как работи', href: '/science' },
     { label: 'Въпроси', href: '/faqs' },
@@ -24,7 +24,7 @@ export const siteConfig: SiteConfig = {
         links: [
           { label: 'Нашата история', href: '/about' },
           { label: 'Науката', href: '/science' },
-          { label: 'Сертификати', href: '/certifications' },
+          { label: 'Сертификати', href: '/proof' },
         ],
       },
       {

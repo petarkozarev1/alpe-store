@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import CertificationsPage from '@/app/[locale]/certifications/page'
+import CertificationsPage from '@/app/[locale]/proof/page'
 import LensesPage from '@/app/[locale]/lenses/page'
 import SciencePage from '@/app/[locale]/science/page'
 import FaqsPage from '@/app/[locale]/faqs/page'
 
 const cyrillic = /[А-Яа-я]/
 
-test('keeps the published lab rows on the certifications page', () => {
+test('keeps the published lab rows on the proof page', () => {
   render(<CertificationsPage params={{ locale: 'bg' }} />)
   expect(screen.getByText('BS EN ISO 12312-1:2013+A1:2015')).toBeInTheDocument()
   expect(screen.getByText('ANSI Z80.3-2015')).toBeInTheDocument()

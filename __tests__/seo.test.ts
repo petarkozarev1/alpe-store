@@ -27,7 +27,7 @@ describe('SEO route configuration', () => {
       '/shop',
       '/about',
       '/science',
-      '/certifications',
+      '/proof',
       '/lenses',
       '/faqs',
       '/pricing',

@@ -120,7 +120,7 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
         </h2>
         <div className="mt-7 text-center">
           <Link
-            href={localizedPath('/certifications', locale)}
+            href={localizedPath('/proof', locale)}
             className="inline-flex items-center rounded-full bg-cream px-6 py-3 font-sans text-sm font-semibold text-onyx transition-colors hover:bg-linen"
           >
             {en ? 'See the proof' : 'Виж доказателствата'}

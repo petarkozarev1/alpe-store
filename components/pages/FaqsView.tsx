@@ -30,7 +30,7 @@ export default function FaqsView({ locale }: { locale: Locale }) {
           {t('Кратки отговори за пластмасовите стъкла, теста и поръчката. Очилата не са медицинско изделие.')}
         </p>
         <div className="mt-6 flex flex-wrap gap-4 font-sans text-sm">
-          <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Доказано')}</Link>
+          <Link href={href('/proof')} className="underline decoration-gold underline-offset-4">{t('Доказано')}</Link>
           <Link href={href('/lenses')} className="underline decoration-gold underline-offset-4">{t('За стъклата')}</Link>
           <Link href={href('/terms')} className="underline decoration-gold underline-offset-4">{t('Условия')}</Link>
           <Link href={href('/returns')} className="underline decoration-gold underline-offset-4">{t('Връщане')}</Link>

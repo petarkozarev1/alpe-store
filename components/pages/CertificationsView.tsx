@@ -138,7 +138,7 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/60 to-onyx/15" />
         <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-content flex-col justify-end px-6 pb-14 md:px-10">
           <h1 className="max-w-3xl font-serif text-5xl leading-[0.95] text-linen md:text-7xl">
-            {t('Измерени пластмасови стъкла.')}<br />{t('Ето числата.')}
+            {t('Ето числата.')}
           </h1>
           <p className="mt-5 max-w-2xl font-sans text-base leading-relaxed text-linen/85">
             {t('AMPÉ Evening спира 99,29% от синята светлина в диапазона 380–500 nm и 100% от UV лъчите (UV400). AMPÉ Daily е лек филтър за деня пред екрана — до 99% при 450 nm. Рамката е 22 г кристален ацетат.')}

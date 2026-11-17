@@ -85,7 +85,7 @@ export default function LensesView({ locale }: { locale: Locale }) {
               ]}
             />
             <p className="mt-3 font-sans text-xs text-stone">
-              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Измерванията на AMPÉ Daily и AMPÉ Evening са на страницата Доказано.')}</Link>
+              <Link href={href('/proof')} className="underline decoration-gold underline-offset-4">{t('Измерванията на AMPÉ Daily и AMPÉ Evening са на страницата Доказано.')}</Link>
             </p>
           </section>
 

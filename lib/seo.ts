@@ -22,7 +22,7 @@ export const indexableRoutes = [
   '/shop',
   '/about',
   '/science',
-  '/certifications',
+  '/proof',
   '/lenses',
   '/faqs',
   '/pricing',

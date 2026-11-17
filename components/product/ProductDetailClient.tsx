@@ -50,7 +50,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             </span>
           ))}
         </span>
-        <Link href="/certifications" className="font-sans text-xs text-gold hover:underline underline-offset-2 decoration-gold/50 flex-shrink-0">
+        <Link href="/proof" className="font-sans text-xs text-gold hover:underline underline-offset-2 decoration-gold/50 flex-shrink-0">
           Виж сертификата →
         </Link>
       </div>

@@ -153,7 +153,7 @@ export default function ScienceView({ locale }: { locale: Locale }) {
               ))}
             </ol>
             <p className="mt-4 font-sans text-sm text-stone">
-              <Link href={href('/certifications')} className="underline decoration-gold underline-offset-4">{t('Измерванията на AMPÉ Daily и AMPÉ Evening са на страницата Доказано.')}</Link>
+              <Link href={href('/proof')} className="underline decoration-gold underline-offset-4">{t('Измерванията на AMPÉ Daily и AMPÉ Evening са на страницата Доказано.')}</Link>
             </p>
           </section>
         </div>
