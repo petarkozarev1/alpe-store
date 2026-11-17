@@ -1,7 +1,7 @@
 'use client'
 
-import Script from 'next/script'
 import { useEffect } from 'react'
+import { COOKIE_CONSENT_ACCEPTED_EVENT, hasOptionalCookieConsent } from '@/lib/cookieConsent'
 
 const PIXEL_ID = '1435898268342097'
 let pixelInitialized = false
@@ -46,71 +46,59 @@ declare global {
   }
 }
 
+const PIXEL_BOOTSTRAP = `
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  var _now = Date.now();
+  var _cookies = document.cookie ? document.cookie.split('; ') : [];
+  var _hasFbp = _cookies.some(function(row) { return row.indexOf('_fbp=') === 0; });
+  var _hasFbc = _cookies.some(function(row) { return row.indexOf('_fbc=') === 0; });
+  var _fbclid = new URL(window.location.href).searchParams.get('fbclid');
+  if (!_hasFbp) {
+    document.cookie = '_fbp=fb.1.' + _now + '.' + Math.floor(Math.random() * 1e16) + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
+  }
+  if (_fbclid && !_hasFbc) {
+    document.cookie = '_fbc=fb.1.' + _now + '.' + _fbclid + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
+  }
+  if (!window.__alpePixelInitialized) {
+    fbq('init', '${PIXEL_ID}');
+    window.__alpePixelInitialized = true;
+  }
+  if (!window.__alpePageViewTracked) {
+    fbq('track', 'PageView');
+    window.__alpePageViewTracked = true;
+  }
+`
+
+function installMetaPixel() {
+  if (!hasOptionalCookieConsent()) return
+  if (document.getElementById('meta-pixel')) return
+  const script = document.createElement('script')
+  script.id = 'meta-pixel'
+  script.text = PIXEL_BOOTSTRAP
+  document.head.appendChild(script)
+}
+
 export default function MetaPixel() {
   useEffect(() => {
-    function initPixel() {
-      if (typeof window.fbq !== 'function') return
-      syncMetaAttributionCookies()
-      if (!pixelInitialized && !window.__alpePixelInitialized) {
-        window.fbq('init', PIXEL_ID)
-        window.__alpePixelInitialized = true
-      }
-      pixelInitialized = true
-      if (window.__alpePageViewTracked) return
-      window.fbq('track', 'PageView')
-      window.__alpePageViewTracked = true
-    }
-
-    initPixel()
-    window.addEventListener('alpe-cookie-consent-accepted', initPixel)
-    return () => window.removeEventListener('alpe-cookie-consent-accepted', initPixel)
+    installMetaPixel()
+    window.addEventListener(COOKIE_CONSENT_ACCEPTED_EVENT, installMetaPixel)
+    return () => window.removeEventListener(COOKIE_CONSENT_ACCEPTED_EVENT, installMetaPixel)
   }, [])
 
-  return (
-    <>
-      <Script
-        id="meta-pixel"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            var _now = Date.now();
-            var _cookies = document.cookie ? document.cookie.split('; ') : [];
-            var _hasFbp = _cookies.some(function(row) { return row.indexOf('_fbp=') === 0; });
-            var _hasFbc = _cookies.some(function(row) { return row.indexOf('_fbc=') === 0; });
-            var _fbclid = new URL(window.location.href).searchParams.get('fbclid');
-            if (!_hasFbp) {
-              document.cookie = '_fbp=fb.1.' + _now + '.' + Math.floor(Math.random() * 1e16) + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
-            }
-            if (_fbclid && !_hasFbc) {
-              document.cookie = '_fbc=fb.1.' + _now + '.' + _fbclid + '; Max-Age=${META_COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure';
-            }
-            if (!window.__alpePixelInitialized) {
-              fbq('init', '${PIXEL_ID}');
-              window.__alpePixelInitialized = true;
-            }
-            if (!window.__alpePageViewTracked) {
-              fbq('track', 'PageView');
-              window.__alpePageViewTracked = true;
-            }
-          `,
-        }}
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-    </>
-  )
+  return null
 }
 
 function ensurePixelReady() {
-  if (typeof window === 'undefined') return
-  if (typeof window.fbq !== 'function') return
+  if (!hasOptionalCookieConsent()) return false
+  if (typeof window === 'undefined') return false
+  if (typeof window.fbq !== 'function') return false
   syncMetaAttributionCookies()
   if (!pixelInitialized && !window.__alpePixelInitialized) {
     window.fbq('init', PIXEL_ID)
@@ -163,7 +151,7 @@ export interface TrackedEventOptions {
  * survives navigation). Safe: silently no-ops if the pixel/network is unavailable.
  */
 export function fireTrackedEvent(name: string, opts: TrackedEventOptions = {}): void {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined' || !hasOptionalCookieConsent()) return
   const eventId =
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? `${name}-${crypto.randomUUID()}`
@@ -233,7 +221,7 @@ let lastUserSignature = ''
  * Idempotent: skipped if the same user data was already set.
  */
 export async function setPixelUser(user: PixelUser): Promise<void> {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined' || !hasOptionalCookieConsent()) return
   if (typeof window.fbq !== 'function') return
 
   // Normalize and dedupe: if nothing changed since last call, skip the work.

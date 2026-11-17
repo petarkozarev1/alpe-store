@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useRef } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { hasOptionalCookieConsent } from '@/lib/cookieConsent'
 
 function Tracker() {
   const pathname = usePathname()
@@ -28,7 +29,7 @@ function Tracker() {
       page_title: document.title,
     })
 
-    if (typeof window.fbq === 'function') {
+    if (hasOptionalCookieConsent() && typeof window.fbq === 'function') {
       window.fbq('track', 'PageView')
     }
   }, [pathname, searchParams])

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { COOKIE_CONSENT_ACCEPTED_EVENT, COOKIE_CONSENT_KEY } from '@/lib/cookieConsent'
 import { updateGoogleConsent } from '@/lib/googleAnalytics'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
 import { localizedPath } from '@/lib/i18n/routing'
@@ -8,7 +9,7 @@ import { localizedPath } from '@/lib/i18n/routing'
 type Consent = 'all' | 'necessary' | null
 
 export function resetCookieConsent() {
-  localStorage.removeItem('alpe-cookie-consent')
+  localStorage.removeItem(COOKIE_CONSENT_KEY)
   window.location.reload()
 }
 
@@ -19,20 +20,20 @@ export default function CookieBanner() {
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('alpe-cookie-consent') as Consent | null
+    const stored = localStorage.getItem(COOKIE_CONSENT_KEY) as Consent | null
     if (stored) updateGoogleConsent(stored === 'all')
     setConsent(stored)
   }, [])
 
   function accept() {
-    localStorage.setItem('alpe-cookie-consent', 'all')
+    localStorage.setItem(COOKIE_CONSENT_KEY, 'all')
     updateGoogleConsent(true)
-    window.dispatchEvent(new Event('alpe-cookie-consent-accepted'))
+    window.dispatchEvent(new Event(COOKIE_CONSENT_ACCEPTED_EVENT))
     setConsent('all')
   }
 
   function rejectOptional() {
-    localStorage.setItem('alpe-cookie-consent', 'necessary')
+    localStorage.setItem(COOKIE_CONSENT_KEY, 'necessary')
     updateGoogleConsent(false)
     setConsent('necessary')
   }
