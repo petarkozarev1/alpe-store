@@ -13,7 +13,7 @@
 - Cart item shape (`ProductPage.tsx:101`): `name: "ALPÉ"`, `variantLabel: "🟠 Вечер · N чифт(а)"` or `"🟡 За всеки ден · ..."`, `price: bundlePrices[bundle]`, `variantId: "ALPÉ-{lens}-bundle-{n}"`.
 - Cart store `lib/store/cartStore.ts` is in-memory (no persistence). Full-page navigation clears it.
 - Existing dedup pattern: browser `PurchasePixelFire` fires `purchase-${orderId}`; webhook CAPI uses `eventId: purchase-${session.id}`.
-- Resend domain `alpewear.com` is verified (region eu-west-1). Sender: `ALPÉ <hello@alpewear.com>`. `RESEND_API_KEY` must be set in Vercel (code no-ops without it).
+- Resend domain `ampewear.com` is verified (region eu-west-1). Sender: `ALPÉ <hello@ampewear.com>`. `RESEND_API_KEY` must be set in Vercel (code no-ops without it).
 - COD constants: fee €1.00, Bulgaria only, card stays default, no order-value limits.
 - Free shipping rule (existing): `totalPairs >= 2 ? 0 : 4.99`.
 
@@ -127,7 +127,7 @@ import { Resend } from 'resend'
 const BGN_RATE = 1.95583
 const fmtEUR = (n: number) => `€${n.toFixed(2)}`
 const fmtBGN = (n: number) => `${(n * BGN_RATE).toFixed(2)} лв.`
-const LOGO_URL = 'https://www.alpewear.com/images/logo.png'
+const LOGO_URL = 'https://www.ampewear.com/images/logo.png'
 
 export interface OrderEmailRow { label: string; sublabel?: string; amount: number }
 export interface OrderEmailModel {
@@ -208,10 +208,10 @@ export function buildOrderEmailHtml(m: OrderEmailModel): string {
     </td></tr></table>
   </td></tr>
   <tr><td style="padding:24px 32px; text-align:center;">
-    <p style="font-size:13px; color:#9B7B68; line-height:1.6; margin:0;">Въпроси по поръчката? Пиши ни на<br/><a href="mailto:support@alpe.bg" style="color:#7C3018; text-decoration:underline;">support@alpe.bg</a></p>
+    <p style="font-size:13px; color:#9B7B68; line-height:1.6; margin:0;">Въпроси по поръчката? Пиши ни на<br/><a href="mailto:support@ampewear.com" style="color:#7C3018; text-decoration:underline;">support@ampewear.com</a></p>
   </td></tr>
   <tr><td style="background-color:#2D0E04; padding:24px 32px; text-align:center;">
-    <p style="font-size:12px; color:rgba(237,228,214,0.75); line-height:1.7; margin:0;">ALPÉ · Очила за блокиране на синя и зелена светлина<br/><a href="https://www.alpewear.com" style="color:rgba(237,228,214,0.75); text-decoration:underline;">alpewear.com</a></p>
+    <p style="font-size:12px; color:rgba(237,228,214,0.75); line-height:1.7; margin:0;">ALPÉ · Очила за блокиране на синя и зелена светлина<br/><a href="https://www.ampewear.com" style="color:rgba(237,228,214,0.75); text-decoration:underline;">ampewear.com</a></p>
     <p style="font-size:11px; color:rgba(237,228,214,0.45); margin:12px 0 0 0;">Screen All Day. Sleep All Night.</p>
   </td></tr>
 </table></td></tr></table></body></html>`
@@ -222,7 +222,7 @@ export async function sendOrderConfirmation(to: string, model: OrderEmailModel):
   if (!apiKey) { console.warn('[EMAIL] RESEND_API_KEY not set — skipping'); return }
   const resend = new Resend(apiKey)
   const { error } = await resend.emails.send({
-    from: 'ALPÉ <hello@alpewear.com>',
+    from: 'ALPÉ <hello@ampewear.com>',
     to,
     subject: `Поръчката ти е приета — ${model.orderRef}`,
     html: buildOrderEmailHtml(model),
@@ -567,7 +567,7 @@ const capiOk = await firePurchase({
   contentIds: lineItems.data.map(i => i.description ?? 'ALPÉ'),
   numItems: lineItems.data.reduce((sum, i) => sum + (i.quantity ?? 1), 0),
   eventId: `purchase-${session.id}`,
-  sourceUrl: 'https://alpewear.com/checkout/success',
+  sourceUrl: 'https://ampewear.com/checkout/success',
   eventTime: session.created,
 }, { orderRef: session.id, email: customerEmail, total })
 ```
@@ -765,7 +765,7 @@ export async function POST(req: Request) {
       fbp: shipping.fbp || undefined, fbc: shipping.fbc || undefined, clientIpAddress, clientUserAgent,
       value: total, currency: 'EUR', orderId,
       contentIds: items.map(i => i.name), numItems: items.reduce((s, i) => s + i.quantity, 0),
-      eventId: `purchase-${orderId}`, sourceUrl: 'https://alpewear.com/checkout/success',
+      eventId: `purchase-${orderId}`, sourceUrl: 'https://ampewear.com/checkout/success',
     }, { orderRef: orderId, email, total })
 
     return NextResponse.json({ orderId, value: total })

@@ -1,13 +1,13 @@
 # ALPE Backlink Outreach Pack
 
-Goal: earn real Bulgarian backlinks and brand mentions for `https://alpewear.com/shop`.
+Goal: earn real Bulgarian backlinks and brand mentions for `https://ampewear.com/shop`.
 
 Do not buy bulk backlinks. Prioritize real Bulgarian sites, creator blogs, product reviews, student/productivity communities, and business directories with editorial standards.
 
 ## Best Target Pages
 
-- `https://alpewear.com/shop`
-- `https://alpewear.com/`
+- `https://ampewear.com/shop`
+- `https://ampewear.com/`
 
 ## Anchor Text To Use
 
@@ -62,7 +62,7 @@ Message:
 Искаме да ви изпратим чифт за честно ревю или кратко представяне, ако темата е подходяща за вашата аудитория.
 
 Линк към продукта:
-https://alpewear.com/shop
+https://ampewear.com/shop
 
 Подходящ ъгъл за материал:
 - очила за синя светлина при работа пред компютър
@@ -81,7 +81,7 @@ ALPE
 ```text
 Здравейте! Имаме български бранд ALPE - очила за синя светлина за работа и учене пред екран. Бихме искали да ви изпратим чифт за честно ревю/представяне, ако темата е подходяща за вас.
 
-https://alpewear.com/shop
+https://ampewear.com/shop
 ```
 
 ## English Pitch
@@ -102,7 +102,7 @@ I am reaching out from ALPE, a Bulgarian brand making blue light glasses for peo
 We would love to send you a pair for an honest review or product feature if it fits your audience.
 
 Product page:
-https://alpewear.com/shop
+https://ampewear.com/shop
 
 Possible angles:
 - blue light glasses for computer work
@@ -128,7 +128,7 @@ Send this 5-7 days after the first message.
 Ако темата е подходяща за вас, ще се радвам да изпратим чифт за честно ревю или кратко представяне.
 
 Линк:
-https://alpewear.com/shop
+https://ampewear.com/shop
 
 Поздрави,
 [YOUR NAME]
@@ -146,7 +146,7 @@ https://alpewear.com/shop
 ## What Counts As A Good Backlink
 
 - The page is public and indexable.
-- The link points to `https://alpewear.com/shop`.
+- The link points to `https://ampewear.com/shop`.
 - The article/listing mentions ALPE naturally.
 - The surrounding text is relevant to screens, glasses, lifestyle, studying, work, or eye comfort.
 - The site is Bulgarian or has Bulgarian readers.

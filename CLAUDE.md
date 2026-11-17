@@ -31,8 +31,8 @@
 | Target customer | People who work long hours in front of computers or phones |
 | Positioning | Premium feel, affordable prices |
 | Language | **Bulgarian** - all user-visible strings. English requires explicit approval. |
-| Website | https://www.alpewear.com |
-| Email | hello@alpe.bg (general), support@alpe.bg, returns@alpe.bg |
+| Website | https://www.ampewear.com |
+| Email | hello@ampewear.com (general), support@ampewear.com, returns@ampewear.com |
 
 ---
 

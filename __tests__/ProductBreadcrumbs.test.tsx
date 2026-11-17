@@ -26,11 +26,11 @@ test('renders visible and structured breadcrumbs for an indexable product', () =
   const breadcrumbs = schemas.find((schema) => schema['@type'] === 'BreadcrumbList')
 
   expect(breadcrumbs?.itemListElement).toEqual([
-    expect.objectContaining({ position: 1, item: 'https://www.alpewear.com' }),
-    expect.objectContaining({ position: 2, item: 'https://www.alpewear.com/lenses' }),
+    expect.objectContaining({ position: 1, item: 'https://www.ampewear.com' }),
+    expect.objectContaining({ position: 2, item: 'https://www.ampewear.com/lenses' }),
     expect.objectContaining({
       position: 3,
-      item: 'https://www.alpewear.com/product/alpe-daily',
+      item: 'https://www.ampewear.com/product/alpe-daily',
     }),
   ])
 })

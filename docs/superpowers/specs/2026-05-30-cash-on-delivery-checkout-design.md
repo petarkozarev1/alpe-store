@@ -116,7 +116,7 @@ page (the order intent is real), mirroring the webhook's „always succeed, aler
 - Resend client initialized from `RESEND_API_KEY` (gracefully no-ops + logs a warning if
   unset, matching the `META_CAPI_TOKEN` pattern).
 - `sendOrderConfirmation({ email, name, orderId, items, total, shipping })` — sends a
-  Bulgarian HTML confirmation from `hello@alpe.bg`.
+  Bulgarian HTML confirmation from `hello@ampewear.com`.
 
 ### 6. `app/checkout/success/page.tsx` (modify)
 - When `cod=1`: skip the Stripe session lookup; read `value` and `order` from query params
@@ -147,7 +147,7 @@ CheckoutPageClient (COD selected, BG)
 ```
 
 ## Prerequisites (manual, external)
-- **Resend account + domain verification for `alpe.bg`** (DNS records) so confirmation
+- **Resend account + domain verification for `ampewear.com`** (DNS records) so confirmation
   emails don't land in spam.
 - **`RESEND_API_KEY`** added to Vercel project env.
 

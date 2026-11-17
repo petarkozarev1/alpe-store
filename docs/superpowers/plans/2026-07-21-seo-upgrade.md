@@ -36,8 +36,8 @@
 Test that:
 
 ```ts
-expect(siteUrl).toBe('https://www.alpewear.com')
-expect(absoluteUrl('/shop')).toBe('https://www.alpewear.com/shop')
+expect(siteUrl).toBe('https://www.ampewear.com')
+expect(absoluteUrl('/shop')).toBe('https://www.ampewear.com/shop')
 expect(indexableRoutes).toEqual(expect.arrayContaining([
   '', '/shop', '/about', '/science', '/certifications', '/lenses', '/faqs',
   '/pricing', '/returns', '/contact', '/privacy', '/terms',
@@ -56,7 +56,7 @@ Expected: FAIL because the current origin is non-www, only two routes are indexa
 
 - [ ] **Step 3: Implement the minimal shared SEO configuration**
 
-Use `https://www.alpewear.com`, add all public/product routes, associate each route with a stable last-modified date and priority, and update sitemap/robots generation from that configuration.
+Use `https://www.ampewear.com`, add all public/product routes, associate each route with a stable last-modified date and priority, and update sitemap/robots generation from that configuration.
 
 - [ ] **Step 4: Run the focused test and verify GREEN**
 

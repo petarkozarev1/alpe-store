@@ -27,7 +27,7 @@ Each product page must contain unique Bulgarian copy, its own canonical URL, Ope
 
 ## Technical indexing
 
-- Change the canonical site origin to `https://www.alpewear.com`, matching the production redirect destination.
+- Change the canonical site origin to `https://www.ampewear.com`, matching the production redirect destination.
 - Include every legitimate public page and both product pages in `sitemap.xml`.
 - Exclude carts, checkout, success, partner dashboards, API routes, and redirects from the sitemap.
 - Use stable last-modified dates derived from content/configuration rather than assigning the current timestamp to every URL on every build.

@@ -16,9 +16,9 @@ import { generateMetadata as termsMetadata } from '@/app/[locale]/terms/page'
 
 describe('SEO route configuration', () => {
   it('uses the production www origin for absolute URLs', () => {
-    expect(siteUrl).toBe('https://www.alpewear.com')
-    expect(absoluteUrl()).toBe('https://www.alpewear.com')
-    expect(absoluteUrl('/shop')).toBe('https://www.alpewear.com/shop')
+    expect(siteUrl).toBe('https://www.ampewear.com')
+    expect(absoluteUrl()).toBe('https://www.ampewear.com')
+    expect(absoluteUrl('/shop')).toBe('https://www.ampewear.com/shop')
   })
 
   it('includes public and product routes but excludes transactional routes', () => {
@@ -52,14 +52,14 @@ describe('SEO route configuration', () => {
 
     expect(urls).toHaveLength(indexableRoutes.length * 2)
     expect(urls).toEqual(expect.arrayContaining([
-      'https://www.alpewear.com',
-      'https://www.alpewear.com/shop',
-      'https://www.alpewear.com/product/alpe-daily',
-      'https://www.alpewear.com/product/alpe-evening',
-      'https://www.alpewear.com/en',
-      'https://www.alpewear.com/en/shop',
+      'https://www.ampewear.com',
+      'https://www.ampewear.com/shop',
+      'https://www.ampewear.com/product/alpe-daily',
+      'https://www.ampewear.com/product/alpe-evening',
+      'https://www.ampewear.com/en',
+      'https://www.ampewear.com/en/shop',
     ]))
-    expect(urls.every((url) => url.startsWith('https://www.alpewear.com'))).toBe(true)
+    expect(urls.every((url) => url.startsWith('https://www.ampewear.com'))).toBe(true)
     expect(entries.every((entry) => entry.lastModified instanceof Date)).toBe(true)
     expect(entries.every((entry) => new Date(entry.lastModified ?? 0).toISOString() === '2026-11-09T00:00:00.000Z')).toBe(true)
     expect(entries.every((entry) => entry.alternates?.languages?.['x-default'] === entry.alternates?.languages?.['bg-BG'])).toBe(true)
@@ -72,8 +72,8 @@ describe('SEO route configuration', () => {
 
     expect(disallow).toEqual(expect.arrayContaining(['/api/', '/partner/']))
     expect(disallow).not.toEqual(expect.arrayContaining(['/cart', '/checkout']))
-    expect(config.host).toBe('https://www.alpewear.com')
-    expect(config.sitemap).toBe('https://www.alpewear.com/sitemap.xml')
+    expect(config.host).toBe('https://www.ampewear.com')
+    expect(config.sitemap).toBe('https://www.ampewear.com/sitemap.xml')
   })
 
   it('creates unbranded child titles with self-referencing canonicals', () => {
@@ -93,7 +93,7 @@ describe('SEO route configuration', () => {
     expect(metadata.openGraph).toEqual(expect.objectContaining({
       title: 'Нашата история',
       description: 'Историята на AMPÉ.',
-      url: 'https://www.alpewear.com/about',
+      url: 'https://www.ampewear.com/about',
     }))
     expect(metadata.twitter).toEqual(expect.objectContaining({
       title: 'Нашата история',
@@ -103,10 +103,10 @@ describe('SEO route configuration', () => {
 
   it('gives legal pages their own social metadata instead of homepage defaults', () => {
     expect(privacyMetadata({ params: { locale: 'bg' } }).openGraph).toEqual(expect.objectContaining({
-      url: 'https://www.alpewear.com/privacy',
+      url: 'https://www.ampewear.com/privacy',
     }))
     expect(termsMetadata({ params: { locale: 'bg' } }).openGraph).toEqual(expect.objectContaining({
-      url: 'https://www.alpewear.com/terms',
+      url: 'https://www.ampewear.com/terms',
     }))
   })
 
@@ -118,8 +118,8 @@ describe('SEO route configuration', () => {
   })
 
   it('uses stable entity IDs and an honest 14-day Bulgarian return policy', () => {
-    expect(organizationId).toBe('https://www.alpewear.com/#organization')
-    expect(websiteId).toBe('https://www.alpewear.com/#website')
+    expect(organizationId).toBe('https://www.ampewear.com/#organization')
+    expect(websiteId).toBe('https://www.ampewear.com/#website')
     expect(merchantReturnPolicy).toEqual(expect.objectContaining({
       applicableCountry: 'BG',
       merchantReturnDays: 14,

@@ -13,7 +13,7 @@ test('seller details keep the merchant record and omit owner names', () => {
     expect(text).not.toMatch(ownerNames)
     expect(text).toMatch(/208982100/)
     expect(text).toMatch(/0884555077/)
-    expect(text).toMatch(/hello@alpewear\.com/)
+    expect(text).toMatch(/hello@ampewear\.com/)
     expect(text).toMatch(/АМПЕ ГРУП ООД/)
     expect(text).toMatch(/AMPE GROUP Ltd/)
     expect(text).toMatch(/Мирела Френи|Mirela Freni/)

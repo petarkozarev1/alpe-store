@@ -14,13 +14,13 @@ export const FORMER_BRAND_NAME = 'ALPÉ'
 /** Set to false to remove every "formerly ALPÉ" line. */
 export const SHOW_FORMERLY_ALPE = false
 
-/** One-line domain switch. Keep the www production origin until the owner moves DNS. */
-export const SITE_URL = 'https://www.alpewear.com'
+/** Canonical public origin. Checkout can still override this with NEXT_PUBLIC_SITE_URL. */
+export const SITE_URL = 'https://www.ampewear.com'
 
 export const EMAILS = {
-  hello: 'hello@alpewear.com',
-  support: 'support@alpewear.com',
-  returns: 'returns@alpewear.com',
+  hello: 'hello@ampewear.com',
+  support: 'support@ampewear.com',
+  returns: 'returns@ampewear.com',
 } as const
 
 export const COMPANY = {
