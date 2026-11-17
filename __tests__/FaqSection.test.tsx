@@ -21,18 +21,18 @@ jest.mock('framer-motion', () => {
 })
 
 test('FAQ answer is hidden by default', () => {
-  render(<FaqSection />)
+  render(<FaqSection locale="bg" />)
   expect(screen.queryByText(faqs[0].answer)).not.toBeInTheDocument()
 })
 
 test('clicking a question reveals the answer', () => {
-  render(<FaqSection />)
+  render(<FaqSection locale="bg" />)
   fireEvent.click(screen.getByText(faqs[0].question))
   expect(screen.getByText(faqs[0].answer)).toBeInTheDocument()
 })
 
 test('clicking open question closes it', () => {
-  render(<FaqSection />)
+  render(<FaqSection locale="bg" />)
   const question = screen.getByText(faqs[0].question)
   fireEvent.click(question)
   fireEvent.click(question)

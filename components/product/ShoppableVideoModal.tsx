@@ -101,7 +101,7 @@ export default function ShoppableVideoModal({
     const root = dialogRef.current
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== 'Tab' || !root) return
-      const items = [...root.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+      const items = Array.from(root.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
         .filter(item => !item.hasAttribute('disabled') && item.tabIndex !== -1)
       if (!items.length) return
       const first = items[0]

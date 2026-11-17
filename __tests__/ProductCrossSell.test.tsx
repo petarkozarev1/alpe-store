@@ -10,7 +10,7 @@ jest.mock('next/image', () => function MockImage({ fill, ...props }: any) {
 test('links the complementary product and the preselected Daily + Evening bundle', () => {
   const evening = products.find((product) => product.slug === 'alpe-evening')!
 
-  render(<ComplementaryProductCard product={evening} />)
+  render(<ComplementaryProductCard product={evening} locale="bg" />)
 
   expect(screen.getByRole('heading', { name: 'AMPÉ Evening' })).toBeInTheDocument()
   expect(screen.getByRole('link', { name: /вземи daily \+ evening/i })).toHaveAttribute(

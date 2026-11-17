@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { COD_FEE, courierBadge } from '@/lib/checkout-delivery'

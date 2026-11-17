@@ -16,7 +16,7 @@ jest.mock('@/components/ui/Button', () => function MockButton({ label }: { label
 })
 
 test('uses the new lightweight-loading hero preview and respects reduced motion', () => {
-  const { container } = render(<HeroSection />)
+  const { container } = render(<HeroSection locale="bg" />)
   const video = container.querySelector('video')
 
   expect(video).toHaveAttribute('src', '/videos/alpe-hero-web.mp4')
@@ -34,7 +34,7 @@ test('uses the new lightweight-loading hero preview and respects reduced motion'
 })
 
 test('does not show a standalone ALPE label over the hero video', () => {
-  render(<HeroSection />)
+  render(<HeroSection locale="bg" />)
 
   expect(screen.queryByText(/^ALPE$/)).not.toBeInTheDocument()
 })
