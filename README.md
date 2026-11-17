@@ -29,6 +29,21 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Notion inventory
+
+Stock for AMPÉ Daily and AMPÉ Evening is read from a Notion database. Set `NOTION_INVENTORY_DATABASE_ID` to that database (a database id, a data source id, or the parent page id) and keep using the existing `NOTION_API_KEY`. The store caches each read for 60 seconds. If the variable is missing or Notion cannot be reached, both products stay on „Очаква се“ with stock 250 and the buy buttons read „Очаквайте скоро“.
+
+Columns:
+
+| Column | Type | Values |
+|---|---|---|
+| Продукт | title | AMPÉ Daily, AMPÉ Evening |
+| Код | text | `daily` or `evening` |
+| Наличност | number | pairs left |
+| Статус | select | `Очаква се`, `В наличност`, `Изчерпан` |
+
+When a shipment arrives, open the product row and set **Статус** to **В наличност** and **Наличност** to the number of pairs. A confirmed order then reduces that number. At 0 the status becomes **Изчерпан** and the button reads „Изчерпан“. A two-pair bundle can be bought only when every pair in it is **В наличност** and has enough stock.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

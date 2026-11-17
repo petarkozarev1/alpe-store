@@ -4,6 +4,8 @@ import { sendCAPIEvent } from '@/lib/meta-capi'
 import { notifyAlert } from '@/lib/alerts'
 import { priceForPairs } from '@/lib/pricing'
 import { describeOrder, orderRejection } from '@/lib/order-lines'
+import { getInventory } from '@/lib/inventory'
+import { countVariantLenses, inventoryMessage } from '@/lib/stock'
 import { applyPromo, promoErrorMessage } from '@/lib/promo'
 import { checkoutSiteUrl } from '@/lib/brand'
 import { cookies } from 'next/headers'
@@ -50,6 +52,11 @@ export async function POST(req: Request) {
     const rejection = orderRejection(items, locale)
     if (rejection) {
       return NextResponse.json({ error: rejection }, { status: 400 })
+    }
+    const lensCounts = countVariantLenses(items)
+    const stockError = inventoryMessage(await getInventory(), lensCounts, locale)
+    if (stockError) {
+      return NextResponse.json({ error: stockError }, { status: 400 })
     }
 
     const productItems = items.filter(item => item.price > 0)
@@ -119,6 +126,8 @@ export async function POST(req: Request) {
         ...(clientIpAddress ? { clientIpAddress } : {}),
         ...(clientUserAgent ? { clientUserAgent } : {}),
         pairs: String(pairs),
+        stockDaily: String(lensCounts.daily),
+        stockEvening: String(lensCounts.evening),
         itemsText: described.itemsText,
         subtotal: String(bundlePrice),
         discountCode: promo.code,

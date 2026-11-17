@@ -4,7 +4,9 @@ import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { googleCartParams, trackGoogleEvent } from '@/lib/googleAnalytics'
 import { countPairs } from '@/lib/pricing'
+import { useInventory } from '@/components/inventory/useInventory'
 import { displayedPairs } from '@/lib/order-lines'
+import { countVariantLenses, offerButtonText, offerState } from '@/lib/stock'
 import { regularPriceForPairs } from '@/lib/sale'
 import { usePairPrice } from '@/components/pricing/PricingProvider'
 import { useLocale } from '@/components/i18n/LocaleProvider'
@@ -14,6 +16,9 @@ import { localizeCartVariantLabel } from '@/lib/i18n/cart'
 export default function CartPage() {
   const locale = useLocale()
   const { items, removeItem, setLinePairs, checkoutLocked, pairLimit } = useCartStore()
+  const inventory = useInventory()
+  const cartOffer = offerState(inventory, countVariantLenses(items))
+  const buyLocale = locale === 'en' ? 'en' : 'bg'
   const pairCount = countPairs(items)
   const bundleTotal = usePairPrice(pairCount)
   const separateTotal = regularPriceForPairs(pairCount)
@@ -65,7 +70,7 @@ export default function CartPage() {
         <span className="text-xl font-bold">
           Общо: {separateTotal > bundleTotal + 0.001 && <span className="text-iron font-normal text-base mr-2">поотделно: €{separateTotal.toFixed(2)}</span>}€{bundleTotal.toFixed(2)}
         </span>
-        <Link
+        {cartOffer === 'available' ? <Link
           href="/checkout"
           onClick={() => {
             fireTrackedEvent('InitiateCheckout', {
@@ -87,7 +92,11 @@ export default function CartPage() {
           className="bg-onyx text-linen px-8 py-4 rounded-xl font-semibold hover:bg-iron transition-colors"
         >
           Към плащане →
-        </Link>
+        </Link> : (
+          <button type="button" disabled className="bg-onyx/35 text-linen/60 px-8 py-4 rounded-xl font-semibold cursor-not-allowed">
+            {offerButtonText(cartOffer, buyLocale, 'Към плащане →')}
+          </button>
+        )}
       </div>
     </div>
   ))

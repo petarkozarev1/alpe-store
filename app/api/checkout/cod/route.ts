@@ -17,6 +17,8 @@ import {
   type CodProduct,
 } from './helpers'
 import { describeOrder, orderRejection } from '@/lib/order-lines'
+import { decrementInventory, getInventory } from '@/lib/inventory'
+import { countVariantLenses, inventoryMessage } from '@/lib/stock'
 
 const COD_ALLOWED_DELIVERY = new Set(['address', 'speedy', 'econt', 'pigeon'])
 
@@ -40,6 +42,9 @@ export async function POST(req: Request) {
 
     const rejection = orderRejection(items, locale)
     if (rejection) return NextResponse.json({ error: rejection }, { status: 400 })
+    const lensCounts = countVariantLenses(items)
+    const stockError = inventoryMessage(await getInventory(), lensCounts, locale)
+    if (stockError) return NextResponse.json({ error: stockError }, { status: 400 })
 
     if (!email?.trim() || !shipping?.name?.trim() || !shipping?.phone?.trim() || !shipping?.city?.trim()) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -87,13 +92,16 @@ export async function POST(req: Request) {
       affiliateId: affiliateId ?? undefined,
     }
 
+    let saved = false
     try {
       await writeOrderToNotionWithRetry(orderRecord)
+      saved = true
     } catch (err) {
       const m = err instanceof Error ? err.message : String(err)
       console.error(`[COD_NOTION_FAIL] ref=${orderId} email=${email} error=${m}`)
       await notifyAlert({ severity: 'error', title: 'COD order Notion write FAILED', body: `COD order placed but not saved to Notion after retries.\n\n**Ref:** \`${orderId}\`\n**Email:** ${email}\n**Total:** €${total}\n**Items:** ${itemsText}\n**Error:** \`${m}\`` })
     }
+    if (saved) await decrementInventory(lensCounts)
 
     if (promo.code) {
       await writePromoOrderToNotion({ promoCode: promo.code, total, itemsText, orderRef: orderId })

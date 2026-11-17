@@ -3,6 +3,13 @@ import AddToCartButton from '@/components/product/AddToCartButton'
 import { useCartStore } from '@/lib/store/cartStore'
 import type { Product, Variant } from '@/lib/types'
 
+jest.mock('@/components/inventory/useInventory', () => ({
+  useInventory: () => ({
+    daily: { code: 'daily', stock: 250, status: 'В наличност' },
+    evening: { code: 'evening', stock: 250, status: 'В наличност' },
+  }),
+}))
+
 jest.mock('framer-motion', () => ({
   motion: {
     button: ({ children, whileHover, whileTap, ...props }: any) => (

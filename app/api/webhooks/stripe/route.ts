@@ -5,6 +5,7 @@ import { getRequiredEnv, getStripe } from '@/lib/stripe'
 import { writeOrderToNotionWithRetry, writePromoOrderToNotion, firePurchase, type OrderRecord } from '@/lib/orders'
 import { sendOrderConfirmation, type OrderEmailModel, type OrderEmailRow } from '@/lib/email'
 import { SITE_URL } from '@/lib/brand'
+import { decrementInventory } from '@/lib/inventory'
 
 export async function POST(req: Request) {
   const body = await req.text()
@@ -79,6 +80,11 @@ export async function POST(req: Request) {
       body: `Customer paid but order not saved to Notion after retries.\n\n**Session:** \`${session.id}\`\n**Email:** ${customerEmail}\n**Total:** €${total}\n**Items:** ${items}\n**Error:** \`${errMessage}\``,
     })
   }
+
+  await decrementInventory({
+    daily: Number(meta.stockDaily) || 0,
+    evening: Number(meta.stockEvening) || 0,
+  })
 
   if (meta.promoCode) {
     await writePromoOrderToNotion({ promoCode: meta.promoCode, total, itemsText: items, orderRef: session.id })

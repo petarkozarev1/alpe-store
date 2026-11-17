@@ -2,17 +2,6 @@ import type { Product } from '@/lib/types'
 
 import type { Locale } from '@/lib/i18n/config'
 import { localizeValue } from '@/lib/i18n/translations'
-import { isEveningPurchasable } from '@/lib/preview-stock'
-
-function withPreviewEveningStock(product: Product): Product {
-  if (product.id !== 'alpe-evening' || !isEveningPurchasable()) return product
-  return {
-    ...product,
-    variants: product.variants.map(variant => (
-      variant.id === 'evening' ? { ...variant, inStock: true } : variant
-    )),
-  }
-}
 
 export const products: Product[] = [
   {
@@ -67,7 +56,7 @@ export const products: Product[] = [
       '/images/shop/shop-evening-3.png',
     ],
     variants: [
-      { id: 'evening', label: 'Вечер', inStock: false },
+      { id: 'evening', label: 'Вечер', inStock: true },
     ],
     badge: 'Вечерен филтър',
   },
@@ -78,14 +67,10 @@ export function getProductBySlug(slug: string): Product | undefined {
 }
 
 export function getProducts(locale: Locale): Product[] {
-  return localizeValue(locale, products).map(withPreviewEveningStock)
+  return localizeValue(locale, products)
 }
 
 export function getLocalizedProductBySlug(slug: string, locale: Locale) {
   return getProducts(locale).find(product => product.slug === slug)
 }
 
-export function isEveningAvailable(): boolean {
-  const listed = products.find(p => p.id === 'alpe-evening')?.variants.some(v => v.inStock) ?? false
-  return listed || isEveningPurchasable()
-}

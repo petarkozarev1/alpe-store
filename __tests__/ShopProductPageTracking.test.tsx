@@ -7,6 +7,13 @@ jest.mock('@/components/analytics/MetaPixel', () => ({
   fireTrackedEvent: jest.fn(),
 }))
 
+jest.mock('@/components/inventory/useInventory', () => ({
+  useInventory: () => ({
+    daily: { code: 'daily', stock: 250, status: 'В наличност' },
+    evening: { code: 'evening', stock: 250, status: 'В наличност' },
+  }),
+}))
+
 jest.mock('next/image', () => ({
   __esModule: true,
   default: ({ alt, fill: _fill, priority: _priority, ...props }: any) => <img alt={alt} {...props} />,

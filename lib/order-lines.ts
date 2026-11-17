@@ -7,7 +7,6 @@
  */
 import type { CartItem } from '@/lib/types'
 import { products } from '@/lib/data/products'
-import { isEveningPurchasable } from '@/lib/preview-stock'
 import { priceForPairs } from '@/lib/sale'
 
 export const MAX_PAIRS = 10
@@ -16,7 +15,6 @@ const BARE_DAILY = new Set(['daily', 'alpe-daily', 'AMPÉ-daily'])
 
 export function inStockLensIds(): Set<string> {
   const ids = products.flatMap(product => product.variants.filter(variant => variant.inStock).map(variant => variant.id.toLowerCase()))
-  if (isEveningPurchasable() && !ids.includes('evening')) ids.push('evening')
   return new Set(ids)
 }
 
@@ -124,8 +122,8 @@ export function orderRejection(
     }
     if (!isInStockVariant(item.variantId)) {
       return locale === 'en'
-        ? 'AMPÉ Evening is temporarily out of stock. Please choose Daily.'
-        : 'AMPÉ Evening е временно изчерпан. Моля изберете Daily.'
+        ? 'This order contains a product that cannot be sold.'
+        : 'Поръчката съдържа продукт, който не може да се продава.'
     }
   }
   const pairs = countPairs(items)

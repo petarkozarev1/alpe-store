@@ -6,7 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/lib/store/cartStore'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import { countPairs } from '@/lib/pricing'
+import { useInventory } from '@/components/inventory/useInventory'
 import { displayedPairs } from '@/lib/order-lines'
+import { countVariantLenses, offerButtonText, offerState } from '@/lib/stock'
 import { pairOfferCopy, regularPriceForPairs } from '@/lib/sale'
 import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingProvider'
 import { useLocale, useTranslations } from '@/components/i18n/LocaleProvider'
@@ -60,6 +62,11 @@ export default function CartDrawer() {
   const locale = useLocale()
   const t = useTranslations()
   const { items, isDrawerOpen, closeDrawer, removeItem, setLinePairs, addItem, checkoutLocked, pairLimit, getSubtotal } = useCartStore()
+  const inventory = useInventory()
+  const cartCounts = countVariantLenses(items)
+  const cartOffer = offerState(inventory, cartCounts)
+  const secondOffer = offerState(inventory, { ...cartCounts, daily: cartCounts.daily + 1 })
+  const buyLocale = locale === 'en' ? 'en' : 'bg'
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -275,8 +282,9 @@ export default function CartDrawer() {
                     {pairs === 1 && (
                       <button
                         type="button"
-                        disabled={checkoutLocked}
+                        disabled={checkoutLocked || secondOffer !== 'available'}
                         onClick={() => {
+                          if (secondOffer !== 'available') return
                           const line = items[0]
                           const lenses = line ? displayedPairs(line) : 0
                           const daily = line?.variantId?.includes('daily') && !line.variantId.includes('evening')
@@ -294,7 +302,9 @@ export default function CartDrawer() {
                         }}
                         className="mt-3 w-full rounded-full border border-onyx/20 py-2.5 font-sans text-xs font-medium text-onyx disabled:opacity-40"
                       >
-                        {locale === 'en' ? 'Add a second pair' : 'Добави втори чифт'}
+                        {secondOffer === 'available'
+                          ? (locale === 'en' ? 'Add a second pair' : 'Добави втори чифт')
+                          : offerButtonText(secondOffer, buyLocale, locale === 'en' ? 'Add a second pair' : 'Добави втори чифт')}
                       </button>
                     )}
                   </div>
@@ -334,7 +344,7 @@ export default function CartDrawer() {
                   </span>
                 </div>
 
-                <Link
+                {cartOffer === 'available' ? <Link
                   href={localizedPath('/checkout', locale)}
                   onClick={() => {
                     try {
@@ -359,7 +369,11 @@ export default function CartDrawer() {
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                   {t('Към плащане')}
-                </Link>
+                </Link> : (
+                  <button type="button" disabled className="w-full bg-onyx/35 text-linen/60 text-center py-[17px] rounded-lg font-sans font-medium text-[15px] cursor-not-allowed">
+                    {offerButtonText(cartOffer, buyLocale, t('Към плащане'))}
+                  </button>
+                )}
 
                 <button
                   onClick={closeDrawer}

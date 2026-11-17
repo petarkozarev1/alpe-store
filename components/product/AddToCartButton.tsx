@@ -4,9 +4,16 @@ import { localizeContent } from '@/components/i18n/LocalizedContent'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
+import { useInventory } from '@/components/inventory/useInventory'
 import { useCartStore } from '@/lib/store/cartStore'
 import { variantIdFor } from '@/lib/order-lines'
+import { offerButtonText, offerState, type StockCode } from '@/lib/stock'
 import type { Product, Variant } from '@/lib/types'
+
+function stockCode(product: Product, variant: Variant): StockCode {
+  const id = `${product.id} ${product.slug} ${variant.id}`.toLowerCase()
+  return id.includes('evening') ? 'evening' : 'daily'
+}
 
 interface AddToCartButtonProps {
   product: Product
@@ -16,8 +23,17 @@ interface AddToCartButtonProps {
 export default function AddToCartButton({ product, selectedVariant }: AddToCartButtonProps) {
   const [added, setAdded] = useState(false)
   const { addItem, openDrawer } = useCartStore()
+  const locale = useLocale()
+  const code = stockCode(product, selectedVariant)
+  const offer = offerState(useInventory(), {
+    daily: code === 'daily' ? 1 : 0,
+    evening: code === 'evening' ? 1 : 0,
+  })
+  const canBuy = selectedVariant.inStock && offer === 'available'
+  const buyLocale = locale === 'en' ? 'en' : 'bg'
 
   const handleAdd = () => {
+    if (!canBuy) return
     addItem({
       productId: product.id,
       variantId: selectedVariant.id === 'daily' || selectedVariant.id === 'evening'
@@ -48,23 +64,22 @@ export default function AddToCartButton({ product, selectedVariant }: AddToCartB
     setTimeout(() => setAdded(false), 1500)
   }
 
-  const locale = useLocale()
   return localizeContent(locale, (
     <motion.button
       whileHover={{ scale: 0.97 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleAdd}
-      disabled={!selectedVariant.inStock}
-      aria-disabled={!selectedVariant.inStock}
+      disabled={!canBuy}
+      aria-disabled={!canBuy}
       className={`w-full py-4 rounded-xl font-semibold text-base transition-colors ${
         added
           ? 'bg-gold text-onyx'
-          : selectedVariant.inStock
+          : canBuy
           ? 'bg-onyx text-linen hover:bg-iron'
           : 'bg-iron text-stone cursor-not-allowed'
       }`}
     >
-      {added ? 'Добавено ✓' : selectedVariant.inStock ? 'Добави в количката' : 'Изчерпано'}
+      {added ? 'Добавено ✓' : offerButtonText(canBuy ? 'available' : offer === 'coming_soon' ? 'coming_soon' : 'sold_out', buyLocale, 'Добави в количката')}
     </motion.button>
   ))
 }

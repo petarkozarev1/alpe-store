@@ -4,7 +4,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { CheckoutElementsProvider } from '@stripe/react-stripe-js/checkout'
 import { localizeCartVariantLabel } from '@/lib/i18n/cart'
+import { useInventory } from '@/components/inventory/useInventory'
 import { displayedPairs } from '@/lib/order-lines'
+import { countVariantLenses, offerButtonText, offerState } from '@/lib/stock'
 import { localizedPath } from '@/lib/i18n/routing'
 import { getStripeClient } from '@/lib/stripe-client'
 import { COD_FEE } from '@/lib/checkout-delivery'
@@ -20,6 +22,8 @@ export function CheckoutSummary(p: any) {
     isCod, deliveryType, delivery, subtotal, bundleSaving, promo, shipping_, intlFee, total,
   } = p
   const en = locale === 'en'
+  const offer = offerState(useInventory(), countVariantLenses(items))
+  const stockLabel = offerButtonText(offer, en ? 'en' : 'bg', '')
   const deliveryLabel = deliveryType === 'address' ? (en ? 'To an address' : 'До адрес') : delivery.label
   const columnRef = useRef<HTMLDivElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
@@ -171,8 +175,10 @@ export function CheckoutSummary(p: any) {
                 </div>
               ) : (
                 <>
-                  <button type="submit" disabled={loading || !items.length} className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
-                    {loading ? (en ? 'PREPARING PAYMENT...' : 'ПОДГОТВЯМЕ ПЛАЩАНЕТО...') : (isCod ? (en ? 'ORDER WITH CASH ON DELIVERY' : 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ') : (en ? 'CONTINUE TO PAYMENT' : 'ПРОДЪЛЖИ КЪМ ПЛАЩАНЕ'))}
+                  <button type="submit" disabled={loading || !items.length || offer !== 'available'} className="w-full bg-onyx text-linen py-4 rounded-xl font-sans font-bold text-sm tracking-wider uppercase hover:bg-iron transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                    {offer !== 'available'
+                      ? stockLabel
+                      : loading ? (en ? 'PREPARING PAYMENT...' : 'ПОДГОТВЯМЕ ПЛАЩАНЕТО...') : (isCod ? (en ? 'ORDER WITH CASH ON DELIVERY' : 'ПОРЪЧАЙ С НАЛОЖЕН ПЛАТЕЖ') : (en ? 'CONTINUE TO PAYMENT' : 'ПРОДЪЛЖИ КЪМ ПЛАЩАНЕ'))}
                   </button>
                   <p className="font-sans text-[11px] text-stone/50 text-center mt-3">
                     {en ? 'By confirming, you accept the ' : 'Като потвърдиш, приемаш '}

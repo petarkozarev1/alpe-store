@@ -6,8 +6,9 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import type { Locale } from '@/lib/i18n/config'
 import { translate } from '@/lib/i18n/translations'
+import { useInventory } from '@/components/inventory/useInventory'
 import { variantIdFor } from '@/lib/order-lines'
-import { isEveningPurchasable } from '@/lib/preview-stock'
+import { offerButtonText, offerState } from '@/lib/stock'
 import { priceForPairs, regularPriceForPairs } from '@/lib/sale'
 import type { BundleCount, Lens } from '@/lib/shop-selection'
 import { useCartStore } from '@/lib/store/cartStore'
@@ -78,7 +79,7 @@ export default function ShoppableVideoModal({
   const [bundle, setBundle] = useState<BundleCount>(1)
   const [slots, setSlots] = useState<Lens[]>(['daily'])
   const [thumb, setThumb] = useState(0)
-  const eveningBlocked = !isEveningPurchasable()
+  const inventory = useInventory()
   const addItem = useCartStore(state => state.addItem)
   const openDrawer = useCartStore(state => state.openDrawer)
   const pairLimit = useCartStore(state => state.pairLimit)
@@ -86,7 +87,10 @@ export default function ShoppableVideoModal({
   const price = priceForPairs(slots.length)
   const compare = regularPriceForPairs(slots.length)
   const showCompare = compare - price > 0.009
-  const blocked = eveningBlocked && slots.includes('evening')
+  const offer = offerState(inventory, {
+    daily: slots.filter(slot => slot === 'daily').length,
+    evening: slots.filter(slot => slot === 'evening').length,
+  })
   const gallery = images[slots[0] ?? lens]
   const motionTime = reduced ? 0 : 0.35
 
@@ -132,7 +136,6 @@ export default function ShoppableVideoModal({
   }, [clip, muted])
 
   function chooseLens(next: Lens) {
-    if (next === 'evening' && eveningBlocked) return
     setLens(next)
     setThumb(0)
     if (bundle === 1) setSlots([next])
@@ -144,7 +147,7 @@ export default function ShoppableVideoModal({
   }
 
   function addToCart() {
-    if (!clip || blocked) return
+    if (!clip || offer !== 'available') return
     const lenses = slots
     const added = addItem({
       productId: `AMPÉ-${lens}`,
@@ -313,20 +316,17 @@ export default function ShoppableVideoModal({
               <p className="mt-5 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-stone md:mt-6">{t('Изберете очилата')}</p>
               <div className="mt-2.5 grid grid-cols-2 gap-2 md:mt-3">
                 {(['daily', 'evening'] as Lens[]).map(option => {
-                  const disabled = option === 'evening' && eveningBlocked
                   const selected = lens === option
                   return (
                     <button
                       key={option}
                       type="button"
-                      disabled={disabled}
                       aria-pressed={selected}
                       onClick={() => chooseLens(option)}
-                      className={`min-w-0 rounded-2xl border px-3 py-2 text-left font-sans text-sm ${selected ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'} ${disabled ? 'cursor-not-allowed opacity-45' : ''}`}
+                      className={`min-w-0 rounded-2xl border px-3 py-2 text-left font-sans text-sm ${selected ? 'border-[#B8906A] bg-sand' : 'border-iron/15 bg-cream'}`}
                     >
                       <span className="block font-serif text-lg">{option === 'evening' ? t('Вечерни') : t('Дневни')}</span>
                       <span className="block text-xs text-stone">{option === 'evening' ? t('Оранжеви · за вечерта') : t('Жълти · за деня')}</span>
-                      {disabled && <span className="mt-1 block text-[10px] uppercase tracking-wider text-stone">{t('Временно изчерпано')}</span>}
                     </button>
                   )
                 })}
@@ -355,21 +355,17 @@ export default function ShoppableVideoModal({
                   {slots.map((slot, slotIndex) => (
                     <div key={slotIndex} className="flex items-center gap-2">
                       <span className="w-14 font-sans text-xs text-stone">{t('Чифт')} {slotIndex + 1}</span>
-                      {(['daily', 'evening'] as Lens[]).map(option => {
-                        const disabled = option === 'evening' && eveningBlocked
-                        return (
+                      {(['daily', 'evening'] as Lens[]).map(option => (
                           <button
                             key={option}
                             type="button"
-                            disabled={disabled}
                             aria-pressed={slot === option}
                             onClick={() => setSlots(current => current.map((item, itemIndex) => itemIndex === slotIndex ? option : item))}
-                            className={`rounded-full px-3 py-1.5 font-sans text-xs ${slot === option ? 'bg-onyx text-linen' : 'bg-cream text-iron'} ${disabled ? 'cursor-not-allowed opacity-40' : ''}`}
+                            className={`rounded-full px-3 py-1.5 font-sans text-xs ${slot === option ? 'bg-onyx text-linen' : 'bg-cream text-iron'}`}
                           >
                             {option === 'evening' ? t('Вечерни') : t('Дневни')}
                           </button>
-                        )
-                      })}
+                      ))}
                     </div>
                   ))}
                 </div>
@@ -380,10 +376,10 @@ export default function ShoppableVideoModal({
               <button
                 type="button"
                 onClick={addToCart}
-                disabled={blocked}
+                disabled={offer !== 'available'}
                 className="w-full rounded-lg bg-onyx px-4 py-4 font-sans text-sm font-medium tracking-wide text-linen hover:bg-iron disabled:cursor-not-allowed disabled:bg-iron/35 disabled:text-linen/60"
               >
-                {blocked ? t('Изчерпано') : `${t('Добави в количката')} — €${price.toFixed(2)}`}
+                {offerButtonText(offer, locale === 'en' ? 'en' : 'bg', `${t('Добави в количката')} — €${price.toFixed(2)}`)}
               </button>
               {pairLimit === 'cap' && <p role="alert" className="mt-2 text-center font-sans text-sm text-iron">{t('Може да поръчате до 10 чифта.')}</p>}
               </div>

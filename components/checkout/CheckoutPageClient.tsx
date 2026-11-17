@@ -11,6 +11,8 @@ import { usePairPrice, usePricingSnapshot } from '@/components/pricing/PricingPr
 import { deliveryAmount } from '@/lib/checkout-delivery'
 import { translate } from '@/lib/i18n/translations'
 import { checkoutSessionSignature } from '@/lib/checkout-session'
+import { useInventory } from '@/components/inventory/useInventory'
+import { countVariantLenses, inventoryMessage } from '@/lib/stock'
 
 const COD_FEE = 1.0
 
@@ -35,6 +37,7 @@ export default function CheckoutPageClient() {
   const locale = useLocale()
   const pricing = usePricingSnapshot()
   const { items, setCheckoutLocked } = useCartStore()
+  const inventory = useInventory()
 
   const [contact, setContact] = useState<Contact>({ email: '' })
   const countryName = locale === 'en' ? 'Bulgaria' : 'България'
@@ -170,6 +173,8 @@ export default function CheckoutPageClient() {
       }, 50)
       return
     }
+    const stockError = inventoryMessage(inventory, countVariantLenses(items), locale === 'en' ? 'en' : 'bg')
+    if (stockError) { setError(stockError); return }
     setLoading(true); setError(null)
     const lineItems = items.map(i => ({
       name: `${i.name} — ${localizeCartVariantLabel(locale, i.variantLabel)}`,

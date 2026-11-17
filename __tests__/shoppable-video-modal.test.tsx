@@ -6,6 +6,13 @@ jest.mock('@/components/analytics/MetaPixel', () => ({
   fireTrackedEvent: jest.fn(),
 }))
 
+jest.mock('@/components/inventory/useInventory', () => ({
+  useInventory: () => ({
+    daily: { code: 'daily', stock: 250, status: 'В наличност' },
+    evening: { code: 'evening', stock: 250, status: 'В наличност' },
+  }),
+}))
+
 beforeEach(() => {
   useCartStore.setState({ items: [], isDrawerOpen: false, pairLimit: null })
 })
