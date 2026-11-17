@@ -337,10 +337,6 @@ export default function CertificationsView({ locale }: { locale: Locale }) {
                 </li>
               ))}
             </ol>
-            <div className="relative mt-6 h-72 overflow-hidden rounded-[28px]">
-              <LazyVideo src="/videos/pdp/01.mp4" poster="/videos/pdp/01.jpg" label={t('Клиент с очила AMPÉ')} />
-            </div>
-            <p className="mt-2 font-sans text-xs text-stone">{t('Клиент с очила AMPÉ.')}</p>
           </section>
 
           <section id="metod" className="scroll-mt-32 rounded-[28px] bg-[#B8906A] p-6 text-linen md:p-8">
