@@ -17,7 +17,7 @@ export default function HeroSection({ locale }: { locale: Locale }) {
   return (
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
-        className="absolute inset-0 z-0 h-full w-full object-cover object-center motion-reduce:hidden"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center motion-reduce:hidden"
         src="/videos/alpe-hero-web.mp4"
         autoPlay
         muted

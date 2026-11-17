@@ -532,7 +532,7 @@ export default function ProductPage({
           <button onClick={() => setSidebarOpen(false)} style={{ position: 'absolute', top: 16, right: 16, width: 32, height: 32, borderRadius: '50%', border: '1.5px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.08)', color: '#FAF0E4', fontSize: 18, lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.15s' }} aria-label="Затвори">×</button>
           {/* Product image */}
           <div style={{ width: 140, height: 140, borderRadius: 16, overflow: 'hidden', position: 'relative', flexShrink: 0, boxShadow: '0 4px 24px rgba(28,15,10,0.3)' }}>
-            <Image src={d.images[0].src} alt={`AMPÉ ${d.nameItalic}`} fill sizes="140px" className="object-cover" />
+            <Image src={d.images[0].src} alt={`AMPÉ ${d.nameItalic}`} fill sizes="140px" className="object-cover" quality={85} />
           </div>
 
           {/* Name */}

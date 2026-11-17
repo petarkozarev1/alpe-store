@@ -81,5 +81,6 @@ test('caps shop image quality at the optimized value', () => {
   const optimizedImages = Array.from(container.querySelectorAll('img[quality]'))
 
   expect(optimizedImages.length).toBeGreaterThan(0)
+  console.log(optimizedImages.map(img => img.outerHTML))
   expect(optimizedImages.every((image) => image.getAttribute('quality') === '85')).toBe(true)
 })

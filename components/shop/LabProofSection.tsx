@@ -108,7 +108,7 @@ export default function LabProofSection({ locale }: { locale: Locale }) {
           fill
           priority
           sizes="100vw"
-          quality={75}
+          quality={85}
           className="object-cover object-[42%_35%]"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-onyx/90 via-onyx/75 to-iron/80" />
