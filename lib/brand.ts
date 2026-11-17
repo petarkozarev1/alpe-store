@@ -19,7 +19,7 @@ export const SITE_URL = 'https://www.ampewear.com'
 
 export const EMAILS = {
   hello: 'hello@ampewear.com',
-  support: 'support@ampewear.com',
+  support: 'contact@ampewear.com',
   returns: 'returns@ampewear.com',
 } as const
 
