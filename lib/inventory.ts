@@ -72,7 +72,6 @@ function parseRow(page: { id?: string; properties?: Record<string, unknown> }): 
   let statusName = ''
   for (const prop of Object.values(properties)) {
     const s = selectValue(prop) || textValue(prop)
-    if (s) console.warn('[INVENTORY_STATUS]', code, JSON.stringify(s))
     if (s && STATUSES.has(s as StockStatus)) {
       statusName = s
       break
@@ -155,13 +154,21 @@ export async function decrementInventory(counts: Record<StockCode, number>): Pro
         continue
       }
       const next = Math.max(0, row.stock - pairs)
-      await notion.pages.update({
-        page_id: row.pageId,
-        properties: {
-          'Наличност': { number: next },
-          ...(next === 0 ? { 'Статус': { select: { name: 'Изчерпан' } } } : {}),
-        },
-      })
+      // Retrieve page to discover actual property names and types
+      const page = await notion.pages.retrieve({ page_id: row.pageId })
+      const properties = (page as { properties?: Record<string, { type?: string }> }).properties ?? {}
+      const update: Record<string, unknown> = {}
+      for (const [name, prop] of Object.entries(properties)) {
+        if (prop.type === 'number' || name.toLowerCase().includes('наличност')) {
+          update[name] = prop.type === 'number' ? { number: next } : { rich_text: [{ text: { content: String(next) } }] }
+        }
+        if (next === 0 && (prop.type === 'select' || name.toLowerCase().includes('статус'))) {
+          update[name] = prop.type === 'select' ? { select: { name: 'Изчерпан' } } : { rich_text: [{ text: { content: 'Изчерпан' } }] }
+        }
+      }
+      if (Object.keys(update).length) {
+        await notion.pages.update({ page_id: row.pageId, properties: update })
+      }
     }
     clearInventoryCache()
   } catch (err) {
