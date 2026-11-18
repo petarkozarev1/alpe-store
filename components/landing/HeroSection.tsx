@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { motion, type Transition } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
@@ -15,26 +15,18 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection({ locale }: { locale: Locale }) {
   const { heroContent } = getLandingContent(locale)
-  const [src, setSrc] = useState('/videos/alpe-hero-web.mp4')
-
-  useEffect(() => {
-    const mobile = window.matchMedia('(max-width: 767px)').matches
-    setSrc(mobile ? '/videos/hero-mobile.mp4' : '/videos/alpe-hero-web.mp4')
-  }, [])
-
   useEffect(() => {
     const video = document.querySelector('section video') as HTMLVideoElement | null
     if (!video) return
     video.muted = true
     video.play().catch(() => {})
-  }, [src])
+  }, [])
 
   return (
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
-        key={src}
         className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center motion-reduce:hidden"
-        src={src}
+        src="/videos/alpe-hero-web.mp4"
         autoPlay
         muted
         loop
