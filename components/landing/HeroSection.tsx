@@ -14,22 +14,26 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection({ locale }: { locale: Locale }) {
   const { heroContent } = getLandingContent(locale)
+  const [src, setSrc] = useState('/videos/alpe-hero-web.mp4')
+
+  useEffect(() => {
+    const mobile = window.matchMedia('(max-width: 767px)').matches
+    setSrc(mobile ? '/videos/hero-mobile.mp4' : '/videos/alpe-hero-web.mp4')
+  }, [])
+
   return (
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
+        key={src}
         className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center motion-reduce:hidden"
+        src={src}
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
         aria-hidden="true"
-        // @ts-ignore webkit attribute for iOS
-        webkit-playsinline="true"
-      >
-        <source src="/videos/hero-mobile.mp4" media="(max-width: 767px)" type="video/mp4" />
-        <source src="/videos/alpe-hero-web.mp4" type="video/mp4" />
-      </video>
+      />
 
       <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.62)_0%,rgba(45,14,4,0.28)_38%,rgba(45,14,4,0.8)_100%)]" />
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.14),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.66)_0%,rgba(45,14,4,0.24)_52%,rgba(45,14,4,0.58)_100%)]" />
