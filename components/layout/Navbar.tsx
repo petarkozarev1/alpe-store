@@ -41,6 +41,16 @@ export default function Navbar() {
       <div className="relative max-w-content mx-auto px-2 md:px-10 min-h-16 flex items-center">
 
         <div className="md:hidden relative z-10 flex items-center">
+          <button
+            className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5"
+            onClick={() => setMobileOpen(v => !v)}
+            aria-label={t('Меню')}
+            aria-expanded={mobileOpen}
+          >
+            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
+            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
+          </button>
           <LanguageSwitcher variant="toggle" />
         </div>
 
@@ -101,7 +111,14 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center ml-5"><LanguageSwitcher /></div>
-        <div className="md:hidden relative z-10 ml-auto flex items-center">
+        <div className="md:hidden relative z-10 ml-auto flex items-center gap-1">
+          <Link
+            href={localizedPath('/shop', locale)}
+            onClick={() => trackCtaClick()}
+            className="font-sans text-[10px] font-bold uppercase tracking-wider bg-onyx text-linen px-3 py-1.5 rounded-full hover:bg-iron transition-colors whitespace-nowrap"
+          >
+            {t('Поръчай сега')}
+          </Link>
           <button onClick={openDrawer} aria-label={t('Отвори количката')} className="relative flex min-h-11 min-w-11 items-center justify-center text-linen hover:text-parchment">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -113,16 +130,6 @@ export default function Navbar() {
                 {itemCount}
               </span>
             )}
-          </button>
-          <button
-            className="flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5"
-            onClick={() => setMobileOpen(v => !v)}
-            aria-label={t('Меню')}
-            aria-expanded={mobileOpen}
-          >
-            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
-            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-            <span className={`block w-5 h-px bg-linen transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
           </button>
         </div>
       </div>
