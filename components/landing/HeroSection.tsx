@@ -23,8 +23,11 @@ export default function HeroSection({ locale }: { locale: Locale }) {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
+        poster="/videos/pdp/01.jpg"
         aria-hidden="true"
+        // @ts-ignore webkit attribute for iOS
+        webkit-playsinline="true"
       />
 
       <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.62)_0%,rgba(45,14,4,0.28)_38%,rgba(45,14,4,0.8)_100%)]" />
