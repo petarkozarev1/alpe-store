@@ -21,6 +21,13 @@ export default function HeroSection({ locale }: { locale: Locale }) {
     setSrc(mobile ? '/videos/hero-mobile.mp4' : '/videos/alpe-hero-web.mp4')
   }, [])
 
+  useEffect(() => {
+    const video = document.querySelector('section video') as HTMLVideoElement | null
+    if (!video) return
+    video.muted = true
+    video.play().catch(() => {})
+  }, [src])
+
   return (
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
