@@ -42,7 +42,7 @@ export default function PairSelector({
             aria-checked={on}
             aria-label={`${pairLabel(n)}, ${money(payable(n))}`}
             className={on ? 'is-on' : ''}
-            onClick={() => onChange(n)}
+            onClick={() => { onChange(n); fireTrackedEvent('SelectPairs', { custom: true, data: { pairs: n }, ctaLocation: 'pair_selector' }) }}
           >
             <input type="radio" readOnly checked={on} tabIndex={-1} aria-hidden="true" />
             <span className="ps-copy">

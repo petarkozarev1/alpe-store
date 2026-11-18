@@ -105,12 +105,14 @@ export default function ProductPage({
     setLens(l)
     setThumbIdx(prev => ({ ...prev }))
     if (bundle === 1) setSlots([l])
+    fireTrackedEvent('SelectLens', { custom: true, data: { lens: l }, ctaLocation: 'shop_lens' })
   }
 
   function handleBundle(n: BundleCount) {
     setBundle(n)
     if (n > 1) setSlots(Array(n).fill(lens) as Lens[])
     else setSlots([lens])
+    fireTrackedEvent('SelectBundle', { custom: true, data: { pairs: n }, ctaLocation: 'shop_bundle' })
   }
 
   function handleSlot(i: number, l: Lens) {

@@ -202,8 +202,13 @@ export default function CartDrawer() {
                             disabled={checkoutLocked}
                             onClick={() => {
                               const current = displayedPairs(item)
-                              if (current > 1) setLinePairs(item.productId, item.variantId, current - 1)
-                              else removeItem(item.productId, item.variantId)
+                              if (current > 1) {
+                                setLinePairs(item.productId, item.variantId, current - 1)
+                                fireTrackedEvent('CartQtyChange', { custom: true, data: { direction: 'decrease', pairs: current - 1 }, ctaLocation: 'cart_qty' })
+                              } else {
+                                removeItem(item.productId, item.variantId)
+                                fireTrackedEvent('RemoveFromCart', { custom: true, data: { product_id: item.productId }, ctaLocation: 'cart_qty' })
+                              }
                             }}
                           >
                             −
@@ -218,7 +223,7 @@ export default function CartDrawer() {
                             className="flex h-11 w-11 items-center justify-center text-sm text-onyx transition-colors hover:bg-stone/10 disabled:opacity-40"
                             aria-label={t('Увеличи количеството')}
                             disabled={checkoutLocked}
-                            onClick={() => setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1)}
+                            onClick={() => { setLinePairs(item.productId, item.variantId, displayedPairs(item) + 1); fireTrackedEvent('CartQtyChange', { custom: true, data: { direction: 'increase', pairs: displayedPairs(item) + 1 }, ctaLocation: 'cart_qty' }) }}
                           >
                             +
                           </button>
@@ -245,7 +250,7 @@ export default function CartDrawer() {
 
                     {/* Remove */}
                     <button
-                      onClick={() => removeItem(item.productId, item.variantId)}
+                      onClick={() => { removeItem(item.productId, item.variantId); fireTrackedEvent('RemoveFromCart', { custom: true, data: { product_id: item.productId }, ctaLocation: 'cart_remove' }) }}
                       disabled={checkoutLocked}
                       aria-label={locale === 'en' ? `Remove ${item.name} from cart` : `Премахни ${item.name} от количката`}
                       className="text-stone/40 hover:text-red-500 transition-colors mt-0.5 flex-shrink-0 disabled:opacity-40"
