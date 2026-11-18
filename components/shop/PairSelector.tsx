@@ -51,10 +51,10 @@ export default function PairSelector({
               {n === 2 && <span className="ps-ship">{en ? 'Free delivery' : '🚚 Безплатна доставка'}</span>}
             </span>
             <span className="ps-price">
-              {n === 1 && promo ? (
+              {n === 1 && pricing.saleId ? (
                 <span className="ps-row">
-                  <s className="ps-was">{money(single)}</s>
-                  <span className="ps-now">{money(promoPrice)}</span>
+                  <s className="ps-was">{money(pricing.regularSingle)}</s>
+                  <span className="ps-now">{money(single)}</span>
                 </span>
               ) : n === 2 && two < separate ? (
                 <>

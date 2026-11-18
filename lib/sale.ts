@@ -68,6 +68,7 @@ export const INFLUENCER_PROMOS: Record<string, number> = {
 
 export interface PricingSnapshot {
   single: number
+  regularSingle: number
   double: number
   regularDouble: number
   saleId: SaleId | null
@@ -116,10 +117,11 @@ export function getPricingSnapshot(now: Date = new Date()): PricingSnapshot {
   const single = sale ? singlePairPromoPrice(sale.promo.percent) : SINGLE_PRICE
   return {
     single,
+    regularSingle: SINGLE_PRICE,
     double: sale ? sale.doublePrice : REGULAR_DOUBLE_PRICE,
     regularDouble: REGULAR_DOUBLE_PRICE,
     saleId: sale?.id ?? null,
-    promo: null,
+    promo: sale ? { code: '', percent: sale.promo.percent, singlePairPrice: single } : null,
   }
 }
 
