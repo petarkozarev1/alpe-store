@@ -143,6 +143,13 @@ export interface TrackedEventOptions {
   ctaLocation?: string
   email?: string
   phone?: string
+  firstName?: string
+  lastName?: string
+  city?: string
+  country?: string
+  zip?: string
+  /** Override the generated event id (for Purchase dedup with server). */
+  eventId?: string
 }
 
 /**
@@ -152,10 +159,11 @@ export interface TrackedEventOptions {
  */
 export function fireTrackedEvent(name: string, opts: TrackedEventOptions = {}): void {
   if (typeof window === 'undefined' || !hasOptionalCookieConsent()) return
-  const eventId =
+  const eventId = opts.eventId ?? (
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? `${name}-${crypto.randomUUID()}`
       : `${name}-${Math.random().toString(36).slice(2)}`
+  )
 
   // 1) Browser pixel with the shared eventID
   if (ensurePixelReady()) {
@@ -175,6 +183,11 @@ export function fireTrackedEvent(name: string, opts: TrackedEventOptions = {}): 
       ctaLocation: opts.ctaLocation,
       email: opts.email,
       phone: opts.phone,
+      firstName: opts.firstName,
+      lastName: opts.lastName,
+      city: opts.city,
+      country: opts.country,
+      zip: opts.zip,
       fbp: readCookie('_fbp'),
       fbc: readCookie('_fbc'),
       sourceUrl: window.location.href,

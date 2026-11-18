@@ -29,8 +29,8 @@ function Tracker() {
       page_title: document.title,
     })
 
-    if (hasOptionalCookieConsent() && typeof window.fbq === 'function') {
-      window.fbq('track', 'PageView')
+    if (hasOptionalCookieConsent()) {
+      fireTrackedEvent('PageView', { data: { page_path: path } })
     }
   }, [pathname, searchParams])
 

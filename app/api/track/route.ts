@@ -16,6 +16,11 @@ interface TrackBody {
   ctaLocation?: string
   email?: string
   phone?: string
+  firstName?: string
+  lastName?: string
+  city?: string
+  country?: string
+  zip?: string
   fbp?: string
   fbc?: string
   sourceUrl?: string
@@ -37,7 +42,11 @@ export async function POST(req: Request) {
     await sendCAPIEvent(body.eventName, {
       email: body.email || undefined,
       phone: body.phone || undefined,
-      city: undefined,
+      firstName: body.firstName || undefined,
+      lastName: body.lastName || undefined,
+      city: body.city || undefined,
+      country: body.country || undefined,
+      zip: body.zip || undefined,
       fbp: body.fbp || undefined,
       fbc: body.fbc || undefined,
       clientIpAddress,
