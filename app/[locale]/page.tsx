@@ -23,6 +23,14 @@ export default function Home({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound()
   const locale = params.locale
   const { faqs } = getLandingContent(locale)
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: locale === 'en' ? 'Home' : 'Начало', item: absoluteUrl(localizedPath('/', locale)) },
+      { '@type': 'ListItem', position: 2, name: locale === 'en' ? 'Blue light blocking glasses' : 'Очила за синя светлина', item: absoluteUrl(localizedPath('/shop', locale)) },
+    ],
+  }
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -38,10 +46,8 @@ export default function Home({ params }: { params: { locale: string } }) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <HeroSection locale={locale} />
       <CertStrip locale={locale} />
       <GallerySection locale={locale} />

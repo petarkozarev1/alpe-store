@@ -14,6 +14,7 @@ export const defaultSeo = {
   title: 'AMPÉ — Очила за синя светлина | Blue light blocking glasses',
   description:
     'Очила за синя светлина от AMPÉ. Blue light blocking glasses с EU сертифицирани пластмасови стъкла, UV400 защита и безплатна доставка за 2 или повече чифта.',
+  keywords: 'очила за синя светлина, blue light blocking glasses, blue light glasses, очила за компютър, AMPÉ, computer glasses',
   locale: 'bg_BG',
 }
 

@@ -48,6 +48,7 @@ function rootMetadata(locale: 'bg' | 'en'): Metadata {
     template: `%s | ${defaultSeo.siteName}`,
   },
   description,
+  keywords: defaultSeo.keywords,
   applicationName: defaultSeo.siteName,
   openGraph: {
     type: 'website',
