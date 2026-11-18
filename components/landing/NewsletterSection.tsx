@@ -47,7 +47,7 @@ export default function NewsletterSection({ locale }: { locale: Locale }) {
               <span className="font-mono text-lg tracking-wider text-gold">{code}</span>
             </div>
             <p className="font-sans text-xs text-stone max-w-xs">
-              {t('Валиден за 1 чифт. Не се комбинира с други промоции.')}
+              {t('Валиден за 1 или 2 чифта, ако няма по-голяма отстъпка. Не се комбинира с други промоции.')}
             </p>
           </div>
         ) : (

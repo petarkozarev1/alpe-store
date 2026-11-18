@@ -226,8 +226,19 @@ export function applyPromo(
 
   const influencer = INFLUENCER_PROMOS[key]
   if (!influencer) return emptyPromo('unknown')
-  // Newsletter code is blocked while any public sale is active
-  if (key === 'NEWSLETTER10' && snapshot.promo) return emptyPromo('inactive')
+
+  if (key === 'NEWSLETTER10') {
+    // Allowed on 1 or 2 pairs. Blocked when a better discount is already active.
+    if (options.pairs < 1 || options.pairs > 2) return emptyPromo('single-only')
+    const base = options.pairs === 1 ? SINGLE_PRICE : REGULAR_DOUBLE_PRICE
+    const withTen = +(base * (1 - influencer / 100)).toFixed(2)
+    const current = priceFromPacks(options.pairs, snapshot.single, snapshot.double)
+    // If the current price (sale or regular) is already better, reject
+    if (current <= withTen) return emptyPromo('inactive')
+    const discount = +(base - withTen).toFixed(2)
+    return { code: key, percent: influencer, amount: discount, reason: null }
+  }
+
   if (options.pairs !== 1) return emptyPromo('single-only')
   const discountCents = Math.round(Math.round(SINGLE_PRICE * 100) * influencer / 100)
   return { code: key, percent: influencer, amount: discountCents / 100, reason: null }

@@ -545,7 +545,7 @@ export const englishTranslations: Record<string, string> = {
   'за първата поръчка.': 'your first order.',
   'Абонирай се за списъка и ще получиш еднократен код за 10% отстъпка. Кодът не се комбинира с активни промоции (BLACK15, XMAS15 и други).': 'Subscribe to the list and get a one-time 10% off code. The code cannot be combined with active promotions (BLACK15, XMAS15 and others).',
   'Готово! Ето твоят код:': 'Done! Here is your code:',
-  'Валиден за 1 чифт. Не се комбинира с други промоции.': 'Valid for 1 pair. Cannot be combined with other promotions.',
+  'Валиден за 1 или 2 чифта, ако няма по-голяма отстъпка. Не се комбинира с други промоции.': 'Valid for 1 or 2 pairs if there is no bigger discount. Cannot be combined with other promotions.',
   'С абонамента давате съгласие за получаване на маркетингови имейли от AMPÉ. Отпишете се по всяко време с едно кликване. Вижте нашата': 'By subscribing, you agree to receive marketing emails from AMPÉ. Unsubscribe at any time with one click. See our',
   'За целодневна работа пред екран.': 'For all-day screen work.',
   'AMPÉ Daily са очила за ежедневна работа пред екран с прозрачно-жълти пластмасови стъкла, UV400 защита и антирефлексно покритие за по-комфортни дълги сесии.': 'AMPÉ Daily glasses feature clear-yellow plastic lenses, UV400 protection and an anti-reflective coating for more comfortable long screen sessions.',
