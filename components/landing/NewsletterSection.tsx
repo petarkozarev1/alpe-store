@@ -37,7 +37,10 @@ export default function NewsletterSection({ locale }: { locale: Locale }) {
         </h2>
 
         <p className="font-sans text-sm text-stone max-w-md leading-relaxed">
-          {t('Абонирай се за списъка и ще получиш еднократен код за 10% отстъпка. Кодът не се комбинира с активни промоции (BLACK15, XMAS15 и други).')}
+          {t('Абонирай се за списъка и ще получиш еднократен код за 10% отстъпка.')}
+        </p>
+        <p className="font-sans text-[10px] text-stone/35 max-w-sm leading-snug">
+          {t('Кодът не се комбинира с активни промоции.')}
         </p>
 
         {submitted ? (
