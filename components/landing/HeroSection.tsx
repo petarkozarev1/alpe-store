@@ -34,6 +34,7 @@ export default function HeroSection({ locale }: { locale: Locale }) {
         ref={videoRef}
         className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center"
         src="/videos/alpe-hero-web.mp4"
+        poster="/videos/hero-poster.jpg"
         autoPlay
         muted
         loop
