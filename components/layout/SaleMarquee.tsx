@@ -37,7 +37,7 @@ export default function SaleMarquee({ text }: { text: string }) {
     track.appendChild(sample)
     const sampleWidth = sample.scrollWidth
     sample.remove()
-    const speed = Math.max(sampleWidth, itemWidth) / 6
+    const speed = Math.max(sampleWidth, itemWidth) / 3.5
     const distance = trackWidth + itemWidth
     item.style.setProperty('--sale-from', `${trackWidth}px`)
     item.style.setProperty('--sale-to', `${-itemWidth}px`)
@@ -72,7 +72,7 @@ export default function SaleMarquee({ text }: { text: string }) {
           animation-name: sale-pass;
           animation-timing-function: linear;
           animation-fill-mode: forwards;
-          animation-duration: var(--sale-duration, 14s);
+          animation-duration: var(--sale-duration, 8s);
           animation-play-state: paused;
           transform: translate3d(var(--sale-from, 100vw), 0, 0);
           will-change: transform;

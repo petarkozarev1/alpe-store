@@ -106,16 +106,9 @@ export function singlePairPromoPrice(percent = 15): number {
 
 /** Top-bar copy. Prices and the public code come from the active sale window. */
 export function saleBarMessage(snapshot: PricingSnapshot, locale: 'bg' | 'en'): string {
-  if (!snapshot.saleId) {
-    return locale === 'en'
-      ? 'Free delivery on 2 or more pairs'
-      : 'Безплатна доставка за 2 или повече чифта'
-  }
-  const single = snapshot.single.toFixed(2)
-  const double = snapshot.double.toFixed(2)
   return locale === 'en'
-    ? `1 pair €${single} · 2 pairs €${double} · free delivery on 2+ pairs`
-    : `1 чифт €${single} · 2 чифта €${double} · безплатна доставка за 2+ чифта`
+    ? 'Free delivery on 2 or more pairs'
+    : 'Безплатна доставка за 2 или повече чифта'
 }
 
 export function getPricingSnapshot(now: Date = new Date()): PricingSnapshot {
