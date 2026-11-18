@@ -2,6 +2,7 @@
 
 import { useLocale } from '@/components/i18n/LocaleProvider'
 import { usePricingSnapshot } from '@/components/pricing/PricingProvider'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 
 type Count = 1 | 2
 

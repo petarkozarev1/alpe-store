@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { hasOptionalCookieConsent } from '@/lib/cookieConsent'
+import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 
 function Tracker() {
   const pathname = usePathname()
