@@ -25,7 +25,6 @@ export default function PairSelector({
   const promo = pricing.promo
   const promoPrice = promo?.singlePairPrice ?? single
   const promoPercent = promo?.percent ?? 15
-  const code = promo?.code ?? 'BLACK15'
 
   const pairLabel = (n: Count) => (en ? `${n} ${n === 1 ? 'pair' : 'pairs'}` : `${n} чифт${n > 1 ? 'а' : ''}`)
   const payable = (n: Count) => (n === 1 && promo ? promoPrice : n === 1 ? single : two)
@@ -69,10 +68,9 @@ export default function PairSelector({
                 <span className="ps-now">{money(n === 1 ? single : two)}</span>
               )}
             </span>
-            {n === 1 && promo && (
-              <span className="ps-tag ps-tag-a ps-tag-split">
+            {n === 1 && pricing.saleId && (
+              <span className="ps-tag ps-tag-a">
                 <span className="ps-bf">Black Friday</span>
-                <span>{code} · −{promoPercent}%</span>
               </span>
             )}
             {n === 2 && (

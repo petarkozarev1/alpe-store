@@ -106,32 +106,27 @@ export function singlePairPromoPrice(percent = 15): number {
 
 /** Top-bar copy. Prices and the public code come from the active sale window. */
 export function saleBarMessage(snapshot: PricingSnapshot, locale: 'bg' | 'en'): string {
-  if (!snapshot.promo) {
+  if (!snapshot.saleId) {
     return locale === 'en'
       ? 'Free delivery on 2 or more pairs'
       : 'Безплатна доставка за 2 или повече чифта'
   }
-  const off = snapshot.promo.singlePairPrice.toFixed(2)
+  const single = snapshot.single.toFixed(2)
   const double = snapshot.double.toFixed(2)
   return locale === 'en'
-    ? `Code ${snapshot.promo.code}: ${snapshot.promo.percent}% off one pair (€${off}). Two pairs €${double} · free delivery on 2+ pairs`
-    : `Код ${snapshot.promo.code}: −${snapshot.promo.percent}% за 1 чифт (€${off}). Два чифта €${double} · безплатна доставка за 2+ чифта`
+    ? `1 pair €${single} · 2 pairs €${double} · free delivery on 2+ pairs`
+    : `1 чифт €${single} · 2 чифта €${double} · безплатна доставка за 2+ чифта`
 }
 
 export function getPricingSnapshot(now: Date = new Date()): PricingSnapshot {
   const sale = activeSale(now)
+  const single = sale ? singlePairPromoPrice(sale.promo.percent) : SINGLE_PRICE
   return {
-    single: SINGLE_PRICE,
+    single,
     double: sale ? sale.doublePrice : REGULAR_DOUBLE_PRICE,
     regularDouble: REGULAR_DOUBLE_PRICE,
     saleId: sale?.id ?? null,
-    promo: sale
-      ? {
-          code: sale.promo.code,
-          percent: sale.promo.percent,
-          singlePairPrice: singlePairPromoPrice(sale.promo.percent),
-        }
-      : null,
+    promo: null,
   }
 }
 
