@@ -58,7 +58,6 @@ function selectValue(property: unknown) {
 
 function parseRow(page: { id?: string; properties?: Record<string, unknown> }): StockRow | null {
   const properties = page.properties ?? {}
-  console.warn('[INVENTORY_DEBUG] properties:', JSON.stringify(properties, null, 2))
   // Find the code from any property that contains "daily" or "evening"
   let code: StockCode | null = null
   for (const prop of Object.values(properties)) {
@@ -69,22 +68,28 @@ function parseRow(page: { id?: string; properties?: Record<string, unknown> }): 
     }
   }
   if (!code) return null
-  // Find status from any select property
+  // Find status from select or rich_text
   let statusName = ''
   for (const prop of Object.values(properties)) {
-    const s = selectValue(prop)
+    const s = selectValue(prop) || textValue(prop)
     if (s && STATUSES.has(s as StockStatus)) {
       statusName = s
       break
     }
   }
   const status: StockStatus = STATUSES.has(statusName as StockStatus) ? statusName as StockStatus : 'Очаква се'
-  // Find stock from any number property
+  // Find stock from number or rich_text
   let stock: number | null = null
   for (const prop of Object.values(properties)) {
     const n = numberValue(prop)
     if (n !== null) {
       stock = n
+      break
+    }
+    const t = textValue(prop)
+    const parsed = Number(t)
+    if (t && Number.isFinite(parsed)) {
+      stock = parsed
       break
     }
   }
