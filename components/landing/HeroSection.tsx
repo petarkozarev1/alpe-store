@@ -21,7 +21,7 @@ export default function HeroSection({ locale }: { locale: Locale }) {
     const video = videoRef.current
     if (!video) return
     const mobile = window.matchMedia('(max-width: 767px)').matches
-    if (mobile) video.src = '/videos/alpe-hero-web-mobile.mp4'
+    if (mobile) video.src = '/videos/alpe-hero-9x16.mp4'
     video.muted = true
     video.defaultMuted = true
     video.setAttribute('playsinline', 'true')
