@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { motion, type Transition } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
