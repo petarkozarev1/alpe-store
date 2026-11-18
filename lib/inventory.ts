@@ -72,6 +72,7 @@ function parseRow(page: { id?: string; properties?: Record<string, unknown> }): 
   let statusName = ''
   for (const prop of Object.values(properties)) {
     const s = selectValue(prop) || textValue(prop)
+    if (s) console.warn('[INVENTORY_STATUS]', code, JSON.stringify(s))
     if (s && STATUSES.has(s as StockStatus)) {
       statusName = s
       break
