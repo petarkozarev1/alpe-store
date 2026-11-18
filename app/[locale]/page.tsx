@@ -6,10 +6,11 @@ import ComparisonSection from '@/components/landing/ComparisonSection'
 import GallerySection from '@/components/landing/GallerySection'
 import FaqSection from '@/components/landing/FaqSection'
 import NewsletterSection from '@/components/landing/NewsletterSection'
-import { createLocalizedPageMetadata, defaultSeo } from '@/lib/seo'
+import { createLocalizedPageMetadata, defaultSeo, absoluteUrl } from '@/lib/seo'
 import { getLandingContent } from '@/lib/data/content'
 import { isLocale } from '@/lib/i18n/config'
 import { notFound } from 'next/navigation'
+import { localizedPath } from '@/lib/i18n/routing'
 
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
