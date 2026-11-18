@@ -18,17 +18,18 @@ export default function HeroSection({ locale }: { locale: Locale }) {
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
         className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center motion-reduce:hidden"
-        src="/videos/alpe-hero-web.mp4"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
-        poster="/videos/pdp/01.jpg"
         aria-hidden="true"
         // @ts-ignore webkit attribute for iOS
         webkit-playsinline="true"
-      />
+      >
+        <source src="/videos/hero-mobile.mp4" media="(max-width: 767px)" type="video/mp4" />
+        <source src="/videos/alpe-hero-web.mp4" type="video/mp4" />
+      </video>
 
       <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.62)_0%,rgba(45,14,4,0.28)_38%,rgba(45,14,4,0.8)_100%)]" />
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.14),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.66)_0%,rgba(45,14,4,0.24)_52%,rgba(45,14,4,0.58)_100%)]" />
