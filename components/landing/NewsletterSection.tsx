@@ -11,7 +11,7 @@ export default function NewsletterSection({ locale }: { locale: Locale }) {
   const [submitted, setSubmitted] = useState(false)
   const [code] = useState('NEWSLETTER10')
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email) return
     setSubmitted(true)
@@ -21,6 +21,13 @@ export default function NewsletterSection({ locale }: { locale: Locale }) {
         email,
       })
     } catch { /* never break UI */ }
+    try {
+      await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+    } catch { /* storage failure must not break the form */ }
   }
 
   return (
