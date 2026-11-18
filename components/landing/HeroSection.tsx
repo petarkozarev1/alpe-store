@@ -15,17 +15,24 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection({ locale }: { locale: Locale }) {
   const { heroContent } = getLandingContent(locale)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
   useEffect(() => {
-    const video = document.querySelector('section video') as HTMLVideoElement | null
+    const video = videoRef.current
     if (!video) return
     video.muted = true
-    video.play().catch(() => {})
+    video.defaultMuted = true
+    const tryPlay = () => video.play().catch(() => {})
+    if (video.readyState >= 2) tryPlay()
+    else video.addEventListener('canplay', tryPlay, { once: true })
+    return () => video.removeEventListener('canplay', tryPlay)
   }, [])
 
   return (
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
-        className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center motion-reduce:hidden"
+        ref={videoRef}
+        className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center"
         src="/videos/alpe-hero-web.mp4"
         autoPlay
         muted
