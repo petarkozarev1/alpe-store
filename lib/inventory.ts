@@ -58,6 +58,7 @@ function selectValue(property: unknown) {
 
 function parseRow(page: { id?: string; properties?: Record<string, unknown> }): StockRow | null {
   const properties = page.properties ?? {}
+  console.warn('[INVENTORY_DEBUG] properties:', JSON.stringify(properties, null, 2))
   // Find the code from any property that contains "daily" or "evening"
   let code: StockCode | null = null
   for (const prop of Object.values(properties)) {
