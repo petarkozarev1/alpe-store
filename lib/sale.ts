@@ -41,15 +41,15 @@ export interface SaleWindow {
 export const SALE_WINDOWS: SaleWindow[] = [
   {
     id: 'black-november',
-    start: '2026-11-01T00:00:00',
-    end: '2026-12-01T00:00:00',
+    start: '2025-11-01T00:00:00',
+    end: '2025-12-01T00:00:00',
     doublePrice: SALE_DOUBLE_PRICE,
     promo: { code: 'BLACK15', percent: 15, singlePairOnly: true },
   },
   {
     id: 'christmas',
-    start: '2026-12-01T00:00:00',
-    end: '2026-12-27T00:00:00',
+    start: '2025-12-01T00:00:00',
+    end: '2025-12-27T00:00:00',
     doublePrice: SALE_DOUBLE_PRICE,
     promo: { code: 'XMAS15', percent: 15, singlePairOnly: true },
   },
