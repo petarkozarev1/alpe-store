@@ -1,5 +1,4 @@
 'use client'
-import { useEffect, useRef } from 'react'
 import { motion, type Transition } from 'framer-motion'
 import { fireTrackedEvent } from '@/components/analytics/MetaPixel'
 import Button from '@/components/ui/Button'
@@ -15,40 +14,21 @@ const fadeUp = (delay = 0) => ({
 
 export default function HeroSection({ locale }: { locale: Locale }) {
   const { heroContent } = getLandingContent(locale)
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    const mobile = window.matchMedia('(max-width: 767px)').matches
-    if (mobile) video.src = '/videos/alpe-hero-9x16.mp4'
-    video.muted = true
-    video.defaultMuted = true
-    video.setAttribute('playsinline', 'true')
-    video.setAttribute('webkit-playsinline', 'true')
-    video.load()
-    const tryPlay = () => video.play().catch(() => {})
-    video.addEventListener('canplay', tryPlay)
-    tryPlay()
-    return () => video.removeEventListener('canplay', tryPlay)
-  }, [])
-
   return (
     <section className="relative min-h-[calc(100svh-91px)] md:min-h-[calc(100svh-95px)] w-full overflow-hidden bg-onyx text-center text-linen">
       <video
-        ref={videoRef}
-        className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center"
+        className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center motion-reduce:hidden"
         src="/videos/alpe-hero-web.mp4"
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
       />
 
-      <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.35)_0%,rgba(45,14,4,0.15)_38%,rgba(45,14,4,0.55)_100%)]" />
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.08),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.4)_0%,rgba(45,14,4,0.1)_52%,rgba(45,14,4,0.35)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(45,14,4,0.62)_0%,rgba(45,14,4,0.28)_38%,rgba(45,14,4,0.8)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_34%,rgba(237,228,214,0.14),transparent_34%),linear-gradient(90deg,rgba(45,14,4,0.66)_0%,rgba(45,14,4,0.24)_52%,rgba(45,14,4,0.58)_100%)]" />
 
       <div
         data-testid="hero-content"
