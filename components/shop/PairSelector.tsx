@@ -73,17 +73,7 @@ export default function PairSelector({
                 <span className="ps-bf">Black Friday</span>
               </span>
             )}
-            {n === 2 && (
-              <>
-                <span className="ps-tag ps-tag-a ps-tag-split">
-                  <span className="ps-bf">Black Friday</span>
-                  <span>{en ? 'Most popular' : 'Най-популярни'}</span>
-                </span>
-                {two < separate && (
-                  <span className="ps-tag ps-tag-b">{en ? 'Second pair at 50% off' : 'Вторият чифт на половин цена'}</span>
-                )}
-              </>
-            )}
+
           </button>
         )
       })}
