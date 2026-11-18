@@ -58,11 +58,35 @@ function selectValue(property: unknown) {
 
 function parseRow(page: { id?: string; properties?: Record<string, unknown> }): StockRow | null {
   const properties = page.properties ?? {}
-  const code = textValue(properties['Код']).toLowerCase()
-  if (code !== 'daily' && code !== 'evening') return null
-  const statusName = selectValue(properties['Статус'])
+  // Find the code from any property that contains "daily" or "evening"
+  let code: StockCode | null = null
+  for (const prop of Object.values(properties)) {
+    const text = textValue(prop).toLowerCase()
+    if (text === 'daily' || text === 'evening') {
+      code = text
+      break
+    }
+  }
+  if (!code) return null
+  // Find status from any select property
+  let statusName = ''
+  for (const prop of Object.values(properties)) {
+    const s = selectValue(prop)
+    if (s && STATUSES.has(s as StockStatus)) {
+      statusName = s
+      break
+    }
+  }
   const status: StockStatus = STATUSES.has(statusName as StockStatus) ? statusName as StockStatus : 'Очаква се'
-  const stock = numberValue(properties['Наличност'])
+  // Find stock from any number property
+  let stock: number | null = null
+  for (const prop of Object.values(properties)) {
+    const n = numberValue(prop)
+    if (n !== null) {
+      stock = n
+      break
+    }
+  }
   return {
     code,
     stock: stock ?? 250,
