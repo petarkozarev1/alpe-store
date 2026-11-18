@@ -61,7 +61,7 @@ export default function SaleMarquee({ text }: { text: string }) {
         }}
       >
         <span className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold">
-          {message}
+          {message || `✦ ${text}`}
         </span>
       </div>
       <style>{`
@@ -74,7 +74,7 @@ export default function SaleMarquee({ text }: { text: string }) {
           animation-fill-mode: forwards;
           animation-duration: var(--sale-duration, 8s);
           animation-play-state: paused;
-          transform: translate3d(var(--sale-from, 100vw), 0, 0);
+          transform: translate3d(var(--sale-from, 0), 0, 0);
           will-change: transform;
         }
         .sale-marquee.is-ready .sale-marquee-line {
@@ -85,7 +85,7 @@ export default function SaleMarquee({ text }: { text: string }) {
           animation-play-state: paused;
         }
         @keyframes sale-pass {
-          from { transform: translate3d(var(--sale-from, 100vw), 0, 0); }
+          from { transform: translate3d(var(--sale-from, 0), 0, 0); }
           to { transform: translate3d(var(--sale-to, -100%), 0, 0); }
         }
         @keyframes sale-fade {
