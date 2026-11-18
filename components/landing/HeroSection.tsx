@@ -20,20 +20,17 @@ export default function HeroSection({ locale }: { locale: Locale }) {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+    const mobile = window.matchMedia('(max-width: 767px)').matches
+    if (mobile) video.src = '/videos/alpe-hero-web-mobile.mp4'
     video.muted = true
     video.defaultMuted = true
     video.setAttribute('playsinline', 'true')
     video.setAttribute('webkit-playsinline', 'true')
-    const tryPlay = () => {
-      video.play().catch(() => setTimeout(() => video.play().catch(() => {}), 200))
-    }
-    tryPlay()
+    video.load()
+    const tryPlay = () => video.play().catch(() => {})
     video.addEventListener('canplay', tryPlay)
-    video.addEventListener('loadeddata', tryPlay)
-    return () => {
-      video.removeEventListener('canplay', tryPlay)
-      video.removeEventListener('loadeddata', tryPlay)
-    }
+    tryPlay()
+    return () => video.removeEventListener('canplay', tryPlay)
   }, [])
 
   return (
