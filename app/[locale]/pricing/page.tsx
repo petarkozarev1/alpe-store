@@ -22,7 +22,7 @@ export default function PricingPage({ params }: { params: { locale: string } }) 
       name: '1 чифт',
       price: `€${pricing.single.toFixed(2)}`,
       originalPrice: null as string | null,
-      hint: pricing.promo ? `Код ${pricing.promo.code}: €${pricing.promo.singlePairPrice.toFixed(2)}` : null,
+      hint: null,
       badge: null as string | null,
       description: 'Един чифт AMPÉ очила по твой избор — дневни или вечерни пластмасови стъкла.',
       features: ['Избор: дневни или вечерни пластмасови стъкла', 'UV400 + антирефлексно покритие', 'Филтър синя и зелена светлина', 'Доставка €4.99'],
