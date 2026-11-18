@@ -63,6 +63,7 @@ export const INFLUENCER_PROMOS: Record<string, number> = {
   ALETEA10: 10,
   ILIYANA10: 10,
   KALOYAN10: 10,
+  NEWSLETTER10: 10,
 }
 
 export interface PricingSnapshot {
@@ -225,6 +226,8 @@ export function applyPromo(
 
   const influencer = INFLUENCER_PROMOS[key]
   if (!influencer) return emptyPromo('unknown')
+  // Newsletter code is blocked while any public sale is active
+  if (key === 'NEWSLETTER10' && snapshot.promo) return emptyPromo('inactive')
   if (options.pairs !== 1) return emptyPromo('single-only')
   const discountCents = Math.round(Math.round(SINGLE_PRICE * 100) * influencer / 100)
   return { code: key, percent: influencer, amount: discountCents / 100, reason: null }
