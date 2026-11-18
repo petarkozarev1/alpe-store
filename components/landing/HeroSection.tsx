@@ -22,10 +22,18 @@ export default function HeroSection({ locale }: { locale: Locale }) {
     if (!video) return
     video.muted = true
     video.defaultMuted = true
-    const tryPlay = () => video.play().catch(() => {})
-    if (video.readyState >= 2) tryPlay()
-    else video.addEventListener('canplay', tryPlay, { once: true })
-    return () => video.removeEventListener('canplay', tryPlay)
+    video.setAttribute('playsinline', 'true')
+    video.setAttribute('webkit-playsinline', 'true')
+    const tryPlay = () => {
+      video.play().catch(() => setTimeout(() => video.play().catch(() => {}), 200))
+    }
+    tryPlay()
+    video.addEventListener('canplay', tryPlay)
+    video.addEventListener('loadeddata', tryPlay)
+    return () => {
+      video.removeEventListener('canplay', tryPlay)
+      video.removeEventListener('loadeddata', tryPlay)
+    }
   }, [])
 
   return (
@@ -34,7 +42,6 @@ export default function HeroSection({ locale }: { locale: Locale }) {
         ref={videoRef}
         className="absolute inset-0 z-0 h-full w-full object-cover object-[68%_center] md:object-center"
         src="/videos/alpe-hero-web.mp4"
-        poster="/videos/hero-poster.jpg"
         autoPlay
         muted
         loop
