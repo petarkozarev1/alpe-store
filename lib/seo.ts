@@ -11,9 +11,9 @@ export const siteUrl = SITE_URL
 
 export const defaultSeo = {
   siteName: 'AMPÉ',
-  title: 'AMPÉ - Очила за синя светлина',
+  title: 'AMPÉ — Очила за синя светлина | Blue light blocking glasses',
   description:
-    'AMPÉ очила за синя и зелена светлина с EU сертифицирани пластмасови стъкла, UV400 защита и безплатна доставка за 2 или повече чифта.',
+    'Очила за синя светлина от AMPÉ. Blue light blocking glasses с EU сертифицирани пластмасови стъкла, UV400 защита и безплатна доставка за 2 или повече чифта.',
   locale: 'bg_BG',
 }
 
@@ -34,7 +34,7 @@ export const indexableRoutes = [
   '/product/alpe-evening',
 ]
 
-export const seoLastModified = new Date('2026-11-09T00:00:00.000Z')
+export const seoLastModified = new Date('2026-11-18T00:00:00.000Z')
 
 export const organizationId = `${siteUrl}/#organization`
 export const websiteId = `${siteUrl}/#website`

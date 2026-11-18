@@ -2,8 +2,8 @@ import type { Locale } from './config'
 import { EMAILS } from '@/lib/brand'
 
 export const englishTranslations: Record<string, string> = {
-  'AMPÉ - Очила за синя светлина': 'AMPÉ - Blue-light glasses',
-  'AMPÉ очила за синя и зелена светлина с EU сертифицирани пластмасови стъкла, UV400 защита и безплатна доставка за 2 или повече чифта.': 'AMPÉ blue- and green-light glasses with EU-certified plastic lenses, UV400 protection and free delivery on 2 or more pairs.',
+  'AMPÉ — Очила за синя светлина | Blue light blocking glasses': 'AMPÉ — Blue light blocking glasses',
+  'Очила за синя светлина от AMPÉ. Blue light blocking glasses с EU сертифицирани пластмасови стъкла, UV400 защита и безплатна доставка за 2 или повече чифта.': 'Blue light blocking glasses from AMPÉ. EU-certified plastic lenses, UV400 protection and free delivery on 2 or more pairs.',
   'Плащане': 'Checkout',
   'Завърши поръчката си за AMPÉ очила. Безплатна доставка за 2 или повече чифта.': 'Complete your AMPÉ order. Free delivery on 2 or more pairs.',
   'AMPÉ е основана от хора, които познават умората от екрана. Научете повече за нашата мисия.': 'AMPÉ was founded by people who understand screen fatigue. Learn more about our mission.',
@@ -175,8 +175,8 @@ export const englishTranslations: Record<string, string> = {
   'Достатъчно доказателства?': 'Seen enough evidence?',
   'Вземи си чифт.': 'Get your pair.',
   'Лабораторен доклад: AHD TMS · Стандарти: BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015, AS/NZS 1067.1:2016': 'Laboratory report: AHD TMS · Standards: BS EN ISO 12312-1:2013+A1:2015, ANSI Z80.3-2015, AS/NZS 1067.1:2016',
-  'AMPÉ очила за синя светлина и компютър': 'AMPÉ blue-light and computer glasses',
-  'Поръчай AMPÉ очила за синя светлина, blue light glasses и очила за компютър. Daily и Evening филтри за екран, фокус и сън с безплатна доставка за 2 или повече чифта.': 'Shop AMPÉ blue-light and computer glasses. Daily and Evening filters support screen comfort, focus and evening routines, with free delivery on 2 or more pairs.',
+  'Очила за синя светлина — AMPÉ | Blue light blocking glasses': 'Blue light blocking glasses — AMPÉ',
+  'Поръчай очила за синя светлина от AMPÉ. Blue light blocking glasses и очила за компютър с Daily и Evening филтри, EU сертифицирани пластмасови стъкла и безплатна доставка за 2+ чифта.': 'Shop blue light blocking glasses from AMPÉ. Daily and Evening filters for screen comfort, with EU-certified plastic lenses and free delivery on 2+ pairs.',
   'AMPÉ очила за синя светлина': 'AMPÉ blue-light glasses',
   'AMPÉ Daily и Evening очила за синя и зелена светлина, очила за компютър и blue light blocking glasses с EU сертифицирани пластмасови стъкла, UV400 защита и лека рамка за ежедневна употреба.': 'AMPÉ Daily and Evening blue- and green-light glasses with EU-certified plastic lenses, UV400 protection and a lightweight everyday frame.',
   '1 чифт AMPÉ': '1 pair of AMPÉ glasses',

@@ -16,8 +16,8 @@ import { getPricingSnapshot } from '@/lib/sale'
 export function generateMetadata({ params }: { params: { locale: string } }) {
   return createLocalizedPageMetadata(params.locale, {
     absoluteTitle: true,
-    title: 'AMPÉ очила за синя светлина и компютър',
-    description: 'Поръчай AMPÉ очила за синя светлина, blue light glasses и очила за компютър. Daily и Evening филтри за екран, фокус и сън с безплатна доставка за 2 или повече чифта.',
+    title: 'Очила за синя светлина — AMPÉ | Blue light blocking glasses',
+    description: 'Поръчай очила за синя светлина от AMPÉ. Blue light blocking glasses и очила за компютър с Daily и Evening филтри, EU сертифицирани пластмасови стъкла и безплатна доставка за 2+ чифта.',
     path: '/shop',
   })
 }
